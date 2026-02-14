@@ -193,6 +193,45 @@ body {
     margin-top: 1rem;
 }
 
+/* Park Ticker */
+.park-ticker-wrap {
+    width: 100%;
+    overflow: hidden;
+    padding: 1.5rem 0 2rem;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.park-ticker {
+    display: flex;
+    gap: 2.5rem;
+    animation: ticker-scroll 40s linear infinite;
+    width: max-content;
+}
+
+.park-ticker span {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.park-ticker:hover span {
+    opacity: 1;
+}
+
+.park-ticker:hover {
+    animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
 /* Features */
 .features {
     padding: 6rem 2rem;
