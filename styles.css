@@ -197,7 +197,9 @@ body {
 .park-ticker-wrap {
     width: 100%;
     overflow: hidden;
-    padding: 1.5rem 0 2rem;
+    padding: 0 0 3rem;
+    background: var(--bg-dark);
+    margin-top: -2rem;
     mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
