@@ -134,12 +134,12 @@ body {
 /* Hero */
 .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 85vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 6rem 2rem 4rem;
+    padding: 6rem 2rem 2rem;
     overflow: hidden;
 }
 
@@ -196,12 +196,13 @@ body {
 /* Park Ticker */
 .park-ticker-wrap {
     width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
     overflow: hidden;
-    padding: 0 0 3rem;
+    padding: 1rem 0 2rem;
     background: var(--bg-dark);
-    margin-top: -2rem;
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
 
 .park-ticker {
@@ -236,8 +237,8 @@ body {
 
 /* Bot Preview */
 .bot-preview {
-    padding: 4rem 2rem 5rem;
-    max-width: 1100px;
+    padding: 1rem 2rem 5rem;
+    max-width: 1200px;
     margin: 0 auto;
     text-align: center;
 }
@@ -264,7 +265,7 @@ body {
 .preview-card {
     background: var(--bg-card);
     border-radius: 12px;
-    padding: 1.2rem;
+    padding: 1.5rem;
     border: 1px solid var(--border);
     transition: transform 0.2s, border-color 0.2s;
 }
@@ -290,6 +291,7 @@ body {
     width: 100%;
     border-radius: 8px;
     margin-bottom: 0.75rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .preview-card p {
