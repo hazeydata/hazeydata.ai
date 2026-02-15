@@ -155,14 +155,9 @@
         }
 
         .legend-scale {
-            display: flex;
-            gap: 2px;
-        }
-
-        .legend-cell {
-            width: 12px;
-            height: 12px;
-            border-radius: 2px;
+            width: 200px;
+            height: 14px;
+            border-radius: 3px;
         }
 
         .stats-container {
@@ -288,9 +283,9 @@
                 height: 10px;
             }
 
-            .legend-cell {
-                width: 10px;
-                height: 10px;
+            .legend-scale {
+                width: 150px;
+                height: 12px;
             }
         }
     </style>
@@ -311,10 +306,9 @@
                 </div>
                 <div class="heatmap" id="heatmap"></div>
                 <div class="legend-container">
-                    <span class="legend-text">Less crowded</span>
+                    <span class="legend-text" id="legend-low">WTI 15</span>
                     <div class="legend-scale" id="legend-scale"></div>
-                    <span class="legend-text">More crowded</span>
-                    <span class="legend-text" id="legend-range">WTI 15-35</span>
+                    <span class="legend-text" id="legend-high">WTI 35</span>
                 </div>
             </div>
         </div>
@@ -517,19 +511,20 @@
             const minWti = Math.min(...wtiValues);
             const maxWti = Math.max(...wtiValues);
             
-            // Update legend range
-            document.getElementById('legend-range').textContent = `WTI ${minWti}-${maxWti}`;
+            // Update legend labels
+            document.getElementById('legend-low').textContent = `WTI ${minWti}`;
+            document.getElementById('legend-high').textContent = `WTI ${maxWti}`;
             
-            // Create legend scale
+            // Create legend scale with lavender forced at center
+            // We build a simple 3-stop CSS gradient instead of cells
+            // so white is always visually centered regardless of the math
             const legendScale = document.getElementById('legend-scale');
             legendScale.innerHTML = '';
-            for (let i = 0; i < 8; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'legend-cell';
-                const wti = minWti + (i / 7) * (maxWti - minWti);
-                cell.style.backgroundColor = interpolateColor(wti, minWti, maxWti);
-                legendScale.appendChild(cell);
-            }
+            const lowColor = interpolateColor(minWti, minWti, maxWti);
+            const highColor = interpolateColor(maxWti, minWti, maxWti);
+            const midColor = 'rgb(210, 200, 220)'; // Benedictus lavender/neutral
+            legendScale.style.background = `linear-gradient(to right, ${lowColor}, ${midColor} 50%, ${highColor})`;
+            legendScale.style.borderRadius = '3px';
             
             // Create tooltip
             const tooltip = createTooltip();
