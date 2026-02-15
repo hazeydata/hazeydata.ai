@@ -75,7 +75,7 @@
 
         .month-labels {
             display: grid;
-            grid-template-columns: 30px repeat(52, 1fr);
+            grid-template-columns: 30px repeat(53, 1fr);
             gap: 2px;
             margin-bottom: 5px;
         }
@@ -93,7 +93,7 @@
 
         .heatmap {
             display: grid;
-            grid-template-columns: 30px repeat(52, 1fr);
+            grid-template-columns: 30px repeat(53, 1fr);
             gap: 2px;
         }
 
@@ -275,7 +275,7 @@
 
             .month-labels,
             .heatmap {
-                grid-template-columns: 25px repeat(52, 1fr);
+                grid-template-columns: 25px repeat(53, 1fr);
             }
 
             .heatmap-cell {
@@ -532,20 +532,25 @@
             // Clear existing content
             heatmap.innerHTML = '';
             
-            // Get the start of the year (or data start)
-            const startDate = data[0].date;
-            const startYear = startDate.getFullYear();
+            // Start from the Sunday of the week containing the first data point
+            const startDate = new Date(data[0].date);
+            const gridStart = new Date(startDate);
+            gridStart.setDate(gridStart.getDate() - gridStart.getDay()); // Back to Sunday
+            
+            // Calculate how many weeks we need (365 days + partial weeks on each end)
+            const lastDate = data[data.length - 1].date;
+            const totalDays = Math.ceil((lastDate - gridStart) / (1000 * 60 * 60 * 24)) + 1;
+            const totalWeeks = Math.ceil(totalDays / 7);
             
             // Create month labels
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             let currentMonth = -1;
-            let weekCount = 0;
             
-            for (let week = 0; week < 52; week++) {
-                const weekStart = new Date(startYear, 0, 1 + week * 7);
-                weekStart.setDate(weekStart.getDate() - weekStart.getDay()); // Go to Sunday of that week
+            for (let week = 0; week < totalWeeks; week++) {
+                const weekStart = new Date(gridStart);
+                weekStart.setDate(weekStart.getDate() + week * 7);
                 
-                if (weekStart.getMonth() !== currentMonth && weekStart.getDate() <= 7) {
+                if (weekStart.getMonth() !== currentMonth) {
                     currentMonth = weekStart.getMonth();
                     const monthLabel = document.createElement('div');
                     monthLabel.className = 'month-label';
@@ -574,7 +579,7 @@
             });
             
             // Create heatmap cells
-            for (let week = 0; week < 52; week++) {
+            for (let week = 0; week < totalWeeks; week++) {
                 for (let day = 0; day < 7; day++) {
                     const cell = document.createElement('div');
                     cell.className = 'heatmap-cell';
@@ -582,13 +587,13 @@
                     cell.style.gridColumn = week + 2;
                     
                     // Calculate the date for this cell
-                    const cellDate = new Date(startYear, 0, 1);
-                    cellDate.setDate(cellDate.getDate() + week * 7 + day - cellDate.getDay());
+                    const cellDate = new Date(gridStart);
+                    cellDate.setDate(cellDate.getDate() + week * 7 + day);
                     
                     const dateKey = cellDate.toISOString().split('T')[0];
                     const dayData = dataByDate[dateKey];
                     
-                    if (dayData && cellDate.getFullYear() === startYear) {
+                    if (dayData) {
                         cell.style.backgroundColor = interpolateColor(dayData.wti, minWti, maxWti);
                         
                         cell.addEventListener('mouseenter', (e) => {
@@ -727,14 +732,17 @@
             document.title = `${parkName} — Wait Time Index — HazeyData.ai`;
             document.getElementById('park-title').textContent = parkName;
             
-            // Generate sample data starting from today
+            // Generate sample data starting from today, 365 days forward
             const today = new Date();
-            const yearStart = new Date(today.getFullYear(), 0, 1);
-            const data = generateSampleData(yearStart);
+            today.setHours(0, 0, 0, 0);
+            const data = generateSampleData(today);
             
             // Update date range
+            const endDate = new Date(today);
+            endDate.setDate(endDate.getDate() + 364);
             const dateRange = document.getElementById('date-range');
-            dateRange.textContent = `${yearStart.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} - ${new Date(today.getFullYear(), 11, 31).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
+            const fmt = { month: 'short', year: 'numeric' };
+            dateRange.textContent = `${today.toLocaleDateString('en-US', fmt)} — ${endDate.toLocaleDateString('en-US', fmt)}`;
             
             // Render components
             const { minWti, maxWti } = renderHeatmap(data);
