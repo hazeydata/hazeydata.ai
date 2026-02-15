@@ -405,65 +405,101 @@
             'TDS': 'Tokyo DisneySea'
         };
 
-        // Benedictus color stops
-        const COLOR_STOPS = [
-            { wti: 8, color: [10, 47, 143] },      // deep blue
-            { wti: 15, color: [60, 120, 210] },    // blue
-            { wti: 22, color: [210, 200, 220] },   // lavender/white
-            { wti: 28, color: [255, 177, 201] },   // light pink
-            { wti: 34, color: [245, 120, 160] },   // medium pink
-            { wti: 40, color: [235, 66, 123] },    // hot pink
-            { wti: 50, color: [166, 0, 56] },      // deep red
-            { wti: 65, color: [80, 0, 30] }        // extreme
+        // Benedictus color anchors — mapped to per-park percentiles
+        // p5 → deep blue (ghost town for this park)
+        // p25 → blue
+        // median → lavender/white (normal day)
+        // p75 → light pink
+        // p95 → deep red (avoid if you can)
+        // Beyond p95 → extreme dark
+        const BENEDICTUS_COLORS = [
+            { pct: 0.00, color: [10, 47, 143] },     // deep blue (≤ p5)
+            { pct: 0.05, color: [10, 47, 143] },     // deep blue (p5)
+            { pct: 0.25, color: [60, 120, 210] },    // blue (p25)
+            { pct: 0.50, color: [210, 200, 220] },   // lavender/white (median)
+            { pct: 0.75, color: [245, 140, 175] },   // pink (p75)
+            { pct: 0.95, color: [166, 0, 56] },      // deep red (p95)
+            { pct: 1.00, color: [80, 0, 30] },       // extreme (max)
         ];
 
-        // WTI descriptions
-        const WTI_DESCRIPTIONS = {
-            8: "Shortest waits of the year",
-            15: "Short waits",
-            22: "Below average waits",
-            28: "Moderate waits",
-            34: "Long waits",
-            40: "Very long waits",
-            50: "Extreme waits",
-            65: "Peak — plan carefully"
-        };
+        // Per-park distribution data — loaded from distributions.json
+        let parkDistribution = null;
 
+        // WTI descriptions — now relative to the park
         function getWTIDescription(wti) {
-            const keys = Object.keys(WTI_DESCRIPTIONS).map(Number).sort((a, b) => a - b);
-            for (let i = keys.length - 1; i >= 0; i--) {
-                if (wti >= keys[i]) {
-                    return WTI_DESCRIPTIONS[keys[i]];
-                }
+            if (!parkDistribution) {
+                // Fallback if no distribution loaded
+                if (wti <= 15) return "Short waits";
+                if (wti <= 22) return "Below average waits";
+                if (wti <= 28) return "Moderate waits";
+                if (wti <= 34) return "Long waits";
+                return "Very long waits";
             }
-            return WTI_DESCRIPTIONS[8];
+            const d = parkDistribution;
+            if (wti <= d.p5) return "Shortest waits";
+            if (wti <= d.p25) return "Short waits";
+            if (wti <= d.median) return "Below average";
+            if (wti <= d.p75) return "Moderate waits";
+            if (wti <= d.p95) return "Long waits";
+            return "Very long waits";
         }
 
         function interpolateColor(wti, minWti, maxWti) {
-            // Normalize WTI to 0-1 range within the park's data
-            const normalizedWti = (wti - minWti) / (maxWti - minWti);
-            
-            // Map to the full Benedictus range
-            const fullRangeWti = 8 + normalizedWti * (65 - 8);
-            
-            // Find the two color stops to interpolate between
-            let lowerStop = COLOR_STOPS[0];
-            let upperStop = COLOR_STOPS[COLOR_STOPS.length - 1];
-            
-            for (let i = 0; i < COLOR_STOPS.length - 1; i++) {
-                if (fullRangeWti >= COLOR_STOPS[i].wti && fullRangeWti <= COLOR_STOPS[i + 1].wti) {
-                    lowerStop = COLOR_STOPS[i];
-                    upperStop = COLOR_STOPS[i + 1];
+            // Per-park percentile-based color mapping
+            // Convert WTI to a percentile position within the park's historical distribution
+            let pct;
+            if (parkDistribution) {
+                const d = parkDistribution;
+                // Map WTI to approximate percentile using distribution anchors
+                const anchors = [
+                    { wti: d.min, pct: 0.00 },
+                    { wti: d.p5,  pct: 0.05 },
+                    { wti: d.p25, pct: 0.25 },
+                    { wti: d.median, pct: 0.50 },
+                    { wti: d.p75, pct: 0.75 },
+                    { wti: d.p95, pct: 0.95 },
+                    { wti: d.max, pct: 1.00 },
+                ];
+                
+                // Clamp to range
+                if (wti <= anchors[0].wti) {
+                    pct = 0;
+                } else if (wti >= anchors[anchors.length - 1].wti) {
+                    pct = 1;
+                } else {
+                    // Interpolate between anchors
+                    for (let i = 0; i < anchors.length - 1; i++) {
+                        if (wti >= anchors[i].wti && wti <= anchors[i + 1].wti) {
+                            const range = anchors[i + 1].wti - anchors[i].wti;
+                            const frac = range > 0 ? (wti - anchors[i].wti) / range : 0;
+                            pct = anchors[i].pct + frac * (anchors[i + 1].pct - anchors[i].pct);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                // Fallback: linear scale within current data range
+                pct = maxWti > minWti ? (wti - minWti) / (maxWti - minWti) : 0.5;
+            }
+
+            // Map percentile to Benedictus color
+            let lower = BENEDICTUS_COLORS[0];
+            let upper = BENEDICTUS_COLORS[BENEDICTUS_COLORS.length - 1];
+
+            for (let i = 0; i < BENEDICTUS_COLORS.length - 1; i++) {
+                if (pct >= BENEDICTUS_COLORS[i].pct && pct <= BENEDICTUS_COLORS[i + 1].pct) {
+                    lower = BENEDICTUS_COLORS[i];
+                    upper = BENEDICTUS_COLORS[i + 1];
                     break;
                 }
             }
-            
-            // Interpolate between the two colors
-            const factor = (fullRangeWti - lowerStop.wti) / (upperStop.wti - lowerStop.wti);
-            const r = Math.round(lowerStop.color[0] + (upperStop.color[0] - lowerStop.color[0]) * factor);
-            const g = Math.round(lowerStop.color[1] + (upperStop.color[1] - lowerStop.color[1]) * factor);
-            const b = Math.round(lowerStop.color[2] + (upperStop.color[2] - lowerStop.color[2]) * factor);
-            
+
+            const range = upper.pct - lower.pct;
+            const factor = range > 0 ? (pct - lower.pct) / range : 0;
+            const r = Math.round(lower.color[0] + (upper.color[0] - lower.color[0]) * factor);
+            const g = Math.round(lower.color[1] + (upper.color[1] - lower.color[1]) * factor);
+            const b = Math.round(lower.color[2] + (upper.color[2] - lower.color[2]) * factor);
+
             return `rgb(${r}, ${g}, ${b})`;
         }
 
@@ -871,6 +907,20 @@
             document.title = `${parkName} — Wait Time Index — HazeyData.ai`;
             document.getElementById('park-title').textContent = parkName;
             
+            // Fetch per-park distribution for color scaling
+            try {
+                const distResp = await fetch('/year-view-data/distributions.json');
+                if (distResp.ok) {
+                    const allDist = await distResp.json();
+                    parkDistribution = allDist[park] || null;
+                    if (parkDistribution) {
+                        console.log(`Loaded ${park} distribution: p5=${parkDistribution.p5}, median=${parkDistribution.median}, p95=${parkDistribution.p95} (${parkDistribution.n_days} days of history)`);
+                    }
+                }
+            } catch (e) {
+                console.warn('Could not load distributions:', e.message);
+            }
+
             // Try to fetch real data, fall back to sample data
             let data;
             let headlinerPeaks = {};
