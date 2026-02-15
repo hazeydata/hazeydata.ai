@@ -315,8 +315,10 @@
 
         <div class="stats-container">
             <div class="stats-card">
-                <h3>🎯 Best Days to Visit</h3>
-                <ul class="best-days-list" id="best-days-list"></ul>
+                <h3>🎯 Best Weeks to Visit</h3>
+                <ul class="best-days-list" id="best-weeks-list"></ul>
+                <h3 style="margin-top: 20px;">🚫 Busiest Weeks to Avoid</h3>
+                <ul class="best-days-list" id="worst-weeks-list"></ul>
             </div>
             <div class="stats-card">
                 <h3>📊 WTI Insights</h3>
@@ -635,51 +637,120 @@
             return { minWti, maxWti };
         }
 
-        function renderBestDays(data) {
-            const bestDays = [...data]
-                .sort((a, b) => a.wti - b.wti)
-                .slice(0, 5);
-            
-            const bestDaysList = document.getElementById('best-days-list');
-            bestDaysList.innerHTML = '';
-            
-            bestDays.forEach(day => {
+        function renderBestWeeks(data) {
+            // Group data into ISO weeks
+            const weeks = {};
+            data.forEach(d => {
+                // Get Monday of this week as the week key
+                const day = new Date(d.date);
+                const dayOfWeek = day.getDay();
+                const monday = new Date(day);
+                monday.setDate(monday.getDate() - ((dayOfWeek + 6) % 7));
+                const weekKey = monday.toISOString().split('T')[0];
+                if (!weeks[weekKey]) {
+                    weeks[weekKey] = { start: monday, wtiSum: 0, count: 0 };
+                }
+                weeks[weekKey].wtiSum += d.wti;
+                weeks[weekKey].count++;
+            });
+
+            // Compute averages and sort — only full weeks (5+ days)
+            const weekList = Object.values(weeks)
+                .filter(w => w.count >= 5)
+                .map(w => ({
+                    start: w.start,
+                    avgWti: Math.round(w.wtiSum / w.count)
+                }));
+
+            const formatWeek = (d) => {
+                return `Week of ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+            };
+
+            // Best 5 weeks
+            const bestWeeks = [...weekList].sort((a, b) => a.avgWti - b.avgWti).slice(0, 5);
+            const bestList = document.getElementById('best-weeks-list');
+            bestList.innerHTML = '';
+            bestWeeks.forEach(week => {
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <span class="day-name">${formatDate(day.date)}</span>
+                    <span class="day-name">${formatWeek(week.start)}</span>
                     <span>
-                        <span class="wti-value">WTI ${day.wti}</span>
-                        <span class="wti-description">(${getWTIDescription(day.wti)})</span>
+                        <span class="wti-value">WTI ${week.avgWti}</span>
+                        <span class="wti-description">(${getWTIDescription(week.avgWti)})</span>
                     </span>
                 `;
-                bestDaysList.appendChild(li);
+                bestList.appendChild(li);
+            });
+
+            // Worst 5 weeks
+            const worstWeeks = [...weekList].sort((a, b) => b.avgWti - a.avgWti).slice(0, 5);
+            const worstList = document.getElementById('worst-weeks-list');
+            worstList.innerHTML = '';
+            worstWeeks.forEach(week => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="day-name">${formatWeek(week.start)}</span>
+                    <span>
+                        <span class="wti-value">WTI ${week.avgWti}</span>
+                        <span class="wti-description">(${getWTIDescription(week.avgWti)})</span>
+                    </span>
+                `;
+                worstList.appendChild(li);
             });
         }
 
+        // Park-specific context for smarter insights
+        const PARK_CONTEXT = {
+            MK: { rides: "25+", note: "More attractions spread guests out, keeping per-ride waits moderate" },
+            EP: { rides: "15+", note: "World Showcase absorbs guests into dining and shopping, easing ride queues" },
+            HS: { rides: "10+", note: "Fewer attractions concentrate demand — headliners see the longest waits" },
+            AK: { rides: "10+", note: "Smaller ride roster means headliners like Flight of Passage drive WTI year-round" },
+            DL: { rides: "30+", note: "Highest ride count of any park helps distribute wait times" },
+            CA: { rides: "20+", note: "Radiator Springs Racers dominates — overall WTI tracks with this one ride" },
+            UF: { rides: "15+", note: "Express Pass availability keeps standby lines longer" },
+            IA: { rides: "15+", note: "Hagrid's and VelociCoaster anchor the WTI" },
+            EU: { rides: "20+", note: "Newest park — expect higher demand as guests explore" },
+            UH: { rides: "10+", note: "Compact park with heavy local attendance on weekends" },
+            TDL: { rides: "20+", note: "Exceptionally well-managed queues keep WTI lower than you'd expect" },
+            TDS: { rides: "15+", note: "Fantasy Springs expansion adds capacity but also demand" },
+        };
+
         function renderCrowdInsights(data, minWti, maxWti) {
             const insights = document.getElementById('crowd-insights');
+            const park = getQueryParam('park') || 'MK';
+            const parkCtx = PARK_CONTEXT[park] || {};
             
             const avgWti = Math.round(data.reduce((sum, d) => sum + d.wti, 0) / data.length);
             const bestMonth = getBestMonth(data);
             const worstMonth = getWorstMonth(data);
+            const spread = maxWti - minWti;
+            
+            // Generate a contextual summary
+            let summary = '';
+            if (parkCtx.note) {
+                summary = `<div style="margin-bottom: 15px; color: #b5bac1; font-size: 0.9rem; line-height: 1.4;">
+                    ${parkCtx.rides} attractions. ${parkCtx.note}.
+                </div>`;
+            }
             
             insights.innerHTML = `
-                <div style="margin-bottom: 15px;">
+                ${summary}
+                <div style="margin-bottom: 12px;">
                     <strong style="color: #ffffff;">Average WTI:</strong> 
                     <span class="wti-value">${avgWti}</span>
-                    <span class="wti-description">(${getWTIDescription(avgWti)})</span>
+                    <span class="wti-description">(range: ${minWti}–${maxWti})</span>
                 </div>
-                <div style="margin-bottom: 15px;">
+                <div style="margin-bottom: 12px;">
                     <strong style="color: #ffffff;">Best Month:</strong> 
                     <span style="color: #00d4ff;">${bestMonth}</span>
                 </div>
-                <div style="margin-bottom: 15px;">
+                <div style="margin-bottom: 12px;">
                     <strong style="color: #ffffff;">Busiest Month:</strong> 
                     <span style="color: #ff6b6b;">${worstMonth}</span>
                 </div>
                 <div>
-                    <strong style="color: #ffffff;">WTI Range:</strong> 
-                    <span style="color: #b5bac1;">${minWti} - ${maxWti}</span>
+                    <strong style="color: #ffffff;">Seasonal Spread:</strong> 
+                    <span style="color: #b5bac1;">${spread} WTI points${spread < 10 ? ' (consistent year-round)' : spread > 20 ? ' (highly seasonal)' : ''}</span>
                 </div>
             `;
         }
@@ -779,7 +850,7 @@
             
             // Render components
             const { minWti, maxWti } = renderHeatmap(data);
-            renderBestDays(data);
+            renderBestWeeks(data);
             renderCrowdInsights(data, minWti, maxWti);
         }
 
