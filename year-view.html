@@ -515,15 +515,30 @@
             document.getElementById('legend-low').textContent = `WTI ${minWti}`;
             document.getElementById('legend-high').textContent = `WTI ${maxWti}`;
             
-            // Create legend scale with lavender forced at center
-            // We build a simple 3-stop CSS gradient instead of cells
-            // so white is always visually centered regardless of the math
+            // Create legend scale with multiple stops matching the heatmap colors
+            // Sample 20 points across the data range so the gradient accurately
+            // represents what's visible in the heatmap — with white forced at center
             const legendScale = document.getElementById('legend-scale');
             legendScale.innerHTML = '';
-            const lowColor = interpolateColor(minWti, minWti, maxWti);
-            const highColor = interpolateColor(maxWti, minWti, maxWti);
-            const midColor = 'rgb(210, 200, 220)'; // Benedictus lavender/neutral
-            legendScale.style.background = `linear-gradient(to right, ${lowColor}, ${midColor} 50%, ${highColor})`;
+            const numStops = 20;
+            const midWti = (minWti + maxWti) / 2;
+            const stops = [];
+            for (let i = 0; i <= numStops; i++) {
+                const pct = (i / numStops) * 100;
+                let wti;
+                if (i <= numStops / 2) {
+                    // Left half: min → mid
+                    wti = minWti + (i / (numStops / 2)) * (midWti - minWti);
+                } else {
+                    // Right half: mid → max
+                    wti = midWti + ((i - numStops / 2) / (numStops / 2)) * (maxWti - midWti);
+                }
+                const color = interpolateColor(wti, minWti, maxWti);
+                stops.push(`${color} ${pct.toFixed(1)}%`);
+            }
+            // Force the center stop to be lavender
+            stops[numStops / 2] = `rgb(210, 200, 220) 50%`;
+            legendScale.style.background = `linear-gradient(to right, ${stops.join(', ')})`;
             legendScale.style.borderRadius = '3px';
             
             // Create tooltip
