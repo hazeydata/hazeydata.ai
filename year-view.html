@@ -214,6 +214,44 @@
             margin-left: 10px;
         }
 
+        .busy-week-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #2b2d31;
+        }
+
+        .busy-week-item:last-child {
+            border-bottom: none;
+        }
+
+        .busy-week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .busy-week-header .day-name {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .busy-week-rides {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+            font-size: 0.82rem;
+            color: #b5bac1;
+        }
+
+        .busy-week-rides .ride-peak {
+            white-space: nowrap;
+        }
+
+        .busy-week-rides .ride-wait {
+            color: #ff6b8a;
+            font-weight: 600;
+        }
+
         .cta {
             text-align: center;
             background: #111d33;
@@ -321,7 +359,7 @@
                 <h3>🎯 Best Weeks to Visit</h3>
                 <ul class="best-days-list" id="best-weeks-list"></ul>
                 <h3 style="margin-top: 20px;">🚫 Busiest Weeks to Avoid</h3>
-                <ul class="best-days-list" id="worst-weeks-list"></ul>
+                <div id="worst-weeks-list"></div>
             </div>
             <div class="stats-card">
                 <h3>📊 WTI Insights</h3>
@@ -612,7 +650,9 @@
             return { minWti, maxWti };
         }
 
-        function renderBestWeeks(data) {
+        function renderBestWeeks(data, headlinerPeaks) {
+            headlinerPeaks = headlinerPeaks || {};
+
             // Group data into ISO weeks
             const weeks = {};
             data.forEach(d => {
@@ -623,7 +663,7 @@
                 monday.setDate(monday.getDate() - ((dayOfWeek + 6) % 7));
                 const weekKey = monday.toISOString().split('T')[0];
                 if (!weeks[weekKey]) {
-                    weeks[weekKey] = { start: monday, wtiSum: 0, count: 0 };
+                    weeks[weekKey] = { start: monday, key: weekKey, wtiSum: 0, count: 0 };
                 }
                 weeks[weekKey].wtiSum += d.wti;
                 weeks[weekKey].count++;
@@ -634,6 +674,7 @@
                 .filter(w => w.count >= 5)
                 .map(w => ({
                     start: w.start,
+                    key: w.key,
                     avgWti: Math.round(w.wtiSum / w.count)
                 }));
 
@@ -641,7 +682,7 @@
                 return `Week of ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
             };
 
-            // Best 5 weeks
+            // Best 5 weeks — show with WTI + description (these are the good ones)
             const bestWeeks = [...weekList].sort((a, b) => a.avgWti - b.avgWti).slice(0, 5);
             const bestList = document.getElementById('best-weeks-list');
             bestList.innerHTML = '';
@@ -657,20 +698,29 @@
                 bestList.appendChild(li);
             });
 
-            // Worst 5 weeks
+            // Worst 5 weeks — show with headliner ride peak waits
             const worstWeeks = [...weekList].sort((a, b) => b.avgWti - a.avgWti).slice(0, 5);
             const worstList = document.getElementById('worst-weeks-list');
             worstList.innerHTML = '';
             worstWeeks.forEach(week => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <span class="day-name">${formatWeek(week.start)}</span>
-                    <span>
-                        <span class="wti-value">WTI ${week.avgWti}</span>
-                        <span class="wti-description">(${getWTIDescription(week.avgWti)})</span>
-                    </span>
+                const rides = headlinerPeaks[week.key] || [];
+                const div = document.createElement('div');
+                div.className = 'busy-week-item';
+
+                let ridesHtml = '';
+                if (rides.length > 0) {
+                    ridesHtml = `<div class="busy-week-rides">${
+                        rides.map(r => `<span class="ride-peak">${r.ride}: <span class="ride-wait">${r.peak} min</span></span>`).join('')
+                    }</div>`;
+                }
+
+                div.innerHTML = `
+                    <div class="busy-week-header">
+                        <span class="day-name">${formatWeek(week.start)}</span>
+                    </div>
+                    ${ridesHtml}
                 `;
-                worstList.appendChild(li);
+                worstList.appendChild(div);
             });
         }
 
@@ -795,6 +845,7 @@
             
             // Try to fetch real data, fall back to sample data
             let data;
+            let headlinerPeaks = {};
             try {
                 const response = await fetch(`/year-view-data/${park}.json`);
                 if (response.ok) {
@@ -803,6 +854,7 @@
                         date: new Date(d.date + 'T00:00:00'),
                         wti: Math.round(d.wti)
                     }));
+                    headlinerPeaks = json.headliner_peaks || {};
                 } else {
                     throw new Error('No data file');
                 }
@@ -825,7 +877,7 @@
             
             // Render components
             const { minWti, maxWti } = renderHeatmap(data);
-            renderBestWeeks(data);
+            renderBestWeeks(data, headlinerPeaks);
             renderCrowdInsights(data, minWti, maxWti);
         }
 
