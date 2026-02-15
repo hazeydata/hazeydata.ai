@@ -144,20 +144,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             margin-top: 20px;
             flex-wrap: wrap;
         }
 
         .legend-text {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #b5bac1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .legend-scale {
             width: 200px;
             height: 14px;
             border-radius: 3px;
+            background: linear-gradient(to right, #0a2f8f, #3c78d2, #d2c8dc, #f5b1c9, #eb427b, #a60038);
         }
 
         .stats-container {
@@ -306,9 +309,9 @@
                 </div>
                 <div class="heatmap" id="heatmap"></div>
                 <div class="legend-container">
-                    <span class="legend-text" id="legend-low">WTI 15</span>
-                    <div class="legend-scale" id="legend-scale"></div>
-                    <span class="legend-text" id="legend-high">WTI 35</span>
+                    <span class="legend-text">Shorter Waits</span>
+                    <div class="legend-scale"></div>
+                    <span class="legend-text">Longer Waits</span>
                 </div>
             </div>
         </div>
@@ -513,35 +516,7 @@
             const minWti = Math.min(...wtiValues);
             const maxWti = Math.max(...wtiValues);
             
-            // Update legend labels
-            document.getElementById('legend-low').textContent = `WTI ${minWti}`;
-            document.getElementById('legend-high').textContent = `WTI ${maxWti}`;
-            
-            // Create legend scale with multiple stops matching the heatmap colors
-            // Sample 20 points across the data range so the gradient accurately
-            // represents what's visible in the heatmap — with white forced at center
-            const legendScale = document.getElementById('legend-scale');
-            legendScale.innerHTML = '';
-            const numStops = 20;
-            const midWti = (minWti + maxWti) / 2;
-            const stops = [];
-            for (let i = 0; i <= numStops; i++) {
-                const pct = (i / numStops) * 100;
-                let wti;
-                if (i <= numStops / 2) {
-                    // Left half: min → mid
-                    wti = minWti + (i / (numStops / 2)) * (midWti - minWti);
-                } else {
-                    // Right half: mid → max
-                    wti = midWti + ((i - numStops / 2) / (numStops / 2)) * (maxWti - midWti);
-                }
-                const color = interpolateColor(wti, minWti, maxWti);
-                stops.push(`${color} ${pct.toFixed(1)}%`);
-            }
-            // Force the center stop to be lavender
-            stops[numStops / 2] = `rgb(210, 200, 220) 50%`;
-            legendScale.style.background = `linear-gradient(to right, ${stops.join(', ')})`;
-            legendScale.style.borderRadius = '3px';
+            // Legend is now static CSS — no JS needed
             
             // Create tooltip
             const tooltip = createTooltip();
