@@ -214,40 +214,53 @@
             margin-left: 10px;
         }
 
-        .busy-week-item {
-            padding: 12px 0;
-            border-bottom: 1px solid #2b2d31;
+        .peak-waits-container {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #2b2d31;
         }
 
-        .busy-week-item:last-child {
-            border-bottom: none;
-        }
-
-        .busy-week-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-
-        .busy-week-header .day-name {
+        .peak-waits-container h3 {
+            font-size: 1.1rem;
+            margin-bottom: 14px;
             color: #ffffff;
+        }
+
+        .peak-waits-intro {
+            font-size: 0.85rem;
+            color: #80848e;
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .peak-week-block {
+            margin-bottom: 14px;
+        }
+
+        .peak-week-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .peak-week-label {
+            font-size: 0.82rem;
+            color: #b5bac1;
+            margin-bottom: 5px;
             font-weight: 600;
         }
 
-        .busy-week-rides {
+        .peak-rides-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px 14px;
+            gap: 4px 12px;
             font-size: 0.82rem;
             color: #b5bac1;
         }
 
-        .busy-week-rides .ride-peak {
-            white-space: nowrap;
+        .peak-rides-row .ride-name {
+            color: #ffffff;
         }
 
-        .busy-week-rides .ride-wait {
+        .peak-rides-row .ride-wait {
             color: #ff6b8a;
             font-weight: 600;
         }
@@ -359,11 +372,12 @@
                 <h3>🎯 Best Weeks to Visit</h3>
                 <ul class="best-days-list" id="best-weeks-list"></ul>
                 <h3 style="margin-top: 20px;">🚫 Busiest Weeks to Avoid</h3>
-                <div id="worst-weeks-list"></div>
+                <ul class="best-days-list" id="worst-weeks-list"></ul>
             </div>
             <div class="stats-card">
                 <h3>📊 WTI Insights</h3>
                 <div id="crowd-insights"></div>
+                <div id="peak-waits-section"></div>
             </div>
         </div>
 
@@ -698,30 +712,47 @@
                 bestList.appendChild(li);
             });
 
-            // Worst 5 weeks — show with headliner ride peak waits
+            // Worst 5 weeks — compact list with WTI (like best weeks)
             const worstWeeks = [...weekList].sort((a, b) => b.avgWti - a.avgWti).slice(0, 5);
             const worstList = document.getElementById('worst-weeks-list');
             worstList.innerHTML = '';
             worstWeeks.forEach(week => {
-                const rides = headlinerPeaks[week.key] || [];
-                const div = document.createElement('div');
-                div.className = 'busy-week-item';
-
-                let ridesHtml = '';
-                if (rides.length > 0) {
-                    ridesHtml = `<div class="busy-week-rides">${
-                        rides.map(r => `<span class="ride-peak">${r.ride}: <span class="ride-wait">${r.peak} min</span></span>`).join('')
-                    }</div>`;
-                }
-
-                div.innerHTML = `
-                    <div class="busy-week-header">
-                        <span class="day-name">${formatWeek(week.start)}</span>
-                    </div>
-                    ${ridesHtml}
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="day-name">${formatWeek(week.start)}</span>
+                    <span>
+                        <span class="wti-value" style="color: #ff6b8a;">WTI ${week.avgWti}</span>
+                    </span>
                 `;
-                worstList.appendChild(div);
+                worstList.appendChild(li);
             });
+
+            // Render peak wait times in the right card (below WTI Insights)
+            const peakSection = document.getElementById('peak-waits-section');
+            peakSection.innerHTML = '';
+
+            // Only show if we have headliner data
+            const worstWithPeaks = worstWeeks.filter(w => headlinerPeaks[w.key] && headlinerPeaks[w.key].length > 0);
+            if (worstWithPeaks.length > 0) {
+                let html = `<div class="peak-waits-container">
+                    <h3>⚠️ Peak Wait Times</h3>
+                    <div class="peak-waits-intro">Expected peak waits during the busiest weeks:</div>`;
+
+                // Show top 3 busiest weeks with ride details
+                worstWithPeaks.slice(0, 3).forEach(week => {
+                    const rides = headlinerPeaks[week.key];
+                    const weekLabel = formatWeek(week.start);
+                    html += `<div class="peak-week-block">
+                        <div class="peak-week-label">${weekLabel}</div>
+                        <div class="peak-rides-row">
+                            ${rides.map(r => `<span><span class="ride-name">${r.ride}:</span> <span class="ride-wait">${r.peak} min</span></span>`).join('')}
+                        </div>
+                    </div>`;
+                });
+
+                html += `</div>`;
+                peakSection.innerHTML = html;
+            }
         }
 
         // Park-specific context for smarter insights
