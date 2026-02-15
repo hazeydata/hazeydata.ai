@@ -724,7 +724,7 @@
         }
 
         // Initialize the page
-        function init() {
+        async function init() {
             const park = getQueryParam('park') || 'MK';
             const parkName = PARK_NAMES[park] || 'Magic Kingdom';
             
@@ -732,17 +732,35 @@
             document.title = `${parkName} — Wait Time Index — HazeyData.ai`;
             document.getElementById('park-title').textContent = parkName;
             
-            // Generate sample data starting from today, 365 days forward
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const data = generateSampleData(today);
+            // Try to fetch real data, fall back to sample data
+            let data;
+            try {
+                const response = await fetch(`/year-view-data/${park}.json`);
+                if (response.ok) {
+                    const json = await response.json();
+                    data = json.days.map(d => ({
+                        date: new Date(d.date + 'T00:00:00'),
+                        wti: Math.round(d.wti)
+                    }));
+                } else {
+                    throw new Error('No data file');
+                }
+            } catch (e) {
+                // Fallback to sample data if JSON not available
+                console.warn('Using sample data (real data not available):', e.message);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                data = generateSampleData(today);
+            }
             
-            // Update date range
-            const endDate = new Date(today);
-            endDate.setDate(endDate.getDate() + 364);
-            const dateRange = document.getElementById('date-range');
-            const fmt = { month: 'short', year: 'numeric' };
-            dateRange.textContent = `${today.toLocaleDateString('en-US', fmt)} — ${endDate.toLocaleDateString('en-US', fmt)}`;
+            // Update date range from actual data
+            if (data.length > 0) {
+                const firstDate = data[0].date;
+                const lastDate = data[data.length - 1].date;
+                const dateRange = document.getElementById('date-range');
+                const fmt = { month: 'short', year: 'numeric' };
+                dateRange.textContent = `${firstDate.toLocaleDateString('en-US', fmt)} — ${lastDate.toLocaleDateString('en-US', fmt)}`;
+            }
             
             // Render components
             const { minWti, maxWti } = renderHeatmap(data);
