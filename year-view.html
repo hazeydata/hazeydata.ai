@@ -319,14 +319,14 @@
                 <ul class="best-days-list" id="best-days-list"></ul>
             </div>
             <div class="stats-card">
-                <h3>📊 Crowd Insights</h3>
+                <h3>📊 WTI Insights</h3>
                 <div id="crowd-insights"></div>
             </div>
         </div>
 
         <div class="cta">
-            <h3>Stay Ahead of the Crowds</h3>
-            <p>Get real-time crowd alerts and predictions delivered straight to your phone</p>
+            <h3>Stay Ahead of the Wait Times</h3>
+            <p>Get real-time wait time alerts and predictions delivered straight to your phone</p>
             <a href="https://discord.gg/hazeydata" class="discord-button">Join the Discord for Free Alerts</a>
         </div>
     </div>
@@ -363,12 +363,12 @@
         // WTI descriptions
         const WTI_DESCRIPTIONS = {
             8: "Ghost town",
-            15: "Very light",
-            22: "Light crowds",
-            28: "Moderate",
-            34: "Busy",
-            40: "Very busy",
-            50: "Packed",
+            15: "Very short waits",
+            22: "Low wait times",
+            28: "Moderate waits",
+            34: "Long waits",
+            40: "Very long waits",
+            50: "Extreme waits",
             65: "Avoid at all costs"
         };
 
@@ -425,7 +425,7 @@
                 
                 // Seasonal patterns
                 if (month === 9) {
-                    // September - lowest crowds
+                    // September - lowest wait times
                     baseWti = 15 + Math.random() * 3; // 15-18
                 } else if (month === 12 || month === 1) {
                     // December/January - holidays highest
