@@ -8,7 +8,6 @@
     --text-muted: #80848e;
     --accent: #00d4ff;
     --border: #1a2a44;
-    --hot-pink: rgb(245, 140, 175);
     
     /* Benedictus WTI Colors */
     --wti-low: rgb(10, 47, 143);        /* Deep blue */

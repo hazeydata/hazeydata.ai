@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WTI Infographic</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ── VERTICAL VERSION (1080x1920) ── */
+  .infographic-vertical {
+    width: 1080px;
+    height: 1920px;
+    background: #0a1628;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Subtle background texture */
+  .infographic-vertical::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(ellipse at 20% 20%, rgba(10, 47, 143, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(166, 0, 56, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .v-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .v-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+
+  .v-logo-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #eb427b, #a60038);
+  }
+
+  .v-logo-text {
+    font-size: 22px;
+    font-weight: 600;
+    color: #80848e;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .v-title {
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, #d2c8dc 50%, #ffb1c9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .v-subtitle {
+    font-size: 30px;
+    color: #b5bac1;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  /* Gradient bar */
+  .v-gradient-bar {
+    position: relative;
+    height: 24px;
+    border-radius: 12px;
+    background: linear-gradient(to right, 
+      rgb(10, 47, 143), 
+      rgb(60, 120, 210), 
+      rgb(210, 200, 220), 
+      rgb(245, 140, 175), 
+      rgb(166, 0, 56)
+    );
+    margin: 30px 0 16px;
+  }
+
+  .v-gradient-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    padding: 0 4px;
+  }
+
+  .v-gradient-labels span {
+    font-size: 20px;
+    color: #80848e;
+    font-weight: 500;
+  }
+
+  /* Analogy section */
+  .v-analogy {
+    position: relative;
+    background: rgba(17, 29, 51, 0.8);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 40px;
+    margin-bottom: 36px;
+    text-align: center;
+  }
+
+  .v-analogy-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+  }
+
+  .v-analogy-text {
+    font-size: 28px;
+    line-height: 1.5;
+    color: #b5bac1;
+  }
+
+  .v-analogy-text em {
+    color: #ff6b9d;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* Scale items */
+  .v-scale {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .v-scale-item {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: rgba(17, 29, 51, 0.6);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 20px 28px;
+  }
+
+  .v-scale-dot {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .v-scale-range {
+    font-size: 32px;
+    font-weight: 800;
+    width: 120px;
+    flex-shrink: 0;
+  }
+
+  .v-scale-label {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .v-scale-desc {
+    font-size: 18px;
+    color: #80848e;
+    margin-top: 2px;
+  }
+
+  /* Key difference */
+  .v-difference {
+    position: relative;
+    background: linear-gradient(135deg, rgba(235, 66, 123, 0.1), rgba(166, 0, 56, 0.1));
+    border: 1px solid rgba(235, 66, 123, 0.2);
+    border-radius: 24px;
+    padding: 36px;
+    margin-bottom: 36px;
+    text-align: center;
+  }
+
+  .v-diff-label {
+    font-size: 18px;
+    color: #ff6b9d;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .v-diff-text {
+    font-size: 26px;
+    line-height: 1.5;
+    color: #b5bac1;
+  }
+
+  .v-diff-text strong {
+    color: #fff;
+  }
+
+  /* Footer CTA */
+  .v-footer {
+    position: relative;
+    margin-top: auto;
+    text-align: center;
+  }
+
+  .v-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #eb427b, #a60038);
+    color: #fff;
+    padding: 20px 48px;
+    border-radius: 16px;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .v-footer-url {
+    font-size: 22px;
+    color: #80848e;
+    font-weight: 500;
+  }
+
+  .v-footer-handle {
+    font-size: 20px;
+    color: #ff6b9d;
+    font-weight: 500;
+    margin-top: 8px;
+  }
+
+  /* ── SQUARE VERSION (1080x1080) ── */
+  .infographic-square {
+    width: 1080px;
+    height: 1080px;
+    background: #0a1628;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+  }
+
+  .infographic-square::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(ellipse at 20% 20%, rgba(10, 47, 143, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(166, 0, 56, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .sq-header {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .sq-title-block {}
+
+  .sq-eyebrow {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ff6b9d;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .sq-title {
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, #d2c8dc 50%, #ffb1c9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sq-logo-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #80848e;
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .sq-analogy {
+    position: relative;
+    font-size: 22px;
+    color: #b5bac1;
+    line-height: 1.5;
+    margin-bottom: 28px;
+    padding-left: 20px;
+    border-left: 3px solid #ff6b9d;
+  }
+
+  .sq-analogy em {
+    color: #ff6b9d;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .sq-gradient-bar {
+    position: relative;
+    height: 18px;
+    border-radius: 9px;
+    background: linear-gradient(to right, 
+      rgb(10, 47, 143), 
+      rgb(60, 120, 210), 
+      rgb(210, 200, 220), 
+      rgb(245, 140, 175), 
+      rgb(166, 0, 56)
+    );
+    margin-bottom: 12px;
+  }
+
+  .sq-gradient-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding: 0 2px;
+  }
+
+  .sq-gradient-labels span {
+    font-size: 15px;
+    color: #80848e;
+    font-weight: 500;
+  }
+
+  .sq-scale {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .sq-scale-item {
+    flex: 1;
+    text-align: center;
+    background: rgba(17, 29, 51, 0.8);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 18px 8px;
+  }
+
+  .sq-scale-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+  }
+
+  .sq-scale-range {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .sq-scale-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #b5bac1;
+    margin-bottom: 4px;
+  }
+
+  .sq-scale-desc {
+    font-size: 13px;
+    color: #80848e;
+    line-height: 1.3;
+  }
+
+  .sq-heatmap-section {
+    position: relative;
+    margin-bottom: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .sq-heatmap-title {
+    font-size: 15px;
+    color: #80848e;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .sq-heatmap-title span {
+    color: #fff;
+    font-size: 18px;
+  }
+
+  .sq-heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .sq-heatmap-day-labels {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .sq-heatmap-day-labels span {
+    text-align: center;
+    font-size: 11px;
+    color: #555;
+    font-weight: 600;
+  }
+
+  .sq-heatmap-cell {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .sq-heatmap-month {
+    font-size: 13px;
+    color: #80848e;
+    font-weight: 600;
+    text-align: center;
+    padding: 4px 0;
+    grid-column: span 7;
+  }
+
+  .sq-bottom {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  .sq-stats {
+    display: flex;
+    gap: 32px;
+  }
+
+  .sq-stat {
+    text-align: center;
+  }
+
+  .sq-stat-num {
+    font-size: 36px;
+    font-weight: 900;
+    color: #ff6b9d;
+  }
+
+  .sq-stat-label {
+    font-size: 14px;
+    color: #80848e;
+    font-weight: 500;
+  }
+
+  .sq-cta-block {
+    text-align: right;
+  }
+
+  .sq-cta {
+    display: inline-block;
+    background: linear-gradient(135deg, #eb427b, #a60038);
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .sq-url {
+    font-size: 16px;
+    color: #80848e;
+  }
+</style>
+</head>
+<body style="background: #222; padding: 40px; display: flex; flex-direction: column; align-items: center;">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- VERTICAL VERSION (1080 x 1920) — Pinterest / IG Stories -->
+<!-- ═══════════════════════════════════════ -->
+<div class="infographic-vertical">
+  <div class="v-header">
+    <div class="v-logo">
+      <div class="v-logo-dot"></div>
+      <span class="v-logo-text">Theme Park Crowd Report</span>
+    </div>
+    <div class="v-title">What is WTI?</div>
+    <div class="v-subtitle">The Wait Time Index — explained</div>
+  </div>
+
+  <div class="v-analogy">
+    <div class="v-analogy-icon">🌡️</div>
+    <div class="v-analogy-text">
+      WTI is like <em>temperature for a theme park</em>.<br>
+      One number that tells you how busy the park is — in minutes you can actually feel.
+    </div>
+  </div>
+
+  <div class="v-gradient-bar"></div>
+  <div class="v-gradient-labels">
+    <span>Short waits</span>
+    <span>Long waits</span>
+  </div>
+
+  <div class="v-scale">
+    <div class="v-scale-item">
+      <div class="v-scale-dot" style="background: rgb(10, 47, 143);"></div>
+      <div class="v-scale-range" style="color: rgb(60, 120, 210);">15–18</div>
+      <div>
+        <div class="v-scale-label">Perfect Day</div>
+        <div class="v-scale-desc">Walk onto most rides. No strategy needed.</div>
+      </div>
+    </div>
+    <div class="v-scale-item">
+      <div class="v-scale-dot" style="background: rgb(60, 120, 210);"></div>
+      <div class="v-scale-range" style="color: rgb(100, 160, 230);">19–23</div>
+      <div>
+        <div class="v-scale-label">Good Day</div>
+        <div class="v-scale-desc">Short lines, flexible touring.</div>
+      </div>
+    </div>
+    <div class="v-scale-item">
+      <div class="v-scale-dot" style="background: rgb(210, 200, 220);"></div>
+      <div class="v-scale-range" style="color: rgb(210, 200, 220);">24–28</div>
+      <div>
+        <div class="v-scale-label">Moderate</div>
+        <div class="v-scale-desc">Typical day. Plan your headliners early.</div>
+      </div>
+    </div>
+    <div class="v-scale-item">
+      <div class="v-scale-dot" style="background: rgb(245, 140, 175);"></div>
+      <div class="v-scale-range" style="color: rgb(245, 140, 175);">29–33</div>
+      <div>
+        <div class="v-scale-label">Busy</div>
+        <div class="v-scale-desc">Rope drop matters. Use priority queues.</div>
+      </div>
+    </div>
+    <div class="v-scale-item">
+      <div class="v-scale-dot" style="background: rgb(166, 0, 56);"></div>
+      <div class="v-scale-range" style="color: rgb(200, 60, 100);">34+</div>
+      <div>
+        <div class="v-scale-label">Peak Crowds</div>
+        <div class="v-scale-desc">Long waits everywhere. Pick another day if you can.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="v-difference">
+    <div class="v-diff-label">A different lens</div>
+    <div class="v-diff-text">
+      Crowd calendars rate days on a scale.<br>
+      <strong>WTI tells you what those crowds feel like</strong> — in actual minutes of waiting.
+    </div>
+  </div>
+
+  <div class="v-footer">
+    <div class="v-cta">See All 12 Parks Free</div>
+    <div class="v-footer-url">hazeydata.ai</div>
+    <div class="v-footer-handle">@DisneyStatsWhiz</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SQUARE VERSION (1080 x 1080) — IG Feed / Twitter -->
+<!-- ═══════════════════════════════════════ -->
+<div class="infographic-square">
+  <div class="sq-header">
+    <div class="sq-title-block">
+      <div class="sq-eyebrow">Theme Park Crowd Report</div>
+      <div class="sq-title">What is WTI?</div>
+    </div>
+    <div class="sq-logo-text">hazeydata.ai<br>@DisneyStatsWhiz</div>
+  </div>
+
+  <div class="sq-analogy">
+    WTI is like <em>temperature for a theme park</em> — one number that tells you how busy the park is, in minutes you can actually feel.
+  </div>
+
+  <div class="sq-gradient-bar"></div>
+  <div class="sq-gradient-labels">
+    <span>Short waits</span>
+    <span>Long waits</span>
+  </div>
+
+  <div class="sq-scale">
+    <div class="sq-scale-item">
+      <div class="sq-scale-dot" style="background: rgb(10, 47, 143);"></div>
+      <div class="sq-scale-range">15–18</div>
+      <div class="sq-scale-label">Perfect</div>
+      <div class="sq-scale-desc">Walk on most rides</div>
+    </div>
+    <div class="sq-scale-item">
+      <div class="sq-scale-dot" style="background: rgb(60, 120, 210);"></div>
+      <div class="sq-scale-range">19–23</div>
+      <div class="sq-scale-label">Good</div>
+      <div class="sq-scale-desc">Short lines, flexible</div>
+    </div>
+    <div class="sq-scale-item">
+      <div class="sq-scale-dot" style="background: rgb(210, 200, 220);"></div>
+      <div class="sq-scale-range">24–28</div>
+      <div class="sq-scale-label">Moderate</div>
+      <div class="sq-scale-desc">Plan headliners early</div>
+    </div>
+    <div class="sq-scale-item">
+      <div class="sq-scale-dot" style="background: rgb(245, 140, 175);"></div>
+      <div class="sq-scale-range">29–33</div>
+      <div class="sq-scale-label">Busy</div>
+      <div class="sq-scale-desc">Rope drop essential</div>
+    </div>
+    <div class="sq-scale-item">
+      <div class="sq-scale-dot" style="background: rgb(166, 0, 56);"></div>
+      <div class="sq-scale-range">34+</div>
+      <div class="sq-scale-label">Peak</div>
+      <div class="sq-scale-desc">Pick another day</div>
+    </div>
+  </div>
+
+  <div class="sq-heatmap-section">
+    <div class="sq-heatmap-title">Example: <span>What a month looks like</span></div>
+    <div class="sq-heatmap-day-labels">
+      <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+    </div>
+    <div class="sq-heatmap-grid">
+      <!-- Week 1 - moderate start -->
+      <div class="sq-heatmap-cell" style="background:rgb(60, 120, 210);">21</div>
+      <div class="sq-heatmap-cell" style="background:rgb(40, 95, 190);">18</div>
+      <div class="sq-heatmap-cell" style="background:rgb(10, 47, 143);">16</div>
+      <div class="sq-heatmap-cell" style="background:rgb(10, 47, 143);">15</div>
+      <div class="sq-heatmap-cell" style="background:rgb(40, 95, 190);">19</div>
+      <div class="sq-heatmap-cell" style="background:rgb(80, 140, 215);">22</div>
+      <div class="sq-heatmap-cell" style="background:rgb(170, 165, 195);">26</div>
+
+      <!-- Week 2 - holiday week ramp up -->
+      <div class="sq-heatmap-cell" style="background:rgb(210, 200, 220);">27</div>
+      <div class="sq-heatmap-cell" style="background:rgb(220, 175, 200);">28</div>
+      <div class="sq-heatmap-cell" style="background:rgb(235, 155, 180);">30</div>
+      <div class="sq-heatmap-cell" style="background:rgb(245, 140, 175);">32</div>
+      <div class="sq-heatmap-cell" style="background:rgb(200, 70, 110);">35</div>
+      <div class="sq-heatmap-cell" style="background:rgb(185, 45, 85);">37</div>
+      <div class="sq-heatmap-cell" style="background:rgb(166, 0, 56);">40</div>
+
+      <!-- Week 3 - peak then decline -->
+      <div class="sq-heatmap-cell" style="background:rgb(185, 45, 85);">38</div>
+      <div class="sq-heatmap-cell" style="background:rgb(200, 70, 110);">34</div>
+      <div class="sq-heatmap-cell" style="background:rgb(245, 140, 175);">31</div>
+      <div class="sq-heatmap-cell" style="background:rgb(235, 155, 180);">29</div>
+      <div class="sq-heatmap-cell" style="background:rgb(210, 200, 220);">27</div>
+      <div class="sq-heatmap-cell" style="background:rgb(170, 165, 195);">25</div>
+      <div class="sq-heatmap-cell" style="background:rgb(170, 165, 195);">26</div>
+
+      <!-- Week 4 - back to normal -->
+      <div class="sq-heatmap-cell" style="background:rgb(100, 150, 220);">23</div>
+      <div class="sq-heatmap-cell" style="background:rgb(60, 120, 210);">20</div>
+      <div class="sq-heatmap-cell" style="background:rgb(40, 95, 190);">18</div>
+      <div class="sq-heatmap-cell" style="background:rgb(10, 47, 143);">16</div>
+      <div class="sq-heatmap-cell" style="background:rgb(40, 95, 190);">19</div>
+      <div class="sq-heatmap-cell" style="background:rgb(60, 120, 210);">21</div>
+      <div class="sq-heatmap-cell" style="background:rgb(100, 150, 220);">24</div>
+    </div>
+  </div>
+
+  <div class="sq-bottom">
+    <div class="sq-stats">
+      <div class="sq-stat">
+        <div class="sq-stat-num">12</div>
+        <div class="sq-stat-label">Parks tracked</div>
+      </div>
+      <div class="sq-stat">
+        <div class="sq-stat-num">15+</div>
+        <div class="sq-stat-label">Years of data</div>
+      </div>
+      <div class="sq-stat">
+        <div class="sq-stat-num">365</div>
+        <div class="sq-stat-label">Day forecasts</div>
+      </div>
+    </div>
+    <div class="sq-cta-block">
+      <div class="sq-cta">Try Free →</div>
+      <div class="sq-url">hazeydata.ai</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
