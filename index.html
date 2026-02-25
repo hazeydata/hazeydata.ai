@@ -4,221 +4,244 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Theme Park Crowd Report | Know Before You Go</title>
-    <meta name="description" content="WTI is like a temperature for your park — low means short waits, high means long lines. Built by a former TouringPlans statistician.">
+    <meta name="description" content="ML-powered wait time predictions for Disney, Universal, and more. Know before you go.">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180.png">
     <meta name="theme-color" content="#0a1628">
+    <link rel="canonical" href="https://hazeydata.ai/">
     
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hazeydata.ai/">
     <meta property="og:title" content="Theme Park Crowd Report | Know Before You Go">
-    <meta property="og:description" content="WTI is like a temperature for your park — low means short waits, high means long lines.">
+    <meta property="og:description" content="ML-powered wait time predictions for every Disney & Universal park.">
     <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@disneystatswhiz">
     <meta name="twitter:title" content="Theme Park Crowd Report | Know Before You Go">
-    <meta name="twitter:description" content="WTI is like a temperature for your park — low means short waits, high means long lines.">
+    <meta name="twitter:description" content="ML-powered wait time predictions for every Disney & Universal park.">
     <meta name="twitter:image" content="https://hazeydata.ai/assets/banner.jpg">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20260227">
 </head>
 <body>
-    <!-- Nav -->
-    <nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 2rem; background: rgba(10, 22, 40, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06);">
-        <div style="display: flex; align-items: center; gap: 0.6rem;">
-            <img src="assets/icon.jpg" alt="" style="width: 32px; height: 32px; border-radius: 8px;">
-            <span style="font-family: Inter, sans-serif; font-weight: 700; font-size: 1rem; color: #fff;">Theme Park Crowd Report</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 1.5rem;">
-            <a href="blog/" style="color: #b5bac1; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#b5bac1'">Blog</a>
-            <a href="https://discord.gg/Bz89uXrD" target="_blank" style="display: inline-flex; align-items: center; gap: 0.4rem; background: linear-gradient(135deg, #eb427b, #a60038); color: #fff; padding: 0.5rem 1.2rem; border-radius: 8px; text-decoration: none; font-family: Inter, sans-serif; font-size: 0.85rem; font-weight: 600; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)';this.style.boxShadow='0 4px 20px rgba(235,66,123,0.4)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='none'">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.030.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.030z"/></svg>
-                Join Discord
-            </a>
-        </div>
-    </nav>
-
     <!-- Hero -->
-    <section class="hero" style="padding-top: 80px;">
+    <section class="hero">
         <div class="hero-bg"></div>
+        <nav class="nav">
+            <div class="nav-logo">
+                <img src="assets/icon.jpg" alt="Theme Park Crowd Report" class="nav-icon">
+                <span class="nav-title">Crowd Report</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#parks">Parks</a>
+                <a href="/blog/">Blog</a>
+                <a href="https://discord.gg/Bz89uXrD" class="btn btn-sm" target="_blank">Join Discord</a>
+            </div>
+        </nav>
         <div class="hero-content">
             <h1>Know Before You Go</h1>
-            <p class="hero-sub">Introducing the Wait Time Index (WTI) — like a temperature for a theme park, the WTI is an all-in-one metric to help you choose the best day to visit.</p>
-            <p class="hero-credit">Built by a former TouringPlans statistician</p>
-            <div style="margin-top: 1.5rem;">
-                <a href="https://discord.gg/Bz89uXrD" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #eb427b, #a60038); color: #fff; padding: 0.75rem 2rem; border-radius: 10px; text-decoration: none; font-family: Inter, sans-serif; font-size: 1rem; font-weight: 600; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)';this.style.boxShadow='0 6px 24px rgba(235,66,123,0.4)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='none'">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-                    Join Free — See All 12 Parks
+            <p class="hero-sub">The only crowd predictor that tells you what wait times <em>will actually be</em> — not just what the parks post. Powered by ML models trained on millions of historical observations.</p>
+            <div class="hero-cta">
+                <a href="https://discord.gg/Bz89uXrD" class="btn btn-primary" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+                    Join the Discord
                 </a>
-                <p style="margin-top: 0.75rem; color: #80848e; font-size: 0.85rem;">Everything free during alpha</p>
+                <a href="#features" class="btn btn-outline">Learn More</a>
             </div>
-        </div>
-        <div class="scroll-hint">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <p class="hero-note">🎉 Everything free during alpha • 12 parks and counting</p>
         </div>
     </section>
 
-    <!-- MK Chart -->
-    <section class="chart-section">
-        <div class="chart-container">
-            <h2>This Week at Magic Kingdom</h2>
-            <div class="chart-wrapper" style="display: flex; justify-content: center;">
-                <img src="assets/mk-7day.png" alt="Magic Kingdom 7-Day Wait Time Forecast" style="max-width: 580px; width: 100%; border-radius: 12px;">
+    <!-- Park Ticker -->
+    <div class="park-ticker-wrap">
+        <div class="park-ticker">
+            <span>🏰 Magic Kingdom</span>
+            <span>🌐 EPCOT</span>
+            <span>🎬 Hollywood Studios</span>
+            <span>🦁 Animal Kingdom</span>
+            <span>🎠 Disneyland</span>
+            <span>🎢 California Adventure</span>
+            <span>🦈 Universal Studios Florida</span>
+            <span>🏝️ Islands of Adventure</span>
+            <span>🌟 Epic Universe</span>
+            <span>🎬 Universal Hollywood</span>
+            <span>🗼 Tokyo Disneyland</span>
+            <span>⛩️ Tokyo DisneySea</span>
+            <!-- duplicate set for seamless loop -->
+            <span>🏰 Magic Kingdom</span>
+            <span>🌐 EPCOT</span>
+            <span>🎬 Hollywood Studios</span>
+            <span>🦁 Animal Kingdom</span>
+            <span>🎠 Disneyland</span>
+            <span>🎢 California Adventure</span>
+            <span>🦈 Universal Studios Florida</span>
+            <span>🏝️ Islands of Adventure</span>
+            <span>🌟 Epic Universe</span>
+            <span>🎬 Universal Hollywood</span>
+            <span>🗼 Tokyo Disneyland</span>
+            <span>⛩️ Tokyo DisneySea</span>
+        </div>
+    </div>
+
+    <!-- Bot Preview -->
+    <section class="bot-preview">
+        <h2>See It In Action</h2>
+        <p class="section-sub">Real Discord commands. Real predictions. Instant answers.</p>
+        <div class="preview-grid">
+            <div class="preview-card">
+                <div class="preview-label">/today</div>
+                <img src="assets/screenshot-today.png" alt="All parks overview showing WTI crowd levels" loading="lazy">
+                <p>All parks at a glance — one command, every morning.</p>
             </div>
-            <p class="chart-note">Updated daily with fresh ML predictions</p>
+            <div class="preview-card">
+                <div class="preview-label">/now</div>
+                <img src="assets/screenshot-now.png" alt="Live wait times for Magic Kingdom" loading="lazy">
+                <p>Live estimated actual wait times — not what Disney posts.</p>
+            </div>
+            <div class="preview-card">
+                <div class="preview-label">/crowd</div>
+                <img src="assets/screenshot-crowd.png" alt="Crowd forecast for a specific park" loading="lazy">
+                <p>Detailed forecast for any park, any date.</p>
+            </div>
         </div>
     </section>
 
-    <!-- Tease & CTA -->
-    <section class="features-cta">
-        <div class="features-content">
-            <h2>Want more?</h2>
-            <div class="tease-list">
-                <div class="tease-item">
-                    <span class="tease-icon">📊</span>
-                    <span>All 12 parks — Disney, Universal, Tokyo Disney</span>
-                </div>
-                <div class="tease-item">
-                    <span class="tease-icon">🗓️</span>
-                    <span>90-day and full-year forecasts</span>
-                </div>
-                <div class="tease-item">
-                    <span class="tease-icon">🎢</span>
-                    <span>Ride-by-ride wait time predictions</span>
-                </div>
-                <div class="tease-item">
-                    <span class="tease-icon">🤖</span>
-                    <span>Discord bot — instant answers with /today, /crowd, /best-day</span>
-                </div>
+    <!-- Features -->
+    <section id="features" class="features">
+        <h2>What You Get</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Daily Crowd Forecasts</h3>
+                <p>Every park, every day. Our Wait Time Index (WTI) gives you one number that captures the whole park's crowd level.</p>
             </div>
-            <a href="https://discord.gg/Bz89uXrD" class="btn btn-primary btn-lg" target="_blank">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
-                </svg>
-                Join Free on Discord
-            </a>
-            <p class="alpha-note">Everything free during alpha</p>
+            <div class="feature-card">
+                <div class="feature-icon">🎢</div>
+                <h3>Ride-by-Ride Predictions</h3>
+                <p>See predicted wait times for individual attractions. Know which headliners to hit first and which rides will be walk-ons.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⭐</div>
+                <h3>Best Day Finder</h3>
+                <p>Pick a park and a timeframe — we'll tell you the lowest-crowd day to visit. Up to 30 days out (premium: 1 year).</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>Discord Bot</h3>
+                <p>Slash commands that work instantly. <code>/today</code> for all parks, <code>/crowd</code> for details, <code>/best-day</code> to plan ahead.</p>
+            </div>
         </div>
+    </section>
+
+    <!-- Parks -->
+    <section id="parks" class="parks">
+        <h2>12 Parks. 3 Countries.</h2>
+        <p class="parks-sub">With more coming soon.</p>
+        <div class="park-grid">
+            <div class="park-group">
+                <h4>🏰 Walt Disney World</h4>
+                <ul>
+                    <li>Magic Kingdom</li>
+                    <li>EPCOT</li>
+                    <li>Hollywood Studios</li>
+                    <li>Animal Kingdom</li>
+                </ul>
+            </div>
+            <div class="park-group">
+                <h4>🎠 Disneyland Resort</h4>
+                <ul>
+                    <li>Disneyland</li>
+                    <li>California Adventure</li>
+                </ul>
+            </div>
+            <div class="park-group">
+                <h4>🦈 Universal Orlando</h4>
+                <ul>
+                    <li>Universal Studios Florida</li>
+                    <li>Islands of Adventure</li>
+                    <li>Epic Universe</li>
+                </ul>
+            </div>
+            <div class="park-group">
+                <h4>🎬 Universal Hollywood</h4>
+                <ul>
+                    <li>Universal Studios Hollywood</li>
+                </ul>
+            </div>
+            <div class="park-group">
+                <h4>🗼 Tokyo Disney Resort</h4>
+                <ul>
+                    <li>Tokyo Disneyland</li>
+                    <li>Tokyo DisneySea</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h3>Years of Data</h3>
+                <p>We ingest millions of historical wait time observations from every park, every day.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h3>Machine Learning</h3>
+                <p>XGBoost models trained per-attraction learn seasonal patterns, day-of-week effects, and crowd dynamics.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h3>Daily Forecasts</h3>
+                <p>Fresh predictions every morning. Updated with yesterday's actuals. Delivered to your Discord.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about">
+        <div class="about-content">
+            <h2>Built by a Theme Park Data Nerd</h2>
+            <p>I'm <strong>Fred Hazelton</strong> — an independent data scientist and former analyst at <strong>TouringPlans</strong>, where I spent years building theme park wait time predictions. Now I'm building the next generation of crowd forecasting tools on my own.</p>
+            <p>Theme Park Crowd Report is in <strong>early alpha</strong>. Join the Discord to get first access, give feedback, and help shape what we build next.</p>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <h2>Ready to plan smarter?</h2>
+        <p>Join the Discord for free alpha access.</p>
+        <a href="https://discord.gg/Bz89uXrD" class="btn btn-primary btn-lg" target="_blank">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+            Join the Discord
+        </a>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer>
         <div class="footer-content">
-            <p class="footer-copy">© 2026 hazeydata.ai</p>
+            <div class="footer-brand">
+                <img src="assets/icon.jpg" alt="" class="footer-icon">
+                <span>Theme Park Crowd Report</span>
+            </div>
             <div class="footer-links">
-                <a href="blog/">Blog</a>
+                <a href="/blog/">Blog</a>
+                <a href="/bio.html">About</a>
                 <a href="https://discord.gg/Bz89uXrD" target="_blank">Discord</a>
-                <a href="https://twitter.com/DisneyStatsWhiz" target="_blank">Twitter</a>
+                <a href="https://twitter.com/disneystatswhiz" target="_blank">Twitter</a>
                 <a href="mailto:fred@hazeydata.ai">Contact</a>
             </div>
+            <p class="footer-copy">© 2026 hazeydata.ai</p>
         </div>
     </footer>
-
-    <script>void 0;</script>
-</body>
-</html>
-<!-- OLD JS REMOVED:
-        function getWTIColor(wti) {
-            // Define color stops
-            const colors = [
-                { wti: 15, color: [10, 47, 143] },      // Deep blue
-                { wti: 20, color: [60, 120, 210] },     // Blue
-                { wti: 25, color: [210, 200, 220] },    // Lavender
-                { wti: 30, color: [245, 140, 175] },    // Pink
-                { wti: 35, color: [166, 0, 56] }        // Deep red
-            ];
-
-            // Clamp WTI to our range
-            const clampedWTI = Math.min(Math.max(wti, 10), 35);
-
-            // Find the appropriate color range
-            for (let i = 0; i < colors.length - 1; i++) {
-                if (clampedWTI <= colors[i + 1].wti) {
-                    const lower = colors[i];
-                    const upper = colors[i + 1];
-                    
-                    // Interpolate between the two colors
-                    const t = (clampedWTI - lower.wti) / (upper.wti - lower.wti);
-                    const r = Math.round(lower.color[0] + (upper.color[0] - lower.color[0]) * t);
-                    const g = Math.round(lower.color[1] + (upper.color[1] - lower.color[1]) * t);
-                    const b = Math.round(lower.color[2] + (upper.color[2] - lower.color[2]) * t);
-                    
-                    return `rgb(${r}, ${g}, ${b})`;
-                }
-            }
-
-            // Default to deep red if above our highest range
-            return `rgb(166, 0, 56)`;
-        }
-
-        // Get day name from date string
-        function getDayName(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', { weekday: 'short' });
-        }
-
-        // Render WTI Chart
-        function renderChart(days) {
-            const chartContainer = document.getElementById('wti-chart');
-            
-            if (!days || days.length === 0) {
-                chartContainer.innerHTML = '<div class="error-message">Unable to load chart data</div>';
-                return;
-            }
-
-            // Clear loading message
-            chartContainer.innerHTML = '';
-            
-            // Create chart bars
-            const maxWTI = Math.max(...days.map(d => d.wti));
-            const minHeight = 40; // Minimum bar height in px
-            const maxHeight = 180; // Maximum bar height in px
-
-            days.forEach(day => {
-                const barContainer = document.createElement('div');
-                barContainer.className = 'chart-bar-container';
-
-                // Calculate bar height (proportional to WTI)
-                const heightPercent = ((day.wti - Math.min(...days.map(d => d.wti))) / 
-                                     (maxWTI - Math.min(...days.map(d => d.wti)))) * 0.7 + 0.3;
-                const barHeight = minHeight + (maxHeight - minHeight) * heightPercent;
-
-                const color = getWTIColor(day.wti);
-
-                barContainer.innerHTML = `
-                    <div class="chart-bar" style="height: ${barHeight}px; background-color: ${color}">
-                        <span class="wti-value">${day.wti.toFixed(1)}</span>
-                    </div>
-                    <div class="day-label">${getDayName(day.date)}</div>
-                `;
-
-                chartContainer.appendChild(barContainer);
-            });
-        }
-
-        // Load MK data and render chart
-        fetch('/year-view-data/MK.json')
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.days && data.days.length > 0) {
-                    // Get first 7 days
-                    const weekData = data.days.slice(0, 7);
-                    renderChart(weekData);
-                } else {
-                    document.getElementById('wti-chart').innerHTML = 
-                        '<div class="error-message">No data available</div>';
-                }
-            })
-            .catch(error => {
-                console.error('Error loading chart data:', error);
-                document.getElementById('wti-chart').innerHTML = 
-                    '<div class="error-message">Unable to load chart data</div>';
-            });
-    </script>
 </body>
 </html>
