@@ -148,15 +148,24 @@
             border-top: 1px solid var(--border);
         }
         .blog-cta-box {
-            background: linear-gradient(135deg, rgba(10, 47, 143, 0.2), rgba(235, 66, 123, 0.1));
+            background: linear-gradient(135deg, rgba(10, 47, 143, 0.3), rgba(235, 66, 123, 0.15));
             border: 1px solid rgba(60, 120, 210, 0.3);
             border-radius: 10px;
             padding: 1.5rem;
             margin: 2rem 0;
             text-align: center;
+            color: #f2f3f5;
         }
         .blog-cta-box p {
             margin-bottom: 0.75rem;
+            color: #e0e2e6;
+        }
+        .blog-cta-box strong {
+            color: #ffffff;
+        }
+        .blog-cta-box .btn {
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
         .blog-back {
             display: inline-block;
@@ -234,11 +243,11 @@
         <nav class="nav">
             <div class="nav-logo">
                 <a href="/"><img src="../assets/icon.jpg" alt="TPCR" class="nav-icon"></a>
-                <span class="nav-title">Crowd Report</span>
+                <span class="nav-title">Theme Park Crowd Report</span>
             </div>
             <div class="nav-links">
                 <a href="/">Home</a>
-                <a href="https://discord.gg/Bz89uXrD" class="btn btn-sm" target="_blank">Join Discord</a>
+                <a href="https://discord.gg/wGcKWqdt" class="btn btn-sm" target="_blank">Join Discord</a>
             </div>
         </nav>
         <div class="hero-content">
@@ -252,7 +261,7 @@
 
         <article class="blog-post">
             <div class="blog-post-meta">
-                <span>February 27, 2026</span>
+                <span>March 3, 2026</span>
                 <span class="tag">Explainer</span>
                 <span class="tag">WTI</span>
             </div>
@@ -274,7 +283,7 @@
 
             <ol>
                 <li><strong>Collect wait times</strong> — Our models predict (or observe) wait times for every major attraction in the park throughout the day.</li>
-                <li><strong>Weight and aggregate</strong> — Not all rides are created equal. Headliners like Space Mountain or Hagrid's carry more weight than kiddie spinners. The aggregation accounts for this.</li>
+                <li><strong>Average across all operating attractions</strong> — WTI takes the average wait time across every operating attraction in the park. No special weighting, no choosing which rides "count." Every ride contributes equally, which keeps the metric simple and consistent over time.</li>
                 <li><strong>Calibrate per park</strong> — Here's the crucial part. Each park's WTI is calibrated against <em>that park's own history</em>, not some universal scale. More on why this matters below.</li>
             </ol>
 
@@ -326,8 +335,8 @@
             <p>Or explore the year-view heatmaps on <a href="https://hazeydata.ai">hazeydata.ai</a> — they visualize 365 days of WTI data in one glance, making it easy to spot the best (and worst) times to visit.</p>
 
             <div class="blog-cta-box">
-                <p><strong>Ready to plan with data?</strong> Join the Discord to get WTI forecasts for all 12 parks, every day — completely free during alpha.</p>
-                <a href="https://discord.gg/Bz89uXrD" class="btn btn-primary" target="_blank" style="margin-top: 0.5rem;">Join the Discord</a>
+                <p><strong>Ready to plan with data?</strong> Join the Discord to get WTI forecasts for all 12 parks, every day — completely free during beta.</p>
+                <a href="https://discord.gg/wGcKWqdt" class="btn btn-primary" target="_blank" style="margin-top: 0.5rem;">Join the Discord</a>
             </div>
 
             <p class="author-sig">Written by Fred Hazelton — independent theme park data analyst, former TouringPlans statistician, and the person behind <a href="https://hazeydata.ai">hazeydata.ai</a>.</p>
@@ -343,7 +352,7 @@
             <div class="footer-links">
                 <a href="/">Home</a>
                 <a href="/bio.html">About</a>
-                <a href="https://discord.gg/Bz89uXrD" target="_blank">Discord</a>
+                <a href="https://discord.gg/wGcKWqdt" target="_blank">Discord</a>
                 <a href="https://twitter.com/disneystatswhiz" target="_blank">Twitter</a>
                 <a href="mailto:fred@hazeydata.ai">Contact</a>
             </div>
