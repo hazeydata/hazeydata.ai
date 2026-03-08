@@ -85,6 +85,40 @@ body {
     color: var(--text-primary);
 }
 
+/* Nav title as link */
+a.nav-title {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+/* Hamburger Menu */
+.nav-hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 20;
+}
+.nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text-secondary);
+    margin: 5px 0;
+    transition: all 0.3s;
+    border-radius: 2px;
+}
+.nav-hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+.nav-hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+.nav-hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
 /* Buttons */
 .btn {
     display: inline-flex;
@@ -552,9 +586,39 @@ footer {
     .nav {
         padding: 1rem;
     }
-    
-    .nav-links a:not(.btn) {
+
+    .nav-hamburger {
+        display: block;
+    }
+
+    .nav-links {
         display: none;
+        position: absolute;
+        top: 100%;
+        right: 1rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        min-width: 180px;
+        flex-direction: column;
+        gap: 0.25rem;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-links a {
+        display: block !important;
+        padding: 0.5rem 0.25rem;
+        font-size: 0.95rem;
+    }
+
+    .nav-links .btn.btn-sm {
+        text-align: center;
+        margin-top: 0.25rem;
     }
 
     .hero {

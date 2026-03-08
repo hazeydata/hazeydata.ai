@@ -27,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260302">
+    <link rel="stylesheet" href="styles.css?v=20260308">
 <!-- deploy 1772485086 -->
 </head>
 <body>
@@ -39,6 +39,9 @@
                 <img src="assets/icon.jpg" alt="Theme Park Crowd Report" class="nav-icon">
                 <span class="nav-title">Theme Park Crowd Report</span>
             </div>
+            <button class="nav-hamburger" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
             <div class="nav-links">
                 <a href="#features">Features</a>
                 <a href="#parks">Parks</a>

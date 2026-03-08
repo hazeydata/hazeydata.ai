@@ -27,215 +27,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css?v=20260227">
-    <style>
-        .blog-hero {
-            padding: 6rem 2rem 3rem;
-            text-align: center;
-            min-height: auto;
-        }
-        .blog-hero h1 {
-            font-size: clamp(2rem, 5vw, 2.5rem);
-            margin-bottom: 0.5rem;
-        }
-        .blog-hero p {
-            color: var(--text-secondary);
-            max-width: 560px;
-            margin: 0 auto;
-        }
-        .blog-container {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 0 2rem 4rem;
-        }
-        .blog-post {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-        }
-        .blog-post-meta {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-        .blog-post-meta .tag {
-            background: rgba(60, 120, 210, 0.15);
-            color: var(--mid-blue);
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .blog-post h2 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 1.25rem;
-            line-height: 1.3;
-        }
-        .blog-post h2 a {
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-        .blog-post h2 a:hover {
-            background: linear-gradient(135deg, var(--text-primary), var(--light-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .blog-post h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin: 2rem 0 0.75rem;
-            color: var(--text-primary);
-        }
-        .blog-post p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            line-height: 1.8;
-            margin-bottom: 1rem;
-        }
-        .blog-post strong {
-            color: var(--text-primary);
-        }
-        .blog-post em {
-            color: var(--lavender);
-        }
-        .blog-post a {
-            color: var(--mid-blue);
-            text-decoration: none;
-        }
-        .blog-post a:hover {
-            text-decoration: underline;
-        }
-        .blog-post ul, .blog-post ol {
-            color: var(--text-secondary);
-            margin: 0.75rem 0 1rem 1.5rem;
-            line-height: 1.8;
-        }
-        .blog-post li {
-            margin-bottom: 0.3rem;
-        }
-        .blog-post code {
-            background: rgba(60, 120, 210, 0.15);
-            color: var(--mid-blue);
-            padding: 0.15rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
-        }
-        .blog-post blockquote {
-            border-left: 3px solid var(--hot-pink);
-            padding-left: 1.25rem;
-            margin: 1.5rem 0;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-        .blog-post hr {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 2rem 0;
-        }
-        .blog-post .author-sig {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-style: italic;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-        .blog-cta-box {
-            background: linear-gradient(135deg, rgba(10, 47, 143, 0.3), rgba(235, 66, 123, 0.15));
-            border: 1px solid rgba(60, 120, 210, 0.3);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            text-align: center;
-            color: #f2f3f5;
-        }
-        .blog-cta-box p {
-            margin-bottom: 0.75rem;
-            color: #e0e2e6;
-        }
-        .blog-cta-box strong {
-            color: #ffffff;
-        }
-        .blog-cta-box .btn {
-            color: #ffffff !important;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-        }
-        .blog-back {
-            display: inline-block;
-            margin-bottom: 2rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-        .blog-back:hover {
-            color: var(--text-secondary);
-        }
-        .blog-footer {
-            border-top: 1px solid var(--border);
-            padding: 3rem 2rem;
-        }
-        .blog-footer .footer-content {
-            max-width: 720px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-        }
-        .blog-footer .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        .blog-footer .footer-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-        }
-        .blog-footer .footer-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-        .blog-footer .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.2s;
-        }
-        .blog-footer .footer-links a:hover {
-            color: var(--text-secondary);
-        }
-        .blog-footer .footer-copy {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            width: 100%;
-            text-align: center;
-            margin-top: 1rem;
-        }
-        @media (max-width: 768px) {
-            .blog-post {
-                padding: 1.5rem;
-            }
-            .blog-post h2 {
-                font-size: 1.3rem;
-            }
-            .blog-footer .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../styles.css?v=20260308">
+    <link rel="stylesheet" href="blog.css?v=20260308">
 </head>
 <body>
     <section class="hero blog-hero">
@@ -243,10 +36,14 @@
         <nav class="nav">
             <div class="nav-logo">
                 <a href="/"><img src="../assets/icon.jpg" alt="TPCR" class="nav-icon"></a>
-                <span class="nav-title">Theme Park Crowd Report</span>
+                <a href="/" class="nav-title">Theme Park Crowd Report</a>
             </div>
+            <button class="nav-hamburger" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
             <div class="nav-links">
                 <a href="/">Home</a>
+                <a href="/blog/">Blog</a>
                 <a href="https://discord.gg/wGcKWqdt" class="btn btn-sm" target="_blank">Join Discord</a>
             </div>
         </nav>
@@ -257,7 +54,7 @@
     </section>
 
     <div class="blog-container">
-        <a href="/blog/" class="blog-back">← Back to all posts</a>
+        <a href="/blog/" class="blog-back">← All posts</a>
 
         <article class="blog-post">
             <div class="blog-post-meta">
@@ -341,6 +138,15 @@
 
             <p class="author-sig">Written by Fred Hazelton — independent theme park data analyst, former TouringPlans statistician, and the person behind <a href="https://hazeydata.ai">hazeydata.ai</a>.</p>
         </article>
+
+        <!-- Prev / Next -->
+        <div class="blog-nav-arrows">
+            <a href="/blog/new-metric.html" class="blog-nav-prev">
+                <span class="blog-nav-label">Previous</span>
+                <span class="blog-nav-title">← A New Metric to Track Theme Park Crowds</span>
+            </a>
+            <div></div>
+        </div>
     </div>
 
     <footer class="blog-footer">
@@ -351,6 +157,7 @@
             </div>
             <div class="footer-links">
                 <a href="/">Home</a>
+                <a href="/blog/">Blog</a>
                 <a href="/bio.html">About</a>
                 <a href="https://discord.gg/wGcKWqdt" target="_blank">Discord</a>
                 <a href="https://twitter.com/disneystatswhiz" target="_blank">Twitter</a>
