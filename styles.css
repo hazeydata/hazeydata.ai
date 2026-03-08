@@ -155,13 +155,16 @@ a.nav-title {
 }
 
 .btn-outline {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: var(--text-secondary);
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .btn-outline:hover {
-    border-color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
     color: var(--text-primary);
 }
 
