@@ -587,6 +587,10 @@ footer {
         padding: 1rem;
     }
 
+    .nav-title {
+        display: none;
+    }
+
     .nav-hamburger {
         display: block;
     }
