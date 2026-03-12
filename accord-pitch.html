@@ -47,6 +47,11 @@
   [data-lang="fr"] { display: none; }
   body.lang-fr [data-lang="en"] { display: none; }
   body.lang-fr [data-lang="fr"] { display: revert; }
+  /* Preserve flex/grid layout for container elements */
+  body.lang-fr .flow[data-lang="fr"] { display: flex; }
+  body.lang-fr .two-col[data-lang="fr"] { display: grid; grid-template-columns: 1fr 1fr; }
+  body.lang-fr .three-col[data-lang="fr"] { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  body.lang-fr .stat-row[data-lang="fr"] { display: flex; }
 
   .lang-toggle {
     display: flex;
