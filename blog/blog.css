@@ -1,3 +1,62 @@
+/* Draft banner */
+.draft-banner {
+    background: linear-gradient(135deg, #1a3a6a, #2a1a3a);
+    border: 2px dashed rgba(235, 66, 123, 0.4);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.draft-banner .draft-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.draft-banner .draft-badge {
+    background: rgba(235, 66, 123, 0.2);
+    color: #FFB1C9;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+}
+.draft-banner .draft-text {
+    color: #A0B0C8;
+    font-size: 0.88rem;
+}
+.draft-banner .btn-approve {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #1a7a3a;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.draft-banner .btn-approve:hover {
+    background: #22963f;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(26, 122, 58, 0.4);
+}
+@media (max-width: 600px) {
+    .draft-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
 /* Blog shared styles */
 
 .blog-hero {

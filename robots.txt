@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /blog/drafts/
 
 Sitemap: https://hazeydata.ai/sitemap.xml
