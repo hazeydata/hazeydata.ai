@@ -443,6 +443,151 @@
     opacity: 0.15;
     letter-spacing: 20px;
   }
+
+  /* ===== MOBILE RESPONSIVE ===== */
+
+  @media (max-width: 768px) {
+    .slide {
+      padding: 30px 24px;
+      overflow-y: auto;
+      justify-content: flex-start;
+      padding-top: 50px;
+      padding-bottom: 80px;
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; margin-bottom: 20px; }
+    h3 { font-size: 1.1rem; }
+    p, li { font-size: 1rem; }
+    .subtitle { font-size: 1.1rem; }
+
+    .title-icon { font-size: 3rem; }
+
+    /* Pain cards: stack to 1 column */
+    .pain-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .pain-card { padding: 16px; }
+    .pain-card .icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .pain-card h3 { font-size: 0.95rem; }
+    .pain-card p { font-size: 0.85rem; }
+
+    /* Crew cards: 2 columns on mobile */
+    .crew-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .crew-card { padding: 16px; }
+    .crew-card .emoji { font-size: 2rem; margin-bottom: 8px; }
+    .crew-card .name { font-size: 0.95rem; }
+    .crew-card .role { font-size: 0.75rem; }
+    .crew-card .desc { font-size: 0.7rem; }
+
+    /* Stats row: stack */
+    .stats-row {
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .stat-big { font-size: 2.8rem; }
+    .stat-label { font-size: 0.85rem; }
+
+    .quote { font-size: 1rem; padding-left: 14px; }
+
+    /* Features list */
+    .feature-list li {
+      font-size: 0.95rem;
+      gap: 10px;
+      padding: 12px 0;
+    }
+
+    .feature-list .icon { font-size: 1.2rem; }
+
+    /* Money comparison: stack vertically */
+    .compare-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .compare-box { padding: 24px; }
+    .compare-box .price { font-size: 2.2rem; }
+
+    .vs {
+      font-size: 1.4rem;
+      padding: 4px 0;
+    }
+
+    /* Two-column: stack */
+    .two-col {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    /* Timeline */
+    .timeline { padding-left: 30px; }
+    .timeline-item { padding: 8px 0 8px 20px; }
+    .timeline-item .time { font-size: 0.75rem; }
+    .timeline-item .event { font-size: 0.9rem; }
+    .timeline-item .agent { font-size: 0.75rem; }
+    .timeline-item::before { left: -26px; width: 10px; height: 10px; }
+    .timeline::before { left: 10px; }
+
+    /* CTA */
+    .cta-box {
+      padding: 30px 24px;
+    }
+
+    .cta-box h2 { font-size: 1.4rem; }
+    .cta-box p { font-size: 1rem; }
+
+    /* Nav buttons */
+    .nav {
+      bottom: 16px;
+      right: 16px;
+      gap: 8px;
+    }
+
+    .nav button {
+      padding: 10px 18px;
+      font-size: 0.9rem;
+    }
+
+    .slide-counter {
+      bottom: 20px;
+      left: 16px;
+      font-size: 0.75rem;
+    }
+
+    .tagline-bar {
+      top: 12px;
+      right: 16px;
+      font-size: 0.65rem;
+    }
+
+    .deco-rocks { display: none; }
+  }
+
+  /* Extra small phones */
+  @media (max-width: 380px) {
+    .slide { padding: 20px 16px; padding-top: 40px; padding-bottom: 70px; }
+    h1 { font-size: 1.7rem; }
+    h2 { font-size: 1.3rem; }
+
+    .crew-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .pain-grid {
+      gap: 8px;
+    }
+
+    .compare-box .price { font-size: 1.8rem; }
+  }
 </style>
 </head>
 <body>
