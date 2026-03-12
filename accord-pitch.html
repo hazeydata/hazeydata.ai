@@ -43,6 +43,33 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* ── Language toggle ── */
+  [data-lang="fr"] { display: none; }
+  body.lang-fr [data-lang="en"] { display: none; }
+  body.lang-fr [data-lang="fr"] { display: revert; }
+
+  .lang-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lang-btn {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    border: none;
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active {
+    background: var(--gc-red);
+    color: white;
+  }
+
   .deck {
     position: relative;
     width: 100vw;
@@ -632,19 +659,25 @@
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-cover active" data-slide="0">
     <div class="flag-stripe"></div>
-    <div class="confidential">Draft — Confidential</div>
+    <span class="confidential" data-lang="en">Draft — Confidential</span>
+    <span class="confidential" data-lang="fr">Ébauche — Confidentiel</span>
 
     <div class="anim-1 logo-mark">ACCORD<span class="maple">🍁</span></div>
-    <div class="anim-2 logo-tagline">Compliance Validation Engine</div>
-    <div class="anim-2 logo-tagline-fr">Moteur de validation de la conformité</div>
+    <div class="anim-2 logo-tagline" data-lang="en">Compliance Validation Engine</div>
+    <div class="anim-2 logo-tagline" data-lang="fr">Moteur de validation de la conformité</div>
+    <div class="anim-2 logo-tagline-fr" data-lang="en">Moteur de validation de la conformité</div>
+    <div class="anim-2 logo-tagline-fr" data-lang="fr">Compliance Validation Engine</div>
 
     <div class="divider gold center anim-3"></div>
 
-    <p class="subtitle anim-3" style="text-align:center; max-width:640px;">
+    <p class="subtitle anim-3" data-lang="en" style="text-align:center; max-width:640px;">
       Independent pay validation for the Government of Canada's collective agreement landscape
     </p>
+    <p class="subtitle anim-3" data-lang="fr" style="text-align:center; max-width:640px;">
+      Validation indépendante de la paye pour l'ensemble des conventions collectives du gouvernement du Canada
+    </p>
     <p class="anim-4" style="font-size:0.85rem; opacity:0.4; margin-top:40px;">
-      hazeydata.ai &nbsp;|&nbsp; March 2026
+      hazeydata.ai &nbsp;|&nbsp; <span data-lang="en">March 2026</span><span data-lang="fr">Mars 2026</span>
     </p>
   </div>
 
@@ -655,32 +688,44 @@
     <div class="gc-bar"></div>
     <div class="section-num">01</div>
     <div class="content-box">
-      <div class="small-label anim-1">The Landscape</div>
-      <h2 class="anim-1">Federal HR &amp; Pay: Scale and Complexity</h2>
+      <div class="small-label anim-1" data-lang="en">The Landscape</div>
+      <div class="small-label anim-1" data-lang="fr">Le contexte</div>
+      <h2 class="anim-1" data-lang="en">Federal HR &amp; Pay: Scale and Complexity</h2>
+      <h2 class="anim-1" data-lang="fr">RH et paye fédérales : ampleur et complexité</h2>
       <div class="divider anim-2"></div>
 
       <div class="stat-row anim-2">
         <div class="stat">
           <div class="stat-number">431K</div>
-          <div class="stat-label">Current &amp; former employees<br>paid biweekly</div>
+          <div class="stat-label" data-lang="en">Current &amp; former employees<br>paid biweekly</div>
+          <div class="stat-label" data-lang="fr">Employés actuels et anciens<br>payés aux deux semaines</div>
         </div>
         <div class="stat">
-          <div class="stat-number">$40.1B</div>
-          <div class="stat-label">Annual payments<br>(13.4M transactions)</div>
+          <div class="stat-number">40,1 G$</div>
+          <div class="stat-label" data-lang="en">Annual payments<br>(13.4M transactions)</div>
+          <div class="stat-label" data-lang="fr">Paiements annuels<br>(13,4 M de transactions)</div>
         </div>
         <div class="stat">
           <div class="stat-number">~150</div>
-          <div class="stat-label">Collective agreements<br>across 100+ departments</div>
+          <div class="stat-label" data-lang="en">Collective agreements<br>across 100+ departments</div>
+          <div class="stat-label" data-lang="fr">Conventions collectives<br>dans plus de 100 ministères</div>
         </div>
       </div>
 
-      <div class="quote-block anim-3">
+      <div class="quote-block anim-3" data-lang="en">
         "The complexity of the Government of Canada HR and pay environment includes the challenge of applying almost 150 different collective agreements representing employees from over 100 departments and agencies."
         <span class="quote-source">— Government of Canada, HR &amp; Pay Transformation Announcement, June 2025</span>
       </div>
+      <div class="quote-block anim-3" data-lang="fr">
+        « La complexité de l'environnement de la RH et de la paye du gouvernement du Canada comprend le défi d'appliquer près de 150 conventions collectives différentes représentant des employés de plus de 100 ministères et organismes. » [traduction]
+        <span class="quote-source">— Gouvernement du Canada, annonce de la transformation des RH et de la paye, juin 2025</span>
+      </div>
 
-      <p class="anim-4" style="font-size:0.95rem; color: var(--gc-grey-mid); line-height:1.7; max-width:760px;">
+      <p class="anim-4" data-lang="en" style="font-size:0.95rem; color: var(--gc-grey-mid); line-height:1.7; max-width:760px;">
         Following the Phoenix pay crisis, the Government committed to replacing its legacy pay infrastructure with Dayforce — a modern, cloud-based SaaS platform. The transition is underway, with first-wave departments expected to onboard by Winter 2027.
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.95rem; color: var(--gc-grey-mid); line-height:1.7; max-width:760px;">
+        À la suite de la crise de paye Phénix, le gouvernement s'est engagé à remplacer son infrastructure de paye existante par Dayforce — une plateforme SaaS moderne infonuagique. La transition est en cours, et les ministères de la première vague devraient être intégrés d'ici l'hiver 2027.
       </p>
     </div>
   </div>
@@ -692,51 +737,84 @@
     <div class="gc-bar"></div>
     <div class="section-num">02</div>
     <div class="content-box">
-      <div class="small-label anim-1">The Challenge</div>
-      <h2 class="anim-1">Dayforce Is Viable — With Known Gaps</h2>
+      <div class="small-label anim-1" data-lang="en">The Challenge</div>
+      <div class="small-label anim-1" data-lang="fr">Le défi</div>
+      <h2 class="anim-1" data-lang="en">Dayforce Is Viable — With Known Gaps</h2>
+      <h2 class="anim-1" data-lang="fr">Dayforce est viable — avec des lacunes connues</h2>
       <div class="divider anim-2"></div>
 
-      <p class="anim-2" style="font-size:1.05rem; line-height:1.7; color: var(--gc-grey-dark); margin-bottom:28px; max-width:760px;">
+      <p class="anim-2" data-lang="en" style="font-size:1.05rem; line-height:1.7; color: var(--gc-grey-dark); margin-bottom:28px; max-width:760px;">
         The NextGen Final Findings Report confirmed Dayforce meets <strong>85%</strong> of in-scope business requirements. However, the same report identified critical gaps:
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1.05rem; line-height:1.7; color: var(--gc-grey-dark); margin-bottom:28px; max-width:760px;">
+        Le rapport final des constatations de ProchGén a confirmé que Dayforce satisfait à <strong>85 %</strong> des exigences opérationnelles visées. Cependant, le même rapport a relevé des lacunes critiques :
       </p>
 
       <div class="two-col anim-3">
         <div>
           <div class="stat" style="text-align:left; margin-bottom:24px;">
             <div class="stat-number" style="font-size:4rem;">18</div>
-            <div class="stat-label" style="font-size:0.95rem; opacity:1; color: var(--gc-grey-dark);">Complex GC-specific gaps that<br><strong>Dayforce's planned future enhancements will not address</strong></div>
+            <div class="stat-label" data-lang="en" style="font-size:0.95rem; opacity:1; color: var(--gc-grey-dark);">Complex GC-specific gaps that<br><strong>Dayforce's planned future enhancements will not address</strong></div>
+            <div class="stat-label" data-lang="fr" style="font-size:0.95rem; opacity:1; color: var(--gc-grey-dark);">Lacunes complexes propres au GC que<br><strong>les améliorations futures prévues de Dayforce ne combleront pas</strong></div>
           </div>
-          <p style="font-size:0.88rem; line-height:1.65; color: var(--gc-grey-mid);">
+          <p data-lang="en" style="font-size:0.88rem; line-height:1.65; color: var(--gc-grey-mid);">
             Out of 582 business requirements tested, these 18 represent the most complex pay interpretation challenges unique to the federal public service.
+          </p>
+          <p data-lang="fr" style="font-size:0.88rem; line-height:1.65; color: var(--gc-grey-mid);">
+            Sur 582 exigences opérationnelles testées, ces 18 lacunes représentent les défis d'interprétation de la paye les plus complexes, propres à la fonction publique fédérale.
           </p>
         </div>
         <div>
-          <div class="gap-item">
+          <div class="gap-item" data-lang="en">
             <div class="gap-icon">1</div>
             <div class="gap-text">
               <h4>Mass Salary Revision</h4>
               <p>Retroactive recalculation across thousands of employees when new collective agreements are signed</p>
             </div>
           </div>
-          <div class="gap-item">
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon">1</div>
+            <div class="gap-text">
+              <h4>Révision salariale massive</h4>
+              <p>Recalcul rétroactif pour des milliers d'employés lors de la signature de nouvelles conventions collectives</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
             <div class="gap-icon">2</div>
             <div class="gap-text">
               <h4>Establishing Rate of Pay</h4>
               <p>Complex rules for step increases, pay revision, salary protection, and rate determination</p>
             </div>
           </div>
-          <div class="gap-item">
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon">2</div>
+            <div class="gap-text">
+              <h4>Établissement du taux de rémunération</h4>
+              <p>Règles complexes pour les augmentations d'échelon, la révision salariale, la protection salariale et la détermination du taux</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
             <div class="gap-icon">3</div>
             <div class="gap-text">
               <h4>Acting Administration</h4>
               <p>Calculations for acting-in-higher-position pay across multiple collective agreement frameworks</p>
             </div>
           </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon">3</div>
+            <div class="gap-text">
+              <h4>Administration des intérimaires</h4>
+              <p>Calculs de la rémunération d'intérimaire dans le cadre de multiples conventions collectives</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <p class="anim-4" style="font-size:0.78rem; color: var(--gc-grey-mid); margin-top:20px; font-style:italic;">
+      <p class="anim-4" data-lang="en" style="font-size:0.78rem; color: var(--gc-grey-mid); margin-top:20px; font-style:italic;">
         Source: NextGen HR &amp; Pay Final Findings Report (2024) &amp; HCM Feasibility Report (2025), Government of Canada
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.78rem; color: var(--gc-grey-mid); margin-top:20px; font-style:italic;">
+        Source : Rapport final des constatations de ProchGén RH et paye (2024) et rapport de faisabilité GCH (2025), gouvernement du Canada
       </p>
     </div>
   </div>
@@ -747,41 +825,59 @@
   <div class="slide slide-blue" data-slide="3">
     <div class="section-num light">03</div>
     <div class="content-box">
-      <div class="small-label anim-1" style="color: var(--accent-gold-light);">Current Remediation Paths</div>
-      <h2 class="anim-1">The GC's Options for Closing These Gaps</h2>
+      <div class="small-label anim-1" data-lang="en" style="color: var(--accent-gold-light);">Current Remediation Paths</div>
+      <div class="small-label anim-1" data-lang="fr" style="color: var(--accent-gold-light);">Pistes de résolution actuelles</div>
+      <h2 class="anim-1" data-lang="en">The GC's Options for Closing These Gaps</h2>
+      <h2 class="anim-1" data-lang="fr">Les options du GC pour combler ces lacunes</h2>
       <div class="divider gold anim-2"></div>
 
       <div class="three-col anim-3">
         <div class="card-dark">
-          <h3>Policy &amp; Regulatory Amendments</h3>
-          <p>Change the rules to fit the software. Requires amendments to legislation, directives, and Treasury Board policies.</p>
+          <h3 data-lang="en">Policy &amp; Regulatory Amendments</h3>
+          <h3 data-lang="fr">Modifications aux politiques et à la réglementation</h3>
+          <p data-lang="en">Change the rules to fit the software. Requires amendments to legislation, directives, and Treasury Board policies.</p>
+          <p data-lang="fr">Modifier les règles pour s'adapter au logiciel. Nécessite des modifications à la législation, aux directives et aux politiques du Conseil du Trésor.</p>
           <div style="margin-top:16px;">
-            <span class="pill pill-red" style="background:rgba(211,47,47,0.2); color:#ff8a80;">Long timeline</span>
+            <span class="pill pill-red" data-lang="en" style="background:rgba(211,47,47,0.2); color:#ff8a80;">Long timeline</span>
+            <span class="pill pill-red" data-lang="fr" style="background:rgba(211,47,47,0.2); color:#ff8a80;">Échéancier long</span>
           </div>
         </div>
         <div class="card-dark">
-          <h3>Collective Agreement Renegotiation</h3>
-          <p>Negotiate new CA provisions with bargaining agents to simplify pay rules across ~150 agreements.</p>
+          <h3 data-lang="en">Collective Agreement Renegotiation</h3>
+          <h3 data-lang="fr">Renégociation des conventions collectives</h3>
+          <p data-lang="en">Negotiate new CA provisions with bargaining agents to simplify pay rules across ~150 agreements.</p>
+          <p data-lang="fr">Négocier de nouvelles dispositions avec les agents négociateurs pour simplifier les règles de paye dans les quelque 150 conventions.</p>
           <div style="margin-top:16px;">
-            <span class="pill pill-red" style="background:rgba(211,47,47,0.2); color:#ff8a80;">Multi-year cycles</span>
+            <span class="pill pill-red" data-lang="en" style="background:rgba(211,47,47,0.2); color:#ff8a80;">Multi-year cycles</span>
+            <span class="pill pill-red" data-lang="fr" style="background:rgba(211,47,47,0.2); color:#ff8a80;">Cycles pluriannuels</span>
           </div>
         </div>
         <div class="card-dark">
-          <h3>Dayforce Cloud Extensions</h3>
-          <p>Custom code bolted onto the SaaS platform. 3 of 18 gaps in development. Vendor-dependent, maintenance-heavy.</p>
+          <h3 data-lang="en">Dayforce Cloud Extensions</h3>
+          <h3 data-lang="fr">Extensions infonuagiques Dayforce</h3>
+          <p data-lang="en">Custom code bolted onto the SaaS platform. 3 of 18 gaps in development. Vendor-dependent, maintenance-heavy.</p>
+          <p data-lang="fr">Code sur mesure greffé à la plateforme SaaS. 3 des 18 lacunes en cours de développement. Dépendance envers le fournisseur et maintenance lourde.</p>
           <div style="margin-top:16px;">
-            <span class="pill" style="background:rgba(200,169,81,0.2); color:var(--accent-gold-light);">Partial coverage</span>
+            <span class="pill" data-lang="en" style="background:rgba(200,169,81,0.2); color:var(--accent-gold-light);">Partial coverage</span>
+            <span class="pill" data-lang="fr" style="background:rgba(200,169,81,0.2); color:var(--accent-gold-light);">Couverture partielle</span>
           </div>
         </div>
       </div>
 
-      <div class="quote-block anim-4" style="margin-top:32px; border-color: rgba(255,255,255,0.3);">
+      <div class="quote-block anim-4" data-lang="en" style="margin-top:32px; border-color: rgba(255,255,255,0.3);">
         "GC HR and Pay operations rely on technological capabilities to meet these requirements and would not be able to operate without addressing these gaps through either simplification of HR and pay business rules... or cloud extensions in Dayforce to meet the unique needs of the GC."
         <span class="quote-source" style="opacity:0.5;">— NextGen HR &amp; Pay Final Findings Report, p. 38</span>
       </div>
+      <div class="quote-block anim-4" data-lang="fr" style="margin-top:32px; border-color: rgba(255,255,255,0.3);">
+        « Les opérations de RH et de paye du GC dépendent de capacités technologiques pour répondre à ces exigences et ne pourraient pas fonctionner sans combler ces lacunes, soit par la simplification des règles opérationnelles de RH et de paye… soit par des extensions infonuagiques dans Dayforce pour répondre aux besoins uniques du GC. » [traduction]
+        <span class="quote-source" style="opacity:0.5;">— Rapport final des constatations de ProchGén RH et paye, p. 38</span>
+      </div>
 
-      <p class="anim-5" style="font-size:1rem; opacity:0.85; margin-top:20px; text-align:center;">
+      <p class="anim-5" data-lang="en" style="font-size:1rem; opacity:0.85; margin-top:20px; text-align:center;">
         <strong>No external solution currently exists</strong> to independently validate pay calculations<br>against authoritative collective agreement rules.
+      </p>
+      <p class="anim-5" data-lang="fr" style="font-size:1rem; opacity:0.85; margin-top:20px; text-align:center;">
+        <strong>Aucune solution externe n'existe actuellement</strong> pour valider de façon indépendante les calculs de paye<br>par rapport aux règles faisant autorité des conventions collectives.
       </p>
     </div>
   </div>
@@ -793,31 +889,45 @@
     <div class="gc-bar"></div>
     <div class="section-num">04</div>
     <div class="content-box" style="text-align:center;">
-      <div class="small-label anim-1">The Solution</div>
-      <h1 class="anim-1" style="color: var(--gc-blue);">Introducing ACCORD<span style="color:var(--maple);"> 🍁</span></h1>
+      <div class="small-label anim-1" data-lang="en">The Solution</div>
+      <div class="small-label anim-1" data-lang="fr">La solution</div>
+      <h1 class="anim-1" data-lang="en" style="color: var(--gc-blue);">Introducing ACCORD<span style="color:var(--maple);"> 🍁</span></h1>
+      <h1 class="anim-1" data-lang="fr" style="color: var(--gc-blue);">Présentation d'ACCORD<span style="color:var(--maple);"> 🍁</span></h1>
       <div class="divider center anim-2"></div>
 
-      <p class="subtitle anim-2" style="color: var(--gc-grey-dark); max-width:720px; margin: 0 auto 36px;">
+      <p class="subtitle anim-2" data-lang="en" style="color: var(--gc-grey-dark); max-width:720px; margin: 0 auto 36px;">
         A Canadian-made compliance validation layer that <strong>independently verifies</strong> every pay calculation against authoritative collective agreement rules. Built to complement Dayforce — not compete with it.
+      </p>
+      <p class="subtitle anim-2" data-lang="fr" style="color: var(--gc-grey-dark); max-width:720px; margin: 0 auto 36px;">
+        Une couche de validation de la conformité fabriquée au Canada qui <strong>vérifie de façon indépendante</strong> chaque calcul de paye par rapport aux règles faisant autorité des conventions collectives. Conçu pour compléter Dayforce — et non le concurrencer.
       </p>
 
       <div class="three-col anim-3" style="text-align:left;">
         <div class="card">
-          <h3>🔍 Validate</h3>
-          <p>Independently verify pay run outputs against the authoritative rules encoded in collective agreements, TBS directives, and case law.</p>
+          <h3 data-lang="en">🔍 Validate</h3>
+          <h3 data-lang="fr">🔍 Valider</h3>
+          <p data-lang="en">Independently verify pay run outputs against the authoritative rules encoded in collective agreements, TBS directives, and case law.</p>
+          <p data-lang="fr">Vérifier de façon indépendante les résultats des cycles de paye par rapport aux règles faisant autorité encodées dans les conventions collectives, les directives du SCT et la jurisprudence.</p>
         </div>
         <div class="card" style="border-left-color: var(--accent-teal);">
-          <h3>⚡ Flag</h3>
-          <p>Identify discrepancies before they reach employees. Mass salary revisions, acting pay, rate-of-pay determinations — the hard problems.</p>
+          <h3 data-lang="en">⚡ Flag</h3>
+          <h3 data-lang="fr">⚡ Signaler</h3>
+          <p data-lang="en">Identify discrepancies before they reach employees. Mass salary revisions, acting pay, rate-of-pay determinations — the hard problems.</p>
+          <p data-lang="fr">Identifier les écarts avant qu'ils ne parviennent aux employés. Révisions salariales massives, rémunération d'intérimaire, détermination du taux de rémunération — les problèmes complexes.</p>
         </div>
         <div class="card" style="border-left-color: var(--accent-gold);">
-          <h3>📋 Audit</h3>
-          <p>Provide a complete, traceable compliance trail. Every calculation tied to its authoritative source — article, clause, and provision.</p>
+          <h3 data-lang="en">📋 Audit</h3>
+          <h3 data-lang="fr">📋 Vérifier</h3>
+          <p data-lang="en">Provide a complete, traceable compliance trail. Every calculation tied to its authoritative source — article, clause, and provision.</p>
+          <p data-lang="fr">Fournir une piste de conformité complète et traçable. Chaque calcul lié à sa source faisant autorité — article, clause et disposition.</p>
         </div>
       </div>
 
-      <p class="anim-4" style="font-size:0.95rem; color:var(--gc-grey-mid); margin-top:32px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.65;">
+      <p class="anim-4" data-lang="en" style="font-size:0.95rem; color:var(--gc-grey-mid); margin-top:32px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.65;">
         ACCORD does not replace Dayforce. It provides the <strong>independent assurance layer</strong> that post-Phoenix governance demands.
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.95rem; color:var(--gc-grey-mid); margin-top:32px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        ACCORD ne remplace pas Dayforce. Il fournit la <strong>couche d'assurance indépendante</strong> que la gouvernance post-Phénix exige.
       </p>
     </div>
   </div>
@@ -828,11 +938,13 @@
   <div class="slide slide-accent" data-slide="5">
     <div class="section-num light">05</div>
     <div class="content-box">
-      <div class="small-label anim-1" style="color:var(--accent-gold-light);">Architecture</div>
-      <h2 class="anim-1">How ACCORD Works</h2>
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Architecture</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Architecture</div>
+      <h2 class="anim-1" data-lang="en">How ACCORD Works</h2>
+      <h2 class="anim-1" data-lang="fr">Comment ACCORD fonctionne</h2>
       <div class="divider gold anim-2"></div>
 
-      <div class="flow anim-3">
+      <div class="flow anim-3" data-lang="en">
         <div class="flow-step">
           <div class="flow-icon">🏛️</div>
           <div class="flow-label">Dayforce</div>
@@ -864,7 +976,39 @@
         </div>
       </div>
 
-      <div class="two-col anim-4" style="margin-top:36px;">
+      <div class="flow anim-3" data-lang="fr">
+        <div class="flow-step">
+          <div class="flow-icon">🏛️</div>
+          <div class="flow-label">Dayforce</div>
+          <div class="flow-desc">Produit le cycle de paye</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-gold); border-width:2px;">
+          <div class="flow-icon">📤</div>
+          <div class="flow-label">Exportation</div>
+          <div class="flow-desc">Données de paye via API / fichier</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,169,81,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">🍁</div>
+          <div class="flow-label">Moteur ACCORD</div>
+          <div class="flow-desc">Validation selon les règles des CC</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">📊</div>
+          <div class="flow-label">Rapport</div>
+          <div class="flow-desc">Écarts et piste de vérification</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">✅</div>
+          <div class="flow-label">Confiance</div>
+          <div class="flow-desc">Émission de paye vérifiée</div>
+        </div>
+      </div>
+
+      <div class="two-col anim-4" data-lang="en" style="margin-top:36px;">
         <div>
           <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">The Compliance Engine</h3>
           <ul class="check-list white-checks" style="opacity:0.85;">
@@ -886,6 +1030,29 @@
           </ul>
         </div>
       </div>
+
+      <div class="two-col anim-4" data-lang="fr" style="margin-top:36px;">
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">Le moteur de conformité</h3>
+          <ul class="check-list white-checks" style="opacity:0.85;">
+            <li>Encode les règles de paye faisant autorité des conventions collectives</li>
+            <li>Interprète les directives et les avis d'information du SCT</li>
+            <li>Intègre la jurisprudence et les décisions arbitrales pertinentes</li>
+            <li>Gère les calculs rétroactifs et les effets d'interaction</li>
+            <li>Prend en charge les quelque 150 conventions collectives fédérales</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">Modèle de déploiement</h3>
+          <ul class="check-list white-checks" style="opacity:0.85;">
+            <li>SaaS infonuagique — résidence des données au Canada</li>
+            <li>API RESTful pour l'intégration système à système</li>
+            <li>Tableau de bord Web pour les équipes de paye ministérielles</li>
+            <li>Intégration et configuration par ministère</li>
+            <li>Infrastructure conforme au niveau Protégé B</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -896,57 +1063,97 @@
     <div class="gc-bar"></div>
     <div class="section-num">06</div>
     <div class="content-box">
-      <div class="small-label anim-1">Validation</div>
-      <h2 class="anim-1">Engine Validated Against Real-World Scenarios</h2>
+      <div class="small-label anim-1" data-lang="en">Validation</div>
+      <div class="small-label anim-1" data-lang="fr">Validation</div>
+      <h2 class="anim-1" data-lang="en">Engine Validated Against Real-World Scenarios</h2>
+      <h2 class="anim-1" data-lang="fr">Moteur validé contre des scénarios réels</h2>
       <div class="divider anim-2"></div>
 
-      <p class="anim-2" style="font-size:1rem; line-height:1.7; color: var(--gc-grey-dark); margin-bottom:28px; max-width:760px;">
+      <p class="anim-2" data-lang="en" style="font-size:1rem; line-height:1.7; color: var(--gc-grey-dark); margin-bottom:28px; max-width:760px;">
         The ACCORD compliance engine has been validated against <strong>7 critical test scenarios</strong> drawn from the most complex areas of federal pay administration — achieving a 100% resolution rate using only authoritative public sources.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1rem; line-height:1.7; color: var(--gc-grey-dark); margin-bottom:28px; max-width:760px;">
+        Le moteur de conformité ACCORD a été validé contre <strong>7 scénarios de test critiques</strong> tirés des domaines les plus complexes de l'administration de la paye fédérale — atteignant un taux de résolution de 100 % en utilisant uniquement des sources publiques faisant autorité.
       </p>
 
       <div class="two-col anim-3">
         <div>
-          <div class="gap-item">
+          <div class="gap-item" data-lang="en">
             <div class="gap-icon green">✓</div>
             <div class="gap-text">
               <h4>Retroactive Pay Calculations</h4>
               <p>Mass salary revision scenarios validated against TBS Information Notices and collective agreement provisions</p>
             </div>
           </div>
-          <div class="gap-item">
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>Calculs rétroactifs de la paye</h4>
+              <p>Scénarios de révision salariale massive validés par rapport aux avis d'information du SCT et aux dispositions des conventions collectives</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
             <div class="gap-icon green">✓</div>
             <div class="gap-text">
               <h4>Acting Pay Administration</h4>
               <p>Complex acting-in-higher-position calculations across multiple classification groups</p>
             </div>
           </div>
-          <div class="gap-item">
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>Administration de la rémunération d'intérimaire</h4>
+              <p>Calculs complexes de rémunération intérimaire à travers plusieurs groupes de classification</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
             <div class="gap-icon green">✓</div>
             <div class="gap-text">
               <h4>Rate of Pay Determination</h4>
               <p>Step progression, salary protection, and pay revision rules resolved via authoritative sources</p>
             </div>
           </div>
-          <div class="gap-item">
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>Détermination du taux de rémunération</h4>
+              <p>Progression d'échelon, protection salariale et règles de révision salariale résolues à l'aide de sources faisant autorité</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
             <div class="gap-icon green">✓</div>
             <div class="gap-text">
               <h4>Cross-CA Interaction Effects</h4>
               <p>Scenarios involving multiple collective agreements and provision interactions</p>
             </div>
           </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>Effets d'interaction entre conventions collectives</h4>
+              <p>Scénarios impliquant plusieurs conventions collectives et interactions entre les dispositions</p>
+            </div>
+          </div>
         </div>
         <div style="display:flex; flex-direction:column; justify-content:center;">
           <div style="background:var(--gc-blue); border-radius:12px; padding:40px; text-align:center; color:white;">
             <div style="font-family:'Lato',sans-serif; font-size:5rem; font-weight:900; line-height:1;">7/7</div>
-            <div style="font-size:1rem; font-weight:600; margin-top:8px; opacity:0.8;">Scenarios Resolved</div>
+            <div data-lang="en" style="font-size:1rem; font-weight:600; margin-top:8px; opacity:0.8;">Scenarios Resolved</div>
+            <div data-lang="fr" style="font-size:1rem; font-weight:600; margin-top:8px; opacity:0.8;">Scénarios résolus</div>
             <div style="width:40px; height:2px; background:var(--accent-gold); margin:16px auto;"></div>
-            <div style="font-size:0.85rem; opacity:0.6; line-height:1.5;">
+            <div data-lang="en" style="font-size:0.85rem; opacity:0.6; line-height:1.5;">
               Including two scenarios initially<br>assessed as requiring internal<br>GC HR subject-matter expertise
+            </div>
+            <div data-lang="fr" style="font-size:0.85rem; opacity:0.6; line-height:1.5;">
+              Y compris deux scénarios initialement<br>évalués comme nécessitant une expertise<br>interne en RH du GC
             </div>
           </div>
           <div style="margin-top:20px; padding:16px; background:rgba(46,125,50,0.08); border-radius:8px; border-left:3px solid var(--accent-green);">
-            <p style="font-size:0.85rem; color:var(--gc-grey-dark); line-height:1.5;">
+            <p data-lang="en" style="font-size:0.85rem; color:var(--gc-grey-dark); line-height:1.5;">
               <strong>Sources used:</strong> Collective agreement text, TBS Information Notices, TBS Directives, Manitoba Court of Appeal decisions, published arbitration rulings
+            </p>
+            <p data-lang="fr" style="font-size:0.85rem; color:var(--gc-grey-dark); line-height:1.5;">
+              <strong>Sources utilisées :</strong> Textes des conventions collectives, avis d'information du SCT, directives du SCT, décisions de la Cour d'appel du Manitoba, décisions arbitrales publiées
             </p>
           </div>
         </div>
@@ -960,33 +1167,45 @@
   <div class="slide slide-dark" data-slide="7">
     <div class="section-num light">07</div>
     <div class="content-box">
-      <div class="small-label anim-1" style="color:var(--accent-gold-light);">Value Proposition</div>
-      <h2 class="anim-1">Why ACCORD Matters Now</h2>
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Value Proposition</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Proposition de valeur</div>
+      <h2 class="anim-1" data-lang="en">Why ACCORD Matters Now</h2>
+      <h2 class="anim-1" data-lang="fr">Pourquoi ACCORD est important maintenant</h2>
       <div class="divider gold anim-2"></div>
 
       <div class="three-col anim-3">
         <div class="card-dark">
-          <h3>🛡️ Post-Phoenix Assurance</h3>
-          <p>Every department migrating to Dayforce needs confidence that pay will be accurate from day one. ACCORD provides independent, automated verification — the "second pair of eyes" that post-Phoenix governance demands.</p>
+          <h3 data-lang="en">🛡️ Post-Phoenix Assurance</h3>
+          <h3 data-lang="fr">🛡️ Assurance post-Phénix</h3>
+          <p data-lang="en">Every department migrating to Dayforce needs confidence that pay will be accurate from day one. ACCORD provides independent, automated verification — the "second pair of eyes" that post-Phoenix governance demands.</p>
+          <p data-lang="fr">Chaque ministère migrant vers Dayforce a besoin de l'assurance que la paye sera exacte dès le premier jour. ACCORD fournit une vérification indépendante et automatisée — le « deuxième regard » qu'exige la gouvernance post-Phénix.</p>
         </div>
         <div class="card-dark">
-          <h3>🤝 Complements Dayforce</h3>
-          <p>ACCORD does not replace or compete with Dayforce. It validates Dayforce's output against the same rules the GC already operates under. Both systems are stronger together.</p>
+          <h3 data-lang="en">🤝 Complements Dayforce</h3>
+          <h3 data-lang="fr">🤝 Complémentaire à Dayforce</h3>
+          <p data-lang="en">ACCORD does not replace or compete with Dayforce. It validates Dayforce's output against the same rules the GC already operates under. Both systems are stronger together.</p>
+          <p data-lang="fr">ACCORD ne remplace pas et ne concurrence pas Dayforce. Il valide les résultats de Dayforce par rapport aux mêmes règles que le GC applique déjà. Les deux systèmes sont plus forts ensemble.</p>
         </div>
         <div class="card-dark">
-          <h3>⏱️ De-risks the Transition</h3>
-          <p>As departments onboard in waves, ACCORD catches discrepancies during parallel runs and early production — when the cost of errors is highest and trust is most fragile.</p>
+          <h3 data-lang="en">⏱️ De-risks the Transition</h3>
+          <h3 data-lang="fr">⏱️ Réduction des risques de la transition</h3>
+          <p data-lang="en">As departments onboard in waves, ACCORD catches discrepancies during parallel runs and early production — when the cost of errors is highest and trust is most fragile.</p>
+          <p data-lang="fr">À mesure que les ministères sont intégrés par vagues, ACCORD détecte les écarts pendant les exécutions parallèles et la production initiale — lorsque le coût des erreurs est le plus élevé et que la confiance est la plus fragile.</p>
         </div>
       </div>
 
       <div class="two-col anim-4" style="margin-top:36px;">
         <div class="card-dark" style="border-left-color: var(--accent-teal);">
-          <h3 style="color:#7dd3e8;">📉 Reduces Backlog Risk</h3>
-          <p>Phoenix still carries ~370,000 unresolved transactions. Preventing new errors during migration keeps the backlog from growing. ACCORD is the firewall.</p>
+          <h3 data-lang="en" style="color:#7dd3e8;">📉 Reduces Backlog Risk</h3>
+          <h3 data-lang="fr" style="color:#7dd3e8;">📉 Réduction du risque d'arriéré</h3>
+          <p data-lang="en">Phoenix still carries ~370,000 unresolved transactions. Preventing new errors during migration keeps the backlog from growing. ACCORD is the firewall.</p>
+          <p data-lang="fr">Phénix compte encore environ 370 000 transactions non résolues. Prévenir les nouvelles erreurs pendant la migration empêche l'arriéré de s'accroître. ACCORD est le pare-feu.</p>
         </div>
         <div class="card-dark" style="border-left-color: var(--accent-green);">
-          <h3 style="color:#81c784;">🔎 Audit-Ready Compliance</h3>
-          <p>Every validation produces a traceable audit trail — which collective agreement article, which TBS directive, which rule. Ready for OAG review from day one.</p>
+          <h3 data-lang="en" style="color:#81c784;">🔎 Audit-Ready Compliance</h3>
+          <h3 data-lang="fr" style="color:#81c784;">🔎 Conformité prête pour la vérification</h3>
+          <p data-lang="en">Every validation produces a traceable audit trail — which collective agreement article, which TBS directive, which rule. Ready for OAG review from day one.</p>
+          <p data-lang="fr">Chaque validation produit une piste de vérification traçable — quel article de convention collective, quelle directive du SCT, quelle règle. Prêt pour l'examen du BVG dès le premier jour.</p>
         </div>
       </div>
     </div>
@@ -999,24 +1218,35 @@
     <div class="gc-bar"></div>
     <div class="section-num">08</div>
     <div class="content-box">
-      <div class="small-label anim-1">Market Opportunity</div>
-      <h2 class="anim-1">The Gap in the Market Is Well-Documented</h2>
+      <div class="small-label anim-1" data-lang="en">Market Opportunity</div>
+      <div class="small-label anim-1" data-lang="fr">Occasion de marché</div>
+      <h2 class="anim-1" data-lang="en">The Gap in the Market Is Well-Documented</h2>
+      <h2 class="anim-1" data-lang="fr">La lacune dans le marché est bien documentée</h2>
       <div class="divider anim-2"></div>
 
       <div class="two-col anim-3">
         <div>
-          <p style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark); margin-bottom:24px;">
+          <p data-lang="en" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark); margin-bottom:24px;">
             Dayforce is a <strong>global</strong> human capital management platform. Its strength is breadth — serving thousands of organizations across industries worldwide.
           </p>
-          <p style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark); margin-bottom:24px;">
+          <p data-lang="fr" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark); margin-bottom:24px;">
+            Dayforce est une plateforme <strong>mondiale</strong> de gestion du capital humain. Sa force est son étendue — elle dessert des milliers d'organisations dans toutes les industries à l'échelle mondiale.
+          </p>
+          <p data-lang="en" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark); margin-bottom:24px;">
             What it does not do — <strong>by design</strong> — is deeply interpret the Government of Canada's unique collective agreement landscape. This is not a deficiency. It is a scope boundary.
           </p>
-          <p style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark);">
+          <p data-lang="fr" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark); margin-bottom:24px;">
+            Ce qu'elle ne fait pas — <strong>par conception</strong> — c'est interpréter en profondeur le paysage unique des conventions collectives du gouvernement du Canada. Ce n'est pas une lacune. C'est une limite de portée.
+          </p>
+          <p data-lang="en" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark);">
             No Canadian SaaS company currently fills this gap. The domain expertise required — collective agreement interpretation, TBS pay policy, federal classification systems — exists almost exclusively within the public service itself.
+          </p>
+          <p data-lang="fr" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark);">
+            Aucune entreprise SaaS canadienne ne comble actuellement cette lacune. L'expertise de domaine requise — interprétation des conventions collectives, politique de paye du SCT, systèmes de classification fédéraux — existe presque exclusivement au sein de la fonction publique elle-même.
           </p>
         </div>
         <div>
-          <div style="background:var(--gc-blue); border-radius:12px; padding:32px; color:white; margin-bottom:24px;">
+          <div data-lang="en" style="background:var(--gc-blue); border-radius:12px; padding:32px; color:white; margin-bottom:24px;">
             <h3 style="color:var(--accent-gold-light); font-size:1rem; margin-bottom:20px;">Addressable Market</h3>
             <table class="rev-table" style="color:white;">
               <tr><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Tier</th><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Depts</th><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Annual Value</th></tr>
@@ -1026,8 +1256,21 @@
               <tr><td style="border-color:var(--accent-gold);">Full GC Adoption</td><td style="border-color:var(--accent-gold);">100+</td><td style="border-color:var(--accent-gold); color:var(--accent-gold-light);">$5–10M+/yr</td></tr>
             </table>
           </div>
-          <p style="font-size:0.85rem; color:var(--gc-grey-mid); line-height:1.6;">
+          <div data-lang="fr" style="background:var(--gc-blue); border-radius:12px; padding:32px; color:white; margin-bottom:24px;">
+            <h3 style="color:var(--accent-gold-light); font-size:1rem; margin-bottom:20px;">Marché adressable</h3>
+            <table class="rev-table" style="color:white;">
+              <tr><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Niveau</th><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Min.</th><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Valeur annuelle</th></tr>
+              <tr><td style="border-color:rgba(255,255,255,0.1);">Grand (10 000+ employés)</td><td style="border-color:rgba(255,255,255,0.1);">~15</td><td style="border-color:rgba(255,255,255,0.1);">100 000 $–200 000 $</td></tr>
+              <tr><td style="border-color:rgba(255,255,255,0.1);">Moyen (1 000–10 000)</td><td style="border-color:rgba(255,255,255,0.1);">~35</td><td style="border-color:rgba(255,255,255,0.1);">50 000 $–100 000 $</td></tr>
+              <tr><td style="border-color:rgba(255,255,255,0.1);">Petit (&lt;1 000)</td><td style="border-color:rgba(255,255,255,0.1);">~50</td><td style="border-color:rgba(255,255,255,0.1);">25 000 $–50 000 $</td></tr>
+              <tr><td style="border-color:var(--accent-gold);">Adoption complète du GC</td><td style="border-color:var(--accent-gold);">100+</td><td style="border-color:var(--accent-gold); color:var(--accent-gold-light);">5–10 M$+/an</td></tr>
+            </table>
+          </div>
+          <p data-lang="en" style="font-size:0.85rem; color:var(--gc-grey-mid); line-height:1.6;">
             Per-department SaaS pricing, scaled by headcount and collective agreement complexity. Separate agency and provincial opportunities expand the market further.
+          </p>
+          <p data-lang="fr" style="font-size:0.85rem; color:var(--gc-grey-mid); line-height:1.6;">
+            Tarification SaaS par ministère, proportionnelle à l'effectif et à la complexité des conventions collectives. Des occasions distinctes avec les organismes et les provinces élargissent davantage le marché.
           </p>
         </div>
       </div>
@@ -1041,30 +1284,43 @@
     <div class="section-num light">09</div>
     <div class="content-box" style="text-align:center;">
       <div class="anim-1" style="font-size:5rem; margin-bottom:20px;">🍁</div>
-      <h2 class="anim-1">Canadian-Made. Purpose-Built.</h2>
+      <h2 class="anim-1" data-lang="en">Canadian-Made. Purpose-Built.</h2>
+      <h2 class="anim-1" data-lang="fr">Fabriqué au Canada. Conçu sur mesure.</h2>
       <div class="divider gold center anim-2"></div>
 
-      <p class="subtitle anim-2" style="color:rgba(255,255,255,0.85); max-width:680px; margin: 0 auto 40px;">
+      <p class="subtitle anim-2" data-lang="en" style="color:rgba(255,255,255,0.85); max-width:680px; margin: 0 auto 40px;">
         ACCORD is built in Canada, for Canada's public service — by a team with direct domain expertise in federal pay administration and data science.
+      </p>
+      <p class="subtitle anim-2" data-lang="fr" style="color:rgba(255,255,255,0.85); max-width:680px; margin: 0 auto 40px;">
+        ACCORD est construit au Canada, pour la fonction publique du Canada — par une équipe possédant une expertise directe en administration de la paye fédérale et en science des données.
       </p>
 
       <div class="three-col anim-3" style="text-align:left;">
         <div class="card-dark" style="border-left-color: var(--maple);">
-          <h3 style="color:white;">🇨🇦 Digital Sovereignty</h3>
-          <p>Canadian data residency. Canadian company. No foreign dependency for the interpretation of Canadian collective agreements.</p>
+          <h3 data-lang="en" style="color:white;">🇨🇦 Digital Sovereignty</h3>
+          <h3 data-lang="fr" style="color:white;">🇨🇦 Souveraineté numérique</h3>
+          <p data-lang="en">Canadian data residency. Canadian company. No foreign dependency for the interpretation of Canadian collective agreements.</p>
+          <p data-lang="fr">Résidence des données au Canada. Entreprise canadienne. Aucune dépendance étrangère pour l'interprétation des conventions collectives canadiennes.</p>
         </div>
         <div class="card-dark" style="border-left-color: var(--maple);">
-          <h3 style="color:white;">🧠 Domain Expertise</h3>
-          <p>Built by professionals with direct experience in federal compensation policy, collective agreement interpretation, and public service data analytics.</p>
+          <h3 data-lang="en" style="color:white;">🧠 Domain Expertise</h3>
+          <h3 data-lang="fr" style="color:white;">🧠 Expertise de domaine</h3>
+          <p data-lang="en">Built by professionals with direct experience in federal compensation policy, collective agreement interpretation, and public service data analytics.</p>
+          <p data-lang="fr">Construit par des professionnels ayant une expérience directe en politique de rémunération fédérale, en interprétation de conventions collectives et en analyse de données de la fonction publique.</p>
         </div>
         <div class="card-dark" style="border-left-color: var(--maple);">
-          <h3 style="color:white;">🔬 Data Science Core</h3>
-          <p>Advanced analytical capabilities for pattern detection, anomaly identification, and predictive compliance risk — not just rule checking.</p>
+          <h3 data-lang="en" style="color:white;">🔬 Data Science Core</h3>
+          <h3 data-lang="fr" style="color:white;">🔬 Science des données au cœur</h3>
+          <p data-lang="en">Advanced analytical capabilities for pattern detection, anomaly identification, and predictive compliance risk — not just rule checking.</p>
+          <p data-lang="fr">Capacités analytiques avancées pour la détection de tendances, l'identification d'anomalies et le risque prédictif de conformité — au-delà de la simple vérification de règles.</p>
         </div>
       </div>
 
-      <p class="anim-4" style="margin-top:36px; font-size:0.95rem; opacity:0.7;">
+      <p class="anim-4" data-lang="en" style="margin-top:36px; font-size:0.95rem; opacity:0.7;">
         Aligned with Canada's Digital Ambition 2022 &amp; the Policy on Service and Digital
+      </p>
+      <p class="anim-4" data-lang="fr" style="margin-top:36px; font-size:0.95rem; opacity:0.7;">
+        En harmonie avec l'Ambition numérique du Canada 2022 et la Politique sur les services et le numérique
       </p>
     </div>
   </div>
@@ -1076,32 +1332,47 @@
     <div class="gc-bar"></div>
     <div class="section-num">10</div>
     <div class="content-box">
-      <div class="small-label anim-1">Path Forward</div>
-      <h2 class="anim-1">Proposed Engagement Model</h2>
+      <div class="small-label anim-1" data-lang="en">Path Forward</div>
+      <div class="small-label anim-1" data-lang="fr">Voie à suivre</div>
+      <h2 class="anim-1" data-lang="en">Proposed Engagement Model</h2>
+      <h2 class="anim-1" data-lang="fr">Modèle d'engagement proposé</h2>
       <div class="divider anim-2"></div>
 
       <div class="three-col anim-3">
         <div class="card" style="border-left-color: var(--gc-blue-lighter); position:relative;">
-          <span class="pill pill-blue" style="margin-bottom:16px;">Phase 1 — 3 months</span>
-          <h3 style="margin-top:8px;">Pilot Department</h3>
-          <p>Deploy ACCORD alongside Dayforce parallel pay runs for a single willing department. Validate accuracy. Measure discrepancy detection. Build the case.</p>
+          <span class="pill pill-blue" data-lang="en" style="margin-bottom:16px;">Phase 1 — 3 months</span>
+          <span class="pill pill-blue" data-lang="fr" style="margin-bottom:16px;">Phase 1 — 3 mois</span>
+          <h3 data-lang="en" style="margin-top:8px;">Pilot Department</h3>
+          <h3 data-lang="fr" style="margin-top:8px;">Ministère pilote</h3>
+          <p data-lang="en">Deploy ACCORD alongside Dayforce parallel pay runs for a single willing department. Validate accuracy. Measure discrepancy detection. Build the case.</p>
+          <p data-lang="fr">Déployer ACCORD en parallèle avec les exécutions de paye Dayforce pour un seul ministère volontaire. Valider l'exactitude. Mesurer la détection des écarts. Constituer le dossier.</p>
         </div>
         <div class="card" style="border-left-color: var(--accent-gold); position:relative;">
-          <span class="pill pill-gold" style="margin-bottom:16px;">Phase 2 — 6 months</span>
-          <h3 style="margin-top:8px;">First-Wave Expansion</h3>
-          <p>Extend to first-wave departments onboarding to Dayforce. Integrate via API. Refine the engine against production data. Establish operational SLAs.</p>
+          <span class="pill pill-gold" data-lang="en" style="margin-bottom:16px;">Phase 2 — 6 months</span>
+          <span class="pill pill-gold" data-lang="fr" style="margin-bottom:16px;">Phase 2 — 6 mois</span>
+          <h3 data-lang="en" style="margin-top:8px;">First-Wave Expansion</h3>
+          <h3 data-lang="fr" style="margin-top:8px;">Expansion de la première vague</h3>
+          <p data-lang="en">Extend to first-wave departments onboarding to Dayforce. Integrate via API. Refine the engine against production data. Establish operational SLAs.</p>
+          <p data-lang="fr">Étendre aux ministères de la première vague intégrant Dayforce. Intégration via API. Raffiner le moteur avec les données de production. Établir les ententes de niveau de service opérationnelles.</p>
         </div>
         <div class="card" style="border-left-color: var(--accent-green); position:relative;">
-          <span class="pill pill-green" style="margin-bottom:16px;">Phase 3 — 12+ months</span>
-          <h3 style="margin-top:8px;">Enterprise Deployment</h3>
-          <p>Scale across the GC. Per-department onboarding. Full compliance dashboard. Ongoing CA rule updates as new agreements are signed.</p>
+          <span class="pill pill-green" data-lang="en" style="margin-bottom:16px;">Phase 3 — 12+ months</span>
+          <span class="pill pill-green" data-lang="fr" style="margin-bottom:16px;">Phase 3 — 12+ mois</span>
+          <h3 data-lang="en" style="margin-top:8px;">Enterprise Deployment</h3>
+          <h3 data-lang="fr" style="margin-top:8px;">Déploiement à l'échelle du GC</h3>
+          <p data-lang="en">Scale across the GC. Per-department onboarding. Full compliance dashboard. Ongoing CA rule updates as new agreements are signed.</p>
+          <p data-lang="fr">Déploiement à l'échelle du GC. Intégration par ministère. Tableau de bord de conformité complet. Mises à jour continues des règles des CC à mesure que de nouvelles conventions sont signées.</p>
         </div>
       </div>
 
       <div class="anim-4" style="background: var(--gc-blue); border-radius:12px; padding:28px 36px; color:white; margin-top:32px; max-width:800px; margin-left:auto; margin-right:auto;">
-        <h3 style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.1rem;">Immediate Next Step</h3>
-        <p style="font-size:1rem; opacity:0.9; line-height:1.7;">
+        <h3 data-lang="en" style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.1rem;">Immediate Next Step</h3>
+        <h3 data-lang="fr" style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.1rem;">Prochaine étape immédiate</h3>
+        <p data-lang="en" style="font-size:1rem; opacity:0.9; line-height:1.7;">
           We are seeking a <strong>pilot partner department</strong> — ideally one already participating in Dayforce parallel pay validation — to demonstrate ACCORD's value in a live environment. No disruption to existing systems. Low risk. High insight.
+        </p>
+        <p data-lang="fr" style="font-size:1rem; opacity:0.9; line-height:1.7;">
+          Nous recherchons un <strong>ministère partenaire pilote</strong> — idéalement un ministère participant déjà à la validation parallèle de la paye Dayforce — pour démontrer la valeur d'ACCORD dans un environnement réel. Aucune perturbation des systèmes existants. Faible risque. Résultats éclairants.
         </p>
       </div>
     </div>
@@ -1112,18 +1383,23 @@
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-cover" data-slide="11">
     <div class="flag-stripe"></div>
-    <div class="confidential" style="color:rgba(255,255,255,0.35);">Draft — Confidential</div>
+    <span class="confidential" data-lang="en" style="color:rgba(255,255,255,0.35);">Draft — Confidential</span>
+    <span class="confidential" data-lang="fr" style="color:rgba(255,255,255,0.35);">Ébauche — Confidentiel</span>
 
     <div class="anim-1 logo-mark" style="font-size:3.8rem;">ACCORD<span class="maple">🍁</span></div>
     <div class="divider gold center anim-2"></div>
 
-    <p class="subtitle anim-2" style="text-align:center; max-width:640px; color:rgba(255,255,255,0.8);">
+    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:640px; color:rgba(255,255,255,0.8);">
       The Government of Canada published the gap. <br>We built the solution.
+    </p>
+    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:640px; color:rgba(255,255,255,0.8);">
+      Le gouvernement du Canada a documenté la lacune. <br>Nous avons construit la solution.
     </p>
 
     <div class="anim-3" style="margin-top:48px; text-align:center;">
       <p style="font-size:1.1rem; font-weight:500; opacity:0.9; margin-bottom:8px;">hazeydata.ai</p>
-      <p style="font-size:0.9rem; opacity:0.5;">Compliance Validation Engine &nbsp;|&nbsp; Moteur de validation de la conformité</p>
+      <p data-lang="en" style="font-size:0.9rem; opacity:0.5;">Compliance Validation Engine &nbsp;|&nbsp; Moteur de validation de la conformité</p>
+      <p data-lang="fr" style="font-size:0.9rem; opacity:0.5;">Moteur de validation de la conformité &nbsp;|&nbsp; Compliance Validation Engine</p>
     </div>
 
     <div class="anim-4" style="margin-top:48px; display:flex; gap:32px; opacity:0.5; font-size:0.85rem;">
@@ -1136,7 +1412,11 @@
 
 <!-- Navigation -->
 <div class="nav-bar">
-  <div class="nav-brand">ACCORD 🍁 &nbsp;by hazeydata.ai</div>
+  <div class="nav-brand">ACCORD 🍁 &nbsp;<span data-lang="en">by</span><span data-lang="fr">par</span> hazeydata.ai</div>
+  <div class="lang-toggle" id="langToggle">
+    <button class="lang-btn active" data-langval="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-langval="fr" onclick="setLang('fr')">FR</button>
+  </div>
   <div class="nav-center" id="navDots"></div>
   <div class="nav-controls">
     <button class="nav-btn" onclick="prev()" aria-label="Previous">‹</button>
@@ -1177,6 +1457,24 @@
 
   function next() { goTo(current + 1); }
   function prev() { goTo(current - 1); }
+
+  // Language toggle
+  function setLang(lang) {
+    const body = document.body;
+    if (lang === 'fr') {
+      body.classList.add('lang-fr');
+      document.documentElement.lang = 'fr';
+      document.title = 'ACCORD 🍁 — Moteur de validation de la conformité | hazeydata.ai';
+    } else {
+      body.classList.remove('lang-fr');
+      document.documentElement.lang = 'en';
+      document.title = 'ACCORD 🍁 — Compliance Validation Engine | hazeydata.ai';
+    }
+    // Update toggle buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-langval') === lang);
+    });
+  }
 
   // Keyboard
   document.addEventListener('keydown', e => {
