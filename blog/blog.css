@@ -30,25 +30,41 @@
     color: #A0B0C8;
     font-size: 0.88rem;
 }
+.draft-banner .draft-actions {
+    display: flex;
+    gap: 0.6rem;
+    flex-shrink: 0;
+}
 .draft-banner .btn-approve {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    background: #1a7a3a;
     color: #fff;
     font-weight: 700;
-    font-size: 0.9rem;
-    padding: 0.6rem 1.25rem;
+    font-size: 0.85rem;
+    padding: 0.55rem 1.1rem;
     border-radius: 8px;
     border: none;
     cursor: pointer;
     text-decoration: none;
     transition: all 0.2s;
 }
-.draft-banner .btn-approve:hover {
+.draft-banner .btn-publish-now {
+    background: #1a7a3a;
+}
+.draft-banner .btn-publish-now:hover {
     background: #22963f;
     transform: translateY(-1px);
     box-shadow: 0 4px 15px rgba(26, 122, 58, 0.4);
+}
+.draft-banner .btn-schedule {
+    background: var(--deep-blue);
+    border: 1px solid rgba(60, 120, 210, 0.4);
+}
+.draft-banner .btn-schedule:hover {
+    background: #0d3aa0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(10, 47, 143, 0.4);
 }
 @media (max-width: 600px) {
     .draft-banner {
