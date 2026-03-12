@@ -180,7 +180,78 @@
     border-top: 1px solid var(--border);
 }
 
-/* CTA box inside posts */
+/* Inline CTA — early in article, eye-catching */
+.blog-cta-inline {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, rgba(10, 47, 143, 0.25), rgba(235, 66, 123, 0.12));
+    border: 1px solid rgba(60, 120, 210, 0.25);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin: 1.75rem 0;
+}
+.blog-cta-inline .cta-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+.blog-cta-inline .cta-body {
+    flex: 1;
+    min-width: 0;
+}
+.blog-cta-inline .cta-body p {
+    color: #e0e2e6;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0;
+}
+.blog-cta-inline .cta-body strong {
+    color: #fff;
+}
+.blog-cta-inline .btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    font-size: 0.82rem;
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+@media (max-width: 600px) {
+    .blog-cta-inline {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    .blog-cta-inline .cta-icon {
+        display: none;
+    }
+}
+
+/* Gentle bottom CTA */
+.blog-cta-gentle {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-card);
+}
+.blog-cta-gentle p {
+    color: var(--text-secondary) !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem !important;
+}
+.blog-cta-gentle a.cta-link {
+    color: var(--mid-blue);
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+.blog-cta-gentle a.cta-link:hover {
+    text-decoration: underline;
+}
+
+/* CTA box inside posts (legacy — keeping for any that still use it) */
 .blog-cta-box {
     background: linear-gradient(135deg, rgba(10, 47, 143, 0.3), rgba(235, 66, 123, 0.15));
     border: 1px solid rgba(60, 120, 210, 0.3);
