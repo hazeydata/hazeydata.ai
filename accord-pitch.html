@@ -463,20 +463,105 @@
   .slide.active .anim-4 { animation: fadeInUp 0.6s 0.55s both; }
   .slide.active .anim-5 { animation: fadeInUp 0.6s 0.7s both; }
 
-  /* ── Responsive ── */
+  /* ── Responsive: Tablet ── */
+  @media (max-width: 1024px) {
+    .slide { padding: 50px 48px; }
+    h1 { font-size: 2.6rem; }
+    h2 { font-size: 1.9rem; }
+    .logo-mark { font-size: 3.5rem; }
+    .content-box { max-width: 100%; }
+    .two-col { gap: 32px; }
+    .three-col { gap: 24px; }
+    .flow-step { padding: 14px 10px; }
+    .flow-step .flow-label { font-size: 0.75rem; }
+    .flow-step .flow-desc { font-size: 0.65rem; }
+    .flow-arrow { font-size: 1.1rem; margin: 0 4px; }
+    .section-num { font-size: 4rem; left: 40px; }
+    .quote-block { font-size: 1rem; padding: 20px 24px; }
+  }
+
+  /* ── Responsive: Small Tablet / Large Phone ── */
   @media (max-width: 768px) {
-    .slide { padding: 40px 28px; }
-    h1 { font-size: 2.2rem; }
-    h2 { font-size: 1.6rem; }
-    .logo-mark { font-size: 3rem; }
-    .subtitle { font-size: 1.1rem; }
+    .slide { padding: 40px 28px; padding-bottom: 70px; overflow-y: auto; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.1rem; }
+    .logo-mark { font-size: 2.8rem; }
+    .subtitle { font-size: 1rem; }
+    .small-label { font-size: 0.7rem; }
     .two-col { grid-template-columns: 1fr; gap: 24px; }
     .three-col { grid-template-columns: 1fr; gap: 20px; }
     .stat-number { font-size: 2.2rem; }
-    .stat-row { gap: 28px; }
-    .flow { flex-wrap: wrap; }
-    .flow-arrow { font-size: 1rem; margin: 0 4px; }
+    .stat-row { gap: 24px; flex-direction: column; align-items: center; }
+    .stat { min-width: 200px; }
+    .flow {
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+    .flow-step { 
+      flex: 0 0 auto;
+      min-width: 100px;
+      max-width: 130px;
+      padding: 12px 10px;
+    }
+    .flow-arrow { font-size: 1rem; margin: 0 2px; }
+    .quote-block { font-size: 0.95rem; padding: 16px 20px; }
+    .card, .card-dark { padding: 24px 20px; }
+    .section-num { font-size: 3rem; left: 24px; top: 28px; }
+    .confidential { font-size: 0.6rem; right: 20px; top: 16px; }
     .nav-bar { padding: 0 16px; }
+    .nav-brand { font-size: 0.75rem; }
+    .rev-table td, .rev-table th { padding: 10px 10px; font-size: 0.85rem; }
+    .gap-item { gap: 12px; }
+    .gap-icon { width: 30px; height: 30px; font-size: 0.75rem; }
+  }
+
+  /* ── Responsive: Phone ── */
+  @media (max-width: 480px) {
+    .slide { padding: 32px 20px; padding-bottom: 70px; }
+    h1 { font-size: 1.65rem; }
+    h2 { font-size: 1.3rem; }
+    .logo-mark { font-size: 2.2rem; }
+    .logo-tagline { font-size: 0.85rem; }
+    .logo-tagline-fr { font-size: 0.75rem; }
+    .subtitle { font-size: 0.9rem; }
+    .stat-number { font-size: 1.9rem; }
+    .stat-label { font-size: 0.78rem; }
+    .stat-row { gap: 20px; }
+    .flow {
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .flow-step {
+      max-width: 220px;
+      width: 100%;
+      padding: 14px 16px;
+    }
+    .flow-step .flow-label { font-size: 0.82rem; }
+    .flow-step .flow-desc { font-size: 0.72rem; }
+    .flow-arrow { 
+      transform: rotate(90deg); 
+      font-size: 1rem;
+      margin: 2px 0;
+    }
+    .two-col, .three-col { gap: 16px; }
+    .card, .card-dark { padding: 20px 16px; }
+    .card p, .card-dark p { font-size: 0.88rem; }
+    .check-list li { font-size: 0.9rem; padding-left: 28px; }
+    .quote-block { font-size: 0.88rem; padding: 14px 16px; margin: 16px 0; }
+    .quote-source { font-size: 0.72rem; }
+    .section-num { display: none; }
+    .confidential { font-size: 0.55rem; padding: 3px 8px; }
+    .divider { width: 40px; }
+    .pill { font-size: 0.68rem; padding: 3px 10px; }
+    .nav-dot { width: 6px; height: 6px; }
+    .nav-center { gap: 4px; }
+    .slide-counter { font-size: 0.7rem; }
+    .rev-table td, .rev-table th { padding: 8px 6px; font-size: 0.78rem; }
+    .gap-text h4 { font-size: 0.9rem; }
+    .gap-text p { font-size: 0.82rem; }
   }
 
   /* ── Canada flag decoration ── */
