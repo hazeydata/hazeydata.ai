@@ -219,6 +219,9 @@
 .blog-post a:hover {
     text-decoration: underline;
 }
+.blog-post a.btn {
+    color: #fff !important;
+}
 .blog-post ul, .blog-post ol {
     color: var(--text-secondary);
     margin: 0.75rem 0 1rem 1.5rem;
@@ -286,13 +289,15 @@
 .blog-cta-inline .btn {
     flex-shrink: 0;
     white-space: nowrap;
-    padding: 0.5rem 1rem;
-    font-size: 0.82rem;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.88rem;
     font-weight: 700;
+    letter-spacing: 0.02em;
     color: #fff !important;
-    background: var(--deep-blue);
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    border: 1px solid rgba(60, 120, 210, 0.4);
+    background: var(--deep-blue) !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    border: 1px solid rgba(60, 120, 210, 0.5);
+    box-shadow: 0 2px 8px rgba(10, 47, 143, 0.4);
 }
 @media (max-width: 600px) {
     .blog-cta-inline {
