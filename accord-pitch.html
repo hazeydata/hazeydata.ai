@@ -279,24 +279,31 @@
     align-items: center;
     gap: 0;
     margin: 36px 0;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
+    width: 100%;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
   }
   .flow-step {
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 8px;
-    padding: 20px 24px;
+    padding: 16px 14px;
     text-align: center;
-    min-width: 160px;
+    flex: 1;
+    min-width: 0;
+    max-width: 170px;
   }
-  .flow-step .flow-icon { font-size: 2rem; margin-bottom: 8px; }
-  .flow-step .flow-label { font-size: 0.85rem; font-weight: 600; }
-  .flow-step .flow-desc { font-size: 0.75rem; opacity: 0.6; margin-top: 4px; }
+  .flow-step .flow-icon { font-size: 1.8rem; margin-bottom: 6px; }
+  .flow-step .flow-label { font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
+  .flow-step .flow-desc { font-size: 0.7rem; opacity: 0.6; margin-top: 4px; }
   .flow-arrow {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     opacity: 0.4;
-    margin: 0 8px;
+    margin: 0 6px;
+    flex-shrink: 0;
   }
 
   /* ── Gap list ── */
@@ -467,8 +474,8 @@
     .three-col { grid-template-columns: 1fr; gap: 20px; }
     .stat-number { font-size: 2.2rem; }
     .stat-row { gap: 28px; }
-    .flow { flex-direction: column; }
-    .flow-arrow { transform: rotate(90deg); }
+    .flow { flex-wrap: wrap; }
+    .flow-arrow { font-size: 1rem; margin: 0 4px; }
     .nav-bar { padding: 0 16px; }
   }
 
