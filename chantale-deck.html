@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hazeydata — A Family Business Case</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --blue: #1a365d;
+    --blue-light: #2c5282;
+    --blue-lighter: #4a90d9;
+    --green: #276749;
+    --green-light: #38a169;
+    --red: #c53030;
+    --red-light: #fc8181;
+    --gold: #d69e2e;
+    --gold-light: #ecc94b;
+    --warm: #fffbf0;
+    --white: #ffffff;
+    --grey-light: #f7fafc;
+    --grey: #e2e8f0;
+    --grey-mid: #718096;
+    --grey-dark: #2d3748;
+    --black: #1a202c;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--blue);
+    color: var(--grey-dark);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .deck { position: relative; width: 100vw; height: 100vh; }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .slide.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+  .slide-dark {
+    background: linear-gradient(160deg, var(--black) 0%, var(--blue) 100%);
+    color: var(--white);
+  }
+  .slide-white { background: var(--white); }
+  .slide-warm { background: var(--warm); }
+  .slide-blue {
+    background: linear-gradient(160deg, var(--blue) 0%, var(--blue-light) 100%);
+    color: var(--white);
+  }
+  .slide-green {
+    background: linear-gradient(160deg, #1a3a2a 0%, var(--green) 100%);
+    color: var(--white);
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    letter-spacing: -0.03em;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 700px;
+    opacity: 0.85;
+  }
+
+  .label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.5;
+    margin-bottom: 16px;
+  }
+
+  .content { max-width: 960px; width: 100%; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 960px;
+    width: 100%;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    border-top: 3px solid var(--blue);
+  }
+  .card.green { border-top-color: var(--green-light); }
+  .card.gold { border-top-color: var(--gold); }
+  .card.red { border-top-color: var(--red); }
+  .card h3 { color: var(--blue); }
+  .card p { font-size: 0.92rem; line-height: 1.65; color: var(--grey-mid); }
+
+  .card-dark {
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 28px 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-top: 3px solid var(--gold);
+  }
+  .card-dark h3 { color: var(--gold-light); }
+  .card-dark p { font-size: 0.92rem; line-height: 1.65; opacity: 0.8; }
+
+  .stat-row {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-number {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--blue);
+  }
+  .stat-number.white { color: var(--white); }
+  .stat-number.green { color: var(--green-light); }
+  .stat-number.gold { color: var(--gold); }
+  .stat-label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    margin-top: 6px;
+    opacity: 0.7;
+  }
+
+  .divider {
+    width: 50px;
+    height: 3px;
+    background: var(--gold);
+    margin: 20px 0;
+    border-radius: 2px;
+  }
+  .divider.center { margin: 20px auto; }
+  .divider.white { background: rgba(255,255,255,0.3); }
+
+  .highlight-box {
+    background: var(--blue);
+    border-radius: 12px;
+    padding: 28px 32px;
+    color: white;
+    margin-top: 24px;
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  .compare-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--grey);
+    color: var(--grey-mid);
+  }
+  .compare-table td {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--grey);
+  }
+  .compare-table .total td {
+    border-top: 2px solid var(--blue);
+    border-bottom: 2px solid var(--blue);
+    font-weight: 700;
+    color: var(--blue);
+  }
+
+  .check-list { list-style: none; padding: 0; }
+  .check-list li {
+    padding: 8px 0 8px 28px;
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green-light);
+    font-weight: 700;
+  }
+  .check-list.gold li::before { color: var(--gold); }
+
+  .risk-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .risk-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .risk-icon.green { background: rgba(56,161,105,0.15); color: var(--green-light); }
+  .risk-icon.red { background: rgba(197,48,48,0.1); color: var(--red); }
+  .risk-text h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 3px; }
+  .risk-text p { font-size: 0.85rem; line-height: 1.55; color: var(--grey-mid); }
+
+  .timeline {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    margin: 28px 0;
+    width: 100%;
+    max-width: 900px;
+  }
+  .tl-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    padding: 0 8px;
+  }
+  .tl-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin: 0 auto 10px;
+  }
+  .tl-line {
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: rgba(255,255,255,0.2);
+  }
+  .tl-step:last-child .tl-line { display: none; }
+  .tl-label { font-size: 0.75rem; font-weight: 600; opacity: 0.9; }
+  .tl-desc { font-size: 0.7rem; opacity: 0.5; margin-top: 4px; }
+
+  /* Nav */
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 48px;
+    background: rgba(26,32,44,0.92);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    z-index: 100;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-brand {
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--white);
+    opacity: 0.5;
+  }
+  .nav-center { display: flex; gap: 5px; }
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .nav-dot.active { background: var(--gold); transform: scale(1.3); }
+  .nav-controls { display: flex; gap: 6px; align-items: center; }
+  .nav-btn {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: transparent;
+    color: var(--white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.08); }
+  .slide-counter {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.35);
+    min-width: 36px;
+    text-align: center;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .slide.active .a1 { animation: fadeInUp 0.5s 0.1s both; }
+  .slide.active .a2 { animation: fadeInUp 0.5s 0.25s both; }
+  .slide.active .a3 { animation: fadeInUp 0.5s 0.4s both; }
+  .slide.active .a4 { animation: fadeInUp 0.5s 0.55s both; }
+  .slide.active .a5 { animation: fadeInUp 0.5s 0.7s both; }
+
+  @media (max-width: 768px) {
+    .slide { padding: 40px 24px; padding-bottom: 60px; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    .two-col, .three-col { grid-template-columns: 1fr; gap: 16px; }
+    .stat-number { font-size: 2rem; }
+    .stat-row { gap: 20px; }
+    .timeline { flex-direction: column; gap: 12px; }
+    .tl-line { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1 — COVER -->
+  <div class="slide slide-dark active" data-slide="0">
+    <div class="a1" style="font-size:2.5rem; margin-bottom:12px;">🏠</div>
+    <h1 class="a1" style="text-align:center;">Hazeydata:<br>A Family Business Case</h1>
+    <div class="divider center a2" style="background:var(--gold);"></div>
+    <p class="subtitle a2" style="text-align:center; max-width:620px;">
+      Not another wild idea. A real opportunity, backed by real numbers, with a safety net already built in.
+    </p>
+    <p class="a3" style="font-size:0.85rem; opacity:0.35; margin-top:48px;">
+      Fred & Chantale Hazelton &nbsp;|&nbsp; March 2026
+    </p>
+  </div>
+
+  <!-- SLIDE 2 — THE HONEST OPENER -->
+  <div class="slide slide-warm" data-slide="1">
+    <div class="content">
+      <div class="label a1">Let's be honest</div>
+      <h2 class="a1">Yes, Fred has had a lot of ideas.</h2>
+      <div class="divider a2"></div>
+      <p class="a2" style="font-size:1.05rem; line-height:1.8; max-width:700px; color:var(--grey-dark); margin-bottom:24px;">
+        This one is different. Not because Fred says so — but because the Government of Canada already documented the problem, published the evidence, and set a deadline. Here's why this isn't a dream. It's a business case.
+      </p>
+      <div class="three-col a3">
+        <div class="card">
+          <h3>📄 The Problem Is Published</h3>
+          <p>Two official GC reports identify 18 critical pay gaps that Dayforce can't solve. These are public documents. The gap is real and documented.</p>
+        </div>
+        <div class="card green">
+          <h3>✅ The Product Already Exists</h3>
+          <p>27 collective agreements encoded. 81 rule modules. 50 validated scenarios. ~18,770 lines of working code. This isn't a concept — it's a prototype.</p>
+        </div>
+        <div class="card gold">
+          <h3>⏰ There's a Deadline</h3>
+          <p>Dayforce onboards the first departments starting 2027. The specification work is happening <strong>right now</strong>. The window is open today. It won't be open forever.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — WHAT IT IS -->
+  <div class="slide slide-white" data-slide="2">
+    <div class="content">
+      <div class="label a1">The opportunity</div>
+      <h2 class="a1">What We'd Be Building</h2>
+      <div class="divider a2"></div>
+      <p class="a2" style="font-size:1rem; line-height:1.75; max-width:720px; margin-bottom:28px;">
+        The CRA publishes the T4127 — the official tax formulas that every payroll system in Canada uses to calculate deductions. <strong>Nobody publishes the equivalent for collective agreements.</strong> That's what we'd build: an API that gives Dayforce (and any pay system) the rules for 150 collective agreements in machine-readable form.
+      </p>
+      <div class="two-col a3">
+        <div>
+          <h3 style="margin-bottom:16px; color:var(--blue);">What exists today (T4127 for taxes)</h3>
+          <ul class="check-list">
+            <li>CRA publishes tax formulas every January</li>
+            <li>Every payroll vendor in Canada uses them</li>
+            <li>Nobody questions whether this should exist</li>
+            <li>Small team maintains it. Government owns it.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin-bottom:16px; color:var(--green);">What we'd build (T4127 for CAs)</h3>
+          <ul class="check-list">
+            <li>Machine-readable rules for all 150 CAs</li>
+            <li>Dayforce calls the API for CA-specific logic</li>
+            <li>Bilingual, with article-level citations</li>
+            <li>Small team maintains it. Government owns it.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="highlight-box a4" style="text-align:center; max-width:700px; margin:28px auto 0;">
+        <p style="font-size:1rem; opacity:0.9;">Nobody else has built this. Nobody else is building this.<br>The only working prototype in Canada is sitting on Fred's server.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — THE MONEY (Safety Net) -->
+  <div class="slide slide-white" data-slide="3">
+    <div class="content">
+      <div class="label a1">The financial safety net</div>
+      <h2 class="a1">We're Not Jumping Without a Parachute</h2>
+      <div class="divider a2"></div>
+      <p class="a2" style="font-size:1rem; line-height:1.75; max-width:700px; margin-bottom:24px;">
+        HICC and SSC are both in Workforce Adjustment. Volunteer departure packages are available. Here's what the numbers actually look like:
+      </p>
+
+      <div class="two-col a3">
+        <div>
+          <table class="compare-table">
+            <tr><th colspan="2">Fred — EC-05 Step 5, ~7 years</th></tr>
+            <tr><td>Current salary</td><td style="text-align:right; font-weight:600;">$115,404/yr</td></tr>
+            <tr><td>TSM (34 weeks' pay)</td><td style="text-align:right; font-weight:600;">~$75,500</td></tr>
+            <tr><td>Plus severance pay</td><td style="text-align:right; color:var(--green);">+ additional</td></tr>
+            <tr><td>Priority rehiring list</td><td style="text-align:right; color:var(--green);">✓ 1 year</td></tr>
+          </table>
+        </div>
+        <div>
+          <table class="compare-table">
+            <tr><th colspan="2">Chantale — AS-04 Step 5, ~10 years</th></tr>
+            <tr><td>Current salary</td><td style="text-align:right; font-weight:600;">$87,108/yr</td></tr>
+            <tr><td>TSM (40 weeks' pay)</td><td style="text-align:right; font-weight:600;">~$67,000</td></tr>
+            <tr><td>Plus severance pay</td><td style="text-align:right; color:var(--green);">+ additional</td></tr>
+            <tr><td>Priority rehiring list</td><td style="text-align:right; color:var(--green);">✓ 1 year</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="highlight-box a4" style="max-width:600px; margin:24px auto 0; text-align:center;">
+        <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; opacity:0.6; margin-bottom:8px;">Combined WFA Packages</div>
+        <div style="font-size:2.8rem; font-weight:800;">~$142,500</div>
+        <div style="font-size:0.9rem; opacity:0.7; margin-top:4px;">+ severance + benefits continuation + Option C education allowance</div>
+        <div style="margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.15); font-size:0.9rem; opacity:0.7;">
+          That's 8-12 months of household runway<br>before a single dollar of revenue
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 — THE REVENUE -->
+  <div class="slide slide-blue" data-slide="4">
+    <div class="content" style="text-align:center;">
+      <div class="label a1" style="color:var(--gold-light);">What we'd earn</div>
+      <h2 class="a1">The Revenue Potential</h2>
+      <div class="divider center a2" style="background:var(--gold);"></div>
+
+      <div class="stat-row a3">
+        <div class="stat">
+          <div class="stat-number gold">$40-100K</div>
+          <div class="stat-label">Phase 1: Pilot Contract<br>3 months, one department</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number white" style="font-size:3.2rem;">$1-3M/yr</div>
+          <div class="stat-label">Phase 2: Build & Operate<br>Full GC deployment</div>
+        </div>
+      </div>
+
+      <div class="a4" style="max-width:700px; margin:20px auto; text-align:left;">
+        <p style="font-size:0.95rem; opacity:0.85; line-height:1.75; margin-bottom:16px;">
+          These numbers sound big. Here's why they're reasonable:
+        </p>
+        <ul class="check-list gold" style="opacity:0.85;">
+          <li>The GC pays $40.1 billion in annual wages. $2M/yr to ensure accuracy = 0.005%</li>
+          <li>Phoenix cost the GC over $2.2 billion. Prevention is cheaper than cleanup.</li>
+          <li>A single Deloitte advisory engagement on pay transformation runs $5-20M</li>
+          <li>GC contracts are priced by daily rate × effort. SME rate: $2,000-2,800/day</li>
+          <li>At $2M/yr we'd hire 2-3 people and still be highly profitable</li>
+        </ul>
+      </div>
+
+      <p class="a5" style="font-size:0.85rem; opacity:0.5; margin-top:20px;">
+        Current combined GC salary: ~$202,500/yr → Potential revenue: $1-3M/yr
+      </p>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 — WHY US (The Team) -->
+  <div class="slide slide-warm" data-slide="5">
+    <div class="content">
+      <div class="label a1">Why us, specifically</div>
+      <h2 class="a1">This Only Works With Both of Us</h2>
+      <div class="divider a2"></div>
+
+      <div class="two-col a3">
+        <div class="card" style="border-top-color:var(--blue);">
+          <h3>🔧 Fred — The Builder</h3>
+          <ul class="check-list" style="margin-top:12px;">
+            <li>Data scientist — built the entire rules engine</li>
+            <li>Understands CA interpretation and pay logic</li>
+            <li>Former TouringPlans.com — complex data modeling</li>
+            <li>Technical lead for API development</li>
+            <li>Product vision and client demos</li>
+          </ul>
+        </div>
+        <div class="card" style="border-top-color:var(--gold);">
+          <h3>📋 Chantale — The Operator</h3>
+          <ul class="check-list" style="margin-top:12px;">
+            <li><strong>SSC — the department that ran NextGen</strong></li>
+            <li>Institutional knowledge of the Dayforce implementation</li>
+            <li>Fully bilingual — handles all FR production</li>
+            <li>Organized — manages CA update cycles, client relationships</li>
+            <li>GC procurement & process expertise</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="highlight-box a4" style="max-width:700px; margin:24px auto 0; text-align:center;">
+        <p style="font-size:1rem; opacity:0.9; line-height:1.7;">
+          The GC gets a company led by two former public servants —<br>
+          one from the <strong>policy side</strong>, one from the <strong>systems side that tested Dayforce</strong>.<br>
+          That's not just credibility. That's the ideal team.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 — RISK ANALYSIS -->
+  <div class="slide slide-white" data-slide="6">
+    <div class="content">
+      <div class="label a1">Honest risk assessment</div>
+      <h2 class="a1">What Could Go Wrong — And Why It Probably Won't</h2>
+      <div class="divider a2"></div>
+
+      <div class="two-col a3">
+        <div>
+          <h3 style="color:var(--red); margin-bottom:16px;">⚠️ The Risks</h3>
+
+          <div class="risk-item">
+            <div class="risk-icon red">1</div>
+            <div class="risk-text">
+              <h4>GC procurement is slow</h4>
+              <p>Contracts can take months. But the WFA package gives us 8-12 months of runway, and a $40K pilot can be sole-sourced quickly.</p>
+            </div>
+          </div>
+
+          <div class="risk-item">
+            <div class="risk-icon red">2</div>
+            <div class="risk-text">
+              <h4>Someone else builds it first</h4>
+              <p>We have the only working prototype. Nobody else has the domain expertise + technical skill + motivation to replicate it in months.</p>
+            </div>
+          </div>
+
+          <div class="risk-item">
+            <div class="risk-icon red">3</div>
+            <div class="risk-text">
+              <h4>GC decides they don't need it</h4>
+              <p>Their own reports say they do. 18 gaps, no solution, Phoenix still haunting them. The need is documented.</p>
+            </div>
+          </div>
+
+          <div class="risk-item">
+            <div class="risk-icon red">4</div>
+            <div class="risk-text">
+              <h4>Total failure</h4>
+              <p>Both have 1-year priority rehiring. Fred's data science skills are in demand everywhere. We can go back to GC.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 style="color:var(--green); margin-bottom:16px;">✅ The Safety Nets</h3>
+
+          <div class="risk-item">
+            <div class="risk-icon green">1</div>
+            <div class="risk-text">
+              <h4>$142K+ in WFA packages</h4>
+              <p>We're not funding this from savings. The government is literally paying us to leave.</p>
+            </div>
+          </div>
+
+          <div class="risk-item">
+            <div class="risk-icon green">2</div>
+            <div class="risk-text">
+              <h4>Priority rehiring for 1 year</h4>
+              <p>If it doesn't work, we both have priority status to return to the federal public service.</p>
+            </div>
+          </div>
+
+          <div class="risk-item">
+            <div class="risk-icon green">3</div>
+            <div class="risk-text">
+              <h4>Product already exists</h4>
+              <p>We're not starting from zero. The engine is built, tested, and validated. We're finishing, not beginning.</p>
+            </div>
+          </div>
+
+          <div class="risk-item">
+            <div class="risk-icon green">4</div>
+            <div class="risk-text">
+              <h4>Transferable skills</h4>
+              <p>Even if ACCORD doesn't sell, the experience of building a GovTech company is career-enhancing for both of us.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 — STAY vs GO -->
+  <div class="slide slide-warm" data-slide="7">
+    <div class="content">
+      <div class="label a1">The real comparison</div>
+      <h2 class="a1">What Happens If We Stay vs. If We Go</h2>
+      <div class="divider a2"></div>
+
+      <div class="two-col a3">
+        <div class="card red" style="border-top-width:4px;">
+          <h3 style="color:var(--red);">🏢 If We Stay</h3>
+          <ul style="list-style:none; padding:0; margin-top:12px;">
+            <li style="padding:8px 0; font-size:0.92rem; line-height:1.6; color:var(--grey-mid); border-bottom:1px solid var(--grey);">WFA uncertainty continues — could be surplused involuntarily</li>
+            <li style="padding:8px 0; font-size:0.92rem; line-height:1.6; color:var(--grey-mid); border-bottom:1px solid var(--grey);">Combined salary: ~$202K/yr (before tax)</li>
+            <li style="padding:8px 0; font-size:0.92rem; line-height:1.6; color:var(--grey-mid); border-bottom:1px solid var(--grey);">Morale is low across GC during cuts</li>
+            <li style="padding:8px 0; font-size:0.92rem; line-height:1.6; color:var(--grey-mid); border-bottom:1px solid var(--grey);">Salary capped by classification — no upside</li>
+            <li style="padding:8px 0; font-size:0.92rem; line-height:1.6; color:var(--grey-mid);">Someone else may eventually build ACCORD</li>
+          </ul>
+        </div>
+        <div class="card green" style="border-top-width:4px;">
+          <h3 style="color:var(--green);">🚀 If We Go</h3>
+          <ul style="list-style:none; padding:0; margin-top:12px;">
+            <li style="padding:8px 0; font-size:0.92rem; line-height:1.6; color:var(--grey-mid); border-bottom:1px solid var(--grey);">$142K+ in departure packages — paid to leave</li>
+            <li style="padding:8px 0; font-size:0.92rem; line-height:1.6; color:var(--grey-mid); border-bottom:1px solid var(--grey);">Revenue potential: $1-3M/yr within 12-18 months</li>
+            <li style="padding:8px 0; font-size:0.92rem; line-height:1.6; color:var(--grey-mid); border-bottom:1px solid var(--grey);">We control our own schedule and direction</li>
+            <li style="padding:8px 0; font-size:0.92rem; line-height:1.6; color:var(--grey-mid); border-bottom:1px solid var(--grey);">No salary cap — revenue grows with the business</li>
+            <li style="padding:8px 0; font-size:0.92rem; line-height:1.6; color:var(--grey-mid);">Priority rehiring as safety net if needed</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="a4" style="text-align:center; font-size:0.95rem; color:var(--grey-mid); margin-top:24px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.7;">
+        The risk of staying isn't zero. WFA is happening regardless. The question isn't "is it safe to leave?" — it's "which option gives us the most control over what happens next?"
+      </p>
+    </div>
+  </div>
+
+  <!-- SLIDE 9 — TIMELINE -->
+  <div class="slide slide-blue" data-slide="8">
+    <div class="content" style="text-align:center;">
+      <div class="label a1" style="color:var(--gold-light);">The plan</div>
+      <h2 class="a1">How This Would Work — Step by Step</h2>
+      <div class="divider center a2" style="background:var(--gold);"></div>
+
+      <div class="timeline a3">
+        <div class="tl-step">
+          <div class="tl-dot"></div>
+          <div class="tl-line"></div>
+          <div class="tl-label">Week 1-2</div>
+          <div class="tl-desc">Lawyer confirms<br>no conflict</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot"></div>
+          <div class="tl-line"></div>
+          <div class="tl-label">Week 2-4</div>
+          <div class="tl-desc">Volunteer for WFA<br>Both departments</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot"></div>
+          <div class="tl-line"></div>
+          <div class="tl-label">Month 2</div>
+          <div class="tl-desc">Incorporate<br>Hazeydata</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot"></div>
+          <div class="tl-line"></div>
+          <div class="tl-label">Month 2-3</div>
+          <div class="tl-desc">Finish API<br>Run pilot</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot"></div>
+          <div class="tl-line"></div>
+          <div class="tl-label">Month 4-6</div>
+          <div class="tl-desc">Pitch TBS<br>Land contract</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot"></div>
+          <div class="tl-label">Month 6+</div>
+          <div class="tl-desc">Revenue<br>flowing</div>
+        </div>
+      </div>
+
+      <div class="a4" style="max-width:650px; margin:20px auto; text-align:left;">
+        <p style="font-size:0.92rem; opacity:0.8; line-height:1.7;">
+          The WFA packages fund us through Month 8-12. The pilot contract could come as early as Month 3-4. We'd likely have revenue before the runway runs out — and if not, the priority rehiring list is still active.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10 — CLOSING -->
+  <div class="slide slide-dark" data-slide="9">
+    <div class="a1" style="font-size:2.5rem; margin-bottom:16px;">🍁</div>
+    <h1 class="a1" style="text-align:center; max-width:700px;">This isn't Fred's latest idea.<br>This is our next chapter.</h1>
+    <div class="divider center a2" style="background:var(--gold);"></div>
+    <p class="subtitle a2" style="text-align:center; max-width:600px;">
+      Two public servants who know the system inside and out. A product that already works. A market that's waiting. A safety net that's already there.
+    </p>
+    <div class="a3" style="margin-top:40px; text-align:center;">
+      <p style="font-size:1.1rem; font-weight:600; opacity:0.9;">hazeydata.ai</p>
+      <p style="font-size:0.85rem; opacity:0.4; margin-top:8px;">We take the haze out of your data.</p>
+    </div>
+    <p class="a4" style="font-size:0.8rem; opacity:0.25; margin-top:48px; text-align:center; max-width:500px; line-height:1.6;">
+      This deck was prepared with love by Wilma 🦴<br>
+      who thinks you two would make an incredible team.
+    </p>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <div class="nav-brand">Hazeydata — Family Business Case</div>
+  <div class="nav-center" id="navDots"></div>
+  <div class="nav-controls">
+    <button class="nav-btn" onclick="prev()" aria-label="Previous">‹</button>
+    <div class="slide-counter" id="counter">1/10</div>
+    <button class="nav-btn" onclick="next()" aria-label="Next">›</button>
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  const dotsEl = document.getElementById('navDots');
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+  function goTo(n) {
+    if (n < 0 || n >= total || n === current) return;
+    slides[current].classList.remove('active');
+    const prev = current;
+    current = n;
+    slides[current].classList.add('active');
+    document.querySelectorAll('.nav-dot').forEach((d,i) => d.classList.toggle('active', i === current));
+    document.getElementById('counter').textContent = (current+1) + '/' + total;
+  }
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+  let tx = 0;
+  document.addEventListener('touchstart', e => tx = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const d = tx - e.changedTouches[0].clientX;
+    if (Math.abs(d) > 50) d > 0 ? next() : prev();
+  });
+</script>
+
+</body>
+</html>
