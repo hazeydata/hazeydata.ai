@@ -539,29 +539,69 @@
           </ul>
         </div>
         <div class="card" style="border-top-color:var(--gold);">
-          <h3>📋 Chantale — The Operator</h3>
+          <h3>📋 Chantale — The Business</h3>
           <ul class="check-list" style="margin-top:12px;">
-            <li><strong>SSC — the department that ran NextGen</strong></li>
-            <li>Institutional knowledge of the Dayforce implementation</li>
-            <li>Fully bilingual — handles all FR production</li>
-            <li>Organized — manages CA update cycles, client relationships</li>
-            <li>GC procurement & process expertise</li>
+            <li><strong>Fully bilingual</strong> — all French content, client communications, and documentation</li>
+            <li>10 years in the federal public service — understands how the GC works</li>
+            <li>Organized and detail-oriented — keeps operations running smoothly</li>
+            <li>Client relationship management and business communications</li>
+            <li>The operational backbone: contracts, invoicing, scheduling, QA</li>
           </ul>
         </div>
       </div>
 
       <div class="highlight-box a4" style="max-width:700px; margin:24px auto 0; text-align:center;">
         <p style="font-size:1rem; opacity:0.9; line-height:1.7;">
-          The GC gets a company led by two former public servants —<br>
-          one from the <strong>policy side</strong>, one from the <strong>systems side that tested Dayforce</strong>.<br>
-          That's not just credibility. That's the ideal team.
+          Fred can build an incredible product.<br>
+          But a product without someone running the business is just a side project.<br><br>
+          <strong>Chantale turns the side project into a company.</strong><br>
+          Bilingual content. Client relationships. Organization. Operations.<br>
+          The things Fred can't do alone — and shouldn't have to.
         </p>
       </div>
     </div>
   </div>
 
-  <!-- SLIDE 7 — RISK ANALYSIS -->
-  <div class="slide slide-white" data-slide="6">
+  <!-- SLIDE 7 — CHANTALE'S ROLE -->
+  <div class="slide slide-blue" data-slide="6">
+    <div class="content">
+      <div class="label a1" style="color:var(--gold-light);">Chantale's role</div>
+      <h2 class="a1">What Your Day Actually Looks Like</h2>
+      <div class="divider center a2" style="background:var(--gold);"></div>
+      <p class="a2" style="font-size:1rem; line-height:1.75; opacity:0.85; max-width:700px; margin:0 auto 28px; text-align:center;">
+        This isn't about learning to code or becoming a tech person.<br>It's about doing what you're already great at — for your own company.
+      </p>
+
+      <div class="three-col a3">
+        <div class="card-dark">
+          <h3>🇫🇷 Bilingual Content</h3>
+          <p>Every document, every API response, every client communication needs to be in both official languages. That's not a nice-to-have — it's a GC requirement. You own the French side completely.</p>
+        </div>
+        <div class="card-dark" style="border-top-color:var(--green-light);">
+          <h3>📊 Operations & Organization</h3>
+          <p>Track which CAs are up for renegotiation. Manage the update calendar. Handle invoicing, contracts, and scheduling. Keep the business running while Fred keeps the engine running.</p>
+        </div>
+        <div class="card-dark" style="border-top-color:var(--blue-lighter);">
+          <h3>🤝 Client Relationships</h3>
+          <p>When TBS or a department has a question, you're the first point of contact. Professional, organized, bilingual. The person who makes them feel confident they hired the right company.</p>
+        </div>
+      </div>
+
+      <div class="a4" style="max-width:650px; margin:28px auto 0; text-align:center;">
+        <p style="font-size:1rem; opacity:0.85; line-height:1.7;">
+          Every successful two-person company has a builder and an operator.<br>
+          Fred builds. You operate. <strong>Neither works without the other.</strong>
+        </p>
+        <p style="font-size:0.88rem; opacity:0.5; margin-top:12px; line-height:1.6;">
+          You've spent 10 years keeping government teams organized.<br>
+          Imagine doing the same thing — but the company is yours, the hours are yours,<br>and the upside is yours too.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 — RISK ANALYSIS -->
+  <div class="slide slide-white" data-slide="7">
     <div class="content">
       <div class="label a1">Honest risk assessment</div>
       <h2 class="a1">What Could Go Wrong — And Why It Probably Won't</h2>
@@ -643,7 +683,7 @@
   </div>
 
   <!-- SLIDE 8 — STAY vs GO -->
-  <div class="slide slide-warm" data-slide="7">
+  <div class="slide slide-warm" data-slide="8">
     <div class="content">
       <div class="label a1">The real comparison</div>
       <h2 class="a1">What Happens If We Stay vs. If We Go</h2>
@@ -679,7 +719,7 @@
   </div>
 
   <!-- SLIDE 9 — TIMELINE -->
-  <div class="slide slide-blue" data-slide="8">
+  <div class="slide slide-blue" data-slide="9">
     <div class="content" style="text-align:center;">
       <div class="label a1" style="color:var(--gold-light);">The plan</div>
       <h2 class="a1">How This Would Work — Step by Step</h2>
@@ -732,7 +772,7 @@
   </div>
 
   <!-- SLIDE 10 — CLOSING -->
-  <div class="slide slide-dark" data-slide="9">
+  <div class="slide slide-dark" data-slide="10">
     <div class="a1" style="font-size:2.5rem; margin-bottom:16px;">🍁</div>
     <h1 class="a1" style="text-align:center; max-width:700px;">This isn't Fred's latest idea.<br>This is our next chapter.</h1>
     <div class="divider center a2" style="background:var(--gold);"></div>
@@ -780,7 +820,7 @@
     current = n;
     slides[current].classList.add('active');
     document.querySelectorAll('.nav-dot').forEach((d,i) => d.classList.toggle('active', i === current));
-    document.getElementById('counter').textContent = (current+1) + '/' + total;
+    document.getElementById('counter').textContent = (current + 1) + '/' + total;
   }
   function next() { goTo(current + 1); }
   function prev() { goTo(current - 1); }
