@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ACCORD 🍁 — Moteur de validation de la conformité | hazeydata.ai</title>
+<title>ACCORD 🍁 — API des règles des conventions collectives | hazeydata.ai</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap');
 
@@ -51,6 +51,7 @@
   body.lang-fr .flow[data-lang="fr"] { display: flex !important; }
   body.lang-fr .two-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
   body.lang-fr .three-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr; }
+  body.lang-fr .four-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr 1fr; }
   body.lang-fr .stat-row[data-lang="fr"] { display: flex !important; }
 
   .lang-toggle {
@@ -234,6 +235,14 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 32px;
     max-width: 1050px;
+    width: 100%;
+  }
+
+  .four-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 24px;
+    max-width: 1100px;
     width: 100%;
   }
 
@@ -504,6 +513,7 @@
     .content-box { max-width: 100%; }
     .two-col { gap: 32px; }
     .three-col { gap: 24px; }
+    .four-col { grid-template-columns: 1fr 1fr; gap: 20px; }
     .flow-step { padding: 14px 10px; }
     .flow-step .flow-label { font-size: 0.75rem; }
     .flow-step .flow-desc { font-size: 0.65rem; }
@@ -523,6 +533,7 @@
     .small-label { font-size: 0.7rem; }
     .two-col { grid-template-columns: 1fr; gap: 24px; }
     .three-col { grid-template-columns: 1fr; gap: 20px; }
+    .four-col { grid-template-columns: 1fr; gap: 16px; }
     .stat-number { font-size: 2.2rem; }
     .stat-row { gap: 24px; flex-direction: column; align-items: center; }
     .stat { min-width: 200px; }
@@ -578,7 +589,8 @@
       font-size: 1rem;
       margin: 2px 0;
     }
-    .two-col, .three-col { gap: 16px; }
+    .two-col, .three-col, .four-col { gap: 16px; }
+    .four-col { grid-template-columns: 1fr; }
     .card, .card-dark { padding: 20px 16px; }
     .card p, .card-dark p { font-size: 0.88rem; }
     .check-list li { font-size: 0.9rem; padding-left: 28px; }
@@ -668,18 +680,18 @@
     <span class="confidential" data-lang="fr">Ébauche — Confidentiel</span>
 
     <div class="anim-1 logo-mark">ACCORD<span class="maple">🍁</span></div>
-    <div class="anim-2 logo-tagline" data-lang="en">Compliance Validation Engine</div>
-    <div class="anim-2 logo-tagline" data-lang="fr">Moteur de validation de la conformité</div>
-    <div class="anim-2 logo-tagline-fr" data-lang="en">Moteur de validation de la conformité</div>
-    <div class="anim-2 logo-tagline-fr" data-lang="fr">Compliance Validation Engine</div>
+    <div class="anim-2 logo-tagline" data-lang="en">Collective Agreement Rules API</div>
+    <div class="anim-2 logo-tagline" data-lang="fr">API des règles des conventions collectives</div>
+    <div class="anim-2 logo-tagline-fr" data-lang="en">API des règles des conventions collectives</div>
+    <div class="anim-2 logo-tagline-fr" data-lang="fr">Collective Agreement Rules API</div>
 
     <div class="divider gold center anim-3"></div>
 
-    <p class="subtitle anim-3" data-lang="en" style="text-align:center; max-width:640px;">
-      Independent pay validation for the Government of Canada's collective agreement landscape
+    <p class="subtitle anim-3" data-lang="en" style="text-align:center; max-width:680px;">
+      The T4127 for collective agreements — machine-readable CA rules for the Government of Canada's pay ecosystem
     </p>
-    <p class="subtitle anim-3" data-lang="fr" style="text-align:center; max-width:640px;">
-      Validation indépendante de la paye pour l'ensemble des conventions collectives du gouvernement du Canada
+    <p class="subtitle anim-3" data-lang="fr" style="text-align:center; max-width:680px;">
+      Le T4127 des conventions collectives — les règles des CC en format lisible par machine pour l'écosystème de la paye du gouvernement du Canada
     </p>
     <p class="anim-4" style="font-size:0.85rem; opacity:0.4; margin-top:40px;">
       hazeydata.ai &nbsp;|&nbsp; <span data-lang="en">March 2026</span><span data-lang="fr">Mars 2026</span>
@@ -727,10 +739,10 @@
       </div>
 
       <p class="anim-4" data-lang="en" style="font-size:0.95rem; color: var(--gc-grey-mid); line-height:1.7; max-width:760px;">
-        Following the Phoenix pay crisis, the Government committed to replacing its legacy pay infrastructure with Dayforce — a modern, cloud-based SaaS platform. The transition is underway, with first-wave departments expected to onboard by Winter 2027.
+        Following the Phoenix pay crisis, the Government committed to replacing its legacy pay infrastructure with Dayforce — a modern, cloud-based SaaS platform. The transition is underway, with first-wave departments expected to onboard by Winter 2027. Yet no one publishes these collective agreement rules in machine-readable form — unlike the CRA's T4127 for tax rules, which every payroll vendor consumes.
       </p>
       <p class="anim-4" data-lang="fr" style="font-size:0.95rem; color: var(--gc-grey-mid); line-height:1.7; max-width:760px;">
-        À la suite de la crise de paye Phénix, le gouvernement s'est engagé à remplacer son infrastructure de paye existante par Dayforce — une plateforme SaaS moderne infonuagique. La transition est en cours, et les ministères de la première vague devraient être intégrés d'ici l'hiver 2027.
+        À la suite de la crise de paye Phénix, le gouvernement s'est engagé à remplacer son infrastructure de paye existante par Dayforce — une plateforme SaaS moderne infonuagique. La transition est en cours, et les ministères de la première vague devraient être intégrés d'ici l'hiver 2027. Pourtant, personne ne publie ces règles de conventions collectives en format lisible par machine — contrairement au T4127 de l'ARC pour les règles fiscales, que chaque fournisseur de paye consomme.
       </p>
     </div>
   </div>
@@ -825,7 +837,7 @@
   </div>
 
   <!-- ════════════════════════════════════════════ -->
-  <!-- SLIDE 4 — THE PROPOSED SOLUTIONS (AND WHY THEY'RE HARD) -->
+  <!-- SLIDE 4 — THE GC's OPTIONS -->
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-blue" data-slide="3">
     <div class="section-num light">03</div>
@@ -879,10 +891,10 @@
       </div>
 
       <p class="anim-5" data-lang="en" style="font-size:1rem; opacity:0.85; margin-top:20px; text-align:center;">
-        <strong>No external solution currently exists</strong> to independently validate pay calculations<br>against authoritative collective agreement rules.
+        <strong>No authoritative, machine-readable source</strong> currently publishes collective agreement rules<br>for pay systems to consume — the way CRA publishes the T4127 for tax rules.
       </p>
       <p class="anim-5" data-lang="fr" style="font-size:1rem; opacity:0.85; margin-top:20px; text-align:center;">
-        <strong>Aucune solution externe n'existe actuellement</strong> pour valider de façon indépendante les calculs de paye<br>par rapport aux règles faisant autorité des conventions collectives.
+        <strong>Aucune source faisant autorité et lisible par machine</strong> ne publie actuellement les règles des conventions collectives<br>pour consommation par les systèmes de paye — comme l'ARC publie le T4127 pour les règles fiscales.
       </p>
     </div>
   </div>
@@ -901,38 +913,55 @@
       <div class="divider center anim-2"></div>
 
       <p class="subtitle anim-2" data-lang="en" style="color: var(--gc-grey-dark); max-width:720px; margin: 0 auto 36px;">
-        A Canadian-made compliance validation layer that <strong>independently verifies</strong> every pay calculation against authoritative collective agreement rules. Built to complement Dayforce — not compete with it.
+        A GC-owned authoritative API that encodes collective agreement rules in machine-readable form — consumed by Dayforce, available to any pay system. <strong>The T4127 for collective agreements.</strong>
       </p>
       <p class="subtitle anim-2" data-lang="fr" style="color: var(--gc-grey-dark); max-width:720px; margin: 0 auto 36px;">
-        Une couche de validation de la conformité fabriquée au Canada qui <strong>vérifie de façon indépendante</strong> chaque calcul de paye par rapport aux règles faisant autorité des conventions collectives. Conçu pour compléter Dayforce — et non le concurrencer.
+        Une API faisant autorité, propriété du GC, qui encode les règles des conventions collectives en format lisible par machine — consommée par Dayforce, disponible pour tout système de paye. <strong>Le T4127 des conventions collectives.</strong>
       </p>
 
-      <div class="three-col anim-3" style="text-align:left;">
+      <div class="four-col anim-3" data-lang="en" style="text-align:left;">
         <div class="card">
-          <h3 data-lang="en">🔍 Validate</h3>
-          <h3 data-lang="fr">🔍 Valider</h3>
-          <p data-lang="en">Independently verify pay run outputs against the authoritative rules encoded in collective agreements, TBS directives, and case law.</p>
-          <p data-lang="fr">Vérifier de façon indépendante les résultats des cycles de paye par rapport aux règles faisant autorité encodées dans les conventions collectives, les directives du SCT et la jurisprudence.</p>
+          <h3>📐 Specify</h3>
+          <p>Helps GC specify exactly what Dayforce cloud extensions need — the authoritative rules source for pre-implementation requirements.</p>
         </div>
         <div class="card" style="border-left-color: var(--accent-teal);">
-          <h3 data-lang="en">⚡ Flag</h3>
-          <h3 data-lang="fr">⚡ Signaler</h3>
-          <p data-lang="en">Identify discrepancies before they reach employees. Mass salary revisions, acting pay, rate-of-pay determinations — the hard problems.</p>
-          <p data-lang="fr">Identifier les écarts avant qu'ils ne parviennent aux employés. Révisions salariales massives, rémunération d'intérimaire, détermination du taux de rémunération — les problèmes complexes.</p>
+          <h3>✅ Validate</h3>
+          <p>Checks Dayforce output during parallel runs — independent verification against encoded CA rules during implementation.</p>
         </div>
         <div class="card" style="border-left-color: var(--accent-gold);">
-          <h3 data-lang="en">📋 Audit</h3>
-          <h3 data-lang="fr">📋 Vérifier</h3>
-          <p data-lang="en">Provide a complete, traceable compliance trail. Every calculation tied to its authoritative source — article, clause, and provision.</p>
-          <p data-lang="fr">Fournir une piste de conformité complète et traçable. Chaque calcul lié à sa source faisant autorité — article, clause et disposition.</p>
+          <h3>💬 Assist</h3>
+          <p>Answers compensation advisor questions with citations — article, clause, and provision — post-implementation.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-green);">
+          <h3>🔄 Detect</h3>
+          <p>Flags rule changes when CAs are renegotiated — ongoing monitoring keeps all downstream systems current.</p>
         </div>
       </div>
 
-      <p class="anim-4" data-lang="en" style="font-size:0.95rem; color:var(--gc-grey-mid); margin-top:32px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.65;">
-        ACCORD does not replace Dayforce. It provides the <strong>independent assurance layer</strong> that post-Phoenix governance demands.
+      <div class="four-col anim-3" data-lang="fr" style="text-align:left;">
+        <div class="card">
+          <h3>📐 Spécifier</h3>
+          <p>Aide le GC à spécifier exactement ce que les extensions infonuagiques Dayforce doivent faire — la source de règles faisant autorité pour les exigences de pré-implantation.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-teal);">
+          <h3>✅ Valider</h3>
+          <p>Vérifie les résultats de Dayforce lors des exécutions parallèles — vérification indépendante par rapport aux règles encodées des CC pendant l'implantation.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-gold);">
+          <h3>💬 Assister</h3>
+          <p>Répond aux questions des conseillers en rémunération avec citations — article, clause et disposition — après l'implantation.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-green);">
+          <h3>🔄 Détecter</h3>
+          <p>Signale les changements de règles lors de la renégociation des CC — la surveillance continue garde tous les systèmes en aval à jour.</p>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:0.95rem; color:var(--gc-grey-mid); margin-top:32px; max-width:680px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        ACCORD doesn't replace Dayforce. It provides the <strong>authoritative CA rules data layer</strong> that Dayforce and any future pay system consumes — like CRA tax tables, but for collective agreements.
       </p>
-      <p class="anim-4" data-lang="fr" style="font-size:0.95rem; color:var(--gc-grey-mid); margin-top:32px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.65;">
-        ACCORD ne remplace pas Dayforce. Il fournit la <strong>couche d'assurance indépendante</strong> que la gouvernance post-Phénix exige.
+      <p class="anim-4" data-lang="fr" style="font-size:0.95rem; color:var(--gc-grey-mid); margin-top:32px; max-width:680px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        ACCORD ne remplace pas Dayforce. Il fournit la <strong>couche de données de règles CC faisant autorité</strong> que Dayforce et tout futur système de paye consomme — comme les tables fiscales de l'ARC, mais pour les conventions collectives.
       </p>
     </div>
   </div>
@@ -949,112 +978,115 @@
       <h2 class="anim-1" data-lang="fr">Comment ACCORD fonctionne</h2>
       <div class="divider gold anim-2"></div>
 
+      <p class="anim-2" data-lang="en" style="font-size:0.95rem; opacity:0.75; margin-bottom:8px; text-align:center;">System-to-system: Dayforce calls <code style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:3px;">/resolve</code> &nbsp;|&nbsp; Advisor-facing: comp advisors call <code style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:3px;">/explain</code></p>
+      <p class="anim-2" data-lang="fr" style="font-size:0.95rem; opacity:0.75; margin-bottom:8px; text-align:center;">Système à système : Dayforce appelle <code style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:3px;">/resolve</code> &nbsp;|&nbsp; Conseiller : les conseillers en rémunération appellent <code style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:3px;">/explain</code></p>
+
       <div class="flow anim-3" data-lang="en">
         <div class="flow-step">
-          <div class="flow-icon">🏛️</div>
-          <div class="flow-label">Dayforce</div>
-          <div class="flow-desc">Produces pay run</div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step" style="border-color:var(--accent-gold); border-width:2px;">
-          <div class="flow-icon">📤</div>
-          <div class="flow-label">Export</div>
-          <div class="flow-desc">Pay data via API / file</div>
+          <div class="flow-icon">📝</div>
+          <div class="flow-label">CA Renegotiated</div>
+          <div class="flow-desc">New agreement signed</div>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-step" style="background:rgba(200,169,81,0.15); border-color:var(--accent-gold);">
           <div class="flow-icon">🍁</div>
-          <div class="flow-label">ACCORD Engine</div>
-          <div class="flow-desc">Validates against CA rules</div>
+          <div class="flow-label">ACCORD API</div>
+          <div class="flow-desc">Rules encoded &amp; updated</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-gold); border-width:2px;">
+          <div class="flow-icon">🏛️</div>
+          <div class="flow-label">Dayforce Calls API</div>
+          <div class="flow-desc">Like consuming CRA tax tables</div>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-step">
-          <div class="flow-icon">📊</div>
-          <div class="flow-label">Report</div>
-          <div class="flow-desc">Discrepancies &amp; audit trail</div>
+          <div class="flow-icon">💰</div>
+          <div class="flow-label">Correct Pay</div>
+          <div class="flow-desc">Calculation with cited rules</div>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-step">
-          <div class="flow-icon">✅</div>
-          <div class="flow-label">Confidence</div>
-          <div class="flow-desc">Verified pay release</div>
+          <div class="flow-icon">👤</div>
+          <div class="flow-label">Advisor Gets Answer</div>
+          <div class="flow-desc">With article &amp; clause refs</div>
         </div>
       </div>
 
       <div class="flow anim-3" data-lang="fr">
         <div class="flow-step">
-          <div class="flow-icon">🏛️</div>
-          <div class="flow-label">Dayforce</div>
-          <div class="flow-desc">Produit le cycle de paye</div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step" style="border-color:var(--accent-gold); border-width:2px;">
-          <div class="flow-icon">📤</div>
-          <div class="flow-label">Exportation</div>
-          <div class="flow-desc">Données de paye via API / fichier</div>
+          <div class="flow-icon">📝</div>
+          <div class="flow-label">CC renégociée</div>
+          <div class="flow-desc">Nouvelle convention signée</div>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-step" style="background:rgba(200,169,81,0.15); border-color:var(--accent-gold);">
           <div class="flow-icon">🍁</div>
-          <div class="flow-label">Moteur ACCORD</div>
-          <div class="flow-desc">Validation selon les règles des CC</div>
+          <div class="flow-label">API ACCORD</div>
+          <div class="flow-desc">Règles encodées et mises à jour</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-gold); border-width:2px;">
+          <div class="flow-icon">🏛️</div>
+          <div class="flow-label">Dayforce appelle l'API</div>
+          <div class="flow-desc">Comme les tables fiscales de l'ARC</div>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-step">
-          <div class="flow-icon">📊</div>
-          <div class="flow-label">Rapport</div>
-          <div class="flow-desc">Écarts et piste de vérification</div>
+          <div class="flow-icon">💰</div>
+          <div class="flow-label">Paye exacte</div>
+          <div class="flow-desc">Calcul avec règles citées</div>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-step">
-          <div class="flow-icon">✅</div>
-          <div class="flow-label">Confiance</div>
-          <div class="flow-desc">Émission de paye vérifiée</div>
+          <div class="flow-icon">👤</div>
+          <div class="flow-label">Conseiller obtient réponse</div>
+          <div class="flow-desc">Avec réf. d'article et clause</div>
         </div>
       </div>
 
       <div class="two-col anim-4" data-lang="en" style="margin-top:36px;">
         <div>
-          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">The Compliance Engine</h3>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">The CA Rules API</h3>
           <ul class="check-list white-checks" style="opacity:0.85;">
             <li>Encodes authoritative collective agreement pay rules</li>
             <li>Interprets TBS directives and information notices</li>
             <li>Incorporates relevant case law and arbitration decisions</li>
             <li>Handles retroactive calculations and interaction effects</li>
-            <li>Supports all ~150 federal collective agreements</li>
+            <li>27 of ~150 GC CAs encoded (100% of TBS-negotiated CPA agreements); extensible to all</li>
           </ul>
         </div>
         <div>
-          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">Deployment Model</h3>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">API Architecture</h3>
           <ul class="check-list white-checks" style="opacity:0.85;">
-            <li>Cloud-hosted SaaS — Canadian data residency</li>
-            <li>RESTful API for system-to-system integration</li>
-            <li>Web dashboard for departmental pay teams</li>
-            <li>Per-department onboarding and configuration</li>
-            <li>Protected B compliant infrastructure</li>
+            <li>REST API — consumed by Dayforce like CRA tax tables</li>
+            <li><code style="background:rgba(255,255,255,0.1); padding:1px 5px; border-radius:3px;">/resolve</code> endpoint for system-to-system pay calculations</li>
+            <li><code style="background:rgba(255,255,255,0.1); padding:1px 5px; border-radius:3px;">/explain</code> endpoint for comp advisor queries with citations</li>
+            <li>Canadian data residency — Protected B compliant</li>
+            <li>Fully bilingual API responses (EN/FR)</li>
           </ul>
         </div>
       </div>
 
       <div class="two-col anim-4" data-lang="fr" style="margin-top:36px;">
         <div>
-          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">Le moteur de conformité</h3>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">L'API des règles des CC</h3>
           <ul class="check-list white-checks" style="opacity:0.85;">
             <li>Encode les règles de paye faisant autorité des conventions collectives</li>
             <li>Interprète les directives et les avis d'information du SCT</li>
             <li>Intègre la jurisprudence et les décisions arbitrales pertinentes</li>
             <li>Gère les calculs rétroactifs et les effets d'interaction</li>
-            <li>Prend en charge les quelque 150 conventions collectives fédérales</li>
+            <li>27 des ~150 CC du GC encodées (100 % des CC de l'APC négociées par le SCT); extensible à toutes</li>
           </ul>
         </div>
         <div>
-          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">Modèle de déploiement</h3>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">Architecture de l'API</h3>
           <ul class="check-list white-checks" style="opacity:0.85;">
-            <li>SaaS infonuagique — résidence des données au Canada</li>
-            <li>API RESTful pour l'intégration système à système</li>
-            <li>Tableau de bord Web pour les équipes de paye ministérielles</li>
-            <li>Intégration et configuration par ministère</li>
-            <li>Infrastructure conforme au niveau Protégé B</li>
+            <li>API REST — consommée par Dayforce comme les tables fiscales de l'ARC</li>
+            <li>Point de terminaison <code style="background:rgba(255,255,255,0.1); padding:1px 5px; border-radius:3px;">/resolve</code> pour les calculs de paye système à système</li>
+            <li>Point de terminaison <code style="background:rgba(255,255,255,0.1); padding:1px 5px; border-radius:3px;">/explain</code> pour les requêtes des conseillers avec citations</li>
+            <li>Résidence des données au Canada — conforme au niveau Protégé B</li>
+            <li>Réponses API entièrement bilingues (EN/FR)</li>
           </ul>
         </div>
       </div>
@@ -1070,15 +1102,15 @@
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en">Validation</div>
       <div class="small-label anim-1" data-lang="fr">Validation</div>
-      <h2 class="anim-1" data-lang="en">Engine Validated Against Real-World Scenarios</h2>
-      <h2 class="anim-1" data-lang="fr">Moteur validé contre des scénarios réels</h2>
+      <h2 class="anim-1" data-lang="en">API Validated Against Real-World Scenarios</h2>
+      <h2 class="anim-1" data-lang="fr">API validée contre des scénarios réels</h2>
       <div class="divider anim-2"></div>
 
       <p class="anim-2" data-lang="en" style="font-size:1rem; line-height:1.7; color: var(--gc-grey-dark); margin-bottom:28px; max-width:760px;">
-        The ACCORD compliance engine has been validated against <strong>7 critical test scenarios</strong> drawn from the most complex areas of federal pay administration — achieving a 100% resolution rate using only authoritative public sources.
+        The ACCORD rules API has been validated against <strong>7 critical test scenarios</strong> drawn from the most complex areas of federal pay administration — achieving a 100% resolution rate using only authoritative public sources.
       </p>
       <p class="anim-2" data-lang="fr" style="font-size:1rem; line-height:1.7; color: var(--gc-grey-dark); margin-bottom:28px; max-width:760px;">
-        Le moteur de conformité ACCORD a été validé contre <strong>7 scénarios de test critiques</strong> tirés des domaines les plus complexes de l'administration de la paye fédérale — atteignant un taux de résolution de 100 % en utilisant uniquement des sources publiques faisant autorité.
+        L'API de règles ACCORD a été validée contre <strong>7 scénarios de test critiques</strong> tirés des domaines les plus complexes de l'administration de la paye fédérale — atteignant un taux de résolution de 100 % en utilisant uniquement des sources publiques faisant autorité.
       </p>
 
       <div class="two-col anim-3">
@@ -1182,35 +1214,35 @@
         <div class="card-dark">
           <h3 data-lang="en">🛡️ Post-Phoenix Assurance</h3>
           <h3 data-lang="fr">🛡️ Assurance post-Phénix</h3>
-          <p data-lang="en">Every department migrating to Dayforce needs confidence that pay will be accurate from day one. ACCORD provides independent, automated verification — the "second pair of eyes" that post-Phoenix governance demands.</p>
-          <p data-lang="fr">Chaque ministère migrant vers Dayforce a besoin de l'assurance que la paye sera exacte dès le premier jour. ACCORD fournit une vérification indépendante et automatisée — le « deuxième regard » qu'exige la gouvernance post-Phénix.</p>
+          <p data-lang="en">Every department migrating to Dayforce needs confidence that pay will be accurate from day one. ACCORD provides the authoritative rules source — the "single source of truth" that post-Phoenix governance demands.</p>
+          <p data-lang="fr">Chaque ministère migrant vers Dayforce a besoin de l'assurance que la paye sera exacte dès le premier jour. ACCORD fournit la source de règles faisant autorité — la « source unique de vérité » qu'exige la gouvernance post-Phénix.</p>
         </div>
         <div class="card-dark">
-          <h3 data-lang="en">🤝 Complements Dayforce</h3>
-          <h3 data-lang="fr">🤝 Complémentaire à Dayforce</h3>
-          <p data-lang="en">ACCORD does not replace or compete with Dayforce. It validates Dayforce's output against the same rules the GC already operates under. Both systems are stronger together.</p>
-          <p data-lang="fr">ACCORD ne remplace pas et ne concurrence pas Dayforce. Il valide les résultats de Dayforce par rapport aux mêmes règles que le GC applique déjà. Les deux systèmes sont plus forts ensemble.</p>
+          <h3 data-lang="en">🔓 Vendor Agnostic</h3>
+          <h3 data-lang="fr">🔓 Indépendant du fournisseur</h3>
+          <p data-lang="en">If GC ever moves off Dayforce, the API still works. CA knowledge isn't trapped in one vendor's platform. Update once when a CA is renegotiated — all downstream systems get new rules automatically.</p>
+          <p data-lang="fr">Si le GC quitte un jour Dayforce, l'API fonctionne toujours. Les connaissances des CC ne sont pas captives d'une seule plateforme. Mise à jour unique lors de la renégociation d'une CC — tous les systèmes en aval obtiennent les nouvelles règles automatiquement.</p>
         </div>
         <div class="card-dark">
           <h3 data-lang="en">⏱️ De-risks the Transition</h3>
           <h3 data-lang="fr">⏱️ Réduction des risques de la transition</h3>
-          <p data-lang="en">As departments onboard in waves, ACCORD catches discrepancies during parallel runs and early production — when the cost of errors is highest and trust is most fragile.</p>
-          <p data-lang="fr">À mesure que les ministères sont intégrés par vagues, ACCORD détecte les écarts pendant les exécutions parallèles et la production initiale — lorsque le coût des erreurs est le plus élevé et que la confiance est la plus fragile.</p>
+          <p data-lang="en">As departments onboard in waves, ACCORD validates calculations during parallel runs and early production — when the cost of errors is highest and trust is most fragile.</p>
+          <p data-lang="fr">À mesure que les ministères sont intégrés par vagues, ACCORD valide les calculs pendant les exécutions parallèles et la production initiale — lorsque le coût des erreurs est le plus élevé et que la confiance est la plus fragile.</p>
         </div>
       </div>
 
       <div class="two-col anim-4" style="margin-top:36px;">
         <div class="card-dark" style="border-left-color: var(--accent-teal);">
-          <h3 data-lang="en" style="color:#7dd3e8;">📉 Reduces Backlog Risk</h3>
-          <h3 data-lang="fr" style="color:#7dd3e8;">📉 Réduction du risque d'arriéré</h3>
-          <p data-lang="en">Phoenix still carries ~370,000 unresolved transactions. Preventing new errors during migration keeps the backlog from growing. ACCORD is the firewall.</p>
-          <p data-lang="fr">Phénix compte encore environ 370 000 transactions non résolues. Prévenir les nouvelles erreurs pendant la migration empêche l'arriéré de s'accroître. ACCORD est le pare-feu.</p>
+          <h3 data-lang="en" style="color:#7dd3e8;">🔄 Single Source of Truth</h3>
+          <h3 data-lang="fr" style="color:#7dd3e8;">🔄 Source unique de vérité</h3>
+          <p data-lang="en">Update once when a collective agreement is renegotiated — every downstream system, every department, every calculation gets the new rules. No more per-department re-interpretation of the same CA provisions.</p>
+          <p data-lang="fr">Mise à jour unique lors de la renégociation d'une convention collective — chaque système en aval, chaque ministère, chaque calcul obtient les nouvelles règles. Plus de réinterprétation par ministère des mêmes dispositions des CC.</p>
         </div>
         <div class="card-dark" style="border-left-color: var(--accent-green);">
           <h3 data-lang="en" style="color:#81c784;">🔎 Audit-Ready Compliance</h3>
           <h3 data-lang="fr" style="color:#81c784;">🔎 Conformité prête pour la vérification</h3>
-          <p data-lang="en">Every validation produces a traceable audit trail — which collective agreement article, which TBS directive, which rule. Ready for OAG review from day one.</p>
-          <p data-lang="fr">Chaque validation produit une piste de vérification traçable — quel article de convention collective, quelle directive du SCT, quelle règle. Prêt pour l'examen du BVG dès le premier jour.</p>
+          <p data-lang="en">Every API response produces a traceable audit trail — which collective agreement article, which TBS directive, which rule. Ready for OAG review from day one.</p>
+          <p data-lang="fr">Chaque réponse de l'API produit une piste de vérification traçable — quel article de convention collective, quelle directive du SCT, quelle règle. Prêt pour l'examen du BVG dès le premier jour.</p>
         </div>
       </div>
     </div>
@@ -1225,57 +1257,57 @@
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en">Market Opportunity</div>
       <div class="small-label anim-1" data-lang="fr">Occasion de marché</div>
-      <h2 class="anim-1" data-lang="en">The Gap in the Market Is Well-Documented</h2>
-      <h2 class="anim-1" data-lang="fr">La lacune dans le marché est bien documentée</h2>
+      <h2 class="anim-1" data-lang="en">The T4127 Precedent: Central Infrastructure, Not Per-Department SaaS</h2>
+      <h2 class="anim-1" data-lang="fr">Le précédent T4127 : infrastructure centrale, pas un SaaS par ministère</h2>
       <div class="divider anim-2"></div>
 
       <div class="two-col anim-3">
         <div>
           <p data-lang="en" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark); margin-bottom:24px;">
-            Dayforce is a <strong>global</strong> human capital management platform. Its strength is breadth — serving thousands of organizations across industries worldwide.
+            CRA publishes the T4127 (Payroll Deductions Formulas) — authoritative tax rules consumed by every payroll vendor in Canada. <strong>No equivalent exists for collective agreement rules.</strong>
           </p>
           <p data-lang="fr" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark); margin-bottom:24px;">
-            Dayforce est une plateforme <strong>mondiale</strong> de gestion du capital humain. Sa force est son étendue — elle dessert des milliers d'organisations dans toutes les industries à l'échelle mondiale.
+            L'ARC publie le T4127 (Formules pour le calcul des retenues sur la paie) — les règles fiscales faisant autorité consommées par chaque fournisseur de paye au Canada. <strong>Aucun équivalent n'existe pour les règles des conventions collectives.</strong>
           </p>
           <p data-lang="en" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark); margin-bottom:24px;">
-            What it does not do — <strong>by design</strong> — is deeply interpret the Government of Canada's unique collective agreement landscape. This is not a deficiency. It is a scope boundary.
+            ACCORD follows this proven model: a <strong>single central infrastructure contract</strong> with TBS/PSPC to build and maintain the authoritative CA Rules API. Not selling to 100 departments individually — providing shared infrastructure that all departments consume.
           </p>
           <p data-lang="fr" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark); margin-bottom:24px;">
-            Ce qu'elle ne fait pas — <strong>par conception</strong> — c'est interpréter en profondeur le paysage unique des conventions collectives du gouvernement du Canada. Ce n'est pas une lacune. C'est une limite de portée.
+            ACCORD suit ce modèle éprouvé : un <strong>contrat d'infrastructure central unique</strong> avec le SCT/SPAC pour construire et maintenir l'API de règles CC faisant autorité. Pas de vente à 100 ministères individuellement — fournir une infrastructure partagée que tous les ministères consomment.
           </p>
           <p data-lang="en" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark);">
-            No Canadian SaaS company currently fills this gap. The domain expertise required — collective agreement interpretation, TBS pay policy, federal classification systems — exists almost exclusively within the public service itself.
+            The GC already pays for this exact pattern. The T4127 is central infrastructure that every vendor depends on. Collective agreement rules deserve the same standard.
           </p>
           <p data-lang="fr" style="font-size:1rem; line-height:1.75; color: var(--gc-grey-dark);">
-            Aucune entreprise SaaS canadienne ne comble actuellement cette lacune. L'expertise de domaine requise — interprétation des conventions collectives, politique de paye du SCT, systèmes de classification fédéraux — existe presque exclusivement au sein de la fonction publique elle-même.
+            Le GC paie déjà pour ce modèle exact. Le T4127 est une infrastructure centrale dont chaque fournisseur dépend. Les règles des conventions collectives méritent la même norme.
           </p>
         </div>
         <div>
           <div data-lang="en" style="background:var(--gc-blue); border-radius:12px; padding:32px; color:white; margin-bottom:24px;">
-            <h3 style="color:var(--accent-gold-light); font-size:1rem; margin-bottom:20px;">Addressable Market</h3>
+            <h3 style="color:var(--accent-gold-light); font-size:1rem; margin-bottom:20px;">Central Infrastructure Model</h3>
             <table class="rev-table" style="color:white;">
-              <tr><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Tier</th><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Depts</th><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Annual Value</th></tr>
-              <tr><td style="border-color:rgba(255,255,255,0.1);">Large (10K+ employees)</td><td style="border-color:rgba(255,255,255,0.1);">~15</td><td style="border-color:rgba(255,255,255,0.1);">$100–200K</td></tr>
-              <tr><td style="border-color:rgba(255,255,255,0.1);">Medium (1K–10K)</td><td style="border-color:rgba(255,255,255,0.1);">~35</td><td style="border-color:rgba(255,255,255,0.1);">$50–100K</td></tr>
-              <tr><td style="border-color:rgba(255,255,255,0.1);">Small (&lt;1K)</td><td style="border-color:rgba(255,255,255,0.1);">~50</td><td style="border-color:rgba(255,255,255,0.1);">$25–50K</td></tr>
-              <tr><td style="border-color:var(--accent-gold);">Full GC Adoption</td><td style="border-color:var(--accent-gold);">100+</td><td style="border-color:var(--accent-gold); color:var(--accent-gold-light);">$5–10M+/yr</td></tr>
+              <tr><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Component</th><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Description</th></tr>
+              <tr><td style="border-color:rgba(255,255,255,0.1);">Build &amp; Encode</td><td style="border-color:rgba(255,255,255,0.1);">Encode 27 CPA CAs + extensible framework</td></tr>
+              <tr><td style="border-color:rgba(255,255,255,0.1);">Operate &amp; Maintain</td><td style="border-color:rgba(255,255,255,0.1);">Ongoing rule updates as CAs renegotiated</td></tr>
+              <tr><td style="border-color:rgba(255,255,255,0.1);">Extend Coverage</td><td style="border-color:rgba(255,255,255,0.1);">Scale to all ~150 CAs incl. separate employers</td></tr>
+              <tr><td style="border-color:var(--accent-gold);">GC Ownership</td><td style="border-color:var(--accent-gold); color:var(--accent-gold-light);">GC owns the API; Hazeydata builds &amp; operates</td></tr>
             </table>
           </div>
           <div data-lang="fr" style="background:var(--gc-blue); border-radius:12px; padding:32px; color:white; margin-bottom:24px;">
-            <h3 style="color:var(--accent-gold-light); font-size:1rem; margin-bottom:20px;">Marché adressable</h3>
+            <h3 style="color:var(--accent-gold-light); font-size:1rem; margin-bottom:20px;">Modèle d'infrastructure centrale</h3>
             <table class="rev-table" style="color:white;">
-              <tr><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Niveau</th><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Min.</th><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Valeur annuelle</th></tr>
-              <tr><td style="border-color:rgba(255,255,255,0.1);">Grand (10 000+ employés)</td><td style="border-color:rgba(255,255,255,0.1);">~15</td><td style="border-color:rgba(255,255,255,0.1);">100 000 $–200 000 $</td></tr>
-              <tr><td style="border-color:rgba(255,255,255,0.1);">Moyen (1 000–10 000)</td><td style="border-color:rgba(255,255,255,0.1);">~35</td><td style="border-color:rgba(255,255,255,0.1);">50 000 $–100 000 $</td></tr>
-              <tr><td style="border-color:rgba(255,255,255,0.1);">Petit (&lt;1 000)</td><td style="border-color:rgba(255,255,255,0.1);">~50</td><td style="border-color:rgba(255,255,255,0.1);">25 000 $–50 000 $</td></tr>
-              <tr><td style="border-color:var(--accent-gold);">Adoption complète du GC</td><td style="border-color:var(--accent-gold);">100+</td><td style="border-color:var(--accent-gold); color:var(--accent-gold-light);">5–10 M$+/an</td></tr>
+              <tr><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Composante</th><th style="color:var(--accent-gold-light); border-color:rgba(255,255,255,0.2);">Description</th></tr>
+              <tr><td style="border-color:rgba(255,255,255,0.1);">Construire et encoder</td><td style="border-color:rgba(255,255,255,0.1);">Encoder 27 CC de l'APC + cadre extensible</td></tr>
+              <tr><td style="border-color:rgba(255,255,255,0.1);">Exploiter et maintenir</td><td style="border-color:rgba(255,255,255,0.1);">Mises à jour continues lors des renégociations</td></tr>
+              <tr><td style="border-color:rgba(255,255,255,0.1);">Étendre la couverture</td><td style="border-color:rgba(255,255,255,0.1);">Extension aux ~150 CC incl. employeurs distincts</td></tr>
+              <tr><td style="border-color:var(--accent-gold);">Propriété du GC</td><td style="border-color:var(--accent-gold); color:var(--accent-gold-light);">Le GC possède l'API; Hazeydata construit et exploite</td></tr>
             </table>
           </div>
           <p data-lang="en" style="font-size:0.85rem; color:var(--gc-grey-mid); line-height:1.6;">
-            Per-department SaaS pricing, scaled by headcount and collective agreement complexity. Separate agency and provincial opportunities expand the market further.
+            Single TBS/PSPC contract. GC-owned authoritative service. Hazeydata as builder and operator — the same model used for GC's most critical shared infrastructure.
           </p>
           <p data-lang="fr" style="font-size:0.85rem; color:var(--gc-grey-mid); line-height:1.6;">
-            Tarification SaaS par ministère, proportionnelle à l'effectif et à la complexité des conventions collectives. Des occasions distinctes avec les organismes et les provinces élargissent davantage le marché.
+            Contrat unique SCT/SPAC. Service faisant autorité, propriété du GC. Hazeydata comme constructeur et opérateur — le même modèle utilisé pour les infrastructures partagées les plus critiques du GC.
           </p>
         </div>
       </div>
@@ -1331,7 +1363,7 @@
   </div>
 
   <!-- ════════════════════════════════════════════ -->
-  <!-- SLIDE 11 — ROADMAP / NEXT STEPS -->
+  <!-- SLIDE 11 — ENGAGEMENT MODEL -->
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-white" data-slide="10">
     <div class="gc-bar"></div>
@@ -1345,39 +1377,39 @@
 
       <div class="three-col anim-3">
         <div class="card" style="border-left-color: var(--gc-blue-lighter); position:relative;">
-          <span class="pill pill-blue" data-lang="en" style="margin-bottom:16px;">Phase 1 — 3 months</span>
-          <span class="pill pill-blue" data-lang="fr" style="margin-bottom:16px;">Phase 1 — 3 mois</span>
-          <h3 data-lang="en" style="margin-top:8px;">Pilot Department</h3>
-          <h3 data-lang="fr" style="margin-top:8px;">Ministère pilote</h3>
-          <p data-lang="en">Deploy ACCORD alongside Dayforce parallel pay runs for a single willing department. Validate accuracy. Measure discrepancy detection. Build the case.</p>
-          <p data-lang="fr">Déployer ACCORD en parallèle avec les exécutions de paye Dayforce pour un seul ministère volontaire. Valider l'exactitude. Mesurer la détection des écarts. Constituer le dossier.</p>
+          <span class="pill pill-blue" data-lang="en" style="margin-bottom:16px;">Phase 1 — Pilot</span>
+          <span class="pill pill-blue" data-lang="fr" style="margin-bottom:16px;">Phase 1 — Pilote</span>
+          <h3 data-lang="en" style="margin-top:8px;">Validate with One Department</h3>
+          <h3 data-lang="fr" style="margin-top:8px;">Valider avec un ministère</h3>
+          <p data-lang="en">Deploy ACCORD API alongside Dayforce parallel pay runs for a single department. Validate API accuracy against real scenarios. Demonstrate the T4127 model works for CA rules.</p>
+          <p data-lang="fr">Déployer l'API ACCORD en parallèle avec les exécutions de paye Dayforce pour un seul ministère. Valider l'exactitude de l'API contre des scénarios réels. Démontrer que le modèle T4127 fonctionne pour les règles des CC.</p>
         </div>
         <div class="card" style="border-left-color: var(--accent-gold); position:relative;">
-          <span class="pill pill-gold" data-lang="en" style="margin-bottom:16px;">Phase 2 — 6 months</span>
-          <span class="pill pill-gold" data-lang="fr" style="margin-bottom:16px;">Phase 2 — 6 mois</span>
-          <h3 data-lang="en" style="margin-top:8px;">First-Wave Expansion</h3>
-          <h3 data-lang="fr" style="margin-top:8px;">Expansion de la première vague</h3>
-          <p data-lang="en">Extend to first-wave departments onboarding to Dayforce. Integrate via API. Refine the engine against production data. Establish operational SLAs.</p>
-          <p data-lang="fr">Étendre aux ministères de la première vague intégrant Dayforce. Intégration via API. Raffiner le moteur avec les données de production. Établir les ententes de niveau de service opérationnelles.</p>
+          <span class="pill pill-gold" data-lang="en" style="margin-bottom:16px;">Phase 2 — TBS/PSPC Engagement</span>
+          <span class="pill pill-gold" data-lang="fr" style="margin-bottom:16px;">Phase 2 — Engagement SCT/SPAC</span>
+          <h3 data-lang="en" style="margin-top:8px;">Propose GC Ownership</h3>
+          <h3 data-lang="fr" style="margin-top:8px;">Proposer la propriété du GC</h3>
+          <p data-lang="en">Formal TBS/PSPC engagement to propose GC ownership of the CA Rules API. Hazeydata as builder and operator. Central infrastructure contract — not per-department procurement.</p>
+          <p data-lang="fr">Engagement formel SCT/SPAC pour proposer la propriété du GC de l'API de règles des CC. Hazeydata comme constructeur et opérateur. Contrat d'infrastructure central — pas d'approvisionnement par ministère.</p>
         </div>
         <div class="card" style="border-left-color: var(--accent-green); position:relative;">
-          <span class="pill pill-green" data-lang="en" style="margin-bottom:16px;">Phase 3 — 12+ months</span>
-          <span class="pill pill-green" data-lang="fr" style="margin-bottom:16px;">Phase 3 — 12+ mois</span>
-          <h3 data-lang="en" style="margin-top:8px;">Enterprise Deployment</h3>
-          <h3 data-lang="fr" style="margin-top:8px;">Déploiement à l'échelle du GC</h3>
-          <p data-lang="en">Scale across the GC. Per-department onboarding. Full compliance dashboard. Ongoing CA rule updates as new agreements are signed.</p>
-          <p data-lang="fr">Déploiement à l'échelle du GC. Intégration par ministère. Tableau de bord de conformité complet. Mises à jour continues des règles des CC à mesure que de nouvelles conventions sont signées.</p>
+          <span class="pill pill-green" data-lang="en" style="margin-bottom:16px;">Phase 3 — Ceridian Partnership</span>
+          <span class="pill pill-green" data-lang="fr" style="margin-bottom:16px;">Phase 3 — Partenariat Ceridian</span>
+          <h3 data-lang="en" style="margin-top:8px;">Data Source for Cloud Extensions</h3>
+          <h3 data-lang="fr" style="margin-top:8px;">Source de données pour extensions infonuagiques</h3>
+          <p data-lang="en">Position ACCORD as the authoritative data source for Dayforce cloud extensions. CA rules published once, consumed by all systems. Ceridian builds extensions; ACCORD provides the rules.</p>
+          <p data-lang="fr">Positionner ACCORD comme la source de données faisant autorité pour les extensions infonuagiques Dayforce. Règles CC publiées une fois, consommées par tous les systèmes. Ceridian construit les extensions; ACCORD fournit les règles.</p>
         </div>
       </div>
 
       <div class="anim-4" style="background: var(--gc-blue); border-radius:12px; padding:28px 36px; color:white; margin-top:32px; max-width:800px; margin-left:auto; margin-right:auto;">
-        <h3 data-lang="en" style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.1rem;">Immediate Next Step</h3>
-        <h3 data-lang="fr" style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.1rem;">Prochaine étape immédiate</h3>
+        <h3 data-lang="en" style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.1rem;">The Proposal</h3>
+        <h3 data-lang="fr" style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.1rem;">La proposition</h3>
         <p data-lang="en" style="font-size:1rem; opacity:0.9; line-height:1.7;">
-          We are seeking a <strong>pilot partner department</strong> — ideally one already participating in Dayforce parallel pay validation — to demonstrate ACCORD's value in a live environment. No disruption to existing systems. Low risk. High insight.
+          We are proposing a <strong>GC-owned authoritative CA Rules API</strong> — built and operated by Hazeydata, owned by the Government of Canada. The same model as CRA's T4127: authoritative rules published centrally for all pay system vendors to consume. 27 of ~150 CAs encoded today; 100% of TBS-negotiated Core Public Administration agreements covered.
         </p>
         <p data-lang="fr" style="font-size:1rem; opacity:0.9; line-height:1.7;">
-          Nous recherchons un <strong>ministère partenaire pilote</strong> — idéalement un ministère participant déjà à la validation parallèle de la paye Dayforce — pour démontrer la valeur d'ACCORD dans un environnement réel. Aucune perturbation des systèmes existants. Faible risque. Résultats éclairants.
+          Nous proposons une <strong>API de règles des CC faisant autorité, propriété du GC</strong> — construite et exploitée par Hazeydata, propriété du gouvernement du Canada. Le même modèle que le T4127 de l'ARC : des règles faisant autorité publiées de façon centralisée pour consommation par tous les fournisseurs de systèmes de paye. 27 des ~150 CC encodées aujourd'hui; 100 % des conventions de l'APC négociées par le SCT couvertes.
         </p>
       </div>
     </div>
@@ -1394,20 +1426,27 @@
     <div class="anim-1 logo-mark" style="font-size:3.8rem;">ACCORD<span class="maple">🍁</span></div>
     <div class="divider gold center anim-2"></div>
 
-    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:640px; color:rgba(255,255,255,0.8);">
-      The Government of Canada published the gap. <br>We built the solution.
+    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.8);">
+      CRA publishes the T4127 for tax rules.<br>It's time for the same standard for collective agreements.
     </p>
-    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:640px; color:rgba(255,255,255,0.8);">
-      Le gouvernement du Canada a documenté la lacune. <br>Nous avons construit la solution.
+    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.8);">
+      L'ARC publie le T4127 pour les règles fiscales.<br>Il est temps d'appliquer la même norme aux conventions collectives.
     </p>
 
-    <div class="anim-3" style="margin-top:48px; text-align:center;">
+    <p class="anim-3" data-lang="en" style="text-align:center; max-width:580px; color:rgba(255,255,255,0.55); font-size:1.05rem; margin-top:24px; line-height:1.7;">
+      Machine-readable collective agreement rules.<br>For every pay system. For every department.
+    </p>
+    <p class="anim-3" data-lang="fr" style="text-align:center; max-width:580px; color:rgba(255,255,255,0.55); font-size:1.05rem; margin-top:24px; line-height:1.7;">
+      Des règles de conventions collectives lisibles par machine.<br>Pour chaque système de paye. Pour chaque ministère.
+    </p>
+
+    <div class="anim-4" style="margin-top:48px; text-align:center;">
       <p style="font-size:1.1rem; font-weight:500; opacity:0.9; margin-bottom:8px;">hazeydata.ai</p>
-      <p data-lang="en" style="font-size:0.9rem; opacity:0.5;">Compliance Validation Engine &nbsp;|&nbsp; Moteur de validation de la conformité</p>
-      <p data-lang="fr" style="font-size:0.9rem; opacity:0.5;">Moteur de validation de la conformité &nbsp;|&nbsp; Compliance Validation Engine</p>
+      <p data-lang="en" style="font-size:0.9rem; opacity:0.5;">Collective Agreement Rules API &nbsp;|&nbsp; API des règles des conventions collectives</p>
+      <p data-lang="fr" style="font-size:0.9rem; opacity:0.5;">API des règles des conventions collectives &nbsp;|&nbsp; Collective Agreement Rules API</p>
     </div>
 
-    <div class="anim-4" style="margin-top:48px; display:flex; gap:32px; opacity:0.5; font-size:0.85rem;">
+    <div class="anim-5" style="margin-top:48px; display:flex; gap:32px; opacity:0.5; font-size:0.85rem;">
       <span>📧 contact@hazeydata.ai</span>
       <span>🌐 hazeydata.ai</span>
     </div>
@@ -1469,11 +1508,11 @@
     if (lang === 'fr') {
       body.classList.add('lang-fr');
       document.documentElement.lang = 'fr';
-      document.title = 'ACCORD 🍁 — Moteur de validation de la conformité | hazeydata.ai';
+      document.title = 'ACCORD 🍁 — API des règles des conventions collectives | hazeydata.ai';
     } else {
       body.classList.remove('lang-fr');
       document.documentElement.lang = 'en';
-      document.title = 'ACCORD 🍁 — Compliance Validation Engine | hazeydata.ai';
+      document.title = 'ACCORD 🍁 — Collective Agreement Rules API | hazeydata.ai';
     }
     // Update toggle buttons
     document.querySelectorAll('.lang-btn').forEach(btn => {
