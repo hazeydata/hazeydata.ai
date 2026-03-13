@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hazeydata — What the Work Actually Looks Like</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --blue: #1a365d;
+    --blue-light: #2c5282;
+    --blue-lighter: #4a90d9;
+    --green: #276749;
+    --green-light: #38a169;
+    --red: #c53030;
+    --red-light: #fc8181;
+    --gold: #d69e2e;
+    --gold-light: #ecc94b;
+    --warm: #fffbf0;
+    --white: #ffffff;
+    --grey-light: #f7fafc;
+    --grey: #e2e8f0;
+    --grey-mid: #718096;
+    --grey-dark: #2d3748;
+    --black: #1a202c;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--blue);
+    color: var(--grey-dark);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .deck { position: relative; width: 100vw; height: 100vh; }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .slide.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+  .slide-dark {
+    background: linear-gradient(160deg, var(--black) 0%, var(--blue) 100%);
+    color: var(--white);
+  }
+  .slide-white { background: var(--white); }
+  .slide-warm { background: var(--warm); }
+  .slide-blue {
+    background: linear-gradient(160deg, var(--blue) 0%, var(--blue-light) 100%);
+    color: var(--white);
+  }
+  .slide-green {
+    background: linear-gradient(160deg, #1a3a2a 0%, var(--green) 100%);
+    color: var(--white);
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    letter-spacing: -0.03em;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 700px;
+    opacity: 0.85;
+  }
+
+  .label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.5;
+    margin-bottom: 16px;
+  }
+
+  .content { max-width: 960px; width: 100%; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 960px;
+    width: 100%;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    border-top: 3px solid var(--blue);
+  }
+  .card.green { border-top-color: var(--green-light); }
+  .card.gold { border-top-color: var(--gold); }
+  .card.red { border-top-color: var(--red); }
+  .card h3 { color: var(--blue); }
+  .card p { font-size: 0.92rem; line-height: 1.65; color: var(--grey-mid); }
+
+  .card-dark {
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 28px 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-top: 3px solid var(--gold);
+  }
+  .card-dark h3 { color: var(--gold-light); }
+  .card-dark p { font-size: 0.92rem; line-height: 1.65; opacity: 0.8; }
+
+  .stat-row {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 28px 0;
+  }
+  .stat { text-align: center; }
+  .stat-number {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--blue);
+  }
+  .stat-number.white { color: var(--white); }
+  .stat-number.green { color: var(--green-light); }
+  .stat-number.gold { color: var(--gold); }
+  .stat-label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    margin-top: 6px;
+    opacity: 0.7;
+  }
+
+  .divider {
+    width: 50px;
+    height: 3px;
+    background: var(--gold);
+    margin: 20px 0;
+    border-radius: 2px;
+  }
+  .divider.center { margin: 20px auto; }
+  .divider.white { background: rgba(255,255,255,0.3); }
+
+  .highlight-box {
+    background: var(--blue);
+    border-radius: 12px;
+    padding: 28px 32px;
+    color: white;
+    margin-top: 24px;
+  }
+
+  .check-list { list-style: none; padding: 0; }
+  .check-list li {
+    padding: 8px 0 8px 28px;
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green-light);
+    font-weight: 700;
+  }
+  .check-list.gold li::before { color: var(--gold); }
+
+  /* Flow diagram */
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 28px auto;
+    max-width: 800px;
+  }
+  .flow-box {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 18px 22px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    flex: 1;
+    max-width: 220px;
+  }
+  .flow-box .flow-icon { font-size: 1.6rem; margin-bottom: 6px; }
+  .flow-box .flow-title { font-size: 0.85rem; font-weight: 700; color: var(--blue); }
+  .flow-box .flow-desc { font-size: 0.78rem; color: var(--grey-mid); margin-top: 4px; line-height: 1.5; }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: var(--gold);
+    font-weight: 700;
+    padding: 0 10px;
+    flex-shrink: 0;
+  }
+
+  /* Layers */
+  .layers {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .layer {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-radius: 10px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .layer-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .layer-num.auto { background: var(--blue-lighter); color: var(--white); }
+  .layer-num.human { background: var(--gold); color: var(--black); }
+  .layer-num.ai { background: var(--green-light); color: var(--white); }
+  .layer-body h4 { font-size: 0.9rem; font-weight: 700; }
+  .layer-body p { font-size: 0.8rem; opacity: 0.7; margin-top: 2px; }
+  .layer-tag {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .layer-tag.auto { background: rgba(74,144,217,0.2); color: var(--blue-lighter); }
+  .layer-tag.human { background: rgba(214,158,46,0.2); color: var(--gold-light); }
+  .layer-tag.ai { background: rgba(56,161,105,0.2); color: var(--green-light); }
+
+  /* Steps */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 700px;
+    width: 100%;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 8px;
+    border-left: 3px solid var(--gold);
+  }
+  .step-num {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--gold-light);
+    flex-shrink: 0;
+    width: 20px;
+    text-align: center;
+  }
+  .step-text { font-size: 0.88rem; opacity: 0.85; line-height: 1.5; }
+  .step-who {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .step-who.chantale { background: rgba(214,158,46,0.2); color: var(--gold-light); }
+  .step-who.fred { background: rgba(74,144,217,0.2); color: var(--blue-lighter); }
+  .step-who.both { background: rgba(56,161,105,0.2); color: var(--green-light); }
+  .step-who.system { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); }
+
+  /* Timeline - improved */
+  .timeline {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    margin: 28px 0;
+    width: 100%;
+    max-width: 900px;
+  }
+  .tl-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    padding: 0 8px;
+  }
+  .tl-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin: 0 auto 10px;
+  }
+  .tl-line {
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: rgba(255,255,255,0.2);
+  }
+  .tl-step:last-child .tl-line { display: none; }
+  .tl-label { font-size: 0.75rem; font-weight: 600; opacity: 0.9; }
+  .tl-desc { font-size: 0.7rem; opacity: 0.5; margin-top: 4px; }
+
+  /* Chat bubble */
+  .chat {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .chat-msg {
+    padding: 14px 18px;
+    border-radius: 14px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    max-width: 85%;
+  }
+  .chat-msg.incoming {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-bottom-left-radius: 4px;
+    margin-right: auto;
+  }
+  .chat-msg.outgoing {
+    background: var(--green);
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+  }
+  .chat-sender {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.5;
+    margin-bottom: 6px;
+  }
+
+  /* Tool item */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    max-width: 700px;
+    width: 100%;
+  }
+  .tool-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 14px 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .tool-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .tool-name { font-size: 0.88rem; font-weight: 600; }
+  .tool-desc { font-size: 0.78rem; opacity: 0.6; margin-top: 2px; }
+
+  .not-needed {
+    margin-top: 20px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    background: rgba(197,48,48,0.1);
+    border: 1px solid rgba(197,48,48,0.2);
+    max-width: 700px;
+    width: 100%;
+  }
+  .not-needed p { font-size: 0.85rem; opacity: 0.7; }
+  .not-needed strong { color: var(--red-light); }
+
+  /* Day labels for week cards */
+  .day-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .week-item {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--grey);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--grey-mid);
+  }
+  .week-item:last-child { border-bottom: none; }
+
+  /* Nav */
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 48px;
+    background: rgba(26,32,44,0.92);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    z-index: 100;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-brand {
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--white);
+    opacity: 0.5;
+  }
+  .nav-center { display: flex; gap: 5px; }
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .nav-dot.active { background: var(--gold); transform: scale(1.3); }
+  .nav-controls { display: flex; gap: 6px; align-items: center; }
+  .nav-btn {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: transparent;
+    color: var(--white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.08); }
+  .slide-counter {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.35);
+    min-width: 36px;
+    text-align: center;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .slide.active .a1 { animation: fadeInUp 0.5s 0.1s both; }
+  .slide.active .a2 { animation: fadeInUp 0.5s 0.25s both; }
+  .slide.active .a3 { animation: fadeInUp 0.5s 0.4s both; }
+  .slide.active .a4 { animation: fadeInUp 0.5s 0.55s both; }
+  .slide.active .a5 { animation: fadeInUp 0.5s 0.7s both; }
+
+  @media (max-width: 768px) {
+    .slide { padding: 40px 24px; padding-bottom: 60px; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    .two-col, .three-col { grid-template-columns: 1fr; gap: 16px; }
+    .tool-grid { grid-template-columns: 1fr; }
+    .stat-number { font-size: 2rem; }
+    .stat-row { gap: 20px; }
+    .timeline { flex-direction: column; gap: 12px; }
+    .tl-line { display: none !important; }
+    .flow-diagram { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1 — COVER -->
+  <div class="slide slide-dark active" data-slide="0">
+    <div class="a1" style="font-size:2.5rem; margin-bottom:12px;">⚙️</div>
+    <h1 class="a1" style="text-align:center;">What the Work<br>Actually Looks Like</h1>
+    <div class="divider center a2" style="background:var(--gold);"></div>
+    <p class="subtitle a2" style="text-align:center; max-width:620px;">
+      A day-to-day guide to running Hazeydata together.
+    </p>
+    <p class="a3" style="font-size:0.85rem; opacity:0.35; margin-top:48px;">
+      Fred & Chantale Hazelton &nbsp;|&nbsp; The Workflow Guide
+    </p>
+  </div>
+
+  <!-- SLIDE 2 — THE PRODUCT IN PLAIN LANGUAGE -->
+  <div class="slide slide-warm" data-slide="1">
+    <div class="content">
+      <div class="label a1">The product in plain language</div>
+      <h2 class="a1">What ACCORD Actually Does</h2>
+      <div class="divider a2"></div>
+      <p class="a2" style="font-size:1.05rem; line-height:1.8; max-width:700px; color:var(--grey-dark); margin-bottom:28px;">
+        ACCORD is an API that answers one question:<br>
+        <strong>"For this employee, in this situation, under this collective agreement, what are the rules?"</strong>
+      </p>
+
+      <div class="flow-diagram a3">
+        <div class="flow-box">
+          <div class="flow-icon">❓</div>
+          <div class="flow-title">Question Comes In</div>
+          <div class="flow-desc">Dayforce or a comp advisor asks about an employee's entitlements</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="border: 2px solid var(--gold);">
+          <div class="flow-icon">📖</div>
+          <div class="flow-title">ACCORD Looks It Up</div>
+          <div class="flow-desc">Checks the CA rules, finds the right article, applies the logic</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+          <div class="flow-icon">✅</div>
+          <div class="flow-title">Answer + Citation</div>
+          <div class="flow-desc">Returns the rule with the exact article reference in EN&nbsp;+&nbsp;FR</div>
+        </div>
+      </div>
+
+      <div class="highlight-box a4" style="text-align:center; max-width:650px; margin:24px auto 0;">
+        <p style="font-size:0.95rem; opacity:0.9; line-height:1.7;">
+          Think of it like Google for collective agreements — but instead of links, it gives you the <strong>exact rule and the proof</strong>. That's it. That's the product.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — FRED'S TYPICAL WEEK -->
+  <div class="slide slide-white" data-slide="2">
+    <div class="content">
+      <div class="label a1">Fred's role</div>
+      <h2 class="a1">🔧 Fred's Typical Week</h2>
+      <div class="divider a2"></div>
+
+      <div class="two-col a3">
+        <div>
+          <div class="card" style="border-top-color:var(--blue);">
+            <div class="week-item"><div class="day-label">Monday – Tuesday</div>Engine maintenance, code updates, testing. Keeping the system running and improving.</div>
+            <div class="week-item"><div class="day-label">Wednesday</div>Review any new CA changes or TBS directives. Research implications for the engine.</div>
+            <div class="week-item"><div class="day-label">Thursday</div>Client calls, demos, technical support. Showing people what ACCORD can do.</div>
+            <div class="week-item"><div class="day-label">Friday</div>Research, planning, improving the system. Building the next feature.</div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <h3 style="color:var(--blue); margin-bottom:14px;">Fred builds and maintains the technology.</h3>
+          <ul class="check-list">
+            <li>Writes the code</li>
+            <li>Handles the architecture</li>
+            <li>Runs the test suites</li>
+            <li>Manages the servers and API</li>
+            <li>Does the technical demos</li>
+          </ul>
+          <div style="margin-top:20px; padding:16px; background:var(--grey-light); border-radius:10px; border-left:3px solid var(--blue);">
+            <p style="font-size:0.88rem; color:var(--grey-mid); line-height:1.6;">
+              <strong style="color:var(--blue);">Key point:</strong> Fred's week is code, data, and technical problem-solving. He can't also be the CA expert, the bilingual communicator, and the business operator. That's a different skillset.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — CHANTALE'S TYPICAL WEEK -->
+  <div class="slide slide-warm" data-slide="3">
+    <div class="content">
+      <div class="label a1">Chantale's role</div>
+      <h2 class="a1">📋 Chantale's Typical Week</h2>
+      <div class="divider a2"></div>
+
+      <div class="two-col a3">
+        <div>
+          <div class="card" style="border-top-color:var(--gold);">
+            <div class="week-item"><div class="day-label">Monday</div>Review the CA update tracker — any agreements being renegotiated? Any new ones signed? Stay current.</div>
+            <div class="week-item"><div class="day-label">Tuesday – Wednesday</div>Read and learn collective agreements. Compare EN and FR versions. Flag differences. Build your expertise.</div>
+            <div class="week-item"><div class="day-label">Thursday</div>Client communications, TBS/OCHRO coordination, bilingual correspondence. Be the voice of the company.</div>
+            <div class="week-item"><div class="day-label">Friday</div>Quality assurance — verify engine outputs against source CA text. Make sure ACCORD is right.</div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <h3 style="color:var(--gold); margin-bottom:14px;">Not a single math equation.</h3>
+          <p style="font-size:0.95rem; line-height:1.7; color:var(--grey-mid); margin-bottom:16px;">
+            It's reading, understanding, communicating, and organizing. That's it.
+          </p>
+          <ul class="check-list">
+            <li>Read collective agreements (in both languages)</li>
+            <li>Compare EN and FR text — flag differences</li>
+            <li>Verify the engine's answers against the source</li>
+            <li>Handle client emails and calls</li>
+            <li>Keep the tracker and checklists up to date</li>
+          </ul>
+          <div style="margin-top:20px; padding:16px; background:var(--white); border-radius:10px; border-left:3px solid var(--gold); box-shadow:var(--shadow);">
+            <p style="font-size:0.88rem; color:var(--grey-dark); line-height:1.6;">
+              <strong style="color:var(--gold);">Your job is to know these agreements better than anyone.</strong> That's comprehension, retention, and attention to detail — your strengths.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 — QUALITY CONTROL (6 LAYERS) -->
+  <div class="slide slide-blue" data-slide="4">
+    <div class="content" style="text-align:center;">
+      <div class="label a1" style="color:var(--gold-light);">Quality control</div>
+      <h2 class="a1">The 6 Layers That Prevent Mistakes</h2>
+      <div class="divider center a2" style="background:var(--gold);"></div>
+      <p class="a2" style="font-size:0.95rem; opacity:0.8; max-width:600px; margin:0 auto 24px; line-height:1.7;">
+        Nothing goes live without passing through all six. This is how we guarantee accuracy.
+      </p>
+
+      <div class="layers a3">
+        <div class="layer">
+          <div class="layer-num auto">1</div>
+          <div class="layer-body" style="text-align:left;">
+            <h4>Source-Text Anchoring</h4>
+            <p>Every rule tied to quoted CA text. System auto-flags if the source changes.</p>
+          </div>
+          <div class="layer-tag auto">Automated</div>
+        </div>
+        <div class="layer">
+          <div class="layer-num human">2</div>
+          <div class="layer-body" style="text-align:left;">
+            <h4>Chantale Reviews</h4>
+            <p>Reads the CA article, confirms the engine matches. No code knowledge needed.</p>
+          </div>
+          <div class="layer-tag human">Human</div>
+        </div>
+        <div class="layer">
+          <div class="layer-num auto">3</div>
+          <div class="layer-body" style="text-align:left;">
+            <h4>Automated Test Suite</h4>
+            <p>73+ test files, full regression on every change. If anything breaks, it doesn't ship.</p>
+          </div>
+          <div class="layer-tag auto">Automated</div>
+        </div>
+        <div class="layer">
+          <div class="layer-num ai">4</div>
+          <div class="layer-body" style="text-align:left;">
+            <h4>Wilma QA</h4>
+            <p>AI independently reads the CA and verifies interpretation. A third pair of eyes.</p>
+          </div>
+          <div class="layer-tag ai">AI Check</div>
+        </div>
+        <div class="layer">
+          <div class="layer-num human">5</div>
+          <div class="layer-body" style="text-align:left;">
+            <h4>Dual Sign-Off</h4>
+            <p>No rule goes live without both Fred AND Chantale approving. Two signatures required.</p>
+          </div>
+          <div class="layer-tag human">Human</div>
+        </div>
+        <div class="layer">
+          <div class="layer-num human">6</div>
+          <div class="layer-body" style="text-align:left;">
+            <h4>Client Feedback Loop</h4>
+            <p>Comp advisors report discrepancies. Free QA from domain experts who use it daily.</p>
+          </div>
+          <div class="layer-tag human">Human</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 — WHEN A NEW CA GETS SIGNED -->
+  <div class="slide slide-dark" data-slide="5">
+    <div class="content" style="text-align:center;">
+      <div class="label a1" style="color:var(--gold-light);">The core workflow</div>
+      <h2 class="a1">When a New CA Gets Signed</h2>
+      <div class="divider center a2" style="background:var(--gold);"></div>
+      <p class="a2" style="font-size:0.92rem; opacity:0.7; max-width:550px; margin:0 auto 24px;">
+        This is the main recurring task. Here's exactly how it works, step by step:
+      </p>
+
+      <div class="steps a3">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">CA signed → TBS publishes new text (or we get advance access)</div>
+          <div class="step-who system">External</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Chantale reads the new CA, identifies what changed (EN + FR)</div>
+          <div class="step-who chantale">Chantale</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Fred updates the engine rules based on Chantale's analysis</div>
+          <div class="step-who fred">Fred</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">Chantale verifies the updates match the new text — EN and FR</div>
+          <div class="step-who chantale">Chantale</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-text">Automated tests run — full regression across all scenarios</div>
+          <div class="step-who system">Automated</div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-text">Both sign off → new rules go live</div>
+          <div class="step-who both">Both</div>
+        </div>
+        <div class="step">
+          <div class="step-num">7</div>
+          <div class="step-text">Clients get a notification: "CA updated, changes: [summary]" — bilingual</div>
+          <div class="step-who chantale">Chantale</div>
+        </div>
+      </div>
+
+      <div class="a4" style="margin-top:24px; padding:18px 28px; background:rgba(56,161,105,0.15); border-radius:10px; border:1px solid rgba(56,161,105,0.25); max-width:550px; display:inline-block;">
+        <p style="font-size:0.95rem; color:var(--green-light); font-weight:600;">
+          ⏱️ 3–5 business days from CA publication to live update.
+        </p>
+        <p style="font-size:0.82rem; opacity:0.6; margin-top:4px;">
+          That's faster than any alternative. And clients love it.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 — TRAINING & RAMP-UP -->
+  <div class="slide slide-warm" data-slide="6">
+    <div class="content">
+      <div class="label a1">Getting started</div>
+      <h2 class="a1">Training & Ramp-Up</h2>
+      <div class="divider a2"></div>
+      <p class="a2" style="font-size:1.05rem; line-height:1.8; max-width:700px; color:var(--grey-dark); margin-bottom:28px;">
+        You don't need to know all 150 collective agreements on day one. Nobody does. Here's how you build up:
+      </p>
+
+      <div class="three-col a3">
+        <div class="card" style="border-top-color:var(--blue-lighter);">
+          <h3 style="color:var(--blue-lighter);">🎯 Start with the Big 5</h3>
+          <p><strong>PA, EC, CX, FB, IT</strong> — these cover the majority of GC employees. Master these first and you've got the foundation for everything else.</p>
+        </div>
+        <div class="card green">
+          <h3 style="color:var(--green);">🤖 Wilma Helps You Learn</h3>
+          <p>Walkthroughs, quizzes, reference guides, comparisons. Wilma can explain any CA article in plain language and test your understanding. Like a tutor that never gets tired.</p>
+        </div>
+        <div class="card gold">
+          <h3 style="color:var(--gold);">📈 The Learning Curve</h3>
+          <p>Within <strong>3 months:</strong> comfortable with all 27 TBS CAs.<br>Within <strong>6 months:</strong> the second-most knowledgeable person in Canada on this topic.</p>
+        </div>
+      </div>
+
+      <div class="highlight-box a4" style="text-align:center; max-width:650px; margin:24px auto 0;">
+        <p style="font-size:1rem; opacity:0.9; line-height:1.7;">
+          You're not starting from scratch.<br>You're learning a system that <strong>already works</strong>.
+        </p>
+        <p style="font-size:0.85rem; opacity:0.5; margin-top:8px;">
+          And you're not learning alone — Fred and Wilma are right there with you.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 — CLIENT INTERACTION -->
+  <div class="slide slide-green" data-slide="7">
+    <div class="content" style="text-align:center;">
+      <div class="label a1" style="color:var(--gold-light);">Client interaction</div>
+      <h2 class="a1">What a Real Client Call Looks Like</h2>
+      <div class="divider center a2" style="background:var(--gold);"></div>
+      <p class="a2" style="font-size:0.92rem; opacity:0.7; max-width:500px; margin:0 auto 28px;">
+        Here's an actual scenario. This is the kind of thing you'd handle:
+      </p>
+
+      <div class="chat a3">
+        <div class="chat-msg incoming">
+          <div class="chat-sender">📞 TBS Contact</div>
+          "We just signed the new PA agreement. How quickly can you update ACCORD?"
+        </div>
+        <div class="chat-msg outgoing">
+          <div class="chat-sender">📋 Chantale</div>
+          "We'll have the new rules encoded and verified within 5 business days. I'll send you a change summary in both languages when it's live."
+        </div>
+      </div>
+
+      <div class="a4" style="margin-top:32px; max-width:500px;">
+        <p style="font-size:1.05rem; opacity:0.9; line-height:1.7; text-align:center;">
+          That's it. Professional, bilingual, confident.
+        </p>
+        <p style="font-size:1.2rem; font-weight:700; margin-top:12px; text-align:center; color:var(--gold-light);">
+          No math required.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9 — THE TOOLS -->
+  <div class="slide slide-blue" data-slide="8">
+    <div class="content" style="text-align:center;">
+      <div class="label a1" style="color:var(--gold-light);">Your toolkit</div>
+      <h2 class="a1">The Tools You'd Use</h2>
+      <div class="divider center a2" style="background:var(--gold);"></div>
+      <p class="a2" style="font-size:0.92rem; opacity:0.8; max-width:550px; margin:0 auto 28px;">
+        Nothing scary. Nothing technical. Here's your entire toolkit:
+      </p>
+
+      <div class="tool-grid a3">
+        <div class="tool-item">
+          <div class="tool-icon">🌐</div>
+          <div>
+            <div class="tool-name">Web Browser</div>
+            <div class="tool-desc">To read CAs on the TBS website</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <div class="tool-icon">📊</div>
+          <div>
+            <div class="tool-name">Tracking Spreadsheet</div>
+            <div class="tool-desc">Which CAs are current, which are being renegotiated</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <div class="tool-icon">📧</div>
+          <div>
+            <div class="tool-name">Email & Phone</div>
+            <div class="tool-desc">Client communications, bilingual</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <div class="tool-icon">✅</div>
+          <div>
+            <div class="tool-name">Checklist Template</div>
+            <div class="tool-desc">For QA sign-offs — check the box, done</div>
+          </div>
+        </div>
+        <div class="tool-item" style="grid-column:1 / -1; max-width:350px; margin:0 auto; border:1px solid rgba(56,161,105,0.3); background:rgba(56,161,105,0.08);">
+          <div class="tool-icon">🤖</div>
+          <div>
+            <div class="tool-name" style="color:var(--green-light);">Wilma</div>
+            <div class="tool-desc">AI assistant who helps with research, training, and QA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="not-needed a4">
+        <p style="text-align:center;">
+          <strong>You do NOT need to:</strong> write code, use a terminal, understand APIs, or do math.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10 — THE YEAR AHEAD -->
+  <div class="slide slide-dark" data-slide="9">
+    <div class="content" style="text-align:center;">
+      <div class="label a1" style="color:var(--gold-light);">The plan</div>
+      <h2 class="a1">Your First Year</h2>
+      <div class="divider center a2" style="background:var(--gold);"></div>
+
+      <div class="timeline a3">
+        <div class="tl-step">
+          <div class="tl-dot"></div>
+          <div class="tl-line"></div>
+          <div class="tl-label">Month 1–2</div>
+          <div class="tl-desc">Learning period.<br>Read CAs. Get<br>comfortable. Wilma helps.</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot"></div>
+          <div class="tl-line"></div>
+          <div class="tl-label">Month 3</div>
+          <div class="tl-desc">First pilot client.<br>You handle bilingual<br>communications.</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot"></div>
+          <div class="tl-line"></div>
+          <div class="tl-label">Month 4–6</div>
+          <div class="tl-desc">TBS pitch. You<br>present the bilingual<br>capability & CA expertise.</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot"></div>
+          <div class="tl-label">Month 6–12</div>
+          <div class="tl-desc">Revenue flowing.<br>Operations in rhythm.<br>You know the CAs.</div>
+        </div>
+      </div>
+
+      <div class="a4" style="max-width:650px; margin:28px auto 0; text-align:center;">
+        <p style="font-size:1.1rem; font-weight:600; opacity:0.9; line-height:1.7; color:var(--gold-light);">
+          By month 6, this isn't new anymore.<br>It's your job. And it's a job you're great at.
+        </p>
+        <p style="font-size:0.88rem; opacity:0.45; margin-top:16px; line-height:1.7;">
+          Month 1 will feel uncertain. That's normal. By month 3, you'll wonder why you ever hesitated.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 11 — CLOSING -->
+  <div class="slide slide-warm" data-slide="10">
+    <div class="content" style="text-align:center; max-width:650px;">
+      <div class="a1" style="font-size:2.5rem; margin-bottom:16px;">🍁</div>
+      <h2 class="a1" style="color:var(--blue);">Fred has the idea.<br>The technology exists.<br>The market is waiting.</h2>
+      <div class="divider center a2"></div>
+      <p class="a2" style="font-size:1.1rem; line-height:1.85; color:var(--grey-dark); margin-bottom:20px;">
+        What's missing is the person who turns it into a real company.
+      </p>
+      <p class="a3" style="font-size:1.05rem; line-height:1.85; color:var(--grey-mid); margin-bottom:32px;">
+        That person needs to be bilingual, detail-oriented, and willing to learn.
+      </p>
+      <div class="a3" style="display:inline-block; padding:20px 40px; background:var(--blue); color:var(--white); border-radius:12px; box-shadow:0 4px 20px rgba(26,54,93,0.3);">
+        <p style="font-size:1.3rem; font-weight:800;">That person is you.</p>
+      </div>
+
+      <div class="a4" style="margin-top:40px;">
+        <a href="chantale-deck.html" style="font-size:0.88rem; color:var(--blue-lighter); text-decoration:none; opacity:0.7;">
+          ← Back to the business case
+        </a>
+      </div>
+
+      <p class="a5" style="font-size:0.8rem; opacity:0.25; margin-top:40px; text-align:center; max-width:500px; line-height:1.6; color:var(--grey-mid);">
+        This deck was also prepared with love by Wilma 🦴<br>
+        who already knows you two would be unstoppable together.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <div class="nav-brand">Hazeydata — Day-to-Day Workflow</div>
+  <div class="nav-center" id="navDots"></div>
+  <div class="nav-controls">
+    <button class="nav-btn" onclick="prev()" aria-label="Previous">‹</button>
+    <div class="slide-counter" id="counter">1/11</div>
+    <button class="nav-btn" onclick="next()" aria-label="Next">›</button>
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  const dotsEl = document.getElementById('navDots');
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+  function goTo(n) {
+    if (n < 0 || n >= total || n === current) return;
+    slides[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    document.querySelectorAll('.nav-dot').forEach((d,i) => d.classList.toggle('active', i === current));
+    document.getElementById('counter').textContent = (current + 1) + '/' + total;
+  }
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+  let tx = 0;
+  document.addEventListener('touchstart', e => tx = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const d = tx - e.changedTouches[0].clientX;
+    if (Math.abs(d) > 50) d > 0 ? next() : prev();
+  });
+</script>
+
+</body>
+</html>
