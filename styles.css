@@ -1,20 +1,30 @@
 /* Theme Park Crowd Report — Landing Page */
-/* Benedictus palette: deep blue → lavender → pink → magenta */
+/* Brand Design System: navy #0a1628 · red #A60038 · cyan #4a90a4 */
+/* Fonts: JetBrains Mono (mono/technical) + Inter (body) */
 
 :root {
     --bg-dark: #0a1628;
-    --bg-card: #111d33;
-    --bg-card-hover: #162442;
+    --bg-card: rgba(255,255,255,0.03);
+    --bg-card-hover: rgba(255,255,255,0.06);
+    --bg-glass: rgba(255,255,255,0.04);
     --deep-blue: #0A2F8F;
     --mid-blue: #3C78D2;
+    --accent: #4a90a4;
+    --accent-light: #6bb5c9;
+    --accent-glow: rgba(74,144,164,0.15);
+    --accent-red: #A60038;
+    --accent-red-light: #e05577;
     --lavender: #D2C8DC;
     --light-pink: #FFB1C9;
     --hot-pink: #EB427B;
     --deep-red: #A60038;
     --text-primary: #FFFFFF;
-    --text-secondary: #A0B0C8;
-    --text-muted: #667899;
-    --border: #1a2a44;
+    --text-secondary: rgba(255,255,255,0.7);
+    --text-muted: rgba(255,255,255,0.4);
+    --border: rgba(255,255,255,0.08);
+    --border-accent: rgba(74,144,164,0.3);
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --font-text: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {
@@ -28,11 +38,24 @@ html {
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--font-text);
     background: var(--bg-dark);
     color: var(--text-primary);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle grid background — matches pricing page */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+        linear-gradient(rgba(74,144,164,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,144,164,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
 }
 
 /* Nav */
@@ -63,8 +86,10 @@ body {
 }
 
 .nav-title {
+    font-family: var(--font-mono);
     font-weight: 700;
     font-size: 1.1rem;
+    letter-spacing: 0.5px;
 }
 
 .nav-links {
@@ -74,15 +99,18 @@ body {
 }
 
 .nav-links a {
+    font-family: var(--font-mono);
     color: var(--text-secondary);
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
     transition: color 0.2s;
 }
 
 .nav-links a:hover {
-    color: var(--text-primary);
+    color: var(--accent-light);
 }
 
 /* Nav title as link */
@@ -145,26 +173,27 @@ a.nav-title {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--mid-blue), var(--hot-pink));
+    background: linear-gradient(135deg, var(--accent) 0%, #3d7a8c 100%);
     color: white;
 }
 
 .btn-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 8px 30px rgba(235, 66, 123, 0.3);
+    background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%);
+    box-shadow: 0 8px 30px rgba(74,144,164,0.3);
 }
 
 .btn-outline {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--bg-glass);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     color: var(--text-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1px solid var(--border);
 }
 
 .btn-outline:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--border-accent);
     color: var(--text-primary);
 }
 
@@ -199,7 +228,7 @@ a.nav-title {
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 1.25rem;
-    background: linear-gradient(135deg, var(--text-primary) 0%, var(--lavender) 50%, var(--light-pink) 100%);
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -222,9 +251,11 @@ a.nav-title {
 }
 
 .hero-note {
-    color: var(--text-muted);
-    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: 0.8rem;
     margin-top: 1rem;
+    letter-spacing: 0.5px;
 }
 
 /* Park Ticker */
@@ -246,11 +277,12 @@ a.nav-title {
 }
 
 .park-ticker span {
+    font-family: var(--font-mono);
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     font-weight: 500;
     white-space: nowrap;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
     opacity: 0.7;
     transition: opacity 0.3s;
 }
@@ -284,7 +316,7 @@ a.nav-title {
 
 .section-sub {
     color: var(--text-secondary);
-    font-size: 1.05rem;
+    font-size: 1rem;
     margin-bottom: 2.5rem;
 }
 
@@ -296,28 +328,38 @@ a.nav-title {
 }
 
 .preview-card {
-    background: var(--bg-card);
+    background: var(--bg-glass);
     border-radius: 12px;
     padding: 1.2rem;
     border: 1px solid var(--border);
-    transition: transform 0.2s, border-color 0.2s;
+    backdrop-filter: blur(12px);
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
 .preview-card:hover {
     transform: translateY(-4px);
-    border-color: var(--mid-blue);
+    border-color: var(--border-accent);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+/* Highlight card for /ask */
+.preview-card-highlight {
+    border-color: rgba(74,144,164,0.25);
+    background: linear-gradient(180deg, rgba(74,144,164,0.06) 0%, var(--bg-glass) 40%);
 }
 
 .preview-label {
     display: inline-block;
-    background: var(--deep-blue);
-    color: var(--text-primary);
-    font-family: monospace;
-    font-size: 0.85rem;
+    background: var(--accent-glow);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
     font-weight: 600;
     padding: 0.25rem 0.75rem;
     border-radius: 6px;
     margin-bottom: 0.75rem;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(74,144,164,0.25);
 }
 
 .preview-card img {
@@ -332,8 +374,36 @@ a.nav-title {
     line-height: 1.5;
 }
 
+/* 5-card variant: 3 + 2 centered */
+.preview-grid-5 {
+    grid-template-columns: repeat(3, 1fr);
+}
+.preview-grid-5 .preview-card:nth-child(4),
+.preview-grid-5 .preview-card:nth-child(5) {
+    /* Center the last two cards in a 3-col grid */
+}
+@media (min-width: 769px) {
+    .preview-grid-5 {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 1.5rem;
+    }
+    .preview-grid-5 .preview-card:nth-child(1),
+    .preview-grid-5 .preview-card:nth-child(2),
+    .preview-grid-5 .preview-card:nth-child(3) {
+        grid-column: span 2;
+    }
+    .preview-grid-5 .preview-card:nth-child(4) {
+        grid-column: 2 / span 2;
+    }
+    .preview-grid-5 .preview-card:nth-child(5) {
+        grid-column: 4 / span 2;
+    }
+}
+
 @media (max-width: 768px) {
-    .preview-grid {
+    .preview-grid,
+    .preview-grid-5 {
         grid-template-columns: 1fr;
         max-width: 480px;
         margin: 0 auto;
@@ -347,11 +417,16 @@ a.nav-title {
     margin: 0 auto;
 }
 
-.features h2, .parks h2, .how-it-works h2, .about h2, .cta h2 {
+.features h2, .parks h2, .how-it-works h2, .about h2, .cta h2, .data-sources h2 {
     font-size: 2rem;
     font-weight: 700;
     text-align: center;
     margin-bottom: 1rem;
+}
+
+.bot-preview h2 {
+    font-size: 2rem;
+    font-weight: 700;
 }
 
 .feature-grid {
@@ -362,17 +437,19 @@ a.nav-title {
 }
 
 .feature-card {
-    background: var(--bg-card);
+    background: var(--bg-glass);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 2rem;
-    transition: all 0.2s;
+    backdrop-filter: blur(12px);
+    transition: all 0.3s;
 }
 
 .feature-card:hover {
     background: var(--bg-card-hover);
     transform: translateY(-2px);
-    border-color: #2a3a5a;
+    border-color: var(--border-accent);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
 }
 
 .feature-icon {
@@ -381,9 +458,11 @@ a.nav-title {
 }
 
 .feature-card h3 {
-    font-size: 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    letter-spacing: 0.3px;
 }
 
 .feature-card p {
@@ -393,11 +472,12 @@ a.nav-title {
 }
 
 .feature-card code {
-    background: rgba(60, 120, 210, 0.15);
-    color: var(--mid-blue);
+    background: var(--accent-glow);
+    color: var(--accent);
     padding: 0.15rem 0.4rem;
     border-radius: 4px;
     font-size: 0.85rem;
+    font-family: var(--font-mono);
 }
 
 /* Parks */
@@ -420,10 +500,16 @@ a.nav-title {
 }
 
 .park-group {
-    background: var(--bg-card);
+    background: var(--bg-glass);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 1.5rem;
+    backdrop-filter: blur(12px);
+    transition: border-color 0.3s;
+}
+
+.park-group:hover {
+    border-color: var(--border-accent);
 }
 
 .park-group h4 {
@@ -470,19 +556,22 @@ a.nav-title {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--deep-blue), var(--hot-pink));
+    background: linear-gradient(135deg, var(--accent), var(--accent-red));
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: var(--font-mono);
     font-weight: 700;
     font-size: 1.2rem;
     margin: 0 auto 1rem;
 }
 
 .step h3 {
-    font-size: 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    letter-spacing: 0.3px;
 }
 
 .step p {
@@ -516,7 +605,7 @@ a.nav-title {
 .cta {
     padding: 6rem 2rem;
     text-align: center;
-    background: linear-gradient(180deg, transparent, rgba(10, 47, 143, 0.1));
+    background: linear-gradient(180deg, transparent, rgba(74,144,164,0.06));
 }
 
 .cta p {
@@ -573,7 +662,7 @@ footer {
 }
 
 .footer-links a:hover {
-    color: var(--text-secondary);
+    color: var(--accent-light);
 }
 
 .footer-copy {
@@ -603,7 +692,7 @@ footer {
         position: absolute;
         top: 100%;
         right: 1rem;
-        background: var(--bg-card);
+        background: rgba(10,22,40,0.95);
         border: 1px solid var(--border);
         border-radius: 12px;
         padding: 0.75rem 1rem;
@@ -611,6 +700,7 @@ footer {
         flex-direction: column;
         gap: 0.25rem;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(16px);
     }
 
     .nav-links.open {
@@ -664,4 +754,32 @@ footer {
         flex-direction: column;
         align-items: center;
     }
+}
+
+/* Accessibility: focus-visible outlines */
+a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+    .park-ticker {
+        animation: none !important;
+    }
+}
+
+/* Data sources section link styling */
+.data-sources a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.data-sources a:hover {
+    color: var(--accent-light);
+    text-decoration: underline;
 }
