@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Canadian Digital Railway 🚂🍁 — Funding Pitch: Sovereign AI Infrastructure | hazeydata.ai</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap');
+
+  :root {
+    --rail-charcoal: #1C1C1E;
+    --rail-charcoal-mid: #2C2C2E;
+    --rail-slate: #2A3240;
+    --rail-slate-light: #3A4A5C;
+    --rail-slate-lighter: #4E6278;
+    --rail-white: #FFFFFF;
+    --rail-grey-light: #F8F8F6;
+    --rail-grey: #EEE;
+    --rail-grey-mid: #6C757D;
+    --rail-grey-dark: #333333;
+    --rail-black: #141416;
+    --maple-red: #C41E3A;
+    --maple-red-dark: #9B1B30;
+    --accent-gold: #C8973E;
+    --accent-gold-light: #E4BE6A;
+    --accent-warm: #D4A84B;
+    --accent-teal: #2A8E7F;
+    --accent-green: #2E7D32;
+    --maple: #C41E3A;
+    --bg-warm: #FAF9F6;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--rail-charcoal);
+    color: var(--rail-grey-dark);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Language toggle ── */
+  [data-lang="fr"] { display: none !important; }
+  body.lang-fr [data-lang="en"] { display: none !important; }
+  body.lang-fr [data-lang="fr"] { display: revert !important; }
+  body.lang-fr .flow[data-lang="fr"] { display: flex !important; }
+  body.lang-fr .two-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
+  body.lang-fr .three-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr; }
+  body.lang-fr .four-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr 1fr; }
+  body.lang-fr .stat-row[data-lang="fr"] { display: flex !important; }
+
+  .lang-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lang-btn {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    border: none;
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active {
+    background: var(--maple-red);
+    color: white;
+  }
+
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* ── Slides ── */
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 100px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  .slide-cover {
+    background: linear-gradient(160deg, var(--rail-black) 0%, var(--rail-charcoal) 40%, var(--rail-slate) 100%);
+    color: var(--rail-white);
+    text-align: center;
+  }
+  .slide-white {
+    background: var(--rail-white);
+    color: var(--rail-grey-dark);
+  }
+  .slide-warm {
+    background: var(--bg-warm);
+    color: var(--rail-grey-dark);
+  }
+  .slide-blue {
+    background: linear-gradient(160deg, var(--rail-slate) 0%, var(--rail-slate-light) 100%);
+    color: var(--rail-white);
+  }
+  .slide-dark {
+    background: linear-gradient(160deg, var(--rail-black) 0%, var(--rail-charcoal) 100%);
+    color: var(--rail-white);
+  }
+  .slide-accent {
+    background: linear-gradient(160deg, var(--rail-charcoal) 0%, var(--rail-slate) 100%);
+    color: var(--rail-white);
+  }
+
+  /* ── Typography ── */
+  h1 {
+    font-family: 'Lato', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-family: 'Lato', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 1.35rem;
+    font-weight: 300;
+    opacity: 0.85;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  .small-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+    margin-bottom: 16px;
+  }
+
+  .gc-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--maple-red);
+  }
+
+  .logo-mark {
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    font-size: 3.6rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .logo-mark .maple {
+    color: var(--maple);
+    margin-left: 8px;
+    font-style: normal;
+  }
+  .logo-tagline {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 6px;
+  }
+  .logo-tagline-fr {
+    font-size: 0.95rem;
+    font-weight: 300;
+    font-style: italic;
+    opacity: 0.5;
+    margin-bottom: 40px;
+  }
+
+  .content-box {
+    max-width: 960px;
+    width: 100%;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    max-width: 1050px;
+    width: 100%;
+  }
+
+  .four-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 24px;
+    max-width: 1100px;
+    width: 100%;
+  }
+
+  .card {
+    background: var(--rail-white);
+    border-radius: 8px;
+    padding: 32px 28px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--maple-red);
+  }
+  .card h3 { color: var(--rail-slate); }
+  .card p { font-size: 0.95rem; line-height: 1.65; color: var(--rail-grey-mid); }
+
+  .card-dark {
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 32px 28px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 4px solid var(--accent-gold);
+  }
+  .card-dark h3 { color: var(--accent-gold-light); }
+  .card-dark p { font-size: 0.95rem; line-height: 1.65; opacity: 0.8; }
+
+  .stat-row {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 32px 0;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-number {
+    font-family: 'Lato', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--maple-red);
+    line-height: 1;
+  }
+  .stat-number.white { color: var(--rail-white); }
+  .stat-number.gold { color: var(--accent-gold); }
+  .stat-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 8px;
+    opacity: 0.7;
+  }
+
+  .quote-block {
+    border-left: 4px solid var(--accent-gold);
+    padding: 24px 32px;
+    margin: 24px 0;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    font-style: italic;
+    opacity: 0.9;
+    max-width: 800px;
+  }
+  .quote-source {
+    font-style: normal;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0.6;
+    margin-top: 12px;
+    display: block;
+  }
+
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 36px 0;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .flow-step {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 16px 14px;
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+    max-width: 170px;
+  }
+  .flow-step .flow-icon { font-size: 1.8rem; margin-bottom: 6px; }
+  .flow-step .flow-label { font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
+  .flow-step .flow-desc { font-size: 0.7rem; opacity: 0.6; margin-top: 4px; }
+  .flow-arrow {
+    font-size: 1.3rem;
+    opacity: 0.4;
+    margin: 0 6px;
+    flex-shrink: 0;
+  }
+
+  .gap-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .gap-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--maple-red);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .gap-icon.green { background: var(--accent-green); }
+  .gap-icon.gold { background: var(--accent-gold); }
+  .gap-icon.teal { background: var(--accent-teal); }
+  .gap-text h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--rail-slate);
+  }
+  .gap-text p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--rail-grey-mid);
+  }
+
+  .rev-table {
+    width: 100%;
+    max-width: 780px;
+    border-collapse: collapse;
+    margin: 24px 0;
+  }
+  .rev-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--rail-slate);
+    color: var(--rail-slate);
+  }
+  .rev-table td {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--rail-grey);
+  }
+  .rev-table tr:last-child td {
+    border-bottom: 2px solid var(--rail-slate);
+    font-weight: 700;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .pill-red { background: rgba(196,30,58,0.15); color: var(--maple-red); }
+  .pill-gold { background: rgba(200,151,62,0.15); color: var(--accent-gold); }
+  .pill-green { background: rgba(46,125,50,0.15); color: var(--accent-green); }
+  .pill-blue { background: rgba(58,74,92,0.15); color: var(--rail-slate-light); }
+
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: var(--maple-red);
+    margin: 24px 0;
+    border-radius: 2px;
+  }
+  .divider.gold { background: var(--accent-gold); }
+  .divider.center { margin: 24px auto; }
+
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 52px;
+    background: rgba(20,20,22,0.92);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 100;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-brand {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--rail-white);
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+  }
+  .nav-center {
+    display: flex;
+    gap: 6px;
+  }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .nav-dot.active { background: var(--maple-red); transform: scale(1.3); }
+  .nav-controls {
+    display: flex;
+    gap: 8px;
+  }
+  .nav-btn {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+    color: var(--rail-white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.1); }
+  .slide-counter {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+    min-width: 40px;
+    text-align: center;
+    line-height: 36px;
+  }
+
+  /* ── Progress bar ── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--maple-red);
+    transition: width 0.4s ease;
+    z-index: 200;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .slide.active .anim-1 { animation: fadeInUp 0.6s 0.1s both; }
+  .slide.active .anim-2 { animation: fadeInUp 0.6s 0.25s both; }
+  .slide.active .anim-3 { animation: fadeInUp 0.6s 0.4s both; }
+  .slide.active .anim-4 { animation: fadeInUp 0.6s 0.55s both; }
+  .slide.active .anim-5 { animation: fadeInUp 0.6s 0.7s both; }
+
+  .flag-stripe {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--maple-red) 0%, var(--maple-red) 25%, var(--accent-gold) 25%, var(--accent-gold) 75%, var(--maple-red) 75%, var(--maple-red) 100%);
+  }
+
+  .confidential {
+    position: absolute;
+    top: 20px;
+    right: 32px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.35;
+    border: 1px solid currentColor;
+    padding: 4px 12px;
+    border-radius: 3px;
+  }
+
+  .check-list {
+    list-style: none;
+    padding: 0;
+  }
+  .check-list li {
+    padding: 10px 0;
+    padding-left: 32px;
+    position: relative;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent-green);
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .check-list.white-checks li::before { color: var(--accent-gold); }
+
+  .section-num {
+    font-family: 'Lato', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    opacity: 0.06;
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    line-height: 1;
+  }
+  .section-num.light { opacity: 0.08; color: var(--rail-white); }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+  }
+  .compare-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 12px 16px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    color: var(--accent-gold-light);
+  }
+  .compare-table td {
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    opacity: 0.85;
+  }
+  .compare-table tr:last-child td {
+    border-bottom: 2px solid var(--accent-gold);
+    font-weight: 700;
+    opacity: 1;
+  }
+
+  /* ── Tier visual ── */
+  .tier-box {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 24px;
+    text-align: center;
+  }
+  .tier-box h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .tier-box .tier-emoji { font-size: 2rem; margin-bottom: 8px; }
+  .tier-box p { font-size: 0.85rem; opacity: 0.7; line-height: 1.5; }
+
+  /* ── Phase timeline ── */
+  .phase-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .phase-badge {
+    flex-shrink: 0;
+    width: 70px;
+    height: 32px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+  .phase-badge.p0 { background: rgba(196,30,58,0.15); color: var(--maple-red); }
+  .phase-badge.p1 { background: rgba(200,151,62,0.15); color: var(--accent-gold); }
+  .phase-badge.p2 { background: rgba(42,142,127,0.15); color: var(--accent-teal); }
+  .phase-badge.p3 { background: rgba(46,125,50,0.15); color: var(--accent-green); }
+
+  .phase-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+  .phase-content p { font-size: 0.88rem; line-height: 1.55; color: var(--rail-grey-mid); }
+
+  /* ── Funding table (dark) ── */
+  .fund-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  .fund-table th {
+    text-align: left;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 12px 14px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    color: var(--accent-gold-light);
+  }
+  .fund-table td {
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    opacity: 0.85;
+  }
+  .fund-table tr:last-child td {
+    border-bottom: 2px solid var(--accent-gold);
+    font-weight: 700;
+    opacity: 1;
+    color: var(--accent-gold-light);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .slide { padding: 50px 48px; }
+    h1 { font-size: 2.6rem; }
+    h2 { font-size: 1.9rem; }
+    .logo-mark { font-size: 2.8rem; }
+    .content-box { max-width: 100%; }
+    .two-col { gap: 32px; }
+    .three-col { gap: 24px; }
+    .four-col { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .flow-step { padding: 14px 10px; }
+    .flow-step .flow-label { font-size: 0.75rem; }
+    .flow-step .flow-desc { font-size: 0.65rem; }
+    .flow-arrow { font-size: 1.1rem; margin: 0 4px; }
+    .section-num { font-size: 4rem; left: 40px; }
+    .quote-block { font-size: 1rem; padding: 20px 24px; }
+  }
+
+  @media (max-width: 768px) {
+    .slide { padding: 40px 28px; padding-bottom: 70px; overflow-y: auto; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.1rem; }
+    .logo-mark { font-size: 2.2rem; }
+    .subtitle { font-size: 1rem; }
+    .small-label { font-size: 0.7rem; }
+    .two-col { grid-template-columns: 1fr; gap: 24px; }
+    .three-col { grid-template-columns: 1fr; gap: 20px; }
+    .four-col { grid-template-columns: 1fr; gap: 16px; }
+    .stat-number { font-size: 2.2rem; }
+    .stat-row { gap: 24px; }
+    .stat { min-width: 120px; }
+    .flow { flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .flow-step { flex: 0 0 auto; min-width: 100px; max-width: 130px; padding: 12px 10px; }
+    .flow-arrow { font-size: 1rem; margin: 0 2px; }
+    .quote-block { font-size: 0.95rem; padding: 16px 20px; }
+    .card, .card-dark { padding: 24px 20px; }
+    .section-num { font-size: 3rem; left: 24px; top: 28px; }
+    .confidential { font-size: 0.6rem; right: 20px; top: 16px; }
+    .nav-bar { padding: 0 16px; }
+    .nav-brand { font-size: 0.75rem; }
+    .fund-table td, .fund-table th { padding: 10px 8px; font-size: 0.8rem; }
+    .gap-item { gap: 12px; }
+    .gap-icon { width: 30px; height: 30px; font-size: 0.75rem; }
+  }
+
+  @media (max-width: 480px) {
+    .slide { padding: 32px 20px; padding-bottom: 70px; }
+    h1 { font-size: 1.65rem; }
+    h2 { font-size: 1.3rem; }
+    .logo-mark { font-size: 1.8rem; }
+    .logo-tagline { font-size: 0.85rem; }
+    .logo-tagline-fr { font-size: 0.75rem; }
+    .subtitle { font-size: 0.9rem; }
+    .stat-number { font-size: 1.9rem; }
+    .stat-label { font-size: 0.78rem; }
+    .stat-row { gap: 20px; }
+    .flow { flex-direction: column; align-items: center; gap: 4px; }
+    .flow-step { max-width: 220px; width: 100%; padding: 14px 16px; }
+    .flow-step .flow-label { font-size: 0.82rem; }
+    .flow-step .flow-desc { font-size: 0.72rem; }
+    .flow-arrow { transform: rotate(90deg); font-size: 1rem; margin: 2px 0; }
+    .two-col, .three-col, .four-col { gap: 16px; }
+    .four-col { grid-template-columns: 1fr; }
+    .card, .card-dark { padding: 20px 16px; }
+    .card p, .card-dark p { font-size: 0.88rem; }
+    .check-list li { font-size: 0.9rem; padding-left: 28px; }
+    .quote-block { font-size: 0.88rem; padding: 14px 16px; margin: 16px 0; }
+    .quote-source { font-size: 0.72rem; }
+    .section-num { display: none; }
+    .confidential { font-size: 0.55rem; padding: 3px 8px; }
+    .divider { width: 40px; }
+    .pill { font-size: 0.68rem; padding: 3px 10px; }
+    .nav-dot { width: 6px; height: 6px; }
+    .nav-center { gap: 4px; }
+    .slide-counter { font-size: 0.7rem; }
+    .fund-table td, .fund-table th { padding: 8px 6px; font-size: 0.75rem; }
+    .gap-text h4 { font-size: 0.9rem; }
+    .gap-text p { font-size: 0.82rem; }
+    .tier-box { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar" style="width: 6.67%;"></div>
+
+<div class="deck" id="deck">
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 1 — COVER -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-cover active" data-slide="0">
+    <div class="flag-stripe"></div>
+    <span class="confidential" data-lang="en">Confidential — Funding Pitch</span>
+    <span class="confidential" data-lang="fr">Confidentiel — Présentation de financement</span>
+
+    <div class="anim-1" style="font-size:4rem; margin-bottom:16px;">🚂🍁</div>
+    <div class="anim-1 logo-mark">The Canadian Digital Railway</div>
+    <div class="anim-2 logo-tagline" data-lang="en">Sovereign AI Infrastructure, Coast to Coast</div>
+    <div class="anim-2 logo-tagline" data-lang="fr">Infrastructure IA souveraine, d'un océan à l'autre</div>
+    <div class="anim-2 logo-tagline-fr" data-lang="en">Infrastructure IA souveraine, d'un océan à l'autre</div>
+    <div class="anim-2 logo-tagline-fr" data-lang="fr">Sovereign AI Infrastructure, Coast to Coast</div>
+
+    <div class="divider gold center anim-3"></div>
+
+    <p class="subtitle anim-3" data-lang="en" style="text-align:center; max-width:720px;">
+      A coast-to-coast network of institution-owned AI compute nodes — sharing <strong>knowledge</strong> without sharing <strong>data</strong> — built on Canadian hardware, governed by Canadian institutions.
+    </p>
+    <p class="subtitle anim-3" data-lang="fr" style="text-align:center; max-width:720px;">
+      Un réseau d'un océan à l'autre de nœuds IA détenus par les institutions — partageant les <strong>connaissances</strong> sans partager les <strong>données</strong> — construit sur du matériel canadien, gouverné par les institutions canadiennes.
+    </p>
+
+    <div class="anim-4" style="margin-top:40px; display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.78rem; padding:6px 16px;">Funding Pitch 2026</span>
+    </div>
+
+    <p class="anim-5" style="font-size:0.85rem; opacity:0.4; margin-top:32px;">
+      hazeydata.ai &nbsp;|&nbsp; fred@hazeydata.ai
+    </p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 2 — THE PROBLEM -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="1">
+    <div class="gc-bar"></div>
+    <div class="section-num">01</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">The Problem</div>
+      <div class="small-label anim-1" data-lang="fr">Le problème</div>
+      <h2 class="anim-1" data-lang="en">Canada Has an AI Sovereignty Crisis</h2>
+      <h2 class="anim-1" data-lang="fr">Le Canada traverse une crise de souveraineté en IA</h2>
+      <div class="divider anim-2"></div>
+
+      <div class="stat-row anim-2" data-lang="en">
+        <div class="stat">
+          <div class="stat-number">90%+</div>
+          <div class="stat-label">AI workloads on<br>US infrastructure</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">20 yrs</div>
+          <div class="stat-label">of institutional knowledge<br>trapped in data silos</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">$2.4B</div>
+          <div class="stat-label">Federal AI commitment<br>— but no last-mile delivery</div>
+        </div>
+      </div>
+      <div class="stat-row anim-2" data-lang="fr">
+        <div class="stat">
+          <div class="stat-number">90 %+</div>
+          <div class="stat-label">Charges de travail IA sur<br>l'infrastructure américaine</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">20 ans</div>
+          <div class="stat-label">de connaissances institutionnelles<br>piégées dans des silos de données</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">2,4 G$</div>
+          <div class="stat-label">Engagement fédéral en IA<br>— mais pas de livraison au dernier kilomètre</div>
+        </div>
+      </div>
+
+      <div class="two-col anim-3">
+        <div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon">!</div>
+            <div class="gap-text">
+              <h4>CLOUD Act Exposure</h4>
+              <p>Canadian health, Indigenous, and government data flows through US cloud providers subject to American surveillance law.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon">!</div>
+            <div class="gap-text">
+              <h4>Knowledge Dies in Silos</h4>
+              <p>When someone builds a brilliant tool on protected data, that knowledge can't leave the institution. Two decades of innovation trapped behind classification walls.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon">!</div>
+            <div class="gap-text">
+              <h4>Exposition au CLOUD Act</h4>
+              <p>Les données canadiennes de santé, autochtones et gouvernementales transitent par des fournisseurs infonuagiques américains soumis aux lois de surveillance américaines.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon">!</div>
+            <div class="gap-text">
+              <h4>Les connaissances meurent en silos</h4>
+              <p>Quand quelqu'un crée un outil brillant sur des données protégées, ce savoir ne peut quitter l'institution. Deux décennies d'innovation piégées derrière des murs de classification.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon">!</div>
+            <div class="gap-text">
+              <h4>Single Points of Failure &amp; Trust</h4>
+              <p>Centralized infrastructure is vulnerable to outages, acquisition, and political pressure. No single company should control all of Canada's sovereign AI.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon">!</div>
+            <div class="gap-text">
+              <h4>Indigenous Data Sovereignty</h4>
+              <p>Communities need AI tools where they retain Ownership, Control, Access, and Possession (OCAP®) of their data — not another cloud product built by outsiders.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon">!</div>
+            <div class="gap-text">
+              <h4>Points uniques de défaillance et de confiance</h4>
+              <p>L'infrastructure centralisée est vulnérable aux pannes, aux acquisitions et aux pressions politiques. Aucune entreprise ne devrait contrôler tout le calcul IA souverain du Canada.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon">!</div>
+            <div class="gap-text">
+              <h4>Souveraineté des données autochtones</h4>
+              <p>Les communautés ont besoin d'outils IA où elles conservent la Propriété, le Contrôle, l'Accès et la Possession (PCAP®) de leurs données — pas un autre produit infonuagique conçu par des étrangers.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-block anim-4" data-lang="en" style="border-color:var(--maple-red);">
+        "Canada's AI infrastructure is dangerously dependent on foreign-controlled compute... This dependency undermines Canadian sovereignty over critical data."
+        <span class="quote-source">— "Sovereign by Design," Munk School / U of T, March 2026</span>
+      </div>
+      <div class="quote-block anim-4" data-lang="fr" style="border-color:var(--maple-red);">
+        « L'infrastructure IA du Canada est dangereusement dépendante du calcul contrôlé par l'étranger... Cette dépendance mine la souveraineté canadienne sur les données critiques. »
+        <span class="quote-source">— « Sovereign by Design », Munk School / U de T, mars 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 3 — THE GAP -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-warm" data-slide="2">
+    <div class="gc-bar"></div>
+    <div class="section-num">02</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">The Gap</div>
+      <div class="small-label anim-1" data-lang="fr">La lacune</div>
+      <h2 class="anim-1" data-lang="en">Top-Down Solutions Miss the Last Mile</h2>
+      <h2 class="anim-1" data-lang="fr">Les solutions descendantes ratent le dernier kilomètre</h2>
+      <div class="divider anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1.02rem; line-height:1.7; margin-bottom:24px; max-width:780px;">
+        The <em>"Sovereign by Design"</em> report — authored by Jaxson Khan (architect of Canada's $2.4B AI strategy) and Sean Mullin (former PMO advisor), published through the AI Competitiveness Project at Munk School, University of Toronto — diagnoses the problem perfectly. <strong>But the solutions are all top-down:</strong> sovereign cloud mandates, federal procurement reform, national policy.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1.02rem; line-height:1.7; margin-bottom:24px; max-width:780px;">
+        Le rapport <em>« Sovereign by Design »</em> — rédigé par Jaxson Khan (architecte de la stratégie IA de 2,4 G$ du Canada) et Sean Mullin (ex-conseiller du BPM), publié par le Projet de compétitivité en IA de la Munk School, Université de Toronto — diagnostique parfaitement le problème. <strong>Mais les solutions sont toutes descendantes :</strong> mandats de nuage souverain, réforme de l'approvisionnement fédéral, politique nationale.
+      </p>
+
+      <div class="two-col anim-3">
+        <div>
+          <h3 data-lang="en" style="color: var(--rail-slate); margin-bottom:16px;">What "Sovereign by Design" Recommends</h3>
+          <h3 data-lang="fr" style="color: var(--rail-slate); margin-bottom:16px;">Ce que « Sovereign by Design » recommande</h3>
+          <ul class="check-list" data-lang="en">
+            <li>Sovereign cloud infrastructure</li>
+            <li>Federal procurement reform</li>
+            <li>National data governance policy</li>
+            <li>Top-down regulatory frameworks</li>
+          </ul>
+          <ul class="check-list" data-lang="fr">
+            <li>Infrastructure infonuagique souveraine</li>
+            <li>Réforme de l'approvisionnement fédéral</li>
+            <li>Politique nationale de gouvernance des données</li>
+            <li>Cadres réglementaires descendants</li>
+          </ul>
+          <p data-lang="en" style="font-size:0.88rem; color:var(--accent-green); font-weight:600; margin-top:16px;">✓ Necessary. Being funded. Important work.</p>
+          <p data-lang="fr" style="font-size:0.88rem; color:var(--accent-green); font-weight:600; margin-top:16px;">✓ Nécessaire. En cours de financement. Travail important.</p>
+        </div>
+        <div>
+          <h3 data-lang="en" style="color: var(--maple-red); margin-bottom:16px;">What Nobody Is Building</h3>
+          <h3 data-lang="fr" style="color: var(--maple-red); margin-bottom:16px;">Ce que personne ne construit</h3>
+          <ul class="check-list" data-lang="en" style="list-style:none;">
+            <li style="padding-left:32px;">Institution-owned, distributed AI nodes</li>
+            <li style="padding-left:32px;">Bottom-up knowledge sharing across organizations</li>
+            <li style="padding-left:32px;">Community-governed federated infrastructure</li>
+            <li style="padding-left:32px;">Tools that train their own users</li>
+          </ul>
+          <ul class="check-list" data-lang="fr" style="list-style:none;">
+            <li style="padding-left:32px;">Nœuds IA distribués, détenus par les institutions</li>
+            <li style="padding-left:32px;">Partage ascendant des connaissances entre organisations</li>
+            <li style="padding-left:32px;">Infrastructure fédérée gouvernée par la communauté</li>
+            <li style="padding-left:32px;">Des outils qui forment leurs propres utilisateurs</li>
+          </ul>
+          <p data-lang="en" style="font-size:0.88rem; color:var(--maple-red); font-weight:600; margin-top:16px;">✗ The gap the CDR fills.</p>
+          <p data-lang="fr" style="font-size:0.88rem; color:var(--maple-red); font-weight:600; margin-top:16px;">✗ La lacune que le CDR comble.</p>
+        </div>
+      </div>
+
+      <div class="anim-4" data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:24px 32px; color:white; margin-top:28px; max-width:820px; text-align:center;">
+        <p style="font-size:1.05rem; line-height:1.7;">
+          <strong style="color:var(--accent-gold-light);">The data centres are being built. Who helps the hospital in Medicine Hat actually use them?</strong><br>
+          <span style="opacity:0.7;">The CDR is the bottom-up complement to top-down sovereign infrastructure.</span>
+        </p>
+      </div>
+      <div class="anim-4" data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:24px 32px; color:white; margin-top:28px; max-width:820px; text-align:center;">
+        <p style="font-size:1.05rem; line-height:1.7;">
+          <strong style="color:var(--accent-gold-light);">Les centres de données sont en construction. Qui aide l'hôpital de Medicine Hat à les utiliser?</strong><br>
+          <span style="opacity:0.7;">Le CDR est le complément ascendant de l'infrastructure souveraine descendante.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 4 — THE SOLUTION -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-blue" data-slide="3">
+    <div class="section-num light">03</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">The Solution</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">La solution</div>
+      <h2 class="anim-1" data-lang="en">The Canadian Digital Railway — Hybrid Architecture</h2>
+      <h2 class="anim-1" data-lang="fr">Le Chemin de fer numérique canadien — Architecture hybride</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1rem; opacity:0.85; margin-bottom:32px; max-width:720px; margin-left:auto; margin-right:auto; line-height:1.7;">
+        Three tiers working together: local edge nodes for data sovereignty, sovereign cloud for burst capacity, and a federated mesh that connects the knowledge without centralizing the data.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1rem; opacity:0.85; margin-bottom:32px; max-width:720px; margin-left:auto; margin-right:auto; line-height:1.7;">
+        Trois niveaux travaillant ensemble : des nœuds de périphérie locaux pour la souveraineté des données, un nuage souverain pour la capacité de pointe, et un réseau fédéré qui connecte les connaissances sans centraliser les données.
+      </p>
+
+      <div class="three-col anim-3" style="text-align:left;">
+        <div class="tier-box" style="border-left:4px solid var(--maple-red);">
+          <div class="tier-emoji">🏛️</div>
+          <h4 data-lang="en" style="color:var(--maple-red);">Tier 1 — Edge Stations</h4>
+          <h4 data-lang="fr" style="color:var(--maple-red);">Niveau 1 — Stations de périphérie</h4>
+          <p data-lang="en">Local hardware at institutions. Data never leaves. Protected B compliant by design. Owned by the institution.</p>
+          <p data-lang="fr">Matériel local aux institutions. Les données ne partent jamais. Conforme Protégé B par conception. Propriété de l'institution.</p>
+        </div>
+        <div class="tier-box" style="border-left:4px solid var(--accent-gold);">
+          <div class="tier-emoji">☁️</div>
+          <h4 data-lang="en" style="color:var(--accent-gold-light);">Tier 2 — Sovereign Cloud</h4>
+          <h4 data-lang="fr" style="color:var(--accent-gold-light);">Niveau 2 — Nuage souverain</h4>
+          <p data-lang="en">ThinkOn consortium backbone for burst capacity and failover. Canadian-only. Federal government approved.</p>
+          <p data-lang="fr">Consortium ThinkOn pour la capacité de pointe et la redondance. Entièrement canadien. Approuvé par le gouvernement fédéral.</p>
+        </div>
+        <div class="tier-box" style="border-left:4px solid var(--accent-teal);">
+          <div class="tier-emoji">🔗</div>
+          <h4 data-lang="en" style="color:#7dd3e8;">Tier 3 — Federated Mesh</h4>
+          <h4 data-lang="fr" style="color:#7dd3e8;">Niveau 3 — Réseau fédéré</h4>
+          <p data-lang="en">Encrypted network connecting all nodes. Smart routing. Federated analytics. The query goes to the data — never the reverse.</p>
+          <p data-lang="fr">Réseau chiffré connectant tous les nœuds. Routage intelligent. Analytique fédérée. La requête va aux données — jamais l'inverse.</p>
+        </div>
+      </div>
+
+      <div class="anim-4" data-lang="en" style="margin-top:32px; font-size:1.05rem; opacity:0.9; max-width:700px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        <strong>The real product isn't sovereign compute. It's sovereign knowledge sharing.</strong><br>
+        <span style="opacity:0.7; font-size:0.92rem;">The compute is just the plumbing. The Protocol Registry is the breakthrough.</span>
+      </div>
+      <div class="anim-4" data-lang="fr" style="margin-top:32px; font-size:1.05rem; opacity:0.9; max-width:700px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        <strong>Le vrai produit n'est pas le calcul souverain. C'est le partage souverain des connaissances.</strong><br>
+        <span style="opacity:0.7; font-size:0.92rem;">Le calcul n'est que la plomberie. Le Registre de protocoles est la percée.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 5 — HOW IT WORKS -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-accent" data-slide="4">
+    <div class="section-num light">04</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">How It Works</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Comment ça fonctionne</div>
+      <h2 class="anim-1" data-lang="en">Edge Stations + Sovereign Cloud + Federated Analytics</h2>
+      <h2 class="anim-1" data-lang="fr">Stations de périphérie + Nuage souverain + Analytique fédérée</h2>
+      <div class="divider gold anim-2"></div>
+
+      <div class="flow anim-3" data-lang="en">
+        <div class="flow-step" style="border-color:var(--maple-red);">
+          <div class="flow-icon">🏥</div>
+          <div class="flow-label">Edge Station</div>
+          <div class="flow-desc">Local inference<br>Data never leaves</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">🛤️</div>
+          <div class="flow-label">CDR-OS Mesh</div>
+          <div class="flow-desc">Encrypted routing<br>WireGuard/mTLS</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="border-color:var(--accent-teal);">
+          <div class="flow-icon">☁️</div>
+          <div class="flow-label">Sovereign Cloud</div>
+          <div class="flow-desc">ThinkOn burst<br>Failover capacity</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="border-color:var(--accent-gold);">
+          <div class="flow-icon">📊</div>
+          <div class="flow-label">Federated Query</div>
+          <div class="flow-desc">Query → data<br>Results ← back</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="border-color:var(--maple-red);">
+          <div class="flow-icon">🏛️</div>
+          <div class="flow-label">Edge Station</div>
+          <div class="flow-desc">Aggregated results<br>Never raw data</div>
+        </div>
+      </div>
+      <div class="flow anim-3" data-lang="fr">
+        <div class="flow-step" style="border-color:var(--maple-red);">
+          <div class="flow-icon">🏥</div>
+          <div class="flow-label">Station locale</div>
+          <div class="flow-desc">Inférence locale<br>Données restent</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">🛤️</div>
+          <div class="flow-label">Réseau CDR-OS</div>
+          <div class="flow-desc">Routage chiffré<br>WireGuard/mTLS</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="border-color:var(--accent-teal);">
+          <div class="flow-icon">☁️</div>
+          <div class="flow-label">Nuage souverain</div>
+          <div class="flow-desc">Capacité ThinkOn<br>Redondance</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="border-color:var(--accent-gold);">
+          <div class="flow-icon">📊</div>
+          <div class="flow-label">Requête fédérée</div>
+          <div class="flow-desc">Requête → données<br>Résultats ← retour</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="border-color:var(--maple-red);">
+          <div class="flow-icon">🏛️</div>
+          <div class="flow-label">Station locale</div>
+          <div class="flow-desc">Résultats agrégés<br>Jamais données brutes</div>
+        </div>
+      </div>
+
+      <div class="three-col anim-4" style="margin-top:28px; text-align:left;">
+        <div class="card-dark">
+          <h3 data-lang="en">🏠 Edge Stations</h3>
+          <h3 data-lang="fr">🏠 Stations de périphérie</h3>
+          <p data-lang="en">Run frontier open-weight AI models locally. Protected B data processed on-premises. Offline-capable. Standard power outlet — no server room needed.</p>
+          <p data-lang="fr">Exécutent des modèles IA ouverts localement. Données Protégé B traitées sur place. Fonctionnement hors ligne possible. Prise standard — pas de salle serveur requise.</p>
+        </div>
+        <div class="card-dark">
+          <h3 data-lang="en">☁️ Sovereign Cloud</h3>
+          <h3 data-lang="fr">☁️ Nuage souverain</h3>
+          <p data-lang="en">ThinkOn — the only Canadian company approved to sell cloud to the federal government. Burst capacity when edge nodes hit limits. All Canadian infrastructure.</p>
+          <p data-lang="fr">ThinkOn — la seule entreprise canadienne approuvée pour vendre des services infonuagiques au gouvernement fédéral. Capacité de pointe quand les nœuds atteignent leurs limites. Infrastructure entièrement canadienne.</p>
+        </div>
+        <div class="card-dark">
+          <h3 data-lang="en">📊 Federated Analytics</h3>
+          <h3 data-lang="fr">📊 Analytique fédérée</h3>
+          <p data-lang="en">The query goes to the data, aggregated results come back. Differential privacy. Containerized queries. Compatible with Tableau and Power BI via virtual data source.</p>
+          <p data-lang="fr">La requête va aux données, les résultats agrégés reviennent. Confidentialité différentielle. Requêtes conteneurisées. Compatible Tableau et Power BI via source de données virtuelle.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 6 — CANADIAN HARDWARE -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="5">
+    <div class="gc-bar"></div>
+    <div class="section-num">05</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">Canadian Hardware</div>
+      <div class="small-label anim-1" data-lang="fr">Matériel canadien</div>
+      <h2 class="anim-1" data-lang="en">Hypertec CIARA — Built in Montréal</h2>
+      <h2 class="anim-1" data-lang="fr">Hypertec CIARA — Fabriqué à Montréal</h2>
+      <div class="divider anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1rem; line-height:1.7; margin-bottom:24px; max-width:780px;">
+        The CDR's flagship hardware partner is <strong>Hypertec</strong> — headquartered in Montréal, designing and manufacturing servers in Canada. Hypertec is the <strong>only Canadian NVIDIA OEM</strong> and the hardware backbone of Canada's sovereign government cloud.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1rem; line-height:1.7; margin-bottom:24px; max-width:780px;">
+        Le partenaire matériel principal du CDR est <strong>Hypertec</strong> — siège social à Montréal, conception et fabrication de serveurs au Canada. Hypertec est le <strong>seul OEM canadien de NVIDIA</strong> et la colonne vertébrale matérielle du nuage souverain gouvernemental du Canada.
+      </p>
+
+      <div class="anim-3" data-lang="en" style="margin-bottom:28px;">
+        <h3 style="color: var(--rail-slate); margin-bottom:16px;">Hardware-Agnostic CDR-OS</h3>
+        <p style="font-size:0.95rem; line-height:1.7; color: var(--rail-grey-mid); margin-bottom:20px;">CDR-OS runs on any hardware. Institutions choose the tier that fits their needs and budget:</p>
+        <div class="four-col" style="max-width:1000px;">
+          <div class="card" style="border-left-color:var(--accent-teal); padding:20px;">
+            <h3 style="font-size:1rem; color:var(--accent-teal);">Edge Lite</h3>
+            <p style="font-size:2rem; font-weight:900; color:var(--rail-slate); margin:8px 0;">$2–12K</p>
+            <p style="font-size:0.82rem;">Apple Silicon<br>(Mac Studio M4 Ultra)<br>MLX optimized<br>40–80W power</p>
+          </div>
+          <div class="card" style="border-left-color:var(--accent-gold); padding:20px;">
+            <h3 style="font-size:1rem; color:var(--accent-gold);">Edge Standard</h3>
+            <p style="font-size:2rem; font-weight:900; color:var(--rail-slate); margin:8px 0;">$10–25K</p>
+            <p style="font-size:0.82rem;">Hypertec Workstation<br>NVIDIA CUDA<br>Office deployment<br>Canadian-manufactured</p>
+          </div>
+          <div class="card" style="border-left-color:var(--maple-red); padding:20px;">
+            <h3 style="font-size:1rem; color:var(--maple-red);">Edge Heavy</h3>
+            <p style="font-size:2rem; font-weight:900; color:var(--rail-slate); margin:8px 0;">$25–100K</p>
+            <p style="font-size:0.82rem;">Hypertec GPU Server<br>Multi-GPU NVIDIA<br>Heavy workloads<br>Canadian-manufactured</p>
+          </div>
+          <div class="card" style="border-left-color:var(--rail-slate); padding:20px;">
+            <h3 style="font-size:1rem; color:var(--rail-slate);">Cloud Backbone</h3>
+            <p style="font-size:2rem; font-weight:900; color:var(--rail-slate); margin:8px 0;">Usage</p>
+            <p style="font-size:0.82rem;">ThinkOn Consortium<br>Burst &amp; failover<br>Pay-per-use<br>Federal approved</p>
+          </div>
+        </div>
+      </div>
+      <div class="anim-3" data-lang="fr" style="margin-bottom:28px;">
+        <h3 style="color: var(--rail-slate); margin-bottom:16px;">CDR-OS agnostique au matériel</h3>
+        <p style="font-size:0.95rem; line-height:1.7; color: var(--rail-grey-mid); margin-bottom:20px;">CDR-OS fonctionne sur tout matériel. Les institutions choisissent le niveau qui correspond à leurs besoins et budget :</p>
+        <div class="four-col" style="max-width:1000px;">
+          <div class="card" style="border-left-color:var(--accent-teal); padding:20px;">
+            <h3 style="font-size:1rem; color:var(--accent-teal);">Périphérie légère</h3>
+            <p style="font-size:2rem; font-weight:900; color:var(--rail-slate); margin:8px 0;">2–12K$</p>
+            <p style="font-size:0.82rem;">Apple Silicon<br>(Mac Studio M4 Ultra)<br>Optimisé MLX<br>40–80W</p>
+          </div>
+          <div class="card" style="border-left-color:var(--accent-gold); padding:20px;">
+            <h3 style="font-size:1rem; color:var(--accent-gold);">Périphérie standard</h3>
+            <p style="font-size:2rem; font-weight:900; color:var(--rail-slate); margin:8px 0;">10–25K$</p>
+            <p style="font-size:0.82rem;">Station Hypertec<br>NVIDIA CUDA<br>Déploiement bureau<br>Fabriqué au Canada</p>
+          </div>
+          <div class="card" style="border-left-color:var(--maple-red); padding:20px;">
+            <h3 style="font-size:1rem; color:var(--maple-red);">Périphérie lourde</h3>
+            <p style="font-size:2rem; font-weight:900; color:var(--rail-slate); margin:8px 0;">25–100K$</p>
+            <p style="font-size:0.82rem;">Serveur GPU Hypertec<br>Multi-GPU NVIDIA<br>Charges lourdes<br>Fabriqué au Canada</p>
+          </div>
+          <div class="card" style="border-left-color:var(--rail-slate); padding:20px;">
+            <h3 style="font-size:1rem; color:var(--rail-slate);">Nuage dorsale</h3>
+            <p style="font-size:2rem; font-weight:900; color:var(--rail-slate); margin:8px 0;">Usage</p>
+            <p style="font-size:0.82rem;">Consortium ThinkOn<br>Pointe et redondance<br>Paiement à l'usage<br>Approuvé fédéral</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:0.92rem; color:var(--rail-grey-mid); text-align:center; max-width:680px; margin:0 auto;">
+        <strong>CDR-OS supports Apple Silicon (MLX), NVIDIA (CUDA), and AMD (ROCm).</strong> Institutions are never locked into a single hardware vendor.
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.92rem; color:var(--rail-grey-mid); text-align:center; max-width:680px; margin:0 auto;">
+        <strong>CDR-OS prend en charge Apple Silicon (MLX), NVIDIA (CUDA) et AMD (ROCm).</strong> Les institutions ne sont jamais verrouillées avec un seul fournisseur de matériel.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 7 — PROTOCOL REGISTRY -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-dark" data-slide="6">
+    <div class="section-num light">06</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">The Breakthrough</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">La percée</div>
+      <h2 class="anim-1" data-lang="en">The Protocol Registry — Share Knowledge, Not Data</h2>
+      <h2 class="anim-1" data-lang="fr">Le Registre de protocoles — Partager les connaissances, pas les données</h2>
+      <div class="divider gold anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1rem; opacity:0.85; margin-bottom:28px; max-width:740px; margin-left:auto; margin-right:auto; text-align:center; line-height:1.7;">
+        For 20 years, Canadian institutions have been unable to share intellectual protocols across organizational boundaries — because the tools are inseparable from the protected data they were built on. <strong>The CDR Protocol Registry makes sharing the default, not the exception.</strong>
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1rem; opacity:0.85; margin-bottom:28px; max-width:740px; margin-left:auto; margin-right:auto; text-align:center; line-height:1.7;">
+        Depuis 20 ans, les institutions canadiennes ne peuvent pas partager de protocoles intellectuels entre organisations — car les outils sont inséparables des données protégées. <strong>Le Registre de protocoles du CDR fait du partage la norme, pas l'exception.</strong>
+      </p>
+
+      <div class="flow anim-3" data-lang="en">
+        <div class="flow-step" style="border-color:var(--maple-red);">
+          <div class="flow-icon">🔨</div>
+          <div class="flow-label">Build Locally</div>
+          <div class="flow-desc">Create a tool on<br>your protected data</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">🔄</div>
+          <div class="flow-label">Abstraction</div>
+          <div class="flow-desc">VAP strips data<br>keeps logic</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-teal);">
+          <div class="flow-icon">📚</div>
+          <div class="flow-label">Publish</div>
+          <div class="flow-desc">To the Protocol<br>Registry</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-gold);">
+          <div class="flow-icon">🔍</div>
+          <div class="flow-label">Discover</div>
+          <div class="flow-desc">Other stations<br>find &amp; adapt</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-green); border-width:2px;">
+          <div class="flow-icon">🚀</div>
+          <div class="flow-label">Deploy</div>
+          <div class="flow-desc">Wire to local data<br>Zero exposure</div>
+        </div>
+      </div>
+      <div class="flow anim-3" data-lang="fr">
+        <div class="flow-step" style="border-color:var(--maple-red);">
+          <div class="flow-icon">🔨</div>
+          <div class="flow-label">Construire</div>
+          <div class="flow-desc">Créer un outil sur<br>vos données protégées</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">🔄</div>
+          <div class="flow-label">Abstraction</div>
+          <div class="flow-desc">Le PAV retire les données<br>garde la logique</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-teal);">
+          <div class="flow-icon">📚</div>
+          <div class="flow-label">Publier</div>
+          <div class="flow-desc">Dans le Registre<br>de protocoles</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-gold);">
+          <div class="flow-icon">🔍</div>
+          <div class="flow-label">Découvrir</div>
+          <div class="flow-desc">D'autres stations<br>trouvent et adaptent</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-green); border-width:2px;">
+          <div class="flow-icon">🚀</div>
+          <div class="flow-label">Déployer</div>
+          <div class="flow-desc">Connecter aux données<br>Zéro exposition</div>
+        </div>
+      </div>
+
+      <div class="two-col anim-4" style="margin-top:24px; text-align:left;">
+        <div class="card-dark" style="border-left-color: var(--maple-red);">
+          <h3 data-lang="en" style="color:var(--rail-white);">🔐 Variable Abstraction Protocol (VAP)</h3>
+          <h3 data-lang="fr" style="color:var(--rail-white);">🔐 Protocole d'abstraction de variables (PAV)</h3>
+          <p data-lang="en">Applications are published with abstract variables (Y, X₁, X₂), never real field names. Rich type definitions describe what <em>kind</em> of data each variable expects — without revealing what the original builder used. Born clean, not sanitized after the fact.</p>
+          <p data-lang="fr">Les applications sont publiées avec des variables abstraites (Y, X₁, X₂), jamais de vrais noms de champs. Des définitions de types riches décrivent quel <em>type</em> de données chaque variable attend — sans révéler ce que le créateur original a utilisé. Propre dès la naissance, pas assaini après coup.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--accent-green);">
+          <h3 data-lang="en" style="color:var(--rail-white);">🔄 The Improvement Loop</h3>
+          <h3 data-lang="fr" style="color:var(--rail-white);">🔄 La boucle d'amélioration</h3>
+          <p data-lang="en">A clinic builds a patient intake tool. A retail business discovers it's actually a client onboarding workflow — adapts it. Improvements flow back. <strong>No institution ever shares a byte of protected data. But the collective intelligence compounds.</strong></p>
+          <p data-lang="fr">Une clinique crée un outil d'admission. Un commerce de détail découvre que c'est en fait un processus d'intégration client — l'adapte. Les améliorations reviennent. <strong>Aucune institution ne partage jamais un octet de données protégées. Mais l'intelligence collective se compose.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 8 — TERRY -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-warm" data-slide="7">
+    <div class="gc-bar"></div>
+    <div class="section-num">07</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">The Station Agent</div>
+      <div class="small-label anim-1" data-lang="fr">L'agent de station</div>
+      <h2 class="anim-1" data-lang="en">Meet Terry 🏃 — The AI That Trains Its Own Users</h2>
+      <h2 class="anim-1" data-lang="fr">Voici Terry 🏃 — L'IA qui forme ses propres utilisateurs</h2>
+      <div class="divider anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1.02rem; line-height:1.7; margin-bottom:20px; max-width:760px;">
+        Named after <strong>Terry Fox</strong> — the Canadian who connected this country with nothing but determination and hope. Terry is the local AI assistant that ships with every CDR station. Built on Clawdbot, a proven AI partner platform already in daily production use. <strong>Terry knows your business from day one</strong> — before a station goes live, HazeyData collects your information via an intake questionnaire and pre-configures Terry's workspace with 5 files (SOUL.md, USER.md, TOOLS.md, AGENTS.md, HEARTBEAT.md) so it boots up already understanding your institution type, your skills, your pain points, and your systems. Not a cold start. A warm handshake.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1.02rem; line-height:1.7; margin-bottom:20px; max-width:760px;">
+        Nommé d'après <strong>Terry Fox</strong> — le Canadien qui a connecté ce pays avec rien d'autre que de la détermination et de l'espoir. Terry est l'assistant IA local livré avec chaque station CDR. Construit sur Clawdbot, une plateforme d'IA partenaire éprouvée déjà en utilisation quotidienne. <strong>Terry connaît votre entreprise dès le premier jour</strong> — avant la mise en service d'une station, HazeyData recueille vos informations via un questionnaire d'admission et préconfigure l'espace de travail de Terry avec 5 fichiers (SOUL.md, USER.md, TOOLS.md, AGENTS.md, HEARTBEAT.md) pour qu'il démarre en comprenant déjà votre type d'institution, vos compétences, vos points de douleur et vos systèmes. Pas un démarrage à froid. Une poignée de main chaleureuse.
+      </p>
+
+      <div class="quote-block anim-2" data-lang="en" style="background:rgba(196,30,58,0.04); border-color:var(--maple-red); border-radius:8px;">
+        "Hey, I'm Terry. What do you want to build today?"
+        <span class="quote-source">— First thing every new station hears</span>
+      </div>
+      <div class="quote-block anim-2" data-lang="fr" style="background:rgba(196,30,58,0.04); border-color:var(--maple-red); border-radius:8px;">
+        « Bonjour, je suis Terry. Qu'est-ce que vous voulez construire aujourd'hui? »
+        <span class="quote-source">— La première chose que chaque nouvelle station entend</span>
+      </div>
+
+      <div class="two-col anim-3">
+        <div>
+          <h3 data-lang="en" style="color: var(--rail-slate); margin-bottom:16px;">What Terry Does</h3>
+          <h3 data-lang="fr" style="color: var(--rail-slate); margin-bottom:16px;">Ce que Terry fait</h3>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon gold">🎯</div>
+            <div class="gap-text">
+              <h4>Onboarding &amp; Discovery</h4>
+              <p>Greets new stations, understands institution type, surfaces relevant protocols from the Registry. No coding required.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon gold">🔧</div>
+            <div class="gap-text">
+              <h4>Guided Building</h4>
+              <p>Reverse prompting and active building. Terry asks what you need, then builds it conversationally. The product IS the trainer.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon gold">📦</div>
+            <div class="gap-text">
+              <h4>Knowledge Sharing</h4>
+              <p>When you build something useful, Terry applies VAP abstraction and publishes it to the Registry with one command.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon gold">🎯</div>
+            <div class="gap-text">
+              <h4>Intégration et découverte</h4>
+              <p>Accueille les nouvelles stations, comprend le type d'institution, présente les protocoles pertinents du Registre. Aucun codage requis.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon gold">🔧</div>
+            <div class="gap-text">
+              <h4>Construction guidée</h4>
+              <p>Prompting inversé et construction active. Terry demande ce dont vous avez besoin, puis le construit conversationnellement. Le produit EST le formateur.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon gold">📦</div>
+            <div class="gap-text">
+              <h4>Partage des connaissances</h4>
+              <p>Quand vous créez quelque chose d'utile, Terry applique l'abstraction PAV et le publie au Registre en une commande.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 data-lang="en" style="color: var(--rail-slate); margin-bottom:16px;">Why This Matters</h3>
+          <h3 data-lang="fr" style="color: var(--rail-slate); margin-bottom:16px;">Pourquoi c'est important</h3>
+          <div data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:white;">
+            <p style="font-size:1rem; line-height:1.7; opacity:0.9; margin-bottom:16px;">
+              <strong style="color:var(--accent-gold-light);">The training problem that kills enterprise AI deployments is solved by the product itself.</strong>
+            </p>
+            <p style="font-size:0.92rem; opacity:0.75; line-height:1.65; margin-bottom:16px;">
+              Terry doesn't just run the station — Terry teaches the operator. Reverse prompting, active building, guided coaching. No onboarding consultants needed. No 6-month training programs.
+            </p>
+            <p style="font-size:0.85rem; opacity:0.6; line-height:1.6;">
+              This isn't theoretical — the interaction model is proven. The first Terry (codenamed "Wilma") has been in daily production use, building real applications conversationally.
+            </p>
+          </div>
+          <div data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:white;">
+            <p style="font-size:1rem; line-height:1.7; opacity:0.9; margin-bottom:16px;">
+              <strong style="color:var(--accent-gold-light);">Le problème de formation qui tue les déploiements IA en entreprise est résolu par le produit lui-même.</strong>
+            </p>
+            <p style="font-size:0.92rem; opacity:0.75; line-height:1.65; margin-bottom:16px;">
+              Terry ne fait pas que gérer la station — Terry enseigne à l'opérateur. Prompting inversé, construction active, coaching guidé. Pas de consultants d'intégration. Pas de programme de formation de 6 mois.
+            </p>
+            <p style="font-size:0.85rem; opacity:0.6; line-height:1.6;">
+              Ce n'est pas théorique — le modèle d'interaction est prouvé. Le premier Terry (nom de code « Wilma ») est en utilisation quotidienne, construisant de vraies applications par conversation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 9 — INDIGENOUS CO-DESIGN -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-accent" data-slide="8">
+    <div class="section-num light">08</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Indigenous Co-Design</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Co-conception autochtone</div>
+      <h2 class="anim-1" data-lang="en">Not an Afterthought — A Co-Design Partner from Phase 0</h2>
+      <h2 class="anim-1" data-lang="fr">Pas une réflexion après coup — Un partenaire de co-conception dès la Phase 0</h2>
+      <div class="divider gold anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1rem; opacity:0.85; margin-bottom:28px; max-width:740px; margin-left:auto; margin-right:auto; text-align:center; line-height:1.7;">
+        Indigenous communities don't need another product built by outsiders. The CDR is co-designed with Indigenous partners from day one — features defined by communities, not prescribed by HazeyData.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1rem; opacity:0.85; margin-bottom:28px; max-width:740px; margin-left:auto; margin-right:auto; text-align:center; line-height:1.7;">
+        Les communautés autochtones n'ont pas besoin d'un autre produit conçu par des étrangers. Le CDR est co-conçu avec des partenaires autochtones dès le premier jour — les fonctionnalités sont définies par les communautés, pas prescrites par HazeyData.
+      </p>
+
+      <div class="three-col anim-3" style="text-align:left;">
+        <div class="card-dark" style="border-left-color: var(--accent-gold);">
+          <h3 data-lang="en">🤝 FNTC Partnership</h3>
+          <h3 data-lang="fr">🤝 Partenariat FNTC</h3>
+          <p data-lang="en">First Nations Technology Council (BC) — currently running an RFP for AI resources for Indigenous communities. Their <em>"Missing Code"</em> initiative aligns directly with CDR's mission.</p>
+          <p data-lang="fr">Conseil de la technologie des Premières Nations (C.-B.) — mène actuellement un appel d'offres pour des ressources IA pour les communautés autochtones. Leur initiative <em>« Missing Code »</em> s'aligne directement avec la mission du CDR.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--maple-red);">
+          <h3 data-lang="en">🛡️ OCAP® by Architecture</h3>
+          <h3 data-lang="fr">🛡️ PCAP® par l'architecture</h3>
+          <p data-lang="en">Aligned with FNIGC's OCAP® principles. Ownership, Control, Access, and Possession aren't bolted on — they're structural features. Data stays on community hardware. Full community sovereignty.</p>
+          <p data-lang="fr">Aligné sur les principes PCAP® du CGIPN. Propriété, Contrôle, Accès et Possession ne sont pas ajoutés — ce sont des caractéristiques structurelles. Les données restent sur le matériel communautaire. Souveraineté communautaire complète.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--accent-teal);">
+          <h3 data-lang="en">🪶 Language Preservation</h3>
+          <h3 data-lang="fr">🪶 Préservation linguistique</h3>
+          <p data-lang="en">Over 70 Indigenous languages in Canada, many critically endangered. Communities teach their Terry their language — model weights stay local. First truly sovereign AI language preservation system.</p>
+          <p data-lang="fr">Plus de 70 langues autochtones au Canada, beaucoup en danger critique. Les communautés enseignent leur langue à leur Terry — les poids du modèle restent locaux. Premier système souverain de préservation linguistique par IA.</p>
+        </div>
+      </div>
+
+      <div class="anim-4" data-lang="en" style="background: rgba(200,151,62,0.1); border: 1px solid rgba(200,151,62,0.3); border-radius:12px; padding:24px 32px; margin-top:28px; max-width:800px; margin-left:auto; margin-right:auto;">
+        <h3 style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1rem;">Indigenous Advisory Circle</h3>
+        <p style="font-size:0.92rem; opacity:0.85; line-height:1.7;">
+          Compensated roles with veto power over CDR design decisions affecting Indigenous communities. Indigenous community included as a Phase 0 pilot partner. Community ownership is a design requirement, not a feature request.
+        </p>
+      </div>
+      <div class="anim-4" data-lang="fr" style="background: rgba(200,151,62,0.1); border: 1px solid rgba(200,151,62,0.3); border-radius:12px; padding:24px 32px; margin-top:28px; max-width:800px; margin-left:auto; margin-right:auto;">
+        <h3 style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1rem;">Cercle consultatif autochtone</h3>
+        <p style="font-size:0.92rem; opacity:0.85; line-height:1.7;">
+          Rôles rémunérés avec droit de veto sur les décisions de conception du CDR affectant les communautés autochtones. Communauté autochtone incluse comme partenaire pilote de la Phase 0. La propriété communautaire est une exigence de conception, pas une demande de fonctionnalité.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 10 — BUSINESS MODEL -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="9">
+    <div class="gc-bar"></div>
+    <div class="section-num">09</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">Business Model</div>
+      <div class="small-label anim-1" data-lang="fr">Modèle d'affaires</div>
+      <h2 class="anim-1" data-lang="en">Open Core — Transparent, Sustainable, No Lock-In</h2>
+      <h2 class="anim-1" data-lang="fr">Noyau ouvert — Transparent, durable, sans verrouillage</h2>
+      <div class="divider anim-2"></div>
+
+      <div class="anim-3" style="max-width:780px; margin:0 auto;">
+        <table class="rev-table" data-lang="en">
+          <tr><th>Revenue Stream</th><th>Model</th><th>Price</th></tr>
+          <tr>
+            <td><strong>CDR-OS</strong></td>
+            <td>Open source — free, auditable, no lock-in</td>
+            <td>Free</td>
+          </tr>
+          <tr>
+            <td><strong>CDR Managed Service</strong></td>
+            <td>Monitoring, updates, support, SLA</td>
+            <td>$500–2,000/mo</td>
+          </tr>
+          <tr>
+            <td><strong>Sovereign Cloud Tier</strong></td>
+            <td>ThinkOn partnership, usage-based burst</td>
+            <td>Usage-based</td>
+          </tr>
+          <tr>
+            <td><strong>Protocol Registry Premium</strong></td>
+            <td>Telemetry, certified protocols, priority</td>
+            <td>$200–500/mo</td>
+          </tr>
+          <tr>
+            <td><strong>Enterprise Deployment</strong></td>
+            <td>Custom contracts, 6-7 figure engagements</td>
+            <td>Custom</td>
+          </tr>
+        </table>
+        <table class="rev-table" data-lang="fr">
+          <tr><th>Source de revenus</th><th>Modèle</th><th>Prix</th></tr>
+          <tr>
+            <td><strong>CDR-OS</strong></td>
+            <td>Code ouvert — gratuit, vérifiable, sans verrouillage</td>
+            <td>Gratuit</td>
+          </tr>
+          <tr>
+            <td><strong>Service géré CDR</strong></td>
+            <td>Surveillance, mises à jour, soutien, ANS</td>
+            <td>500–2 000$/mo</td>
+          </tr>
+          <tr>
+            <td><strong>Niveau nuage souverain</strong></td>
+            <td>Partenariat ThinkOn, utilisation à la demande</td>
+            <td>À l'usage</td>
+          </tr>
+          <tr>
+            <td><strong>Registre protocoles Premium</strong></td>
+            <td>Télémétrie, protocoles certifiés, priorité</td>
+            <td>200–500$/mo</td>
+          </tr>
+          <tr>
+            <td><strong>Déploiement entreprise</strong></td>
+            <td>Contrats sur mesure, engagements de 6-7 chiffres</td>
+            <td>Sur mesure</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="stat-row anim-3" data-lang="en" style="margin-top:12px;">
+        <div class="stat">
+          <div class="stat-number" style="color:var(--accent-green);">~30</div>
+          <div class="stat-label">Managed stations<br>to break even</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" style="color:var(--accent-gold);">50+</div>
+          <div class="stat-label">Target nodes<br>Phase 2 national</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" style="color:var(--maple-red);">100%</div>
+          <div class="stat-label">Open source<br>CDR-OS core</div>
+        </div>
+      </div>
+      <div class="stat-row anim-3" data-lang="fr" style="margin-top:12px;">
+        <div class="stat">
+          <div class="stat-number" style="color:var(--accent-green);">~30</div>
+          <div class="stat-label">Stations gérées<br>pour atteindre le seuil de rentabilité</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" style="color:var(--accent-gold);">50+</div>
+          <div class="stat-label">Nœuds cibles<br>Phase 2 nationale</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" style="color:var(--maple-red);">100 %</div>
+          <div class="stat-label">Code ouvert<br>noyau CDR-OS</div>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:0.92rem; color:var(--rail-grey-mid); text-align:center; max-width:680px; margin:16px auto 0;">
+        Like Red Hat for sovereign AI. The software is free and open source. <strong>The proprietary moat is the SOUL.md library</strong> — curated onboarding templates per sector (clinic, retail, university, government, Indigenous governance) that encode years of consulting knowledge into configuration files. The software is open; the onboarding intelligence is not. <strong>Institutions own their nodes. HazeyData owns the track and the playbook.</strong>
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.92rem; color:var(--rail-grey-mid); text-align:center; max-width:680px; margin:16px auto 0;">
+        Comme Red Hat pour l'IA souveraine. Le logiciel est gratuit et à code ouvert. <strong>L'avantage concurrentiel propriétaire est la bibliothèque SOUL.md</strong> — des gabarits d'intégration structurés par secteur (clinique, commerce de détail, université, gouvernement, gouvernance autochtone) qui encodent des années de savoir-faire en consultation dans des fichiers de configuration. Le logiciel est ouvert; l'intelligence d'intégration ne l'est pas. <strong>Les institutions possèdent leurs nœuds. HazeyData possède la voie ferrée et le cahier de jeu.</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 11 — PHASE PLAN -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-blue" data-slide="10">
+    <div class="section-num light">10</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Phase Plan</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Plan par phases</div>
+      <h2 class="anim-1" data-lang="en">Rigorous Pilot → National Network → Knowledge Economy</h2>
+      <h2 class="anim-1" data-lang="fr">Pilote rigoureux → Réseau national → Économie du savoir</h2>
+      <div class="divider gold anim-2"></div>
+
+      <div class="anim-3" data-lang="en" style="max-width:800px; margin:0 auto;">
+        <div class="phase-item">
+          <div class="phase-badge p0">Phase 0</div>
+          <div class="phase-content">
+            <h4 style="color:var(--rail-white);">Rigorous Pilot <span style="opacity:0.5; font-weight:400;">— 6 months</span></h4>
+            <p style="color:rgba(255,255,255,0.7);">Internal extraction (Wilma → Node 2) → 3 external pilot sites (Hypertec partner, university, small business) → Cross-pollination test (protocol from one sector deploys in another) → TBS Protected B assessment. <strong style="color:var(--accent-gold-light);">Defined failure conditions at every stage.</strong></p>
+          </div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-badge p1">Phase 1</div>
+          <div class="phase-content">
+            <h4 style="color:var(--rail-white);">10 Stations, Real Sectors <span style="opacity:0.5; font-weight:400;">— 3–12 months</span></h4>
+            <p style="color:rgba(255,255,255,0.7);">Expand to 10 nodes across 3-4 sectors: healthcare, government, education, small business. Protocol Registry v1 with search and adaptation. First cross-sector protocol transfers documented and measured.</p>
+          </div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-badge p2">Phase 2</div>
+          <div class="phase-content">
+            <h4 style="color:var(--rail-white);">National Network <span style="opacity:0.5; font-weight:400;">— 12–30 months</span></h4>
+            <p style="color:rgba(255,255,255,0.7);">50+ nodes coast to coast. 100+ published protocols. Governance council established. First Indigenous community stations for language preservation and governance tools. Defence/government pilot contracts.</p>
+          </div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-badge p3">Phase 3</div>
+          <div class="phase-content">
+            <h4 style="color:var(--rail-white);">Knowledge Economy <span style="opacity:0.5; font-weight:400;">— 30+ months</span></h4>
+            <p style="color:rgba(255,255,255,0.7);">Protocol Registry becomes the de facto way Canadian institutions share methodology. Third-party developers building for the Registry. International interest (Five Eyes, Commonwealth). <em>"Is it on the CDR?"</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="anim-3" data-lang="fr" style="max-width:800px; margin:0 auto;">
+        <div class="phase-item">
+          <div class="phase-badge p0">Phase 0</div>
+          <div class="phase-content">
+            <h4 style="color:var(--rail-white);">Pilote rigoureux <span style="opacity:0.5; font-weight:400;">— 6 mois</span></h4>
+            <p style="color:rgba(255,255,255,0.7);">Extraction interne (Wilma → Nœud 2) → 3 sites pilotes externes (partenaire Hypertec, université, PME) → Test de pollinisation croisée (protocole d'un secteur déployé dans un autre) → Évaluation Protégé B du SCT. <strong style="color:var(--accent-gold-light);">Conditions d'échec définies à chaque étape.</strong></p>
+          </div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-badge p1">Phase 1</div>
+          <div class="phase-content">
+            <h4 style="color:var(--rail-white);">10 stations, secteurs réels <span style="opacity:0.5; font-weight:400;">— 3–12 mois</span></h4>
+            <p style="color:rgba(255,255,255,0.7);">Expansion à 10 nœuds dans 3-4 secteurs : santé, gouvernement, éducation, PME. Registre de protocoles v1 avec recherche et adaptation. Premiers transferts intersectoriels documentés et mesurés.</p>
+          </div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-badge p2">Phase 2</div>
+          <div class="phase-content">
+            <h4 style="color:var(--rail-white);">Réseau national <span style="opacity:0.5; font-weight:400;">— 12–30 mois</span></h4>
+            <p style="color:rgba(255,255,255,0.7);">50+ nœuds d'un océan à l'autre. 100+ protocoles publiés. Conseil de gouvernance établi. Premières stations de communautés autochtones pour la préservation linguistique et les outils de gouvernance. Contrats pilotes défense/gouvernement.</p>
+          </div>
+        </div>
+        <div class="phase-item">
+          <div class="phase-badge p3">Phase 3</div>
+          <div class="phase-content">
+            <h4 style="color:var(--rail-white);">Économie du savoir <span style="opacity:0.5; font-weight:400;">— 30+ mois</span></h4>
+            <p style="color:rgba(255,255,255,0.7);">Le Registre de protocoles devient la façon de facto dont les institutions canadiennes partagent leurs méthodologies. Développeurs tiers créant pour le Registre. Intérêt international (Five Eyes, Commonwealth). <em>« Est-ce sur le CDR? »</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 12 — THE TEAM -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-warm" data-slide="11">
+    <div class="gc-bar"></div>
+    <div class="section-num">11</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en">The Team</div>
+      <div class="small-label anim-1" data-lang="fr">L'équipe</div>
+      <h2 class="anim-1" data-lang="en">Built by Canadians, for Canadians</h2>
+      <h2 class="anim-1" data-lang="fr">Construit par des Canadiens, pour des Canadiens</h2>
+      <div class="divider center anim-2"></div>
+
+      <div class="anim-3" data-lang="en" style="max-width:900px; margin:0 auto;">
+        <div style="background:white; border-radius:12px; padding:28px 32px; box-shadow:var(--shadow); border-left:4px solid var(--maple-red); text-align:left; margin-bottom:24px;">
+          <h3 style="color:var(--rail-slate); margin-bottom:8px;">🧑‍💻 Fred Hazelton — Founder, HazeyData</h3>
+          <p style="font-size:0.95rem; line-height:1.65; color:var(--rail-grey-mid);">Data scientist and AI engineer. Former TouringPlans (theme park analytics). Builder of Clawdbot (the AI partner platform that powers Terry). Architect of the CDR vision, the Protocol Registry, and the Variable Abstraction Protocol.</p>
+        </div>
+        <div style="background:var(--rail-slate); border-radius:12px; padding:24px 32px; color:white; text-align:left; margin-bottom:24px;">
+          <h3 style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.05rem;">📡 CDR Support Architecture — Scales Without a Human Team</h3>
+          <p style="font-size:0.92rem; line-height:1.7; opacity:0.85;">Every Terry connects back to CDR HQ via Discord/Teams/Slack. <strong style="color:var(--accent-gold-light);">Wilma</strong> (AI, 24/7) handles 90% of support across all stations. <strong style="color:var(--accent-gold-light);">Fred</strong> (human, on-call) handles the 10% that needs a human brain. Users can also message HQ directly. <strong>No human support team needed until 50+ stations.</strong> Terry-to-Wilma patterns generate a knowledge base that continuously improves future onboarding.</p>
+        </div>
+        <div class="three-col" style="text-align:left;">
+          <div class="card" style="border-left-color:var(--accent-gold);">
+            <h3 style="font-size:1.05rem;">🖥️ Hypertec</h3>
+            <p><strong>Hardware Partner</strong><br>Montréal HQ. Designs and manufactures servers in Canada. Only Canadian NVIDIA OEM. Hardware backbone of Canada's sovereign government cloud.</p>
+          </div>
+          <div class="card" style="border-left-color:var(--accent-teal);">
+            <h3 style="font-size:1.05rem;">☁️ ThinkOn Consortium</h3>
+            <p><strong>Cloud Partner</strong><br>The only Canadian company approved to sell cloud to the federal government. Sovereign cloud backbone for CDR Tier 2 — burst capacity and failover.</p>
+          </div>
+          <div class="card" style="border-left-color:var(--accent-green);">
+            <h3 style="font-size:1.05rem;">🪶 FNTC</h3>
+            <p><strong>Indigenous Co-Design Partner</strong><br>First Nations Technology Council (BC). Running RFP for AI resources for Indigenous communities. CDR's Indigenous co-design partner from Phase 0.</p>
+          </div>
+        </div>
+      </div>
+      <div class="anim-3" data-lang="fr" style="max-width:900px; margin:0 auto;">
+        <div style="background:white; border-radius:12px; padding:28px 32px; box-shadow:var(--shadow); border-left:4px solid var(--maple-red); text-align:left; margin-bottom:24px;">
+          <h3 style="color:var(--rail-slate); margin-bottom:8px;">🧑‍💻 Fred Hazelton — Fondateur, HazeyData</h3>
+          <p style="font-size:0.95rem; line-height:1.65; color:var(--rail-grey-mid);">Scientifique des données et ingénieur IA. Ancien TouringPlans (analytique de parcs thématiques). Créateur de Clawdbot (la plateforme IA partenaire qui alimente Terry). Architecte de la vision CDR, du Registre de protocoles et du Protocole d'abstraction de variables.</p>
+        </div>
+        <div style="background:var(--rail-slate); border-radius:12px; padding:24px 32px; color:white; text-align:left; margin-bottom:24px;">
+          <h3 style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.05rem;">📡 Architecture de soutien CDR — Évolue sans équipe humaine</h3>
+          <p style="font-size:0.92rem; line-height:1.7; opacity:0.85;">Chaque Terry se connecte au QG du CDR via Discord/Teams/Slack. <strong style="color:var(--accent-gold-light);">Wilma</strong> (IA, 24/7) gère 90 % du soutien pour toutes les stations. <strong style="color:var(--accent-gold-light);">Fred</strong> (humain, sur appel) gère les 10 % qui nécessitent un cerveau humain. Les utilisateurs peuvent aussi contacter le QG directement. <strong>Pas d'équipe de soutien humaine nécessaire avant 50+ stations.</strong> Les interactions Terry-Wilma génèrent une base de connaissances qui améliore continuellement les futures intégrations.</p>
+        </div>
+        <div class="three-col" style="text-align:left;">
+          <div class="card" style="border-left-color:var(--accent-gold);">
+            <h3 style="font-size:1.05rem;">🖥️ Hypertec</h3>
+            <p><strong>Partenaire matériel</strong><br>Siège social à Montréal. Conçoit et fabrique des serveurs au Canada. Seul OEM canadien de NVIDIA. Colonne vertébrale matérielle du nuage souverain gouvernemental du Canada.</p>
+          </div>
+          <div class="card" style="border-left-color:var(--accent-teal);">
+            <h3 style="font-size:1.05rem;">☁️ Consortium ThinkOn</h3>
+            <p><strong>Partenaire infonuagique</strong><br>La seule entreprise canadienne approuvée pour vendre des services infonuagiques au gouvernement fédéral. Dorsale nuage souverain pour le Niveau 2 du CDR — capacité de pointe et redondance.</p>
+          </div>
+          <div class="card" style="border-left-color:var(--accent-green);">
+            <h3 style="font-size:1.05rem;">🪶 FNTC</h3>
+            <p><strong>Partenaire de co-conception autochtone</strong><br>Conseil de la technologie des Premières Nations (C.-B.). Mène un appel d'offres pour des ressources IA pour les communautés autochtones. Partenaire de co-conception autochtone du CDR dès la Phase 0.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 13 — THE ASK -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-dark" data-slide="12">
+    <div class="section-num light">12</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">The Ask</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">La demande</div>
+      <h2 class="anim-1" data-lang="en">Funding the Pilot — What the Money Buys</h2>
+      <h2 class="anim-1" data-lang="fr">Financer le pilote — Ce que l'argent achète</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <div class="anim-3" style="max-width:800px; margin:0 auto;">
+        <table class="fund-table" data-lang="en">
+          <tr><th>Funding Program</th><th>Amount</th><th>CDR Application</th></tr>
+          <tr>
+            <td>ISED AI Compute Challenge</td>
+            <td style="color:var(--accent-gold-light); font-weight:600;">$705M pool</td>
+            <td>Edge station hardware, CDR-OS development, sovereign cloud integration</td>
+          </tr>
+          <tr>
+            <td>AI Compute Access Fund (SMEs)</td>
+            <td style="color:var(--accent-gold-light); font-weight:600;">$300M pool</td>
+            <td>Subsidized managed service for small businesses and startups</td>
+          </tr>
+          <tr>
+            <td>Indigenous Services Canada</td>
+            <td style="color:var(--accent-gold-light); font-weight:600;">Technology funding</td>
+            <td>Indigenous community stations, language preservation, OCAP®-compliant tools</td>
+          </tr>
+          <tr>
+            <td>Provincial Innovation Funds</td>
+            <td style="color:var(--accent-gold-light); font-weight:600;">Various</td>
+            <td>Regional pilot deployments, healthcare and education stations</td>
+          </tr>
+        </table>
+        <table class="fund-table" data-lang="fr">
+          <tr><th>Programme de financement</th><th>Montant</th><th>Application CDR</th></tr>
+          <tr>
+            <td>Défi du calcul IA d'ISDE</td>
+            <td style="color:var(--accent-gold-light); font-weight:600;">Pool de 705 M$</td>
+            <td>Matériel de stations, développement CDR-OS, intégration nuage souverain</td>
+          </tr>
+          <tr>
+            <td>Fonds d'accès au calcul IA (PME)</td>
+            <td style="color:var(--accent-gold-light); font-weight:600;">Pool de 300 M$</td>
+            <td>Service géré subventionné pour PME et startups</td>
+          </tr>
+          <tr>
+            <td>Services aux Autochtones Canada</td>
+            <td style="color:var(--accent-gold-light); font-weight:600;">Fonds techno</td>
+            <td>Stations communautaires autochtones, préservation linguistique, outils PCAP®</td>
+          </tr>
+          <tr>
+            <td>Fonds d'innovation provinciaux</td>
+            <td style="color:var(--accent-gold-light); font-weight:600;">Divers</td>
+            <td>Déploiements pilotes régionaux, stations santé et éducation</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="anim-4" data-lang="en" style="margin-top:20px;">
+        <h3 style="color:var(--accent-gold-light); margin-bottom:16px; font-size:1.1rem;">Phase 0 Budget — What the Pilot Costs</h3>
+        <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:20px 24px; text-align:center; min-width:140px;">
+            <div style="font-family:'Lato',sans-serif; font-size:1.8rem; font-weight:900; color:var(--accent-gold-light);">$150K</div>
+            <div style="font-size:0.78rem; opacity:0.6; margin-top:4px;">Hardware<br>(5 pilot stations)</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:20px 24px; text-align:center; min-width:140px;">
+            <div style="font-family:'Lato',sans-serif; font-size:1.8rem; font-weight:900; color:var(--accent-gold-light);">$200K</div>
+            <div style="font-size:0.78rem; opacity:0.6; margin-top:4px;">CDR-OS Development<br>(6 months)</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:20px 24px; text-align:center; min-width:140px;">
+            <div style="font-family:'Lato',sans-serif; font-size:1.8rem; font-weight:900; color:var(--accent-gold-light);">$100K</div>
+            <div style="font-size:0.78rem; opacity:0.6; margin-top:4px;">Indigenous Engagement<br>&amp; Advisory Circle</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:20px 24px; text-align:center; min-width:140px;">
+            <div style="font-family:'Lato',sans-serif; font-size:1.8rem; font-weight:900; color:var(--accent-gold-light);">$50K</div>
+            <div style="font-size:0.78rem; opacity:0.6; margin-top:4px;">TBS Assessment<br>&amp; Operations</div>
+          </div>
+        </div>
+      </div>
+      <div class="anim-4" data-lang="fr" style="margin-top:20px;">
+        <h3 style="color:var(--accent-gold-light); margin-bottom:16px; font-size:1.1rem;">Budget Phase 0 — Ce que le pilote coûte</h3>
+        <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:20px 24px; text-align:center; min-width:140px;">
+            <div style="font-family:'Lato',sans-serif; font-size:1.8rem; font-weight:900; color:var(--accent-gold-light);">150K$</div>
+            <div style="font-size:0.78rem; opacity:0.6; margin-top:4px;">Matériel<br>(5 stations pilotes)</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:20px 24px; text-align:center; min-width:140px;">
+            <div style="font-family:'Lato',sans-serif; font-size:1.8rem; font-weight:900; color:var(--accent-gold-light);">200K$</div>
+            <div style="font-size:0.78rem; opacity:0.6; margin-top:4px;">Développement CDR-OS<br>(6 mois)</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:20px 24px; text-align:center; min-width:140px;">
+            <div style="font-family:'Lato',sans-serif; font-size:1.8rem; font-weight:900; color:var(--accent-gold-light);">100K$</div>
+            <div style="font-size:0.78rem; opacity:0.6; margin-top:4px;">Engagement autochtone<br>&amp; Cercle consultatif</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:20px 24px; text-align:center; min-width:140px;">
+            <div style="font-family:'Lato',sans-serif; font-size:1.8rem; font-weight:900; color:var(--accent-gold-light);">50K$</div>
+            <div style="font-size:0.78rem; opacity:0.6; margin-top:4px;">Évaluation SCT<br>&amp; opérations</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 14 — VALIDATION -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="13">
+    <div class="gc-bar"></div>
+    <div class="section-num">13</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">Validation</div>
+      <div class="small-label anim-1" data-lang="fr">Validation</div>
+      <h2 class="anim-1" data-lang="en">The Window Is Open — Right Now</h2>
+      <h2 class="anim-1" data-lang="fr">La fenêtre est ouverte — maintenant</h2>
+      <div class="divider anim-2"></div>
+
+      <div class="quote-block anim-2" data-lang="en" style="border-color:var(--maple-red); max-width:800px;">
+        "Canada must develop sovereign AI infrastructure that ensures critical data remains under Canadian jurisdiction and control... Without action, Canada risks permanent dependency on foreign-controlled AI infrastructure."
+        <span class="quote-source">— "Sovereign by Design," Khan &amp; Mullin, Munk School / University of Toronto, March 2026</span>
+      </div>
+      <div class="quote-block anim-2" data-lang="fr" style="border-color:var(--maple-red); max-width:800px;">
+        « Le Canada doit développer une infrastructure IA souveraine qui assure que les données critiques restent sous juridiction et contrôle canadiens... Sans action, le Canada risque une dépendance permanente à l'infrastructure IA contrôlée par l'étranger. »
+        <span class="quote-source">— « Sovereign by Design », Khan et Mullin, Munk School / Université de Toronto, mars 2026</span>
+      </div>
+
+      <div class="two-col anim-3" data-lang="en">
+        <div>
+          <div class="gap-item">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>$2.4B Federal AI Commitment</h4>
+              <p>Unprecedented federal investment in sovereign AI infrastructure. The funding exists — it needs projects to fund.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>"Sovereign by Design" Report</h4>
+              <p>Authored by Jaxson Khan (architect of Canada's $2.4B AI strategy) and Sean Mullin (former PMO advisor). Validates every problem the CDR solves.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="gap-item">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>ThinkOn Sovereign Cloud Consortium</h4>
+              <p>The only Canadian company approved to sell cloud to the federal government has launched its consortium. CDR's Tier 2 backbone is real.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>FNTC "Missing Code" Initiative</h4>
+              <p>First Nations Technology Council is actively seeking AI resources for Indigenous communities. CDR's co-design model is exactly what they're looking for.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="two-col anim-3" data-lang="fr">
+        <div>
+          <div class="gap-item">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>Engagement fédéral de 2,4 G$ en IA</h4>
+              <p>Investissement fédéral sans précédent dans l'infrastructure IA souveraine. Le financement existe — il a besoin de projets à financer.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>Rapport « Sovereign by Design »</h4>
+              <p>Rédigé par Jaxson Khan (architecte de la stratégie IA de 2,4 G$ du Canada) et Sean Mullin (ex-conseiller du BPM). Valide chaque problème que le CDR résout.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="gap-item">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>Consortium de nuage souverain ThinkOn</h4>
+              <p>La seule entreprise canadienne approuvée pour vendre du nuage au gouvernement fédéral a lancé son consortium. La dorsale Niveau 2 du CDR est réelle.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>Initiative « Missing Code » du FNTC</h4>
+              <p>Le Conseil de la technologie des Premières Nations cherche activement des ressources IA pour les communautés autochtones. Le modèle de co-conception du CDR est exactement ce qu'ils recherchent.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:1.05rem; color:var(--rail-slate); text-align:center; max-width:700px; margin:24px auto 0; font-weight:600;">
+        Federal funding. Policy alignment. Industry partners. Indigenous demand.<br>Every signal points the same direction. The CDR is ready.
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:1.05rem; color:var(--rail-slate); text-align:center; max-width:700px; margin:24px auto 0; font-weight:600;">
+        Financement fédéral. Alignement politique. Partenaires industriels. Demande autochtone.<br>Chaque signal pointe dans la même direction. Le CDR est prêt.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- SLIDE 15 — CONTACT -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="slide slide-cover" data-slide="14">
+    <div class="flag-stripe"></div>
+    <span class="confidential" data-lang="en" style="color:rgba(255,255,255,0.35);">Confidential — Funding Pitch</span>
+    <span class="confidential" data-lang="fr" style="color:rgba(255,255,255,0.35);">Confidentiel — Présentation de financement</span>
+
+    <div class="anim-1" style="font-size:3.5rem; margin-bottom:12px;">🚂🍁</div>
+    <h1 class="anim-1" style="font-size:2.6rem; margin-bottom:8px;" data-lang="en">The Last Spike of the Digital Age</h1>
+    <h1 class="anim-1" style="font-size:2.6rem; margin-bottom:8px;" data-lang="fr">Le dernier crampon de l'ère numérique</h1>
+    <div class="divider gold center anim-2"></div>
+
+    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.85);">
+      The infrastructure funding exists. The policy framework exists.<br>The reports documenting the gap exist.<br><strong>What's missing is someone willing to build the last mile.</strong>
+    </p>
+    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.85);">
+      Le financement d'infrastructure existe. Le cadre politique existe.<br>Les rapports documentant la lacune existent.<br><strong>Ce qui manque, c'est quelqu'un prêt à construire le dernier kilomètre.</strong>
+    </p>
+
+    <p class="anim-3" data-lang="en" style="font-size:1.2rem; font-weight:600; color:rgba(255,255,255,0.9); margin-top:28px;">
+      We'd like to be that someone.
+    </p>
+    <p class="anim-3" data-lang="fr" style="font-size:1.2rem; font-weight:600; color:rgba(255,255,255,0.9); margin-top:28px;">
+      Nous aimerions être ce quelqu'un.
+    </p>
+
+    <div class="anim-4" style="margin-top:48px; text-align:center;">
+      <p style="font-size:1.5rem; font-weight:700; margin-bottom:8px; color:var(--accent-gold-light);">hazeydata.ai</p>
+      <div class="divider gold center" style="margin:16px auto;"></div>
+      <p style="font-size:1.1rem; opacity:0.9; margin-bottom:8px;">📧 fred@hazeydata.ai</p>
+      <p style="font-size:0.95rem; opacity:0.6; margin-top:16px;" data-lang="en">Fred Hazelton &nbsp;|&nbsp; Founder &amp; Architect, HazeyData</p>
+      <p style="font-size:0.95rem; opacity:0.6; margin-top:16px;" data-lang="fr">Fred Hazelton &nbsp;|&nbsp; Fondateur et architecte, HazeyData</p>
+    </div>
+
+    <div class="anim-5" style="margin-top:36px;">
+      <p data-lang="en" style="font-size:0.85rem; opacity:0.4;">The Canadian Digital Railway &nbsp;|&nbsp; Le Chemin de fer numérique canadien</p>
+      <p data-lang="fr" style="font-size:0.85rem; opacity:0.4;">Le Chemin de fer numérique canadien &nbsp;|&nbsp; The Canadian Digital Railway</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <div class="nav-brand">🚂 CDR &nbsp;<span data-lang="en">by</span><span data-lang="fr">par</span> hazeydata.ai</div>
+  <div class="lang-toggle" id="langToggle">
+    <button class="lang-btn active" data-langval="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-langval="fr" onclick="setLang('fr')">FR</button>
+  </div>
+  <div class="nav-center" id="navDots"></div>
+  <div class="nav-controls">
+    <button class="nav-btn" onclick="prev()" aria-label="Previous">‹</button>
+    <div class="slide-counter" id="counter">1/15</div>
+    <button class="nav-btn" onclick="next()" aria-label="Next">›</button>
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  // Build dots
+  const dotsEl = document.getElementById('navDots');
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateProgress() {
+    const pct = ((current + 1) / total) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  function goTo(n) {
+    if (n < 0 || n >= total || n === current) return;
+    slides[current].classList.remove('active');
+    slides[current].classList.add('exit');
+    const prevSlide = current;
+    current = n;
+    slides[current].classList.add('active');
+    document.querySelectorAll('.nav-dot').forEach((d,i) =>
+      d.classList.toggle('active', i === current));
+    document.getElementById('counter').textContent = (current+1) + '/' + total;
+    updateProgress();
+    setTimeout(() => slides[prevSlide].classList.remove('exit'), 600);
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  function setLang(lang) {
+    const body = document.body;
+    if (lang === 'fr') {
+      body.classList.add('lang-fr');
+      document.documentElement.lang = 'fr';
+      document.title = 'Le Chemin de fer numérique canadien 🚂🍁 — Présentation de financement | hazeydata.ai';
+    } else {
+      body.classList.remove('lang-fr');
+      document.documentElement.lang = 'en';
+      document.title = 'The Canadian Digital Railway 🚂🍁 — Funding Pitch: Sovereign AI Infrastructure | hazeydata.ai';
+    }
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-langval') === lang);
+    });
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+  });
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+  });
+
+  updateProgress();
+</script>
+
+</body>
+</html>

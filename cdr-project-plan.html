@@ -1,0 +1,2558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDR: Project Plan & MVP Roadmap 🚂🍁 — Canadian Digital Railway | hazeydata.ai</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap');
+
+  :root {
+    --rail-charcoal: #1C1C1E;
+    --rail-charcoal-mid: #2C2C2E;
+    --rail-slate: #2A3240;
+    --rail-slate-light: #3A4A5C;
+    --rail-slate-lighter: #4E6278;
+    --rail-white: #FFFFFF;
+    --rail-grey-light: #F8F8F6;
+    --rail-grey: #EEE;
+    --rail-grey-mid: #6C757D;
+    --rail-grey-dark: #333333;
+    --rail-black: #141416;
+    --maple-red: #C41E3A;
+    --maple-red-dark: #9B1B30;
+    --accent-gold: #C8973E;
+    --accent-gold-light: #E4BE6A;
+    --accent-warm: #D4A84B;
+    --accent-teal: #2A8E7F;
+    --accent-green: #2E7D32;
+    --maple: #C41E3A;
+    --bg-warm: #FAF9F6;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--rail-charcoal);
+    color: var(--rail-grey-dark);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Language toggle ── */
+  [data-lang="fr"] { display: none !important; }
+  body.lang-fr [data-lang="en"] { display: none !important; }
+  body.lang-fr [data-lang="fr"] { display: revert !important; }
+  body.lang-fr .flow[data-lang="fr"] { display: flex !important; }
+  body.lang-fr .two-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
+  body.lang-fr .three-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr; }
+  body.lang-fr .four-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr 1fr; }
+  body.lang-fr .stat-row[data-lang="fr"] { display: flex !important; }
+  body.lang-fr .timeline[data-lang="fr"] { display: flex !important; }
+  body.lang-fr .hw-grid[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr 1fr; }
+  body.lang-fr .metric-grid[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr; }
+  body.lang-fr .risk-grid[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
+  body.lang-fr .partner-grid[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
+
+  .lang-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lang-btn {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    border: none;
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active {
+    background: var(--maple-red);
+    color: white;
+  }
+
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* ── Slides ── */
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 100px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  /* Slide themes */
+  .slide-cover {
+    background: linear-gradient(160deg, var(--rail-black) 0%, var(--rail-charcoal) 40%, var(--rail-slate) 100%);
+    color: var(--rail-white);
+    text-align: center;
+  }
+  .slide-white {
+    background: var(--rail-white);
+    color: var(--rail-grey-dark);
+  }
+  .slide-warm {
+    background: var(--bg-warm);
+    color: var(--rail-grey-dark);
+  }
+  .slide-blue {
+    background: linear-gradient(160deg, var(--rail-slate) 0%, var(--rail-slate-light) 100%);
+    color: var(--rail-white);
+  }
+  .slide-dark {
+    background: linear-gradient(160deg, var(--rail-black) 0%, var(--rail-charcoal) 100%);
+    color: var(--rail-white);
+  }
+  .slide-accent {
+    background: linear-gradient(160deg, var(--rail-charcoal) 0%, var(--rail-slate) 100%);
+    color: var(--rail-white);
+  }
+
+  /* ── Typography ── */
+  h1 {
+    font-family: 'Lato', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-family: 'Lato', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 1.35rem;
+    font-weight: 300;
+    opacity: 0.85;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  .small-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+    margin-bottom: 16px;
+  }
+
+  /* ── Red top bar ── */
+  .gc-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--maple-red);
+  }
+
+  /* ── Logo area ── */
+  .logo-mark {
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    font-size: 3.6rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .logo-tagline {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 6px;
+  }
+  .logo-tagline-fr {
+    font-size: 0.95rem;
+    font-weight: 300;
+    font-style: italic;
+    opacity: 0.5;
+    margin-bottom: 40px;
+  }
+
+  /* ── Content containers ── */
+  .content-box {
+    max-width: 960px;
+    width: 100%;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    max-width: 1050px;
+    width: 100%;
+  }
+
+  .four-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 24px;
+    max-width: 1100px;
+    width: 100%;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--rail-white);
+    border-radius: 8px;
+    padding: 32px 28px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--maple-red);
+  }
+  .card h3 { color: var(--rail-slate); }
+  .card p { font-size: 0.95rem; line-height: 1.65; color: var(--rail-grey-mid); }
+
+  .card-dark {
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 32px 28px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 4px solid var(--accent-gold);
+  }
+  .card-dark h3 { color: var(--accent-gold-light); }
+  .card-dark p { font-size: 0.95rem; line-height: 1.65; opacity: 0.8; }
+
+  .card-dark.teal { border-left-color: var(--accent-teal); }
+  .card-dark.red { border-left-color: var(--maple-red); }
+  .card-dark.green { border-left-color: var(--accent-green); }
+
+  /* ── Stat blocks ── */
+  .stat-row {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 32px 0;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-number {
+    font-family: 'Lato', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--maple-red);
+    line-height: 1;
+  }
+  .stat-number.white { color: var(--rail-white); }
+  .stat-number.gold { color: var(--accent-gold); }
+  .stat-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 8px;
+    opacity: 0.7;
+  }
+
+  /* ── Quote block ── */
+  .quote-block {
+    border-left: 4px solid var(--accent-gold);
+    padding: 24px 32px;
+    margin: 24px 0;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    font-style: italic;
+    opacity: 0.9;
+    max-width: 800px;
+  }
+  .quote-source {
+    font-style: normal;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0.6;
+    margin-top: 12px;
+    display: block;
+  }
+
+  /* ── Flow diagram ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 36px 0;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .flow-step {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 16px 14px;
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+    max-width: 170px;
+  }
+  .flow-step .flow-icon { font-size: 1.8rem; margin-bottom: 6px; }
+  .flow-step .flow-label { font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
+  .flow-step .flow-desc { font-size: 0.7rem; opacity: 0.6; margin-top: 4px; }
+  .flow-arrow {
+    font-size: 1.3rem;
+    opacity: 0.4;
+    margin: 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* ── Gap list ── */
+  .gap-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .gap-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--maple-red);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .gap-icon.green { background: var(--accent-green); }
+  .gap-icon.gold { background: var(--accent-gold); }
+  .gap-text h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--rail-slate);
+  }
+  .gap-text p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--rail-grey-mid);
+  }
+
+  /* ── Pill badges ── */
+  .pill {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .pill-red { background: rgba(196,30,58,0.15); color: var(--maple-red); }
+  .pill-gold { background: rgba(200,151,62,0.15); color: var(--accent-gold); }
+  .pill-green { background: rgba(46,125,50,0.15); color: var(--accent-green); }
+  .pill-blue { background: rgba(58,74,92,0.15); color: var(--rail-slate-light); }
+
+  /* ── Divider ── */
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: var(--maple-red);
+    margin: 24px 0;
+    border-radius: 2px;
+  }
+  .divider.gold { background: var(--accent-gold); }
+  .divider.center { margin: 24px auto; }
+
+  /* ── Check list ── */
+  .check-list {
+    list-style: none;
+    padding: 0;
+  }
+  .check-list li {
+    padding: 10px 0;
+    padding-left: 32px;
+    position: relative;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent-green);
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .check-list.white-checks li::before { color: var(--accent-gold); }
+  .check-list.red-checks li::before { color: var(--maple-red); content: '✗'; }
+
+  /* ── Section number ── */
+  .section-num {
+    font-family: 'Lato', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    opacity: 0.06;
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    line-height: 1;
+  }
+  .section-num.light { opacity: 0.08; color: var(--rail-white); }
+
+  /* ── Confidential ── */
+  .confidential {
+    position: absolute;
+    top: 20px;
+    right: 32px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.35;
+    border: 1px solid currentColor;
+    padding: 4px 12px;
+    border-radius: 3px;
+  }
+
+  /* ── Railway stripe ── */
+  .flag-stripe {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--maple-red) 0%, var(--maple-red) 25%, var(--accent-gold) 25%, var(--accent-gold) 75%, var(--maple-red) 75%, var(--maple-red) 100%);
+  }
+
+  /* ── Timeline ── */
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin: 28px 0;
+    width: 100%;
+    max-width: 960px;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--maple-red), var(--accent-gold), var(--accent-teal), var(--accent-green));
+    border-radius: 2px;
+    z-index: 0;
+  }
+  .tl-item {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    padding: 0 6px;
+  }
+  .tl-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin: 16px auto 12px;
+    border: 3px solid;
+  }
+  .tl-dot.red { background: var(--maple-red); border-color: var(--maple-red); }
+  .tl-dot.gold { background: var(--accent-gold); border-color: var(--accent-gold); }
+  .tl-dot.teal { background: var(--accent-teal); border-color: var(--accent-teal); }
+  .tl-dot.green { background: var(--accent-green); border-color: var(--accent-green); }
+  .tl-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .tl-desc {
+    font-size: 0.68rem;
+    opacity: 0.6;
+    line-height: 1.4;
+  }
+
+  /* ── Hardware grid ── */
+  .hw-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    max-width: 1100px;
+    width: 100%;
+  }
+  .hw-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 24px 20px;
+    text-align: center;
+    border-top: 4px solid var(--accent-gold);
+  }
+  .hw-card.highlight { border-top-color: var(--maple-red); background: rgba(196,30,58,0.08); }
+  .hw-card .hw-icon { font-size: 2rem; margin-bottom: 8px; }
+  .hw-card .hw-name { font-size: 0.9rem; font-weight: 700; color: var(--accent-gold-light); margin-bottom: 4px; }
+  .hw-card.highlight .hw-name { color: var(--rail-white); }
+  .hw-card .hw-spec { font-size: 0.78rem; opacity: 0.7; line-height: 1.5; margin-bottom: 8px; }
+  .hw-card .hw-price { font-family: 'Lato', sans-serif; font-size: 1.3rem; font-weight: 900; color: var(--accent-gold); margin-bottom: 4px; }
+  .hw-card.highlight .hw-price { color: var(--maple-red); }
+  .hw-card .hw-use { font-size: 0.72rem; opacity: 0.5; line-height: 1.4; }
+
+  /* ── Phase card ── */
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .phase-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    font-size: 1.4rem;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .phase-badge.red { background: var(--maple-red); color: white; }
+  .phase-badge.gold { background: var(--accent-gold); color: white; }
+  .phase-badge.teal { background: var(--accent-teal); color: white; }
+  .phase-badge.green { background: var(--accent-green); color: white; }
+
+  /* ── Metric grid ── */
+  .metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    max-width: 1050px;
+    width: 100%;
+  }
+  .metric-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .metric-card .metric-phase {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.5;
+    margin-bottom: 8px;
+  }
+  .metric-card .metric-val {
+    font-family: 'Lato', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .metric-card .metric-label {
+    font-size: 0.78rem;
+    opacity: 0.7;
+    line-height: 1.4;
+  }
+
+  /* ── Risk grid ── */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 1000px;
+    width: 100%;
+  }
+  .risk-card {
+    background: var(--rail-white);
+    border-radius: 8px;
+    padding: 24px 24px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--maple-red);
+  }
+  .risk-card .risk-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--rail-slate);
+    margin-bottom: 6px;
+  }
+  .risk-card .risk-desc {
+    font-size: 0.82rem;
+    color: var(--rail-grey-mid);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .risk-card .risk-mitigation {
+    font-size: 0.78rem;
+    color: var(--accent-green);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  /* ── Partner grid ── */
+  .partner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  /* ── Stack layers ── */
+  .stack-layer {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 16px 24px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 800px;
+    width: 100%;
+  }
+  .stack-layer .sl-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .stack-layer .sl-name { font-size: 0.88rem; font-weight: 700; color: var(--accent-gold-light); min-width: 180px; }
+  .stack-layer .sl-desc { font-size: 0.82rem; opacity: 0.7; line-height: 1.4; }
+
+  /* ── Comparison table (dark) ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+  }
+  .compare-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 12px 16px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    color: var(--accent-gold-light);
+  }
+  .compare-table td {
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    opacity: 0.85;
+  }
+
+  /* ── Progress bar ── */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--maple-red);
+    z-index: 200;
+    transition: width 0.4s ease;
+  }
+
+  /* ── Navigation ── */
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 52px;
+    background: rgba(20,20,22,0.92);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 100;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-brand {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--rail-white);
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+  }
+  .nav-center {
+    display: flex;
+    gap: 6px;
+  }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .nav-dot.active { background: var(--maple-red); transform: scale(1.3); }
+  .nav-controls {
+    display: flex;
+    gap: 8px;
+  }
+  .nav-btn {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+    color: var(--rail-white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.1); }
+  .slide-counter {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+    min-width: 50px;
+    text-align: center;
+    line-height: 36px;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .slide.active .anim-1 { animation: fadeInUp 0.6s 0.1s both; }
+  .slide.active .anim-2 { animation: fadeInUp 0.6s 0.25s both; }
+  .slide.active .anim-3 { animation: fadeInUp 0.6s 0.4s both; }
+  .slide.active .anim-4 { animation: fadeInUp 0.6s 0.55s both; }
+  .slide.active .anim-5 { animation: fadeInUp 0.6s 0.7s both; }
+
+  /* ── Success / fail criteria boxes ── */
+  .criteria-box {
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+  }
+  .criteria-box.success { background: rgba(46,125,50,0.1); border: 1px solid rgba(46,125,50,0.3); }
+  .criteria-box.fail { background: rgba(196,30,58,0.08); border: 1px solid rgba(196,30,58,0.25); }
+  .criteria-box h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; }
+  .criteria-box.success h4 { color: var(--accent-green); }
+  .criteria-box.fail h4 { color: var(--maple-red); }
+  .criteria-box ul { list-style: none; padding: 0; }
+  .criteria-box ul li { font-size: 0.85rem; line-height: 1.6; padding-left: 20px; position: relative; color: var(--rail-grey-mid); }
+  .criteria-box.success ul li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-green); font-weight: 700; }
+  .criteria-box.fail ul li::before { content: '✗'; position: absolute; left: 0; color: var(--maple-red); font-weight: 700; }
+
+  /* ── User journey ── */
+  .journey-step {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .journey-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-gold);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .journey-text {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  /* ── Responsive: Tablet ── */
+  @media (max-width: 1024px) {
+    .slide { padding: 50px 48px; }
+    h1 { font-size: 2.6rem; }
+    h2 { font-size: 1.9rem; }
+    .logo-mark { font-size: 2.8rem; }
+    .content-box { max-width: 100%; }
+    .two-col { gap: 32px; }
+    .three-col { gap: 24px; }
+    .four-col, .hw-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .flow-step { padding: 14px 10px; }
+    .flow-step .flow-label { font-size: 0.75rem; }
+    .flow-step .flow-desc { font-size: 0.65rem; }
+    .flow-arrow { font-size: 1.1rem; margin: 0 4px; }
+    .section-num { font-size: 4rem; left: 40px; }
+    .quote-block { font-size: 1rem; padding: 20px 24px; }
+    .metric-grid { grid-template-columns: 1fr 1fr; }
+    .risk-grid { grid-template-columns: 1fr; }
+    .partner-grid { grid-template-columns: 1fr; }
+    .stack-layer .sl-name { min-width: 140px; }
+  }
+
+  /* ── Responsive: Small Tablet / Large Phone ── */
+  @media (max-width: 768px) {
+    .slide { padding: 40px 28px; padding-bottom: 70px; overflow-y: auto; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.1rem; }
+    .logo-mark { font-size: 2.2rem; }
+    .subtitle { font-size: 1rem; }
+    .small-label { font-size: 0.7rem; }
+    .two-col { grid-template-columns: 1fr; gap: 24px; }
+    .three-col { grid-template-columns: 1fr; gap: 20px; }
+    .four-col, .hw-grid { grid-template-columns: 1fr; gap: 16px; }
+    .stat-number { font-size: 2.2rem; }
+    .stat-row { gap: 24px; flex-direction: column; align-items: center; }
+    .stat { min-width: 200px; }
+    .flow { flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .flow-step { flex: 0 0 auto; min-width: 100px; max-width: 130px; padding: 12px 10px; }
+    .flow-arrow { font-size: 1rem; margin: 0 2px; }
+    .card, .card-dark { padding: 24px 20px; }
+    .section-num { font-size: 3rem; left: 24px; top: 28px; }
+    .confidential { font-size: 0.6rem; right: 20px; top: 16px; }
+    .nav-bar { padding: 0 16px; }
+    .nav-brand { font-size: 0.75rem; }
+    .metric-grid { grid-template-columns: 1fr; }
+    .risk-grid, .partner-grid { grid-template-columns: 1fr; }
+    .timeline { flex-wrap: wrap; gap: 4px; }
+    .timeline::before { display: none; }
+    .stack-layer { flex-direction: column; text-align: center; gap: 8px; }
+    .stack-layer .sl-name { min-width: auto; }
+  }
+
+  /* ── Responsive: Phone ── */
+  @media (max-width: 480px) {
+    .slide { padding: 32px 20px; padding-bottom: 70px; }
+    h1 { font-size: 1.65rem; }
+    h2 { font-size: 1.3rem; }
+    .logo-mark { font-size: 1.8rem; }
+    .logo-tagline { font-size: 0.85rem; }
+    .logo-tagline-fr { font-size: 0.75rem; }
+    .subtitle { font-size: 0.9rem; }
+    .stat-number { font-size: 1.9rem; }
+    .stat-label { font-size: 0.78rem; }
+    .flow { flex-direction: column; align-items: center; gap: 4px; }
+    .flow-step { max-width: 220px; width: 100%; padding: 14px 16px; }
+    .flow-arrow { transform: rotate(90deg); font-size: 1rem; margin: 2px 0; }
+    .section-num { display: none; }
+    .nav-dot { width: 6px; height: 6px; }
+    .nav-center { gap: 4px; }
+    .slide-counter { font-size: 0.7rem; }
+    .hw-card { padding: 18px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" style="width: 5.56%;"></div>
+
+<div class="deck" id="deck">
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 1 — COVER -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-cover active" data-slide="0">
+    <div class="flag-stripe"></div>
+    <span class="confidential" data-lang="en">Partners & Internal — Draft</span>
+    <span class="confidential" data-lang="fr">Partenaires et interne — Ébauche</span>
+
+    <div class="anim-1" style="font-size:4rem; margin-bottom:16px;">🚂🍁</div>
+    <div class="anim-1 logo-mark">Canadian Digital Railway</div>
+    <div class="anim-2 logo-tagline" data-lang="en">Project Plan & MVP Roadmap</div>
+    <div class="anim-2 logo-tagline" data-lang="fr">Plan de projet et feuille de route MVP</div>
+    <div class="anim-2 logo-tagline-fr" data-lang="en">Plan de projet et feuille de route MVP</div>
+    <div class="anim-2 logo-tagline-fr" data-lang="fr">Project Plan & MVP Roadmap</div>
+
+    <div class="divider gold center anim-3"></div>
+
+    <p class="subtitle anim-3" data-lang="en" style="text-align:center; max-width:700px;">
+      What we build. When we build it. How we measure success.<br>A technical execution plan for builders and partners.
+    </p>
+    <p class="subtitle anim-3" data-lang="fr" style="text-align:center; max-width:700px;">
+      Ce que nous construisons. Quand nous le construisons. Comment nous mesurons le succès.<br>Un plan d'exécution technique pour les bâtisseurs et partenaires.
+    </p>
+
+    <!-- Master timeline -->
+    <div class="timeline anim-4" data-lang="en" style="margin-top: 40px;">
+      <div class="tl-item"><div class="tl-dot red"></div><div class="tl-label" style="color:var(--maple-red);">Phase 0</div><div class="tl-desc">Months 1–6<br>Prove It Works</div></div>
+      <div class="tl-item"><div class="tl-dot gold"></div><div class="tl-label" style="color:var(--accent-gold);">Phase 1</div><div class="tl-desc">Months 7–18<br>Ten Stations</div></div>
+      <div class="tl-item"><div class="tl-dot teal"></div><div class="tl-label" style="color:var(--accent-teal);">Phase 2</div><div class="tl-desc">Months 18–36<br>National Network</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-label" style="color:var(--accent-green);">Phase 3</div><div class="tl-desc">36+ Months<br>Knowledge Economy</div></div>
+    </div>
+    <div class="timeline anim-4" data-lang="fr" style="margin-top: 40px;">
+      <div class="tl-item"><div class="tl-dot red"></div><div class="tl-label" style="color:var(--maple-red);">Phase 0</div><div class="tl-desc">Mois 1–6<br>Prouver que ça fonctionne</div></div>
+      <div class="tl-item"><div class="tl-dot gold"></div><div class="tl-label" style="color:var(--accent-gold);">Phase 1</div><div class="tl-desc">Mois 7–18<br>Dix stations</div></div>
+      <div class="tl-item"><div class="tl-dot teal"></div><div class="tl-label" style="color:var(--accent-teal);">Phase 2</div><div class="tl-desc">Mois 18–36<br>Réseau national</div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div class="tl-label" style="color:var(--accent-green);">Phase 3</div><div class="tl-desc">36+ mois<br>Économie du savoir</div></div>
+    </div>
+
+    <p class="anim-5" style="font-size:0.85rem; opacity:0.4; margin-top:40px;">
+      hazeydata.ai &nbsp;|&nbsp; 2026
+    </p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 2 — VISION RECAP -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="1">
+    <div class="gc-bar"></div>
+    <div class="section-num">01</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">Vision Recap</div>
+      <div class="small-label anim-1" data-lang="fr">Rappel de la vision</div>
+      <h2 class="anim-1" data-lang="en">CDR v2 — Hybrid Edge + Sovereign Cloud + Federated Analytics</h2>
+      <h2 class="anim-1" data-lang="fr">CDR v2 — Périphérie hybride + nuage souverain + analytique fédérée</h2>
+      <div class="divider anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1.05rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:28px; max-width:760px;">
+        A coast-to-coast network of locally-owned AI compute nodes where Canadian institutions share <strong>knowledge</strong> without sharing <strong>data</strong>. Each station runs AI locally on protected data that never leaves. When someone builds something brilliant, it gets published to the Protocol Registry — a shared library that any other station can discover, adapt, and improve.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1.05rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:28px; max-width:760px;">
+        Un réseau pancanadien de nœuds de calcul IA détenus localement où les institutions canadiennes partagent le <strong>savoir</strong> sans partager les <strong>données</strong>. Chaque station exécute l'IA localement sur des données protégées qui ne quittent jamais les lieux. Quand quelqu'un crée quelque chose de brillant, c'est publié au Registre de protocoles — une bibliothèque partagée que toute autre station peut découvrir, adapter et améliorer.
+      </p>
+
+      <div class="three-col anim-3" data-lang="en">
+        <div class="card">
+          <h3>🖥️ Hybrid Edge</h3>
+          <p>Hardware-agnostic CDR-OS runs on Apple Silicon, NVIDIA, or AMD. Institutions own their stations. Data never leaves.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-gold);">
+          <h3>☁️ Sovereign Cloud Backbone</h3>
+          <p>ThinkOn + Hypertec + Aptum consortium for overflow, federated queries, and Protected B cloud processing. 100% Canadian jurisdiction.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-teal);">
+          <h3>📊 Federated Analytics</h3>
+          <p>Query goes to data, aggregated results come back. Differential privacy, containerized queries, compatible with Tableau/Power BI.</p>
+        </div>
+      </div>
+      <div class="three-col anim-3" data-lang="fr">
+        <div class="card">
+          <h3>🖥️ Périphérie hybride</h3>
+          <p>CDR-OS agnostique du matériel fonctionne sur Apple Silicon, NVIDIA ou AMD. Les institutions possèdent leurs stations. Les données restent sur place.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-gold);">
+          <h3>☁️ Dorsale de nuage souverain</h3>
+          <p>Consortium ThinkOn + Hypertec + Aptum pour le débordement, les requêtes fédérées et le traitement nuage Protégé B. Juridiction 100% canadienne.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-teal);">
+          <h3>📊 Analytique fédérée</h3>
+          <p>La requête va aux données, les résultats agrégés reviennent. Confidentialité différentielle, requêtes conteneurisées, compatible Tableau/Power BI.</p>
+        </div>
+      </div>
+
+      <div class="quote-block anim-4" data-lang="en" style="border-color: var(--maple-red);">
+        "The data stays home. The genius travels the rails."
+      </div>
+      <div class="quote-block anim-4" data-lang="fr" style="border-color: var(--maple-red);">
+        « Les données restent chez elles. Le génie voyage sur les rails. »
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 3 — ARCHITECTURE OVERVIEW -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-accent" data-slide="2">
+    <div class="section-num light">02</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Architecture</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Architecture</div>
+      <h2 class="anim-1" data-lang="en">Three-Tier Architecture</h2>
+      <h2 class="anim-1" data-lang="fr">Architecture à trois niveaux</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <!-- Tier 3: Cloud -->
+      <div class="stack-layer anim-2" style="margin: 0 auto 8px; border: 2px solid var(--accent-teal); background: rgba(42,142,127,0.12);">
+        <div class="sl-icon">☁️</div>
+        <div class="sl-name" style="color: #7dd3e8;">Tier 3 — Sovereign Cloud Backbone</div>
+        <div class="sl-desc" data-lang="en">ThinkOn consortium • Overflow compute • Federated query aggregation • Protected B certified • Usage-based pricing</div>
+        <div class="sl-desc" data-lang="fr">Consortium ThinkOn • Calcul de débordement • Agrégation de requêtes fédérées • Certifié Protégé B • Tarification à l'utilisation</div>
+      </div>
+      <!-- Tier 2: Mesh -->
+      <div class="stack-layer anim-3" style="margin: 0 auto 8px; border: 2px solid var(--accent-gold); background: rgba(200,151,62,0.12);">
+        <div class="sl-icon">🔗</div>
+        <div class="sl-name">Tier 2 — Federated Mesh Network</div>
+        <div class="sl-desc" data-lang="en">WireGuard/mTLS encrypted mesh • Smart overflow routing • Tamper-evident audit chain • Protocol Registry sync</div>
+        <div class="sl-desc" data-lang="fr">Réseau maillé chiffré WireGuard/mTLS • Routage intelligent de débordement • Chaîne d'audit inaltérable • Synchronisation du Registre</div>
+      </div>
+      <!-- Tier 1: Edge -->
+      <div class="stack-layer anim-3" style="margin: 0 auto 8px; border: 2px solid var(--maple-red); background: rgba(196,30,58,0.12);">
+        <div class="sl-icon">🏛️</div>
+        <div class="sl-name" style="color: #ff8a80;">Tier 1 — Edge Stations</div>
+        <div class="sl-desc" data-lang="en">Institution-owned hardware • Data never leaves • Local inference • Terry AI agent • CDR-OS manages everything</div>
+        <div class="sl-desc" data-lang="fr">Matériel appartenant à l'institution • Les données ne quittent jamais • Inférence locale • Agent IA Terry • CDR-OS gère tout</div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:0.95rem; opacity:0.8; margin-top:28px; max-width:700px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        <strong style="color:var(--accent-gold-light);">CDR-OS abstracts the hardware layer.</strong> The same operating system runs on Apple Silicon (via MLX), NVIDIA GPUs (via CUDA), and AMD GPUs (via ROCm). Institutions choose hardware that fits their budget and workload — CDR-OS handles the rest.
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.95rem; opacity:0.8; margin-top:28px; max-width:700px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        <strong style="color:var(--accent-gold-light);">CDR-OS abstrait la couche matérielle.</strong> Le même système d'exploitation fonctionne sur Apple Silicon (via MLX), GPU NVIDIA (via CUDA) et GPU AMD (via ROCm). Les institutions choisissent le matériel adapté à leur budget et charge de travail — CDR-OS gère le reste.
+      </p>
+
+      <!-- Hardware icons flow -->
+      <div class="flow anim-5" data-lang="en" style="margin-top: 24px;">
+        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+          <div class="flow-icon">🍎</div>
+          <div class="flow-label">Apple Silicon</div>
+          <div class="flow-desc">MLX • Mac Studio</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">⚙️</div>
+          <div class="flow-label">CDR-OS</div>
+          <div class="flow-desc">Hardware Abstraction</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+          <div class="flow-icon">🟢</div>
+          <div class="flow-label">NVIDIA</div>
+          <div class="flow-desc">CUDA • Hypertec CIARA</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+          <div class="flow-icon">🔴</div>
+          <div class="flow-label">AMD</div>
+          <div class="flow-desc">ROCm • Workstations</div>
+        </div>
+      </div>
+      <div class="flow anim-5" data-lang="fr" style="margin-top: 24px;">
+        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+          <div class="flow-icon">🍎</div>
+          <div class="flow-label">Apple Silicon</div>
+          <div class="flow-desc">MLX • Mac Studio</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">⚙️</div>
+          <div class="flow-label">CDR-OS</div>
+          <div class="flow-desc">Abstraction matérielle</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+          <div class="flow-icon">🟢</div>
+          <div class="flow-label">NVIDIA</div>
+          <div class="flow-desc">CUDA • Hypertec CIARA</div>
+        </div>
+        <div class="flow-arrow">⟷</div>
+        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+          <div class="flow-icon">🔴</div>
+          <div class="flow-label">AMD</div>
+          <div class="flow-desc">ROCm • Stations de travail</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 4 — CDR-OS TECHNICAL STACK -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-dark" data-slide="3">
+    <div class="section-num light">03</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Technical Stack</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Pile technique</div>
+      <h2 class="anim-1" data-lang="en">CDR-OS — What It Actually Is</h2>
+      <h2 class="anim-1" data-lang="fr">CDR-OS — Ce que c'est concrètement</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:0.95rem; opacity:0.8; margin-bottom:24px; max-width:700px; margin-left:auto; margin-right:auto;">
+        CDR-OS is the open-source operating layer that turns commodity hardware into a sovereign AI station. Every component is auditable. Institutions have root access. We don't.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:0.95rem; opacity:0.8; margin-bottom:24px; max-width:700px; margin-left:auto; margin-right:auto;">
+        CDR-OS est la couche d'exploitation à code ouvert qui transforme le matériel standard en station IA souveraine. Chaque composant est vérifiable. Les institutions ont l'accès root. Pas nous.
+      </p>
+
+      <div class="anim-3" style="max-width: 800px; width: 100%; margin: 0 auto;">
+        <div class="stack-layer" style="border-left: 4px solid var(--accent-teal);">
+          <div class="sl-icon">🧠</div>
+          <div class="sl-name" data-lang="en">Model Management</div>
+          <div class="sl-name" data-lang="fr">Gestion des modèles</div>
+          <div class="sl-desc" data-lang="en">Download, update, swap open-weight LLMs. Signed model repo. Version pinning. Rollback capability.</div>
+          <div class="sl-desc" data-lang="fr">Télécharger, mettre à jour, changer de LLM à poids ouverts. Dépôt de modèles signé. Versions épinglées. Capacité de retour arrière.</div>
+        </div>
+        <div class="stack-layer" style="border-left: 4px solid var(--maple-red);">
+          <div class="sl-icon">⚡</div>
+          <div class="sl-name" data-lang="en">Inference Engine</div>
+          <div class="sl-name" data-lang="fr">Moteur d'inférence</div>
+          <div class="sl-desc" data-lang="en">MLX (Apple Silicon) / CUDA (NVIDIA) / ROCm (AMD). Optimized per-hardware. Offline-capable.</div>
+          <div class="sl-desc" data-lang="fr">MLX (Apple Silicon) / CUDA (NVIDIA) / ROCm (AMD). Optimisé par matériel. Fonctionne hors ligne.</div>
+        </div>
+        <div class="stack-layer" style="border-left: 4px solid var(--accent-gold);">
+          <div class="sl-icon">🔒</div>
+          <div class="sl-name" data-lang="en">Encrypted Mesh</div>
+          <div class="sl-name" data-lang="fr">Réseau chiffré</div>
+          <div class="sl-desc" data-lang="en">WireGuard tunnels + mTLS between nodes. Smart overflow routing. No cleartext crosses the wire.</div>
+          <div class="sl-desc" data-lang="fr">Tunnels WireGuard + mTLS entre nœuds. Routage intelligent de débordement. Rien en clair ne traverse le réseau.</div>
+        </div>
+        <div class="stack-layer" style="border-left: 4px solid var(--accent-green);">
+          <div class="sl-icon">📋</div>
+          <div class="sl-name" data-lang="en">Audit Logging</div>
+          <div class="sl-name" data-lang="fr">Journalisation d'audit</div>
+          <div class="sl-desc" data-lang="en">Tamper-evident, append-only logs. Multi-party verification. Cryptographic attestation of software state.</div>
+          <div class="sl-desc" data-lang="fr">Journaux inaltérables, en ajout seulement. Vérification multipartite. Attestation cryptographique de l'état logiciel.</div>
+        </div>
+        <div class="stack-layer" style="border-left: 4px solid #7dd3e8;">
+          <div class="sl-icon">📊</div>
+          <div class="sl-name" data-lang="en">Federated Analytics</div>
+          <div class="sl-name" data-lang="fr">Analytique fédérée</div>
+          <div class="sl-desc" data-lang="en">Containerized queries. Differential privacy. Federated SQL interface. BI tool compatible (Tableau, Power BI).</div>
+          <div class="sl-desc" data-lang="fr">Requêtes conteneurisées. Confidentialité différentielle. Interface SQL fédérée. Compatible outils BI (Tableau, Power BI).</div>
+        </div>
+        <div class="stack-layer" style="border-left: 4px solid #ce93d8;">
+          <div class="sl-icon">📦</div>
+          <div class="sl-name" data-lang="en">Protocol Registry Client</div>
+          <div class="sl-name" data-lang="fr">Client du Registre</div>
+          <div class="sl-desc" data-lang="en">Publish, discover, deploy protocols. VAP linter. Abstraction engine. Telemetry (anonymized, opt-in).</div>
+          <div class="sl-desc" data-lang="fr">Publier, découvrir, déployer des protocoles. Linter VAP. Moteur d'abstraction. Télémétrie (anonymisée, opt-in).</div>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:0.82rem; opacity:0.5; margin-top:24px;">
+        Open source • Signed repository delivery (like Linux package management) • Institution has root access
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.82rem; opacity:0.5; margin-top:24px;">
+        Code ouvert • Livraison par dépôt signé (comme la gestion de paquets Linux) • L'institution a l'accès root
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 5 — HARDWARE MATRIX -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-blue" data-slide="4">
+    <div class="section-num light">04</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Hardware Matrix</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Matrice matérielle</div>
+      <h2 class="anim-1" data-lang="en">Four Tiers — From Desktop to Data Centre</h2>
+      <h2 class="anim-1" data-lang="fr">Quatre niveaux — Du bureau au centre de données</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <div class="hw-grid anim-3" data-lang="en">
+        <div class="hw-card">
+          <div class="hw-icon">💻</div>
+          <div class="hw-name">Edge Lite</div>
+          <div class="hw-spec">Mac Studio M4 Ultra<br>192–512 GB unified memory<br>40–80W power draw<br>Standard desk, no server room</div>
+          <div class="hw-price">$6–12K</div>
+          <div class="hw-use">Small clinics, small businesses, community orgs, individual researchers</div>
+        </div>
+        <div class="hw-card highlight">
+          <div class="hw-icon">🖥️</div>
+          <div class="hw-name">Edge Standard</div>
+          <div class="hw-spec">Hypertec Workstation<br>NVIDIA RTX / AMD Pro GPU<br>64–128 GB VRAM<br>Standard office power</div>
+          <div class="hw-price">$10–25K</div>
+          <div class="hw-use">Medium institutions, municipal offices, university labs, health clinics</div>
+        </div>
+        <div class="hw-card highlight">
+          <div class="hw-icon">🖲️</div>
+          <div class="hw-name">Edge Heavy</div>
+          <div class="hw-spec">Hypertec CIARA GPU Server<br>Multi-GPU (A100/H100 class)<br>Canadian-designed & built<br>On-premise server closet</div>
+          <div class="hw-price">$25–100K</div>
+          <div class="hw-use">Large hospitals, federal departments, defence applications, research clusters</div>
+        </div>
+        <div class="hw-card">
+          <div class="hw-icon">☁️</div>
+          <div class="hw-name">Cloud Backbone</div>
+          <div class="hw-spec">ThinkOn Consortium<br>Protected B certified<br>Canadian-jurisdiction only<br>Usage-based scaling</div>
+          <div class="hw-price">Usage-based</div>
+          <div class="hw-use">Overflow compute, federated query aggregation, burst capacity, government workloads</div>
+        </div>
+      </div>
+      <div class="hw-grid anim-3" data-lang="fr">
+        <div class="hw-card">
+          <div class="hw-icon">💻</div>
+          <div class="hw-name">Périphérie légère</div>
+          <div class="hw-spec">Mac Studio M4 Ultra<br>192–512 Go mémoire unifiée<br>40–80W consommation<br>Bureau standard, pas de salle serveur</div>
+          <div class="hw-price">6–12K$</div>
+          <div class="hw-use">Petites cliniques, PME, organismes communautaires, chercheurs individuels</div>
+        </div>
+        <div class="hw-card highlight">
+          <div class="hw-icon">🖥️</div>
+          <div class="hw-name">Périphérie standard</div>
+          <div class="hw-spec">Station de travail Hypertec<br>GPU NVIDIA RTX / AMD Pro<br>64–128 Go VRAM<br>Alimentation de bureau standard</div>
+          <div class="hw-price">10–25K$</div>
+          <div class="hw-use">Institutions moyennes, bureaux municipaux, laboratoires universitaires</div>
+        </div>
+        <div class="hw-card highlight">
+          <div class="hw-icon">🖲️</div>
+          <div class="hw-name">Périphérie lourde</div>
+          <div class="hw-spec">Serveur GPU Hypertec CIARA<br>Multi-GPU (classe A100/H100)<br>Conçu et fabriqué au Canada<br>Salle serveur sur place</div>
+          <div class="hw-price">25–100K$</div>
+          <div class="hw-use">Grands hôpitaux, ministères fédéraux, applications de défense, grappes de recherche</div>
+        </div>
+        <div class="hw-card">
+          <div class="hw-icon">☁️</div>
+          <div class="hw-name">Dorsale nuage</div>
+          <div class="hw-spec">Consortium ThinkOn<br>Certifié Protégé B<br>Juridiction canadienne uniquement<br>Mise à l'échelle à l'utilisation</div>
+          <div class="hw-price">À l'utilisation</div>
+          <div class="hw-use">Calcul de débordement, agrégation de requêtes fédérées, capacité de pointe</div>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:0.85rem; opacity:0.65; margin-top:20px; max-width:700px; margin-left:auto; margin-right:auto;">
+        🍁 <strong>Hypertec CIARA</strong> — Designed and manufactured in Montreal. Canada's only NVIDIA OEM partner. CDR's flagship hardware partner.
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.85rem; opacity:0.65; margin-top:20px; max-width:700px; margin-left:auto; margin-right:auto;">
+        🍁 <strong>Hypertec CIARA</strong> — Conçu et fabriqué à Montréal. Seul partenaire OEM NVIDIA au Canada. Partenaire matériel phare du CDR.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 6 — PHASE 0 STAGE A -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-warm" data-slide="5">
+    <div class="gc-bar"></div>
+    <div class="section-num">05</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en"><span class="pill pill-red">Phase 0 — Stage A</span> &nbsp; Month 1</div>
+      <div class="small-label anim-1" data-lang="fr"><span class="pill pill-red">Phase 0 — Étape A</span> &nbsp; Mois 1</div>
+      <h2 class="anim-1" data-lang="en">Internal Extraction — Wilma → Node 2</h2>
+      <h2 class="anim-1" data-lang="fr">Extraction interne — Wilma → Nœud 2</h2>
+      <div class="divider anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:0.95rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:20px; max-width:760px;">
+        Prove that a protocol built at one station can be extracted, deployed on a fresh instance, and work without any of the original data. Wilma (Station Zero) is the first test subject.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:0.95rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:20px; max-width:760px;">
+        Prouver qu'un protocole construit à une station peut être extrait, déployé sur une instance neuve et fonctionner sans aucune des données originales. Wilma (Station Zéro) est le premier sujet de test.
+      </p>
+
+      <div class="two-col anim-3" data-lang="en">
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">What Gets Extracted</h3>
+          <ul class="check-list">
+            <li>AI assistant architecture (multi-agent, memory, context management)</li>
+            <li>Workflow patterns, pipeline definitions, agent configs</li>
+            <li>Tool integrations (abstracted — no credentials, no endpoints)</li>
+            <li>Prompt engineering patterns, reverse prompting methodology</li>
+            <li>File structure conventions, skill definitions</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">How It's Verified</h3>
+          <div class="criteria-box success">
+            <h4 data-lang="en">✓ Success Criteria</h4>
+            <ul>
+              <li>VAP linter passes — zero protected references detected</li>
+              <li>Node 2 boots with Terry, guides new user through setup</li>
+              <li>New user productive within 2 hours (builds first tool)</li>
+              <li><code>grep -ri</code> private terms returns zero results</li>
+            </ul>
+          </div>
+          <div class="criteria-box fail">
+            <h4 data-lang="en">✗ Failure Conditions</h4>
+            <ul>
+              <li>grep finds ANY private data in the extracted protocol</li>
+              <li>Node 2 requires manual configuration beyond user identity</li>
+              <li>Terry fails to guide onboarding without human intervention</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="two-col anim-3" data-lang="fr">
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">Ce qui est extrait</h3>
+          <ul class="check-list">
+            <li>Architecture de l'assistant IA (multi-agent, mémoire, gestion du contexte)</li>
+            <li>Modèles de flux de travail, définitions de pipelines, configs d'agents</li>
+            <li>Intégrations d'outils (abstraites — pas d'identifiants, pas de points de terminaison)</li>
+            <li>Modèles d'ingénierie de prompts, méthodologie de prompts inversés</li>
+            <li>Conventions de structure de fichiers, définitions de compétences</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">Comment c'est vérifié</h3>
+          <div class="criteria-box success">
+            <h4>✓ Critères de succès</h4>
+            <ul>
+              <li>Le linter VAP passe — zéro références protégées détectées</li>
+              <li>Le nœud 2 démarre avec Terry, guide le nouvel utilisateur</li>
+              <li>Nouvel utilisateur productif en moins de 2 heures</li>
+              <li><code>grep -ri</code> termes privés retourne zéro résultat</li>
+            </ul>
+          </div>
+          <div class="criteria-box fail">
+            <h4>✗ Conditions d'échec</h4>
+            <ul>
+              <li>grep trouve N'IMPORTE QUELLE donnée privée dans le protocole</li>
+              <li>Le nœud 2 nécessite une configuration manuelle au-delà de l'identité</li>
+              <li>Terry échoue à guider l'intégration sans intervention humaine</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="anim-4" data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:20px 28px; color:white; margin-top:16px; max-width:760px; text-align:center;">
+        <p style="font-size:0.9rem; opacity:0.9;"><strong style="color:var(--accent-gold-light);">The acid test:</strong> <code style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px;">grep -ri "fred|hazelton|hazeydata" protocol/</code> → must return <strong>zero results</strong></p>
+      </div>
+      <div class="anim-4" data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:20px 28px; color:white; margin-top:16px; max-width:760px; text-align:center;">
+        <p style="font-size:0.9rem; opacity:0.9;"><strong style="color:var(--accent-gold-light);">Le test décisif :</strong> <code style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px;">grep -ri "fred|hazelton|hazeydata" protocol/</code> → doit retourner <strong>zéro résultat</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 7 — PHASE 0 STAGE B -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="6">
+    <div class="gc-bar"></div>
+    <div class="section-num">06</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en"><span class="pill pill-red">Phase 0 — Stage B</span> &nbsp; Months 2–4</div>
+      <div class="small-label anim-1" data-lang="fr"><span class="pill pill-red">Phase 0 — Étape B</span> &nbsp; Mois 2–4</div>
+      <h2 class="anim-1" data-lang="en">External Pilot — Three Real Stations</h2>
+      <h2 class="anim-1" data-lang="fr">Pilote externe — Trois vraies stations</h2>
+      <div class="divider anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:0.95rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:24px; max-width:760px;">
+        Three external stations across three different sectors. Each builds one real tool with Terry. No onboarding consultants — Terry IS the onboarding.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:0.95rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:24px; max-width:760px;">
+        Trois stations externes dans trois secteurs différents. Chacune construit un vrai outil avec Terry. Pas de consultants d'intégration — Terry EST l'intégration.
+      </p>
+
+      <div class="three-col anim-3" data-lang="en">
+        <div class="card" style="border-left-color: var(--accent-gold);">
+          <h3>🏢 Hypertec Partner</h3>
+          <p style="margin-bottom:12px;"><strong>Sector:</strong> Enterprise / Government</p>
+          <p style="margin-bottom:12px;"><strong>Hardware:</strong> Hypertec CIARA workstation ($15–25K)</p>
+          <p style="margin-bottom:12px;"><strong>Tool built:</strong> Document processing workflow (e.g., policy analysis, RFP evaluation)</p>
+          <p><strong>Validates:</strong> Hypertec hardware + CDR-OS integration, enterprise-grade tooling</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-teal);">
+          <h3>🎓 University Lab</h3>
+          <p style="margin-bottom:12px;"><strong>Sector:</strong> Research / Education</p>
+          <p style="margin-bottom:12px;"><strong>Hardware:</strong> Mac Studio M4 Ultra ($8–12K)</p>
+          <p style="margin-bottom:12px;"><strong>Tool built:</strong> Research methodology tool (e.g., literature synthesis, data pipeline)</p>
+          <p><strong>Validates:</strong> Academic use case, researcher onboarding, publication-quality outputs</p>
+        </div>
+        <div class="card" style="border-left-color: var(--maple-red);">
+          <h3>🏪 Small Business</h3>
+          <p style="margin-bottom:12px;"><strong>Sector:</strong> Retail / Services</p>
+          <p style="margin-bottom:12px;"><strong>Hardware:</strong> Mac Studio ($6–8K)</p>
+          <p style="margin-bottom:12px;"><strong>Tool built:</strong> Client management workflow (e.g., intake, scheduling, inventory)</p>
+          <p><strong>Validates:</strong> Non-technical user, lowest cost tier, time-to-productive metric</p>
+        </div>
+      </div>
+      <div class="three-col anim-3" data-lang="fr">
+        <div class="card" style="border-left-color: var(--accent-gold);">
+          <h3>🏢 Partenaire Hypertec</h3>
+          <p style="margin-bottom:12px;"><strong>Secteur :</strong> Entreprise / Gouvernement</p>
+          <p style="margin-bottom:12px;"><strong>Matériel :</strong> Station CIARA Hypertec (15–25K$)</p>
+          <p style="margin-bottom:12px;"><strong>Outil créé :</strong> Flux de traitement documentaire (analyse de politiques, évaluation d'appels d'offres)</p>
+          <p><strong>Valide :</strong> Intégration matériel Hypertec + CDR-OS, outillage de niveau entreprise</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-teal);">
+          <h3>🎓 Laboratoire universitaire</h3>
+          <p style="margin-bottom:12px;"><strong>Secteur :</strong> Recherche / Éducation</p>
+          <p style="margin-bottom:12px;"><strong>Matériel :</strong> Mac Studio M4 Ultra (8–12K$)</p>
+          <p style="margin-bottom:12px;"><strong>Outil créé :</strong> Outil méthodologique de recherche (synthèse de littérature, pipeline de données)</p>
+          <p><strong>Valide :</strong> Cas d'usage académique, intégration des chercheurs, résultats de qualité publication</p>
+        </div>
+        <div class="card" style="border-left-color: var(--maple-red);">
+          <h3>🏪 Petite entreprise</h3>
+          <p style="margin-bottom:12px;"><strong>Secteur :</strong> Commerce de détail / Services</p>
+          <p style="margin-bottom:12px;"><strong>Matériel :</strong> Mac Studio (6–8K$)</p>
+          <p style="margin-bottom:12px;"><strong>Outil créé :</strong> Flux de gestion client (accueil, planification, inventaire)</p>
+          <p><strong>Valide :</strong> Utilisateur non technique, niveau de coût le plus bas, temps jusqu'à la productivité</p>
+        </div>
+      </div>
+
+      <div class="anim-4" data-lang="en" style="text-align:center; margin-top:20px;">
+        <p style="font-size:0.95rem; color:var(--rail-grey-mid); max-width:700px; margin: 0 auto;">
+          <strong>Onboarding flow:</strong> Intake questionnaire → Generate SOUL.md + USER.md for each pilot partner → Power on → CDR-OS boots → Terry greets with context → Guided creation → Protocol published to Registry
+        </p>
+      </div>
+      <div class="anim-4" data-lang="fr" style="text-align:center; margin-top:20px;">
+        <p style="font-size:0.95rem; color:var(--rail-grey-mid); max-width:700px; margin: 0 auto;">
+          <strong>Flux d'intégration :</strong> Questionnaire d'admission → Générer SOUL.md + USER.md pour chaque partenaire pilote → Mise sous tension → CDR-OS démarre → Terry accueille avec contexte → Création guidée → Protocole publié au Registre
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 8 — PHASE 0 STAGE C -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-accent" data-slide="7">
+    <div class="section-num light">07</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);"><span class="pill" style="background:rgba(196,30,58,0.25); color:#ff8a80;">Phase 0 — Stage C</span> &nbsp; Months 5–6</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);"><span class="pill" style="background:rgba(196,30,58,0.25); color:#ff8a80;">Phase 0 — Étape C</span> &nbsp; Mois 5–6</div>
+      <h2 class="anim-1" data-lang="en">Cross-Pollination — The Knowledge Test</h2>
+      <h2 class="anim-1" data-lang="fr">Pollinisation croisée — Le test du savoir</h2>
+      <div class="divider gold anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:0.95rem; opacity:0.85; margin-bottom:28px; max-width:700px; line-height:1.7;">
+        A protocol built at one station deploys successfully at a station in a completely different sector. This is the moment CDR proves its thesis: <strong>knowledge travels the rails, data stays home.</strong>
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:0.95rem; opacity:0.85; margin-bottom:28px; max-width:700px; line-height:1.7;">
+        Un protocole construit à une station se déploie avec succès dans une station d'un secteur complètement différent. C'est le moment où le CDR prouve sa thèse : <strong>le savoir voyage sur les rails, les données restent chez elles.</strong>
+      </p>
+
+      <!-- Cross-pollination example -->
+      <div class="flow anim-3" data-lang="en">
+        <div class="flow-step" style="border-color: var(--accent-teal);">
+          <div class="flow-icon">🏥</div>
+          <div class="flow-label">Clinic</div>
+          <div class="flow-desc">Builds patient intake protocol</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">📦</div>
+          <div class="flow-label">VAP Abstraction</div>
+          <div class="flow-desc">Strip to X₁, X₂, X₃…</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">🛤️</div>
+          <div class="flow-label">Registry</div>
+          <div class="flow-desc">Published as "Client Onboarding"</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color: var(--maple-red);">
+          <div class="flow-icon">🏪</div>
+          <div class="flow-label">Retail Shop</div>
+          <div class="flow-desc">Adapts for retail customers</div>
+        </div>
+      </div>
+      <div class="flow anim-3" data-lang="fr">
+        <div class="flow-step" style="border-color: var(--accent-teal);">
+          <div class="flow-icon">🏥</div>
+          <div class="flow-label">Clinique</div>
+          <div class="flow-desc">Crée protocole d'accueil patient</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">📦</div>
+          <div class="flow-label">Abstraction VAP</div>
+          <div class="flow-desc">Réduit à X₁, X₂, X₃…</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">🛤️</div>
+          <div class="flow-label">Registre</div>
+          <div class="flow-desc">Publié comme « Accueil client »</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color: var(--maple-red);">
+          <div class="flow-icon">🏪</div>
+          <div class="flow-label">Commerce</div>
+          <div class="flow-desc">Adapte pour la clientèle détail</div>
+        </div>
+      </div>
+
+      <div class="two-col anim-4" style="margin-top:28px;">
+        <div class="card-dark" style="border-left-color: var(--accent-green);">
+          <h3 data-lang="en" style="color:#81c784;">✓ Success Criteria</h3>
+          <h3 data-lang="fr" style="color:#81c784;">✓ Critères de succès</h3>
+          <p data-lang="en" style="line-height:1.8;"><strong>Deploy time:</strong> < 1 day from discovery to running<br><strong>Data leakage:</strong> Zero — VAP linter confirms clean<br><strong>User satisfaction:</strong> > 7/10 survey score<br><strong>Adaptation effort:</strong> < 4 hours with Terry guidance</p>
+          <p data-lang="fr" style="line-height:1.8;"><strong>Temps de déploiement :</strong> < 1 jour de la découverte à l'exécution<br><strong>Fuite de données :</strong> Zéro — le linter VAP confirme la propreté<br><strong>Satisfaction :</strong> > 7/10 au sondage<br><strong>Effort d'adaptation :</strong> < 4 heures avec guidance de Terry</p>
+        </div>
+        <div class="card-dark red">
+          <h3 data-lang="en" style="color:#ff8a80;">✗ Failure Conditions</h3>
+          <h3 data-lang="fr" style="color:#ff8a80;">✗ Conditions d'échec</h3>
+          <p data-lang="en" style="line-height:1.8;"><strong>Any protected data</strong> from originating station detected in the deployed protocol<br><strong>Deploy time</strong> exceeds 3 days<br><strong>Requires manual code editing</strong> — Terry should handle adaptation<br><strong>User satisfaction</strong> below 5/10</p>
+          <p data-lang="fr" style="line-height:1.8;"><strong>Toute donnée protégée</strong> de la station d'origine détectée dans le protocole déployé<br><strong>Temps de déploiement</strong> dépasse 3 jours<br><strong>Nécessite de modifier le code manuellement</strong> — Terry devrait gérer l'adaptation<br><strong>Satisfaction utilisateur</strong> en dessous de 5/10</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 9 — PHASE 0 STAGE D -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="8">
+    <div class="gc-bar"></div>
+    <div class="section-num">08</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en"><span class="pill pill-red">Phase 0 — Stage D</span> &nbsp; Parallel Track</div>
+      <div class="small-label anim-1" data-lang="fr"><span class="pill pill-red">Phase 0 — Étape D</span> &nbsp; Voie parallèle</div>
+      <h2 class="anim-1" data-lang="en">Government Validation — TBS Protected B Assessment</h2>
+      <h2 class="anim-1" data-lang="fr">Validation gouvernementale — Évaluation Protégé B du SCT</h2>
+      <div class="divider anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:0.95rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:24px; max-width:760px;">
+        Runs in parallel with Stages A–C. Goal: obtain the certifications needed to process Government of Canada Protected B data on CDR infrastructure.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:0.95rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:24px; max-width:760px;">
+        Se déroule en parallèle avec les étapes A–C. Objectif : obtenir les certifications nécessaires pour traiter les données Protégé B du gouvernement du Canada sur l'infrastructure CDR.
+      </p>
+
+      <div class="two-col anim-3" data-lang="en">
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">What CDR Must Pass</h3>
+          <ul class="check-list">
+            <li>Security Assessment & Authorization (SA&A)</li>
+            <li>ITSG-33 security control profile compliance</li>
+            <li>Data residency verification (Canadian soil only)</li>
+            <li>Encryption-in-transit and at-rest audit</li>
+            <li>Access control and audit logging review</li>
+            <li>Vulnerability assessment and penetration testing</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">Strategic Advantage</h3>
+          <div style="background: var(--rail-slate); border-radius:12px; padding:24px; color:white;">
+            <p style="font-size:0.92rem; line-height:1.7; opacity:0.9; margin-bottom:16px;">
+              <strong style="color:var(--accent-gold-light);">ThinkOn partnership accelerates this.</strong> The ThinkOn consortium already holds Protected B certification for their sovereign cloud services. CDR's cloud backbone inherits this trust chain.
+            </p>
+            <p style="font-size:0.85rem; opacity:0.7; line-height:1.6;">
+              Edge stations add a new assessment surface — but simpler: no remote access, no network exposure, institution-controlled. The attack surface is minimal by design.
+            </p>
+          </div>
+          <div style="margin-top:16px;">
+            <h3 style="color: var(--rail-slate); margin-bottom:12px;">Timeline</h3>
+            <p style="font-size:0.88rem; color:var(--rail-grey-mid); line-height:1.6;">
+              <strong>Months 1–2:</strong> Documentation, threat model, control mapping<br>
+              <strong>Months 3–4:</strong> Assessment engagement with TBS-accredited assessor<br>
+              <strong>Months 5–6:</strong> Remediation, final assessment, interim Authority to Operate
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="two-col anim-3" data-lang="fr">
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">Ce que le CDR doit réussir</h3>
+          <ul class="check-list">
+            <li>Évaluation et autorisation de sécurité (EA&A)</li>
+            <li>Conformité au profil de contrôles de sécurité ITSG-33</li>
+            <li>Vérification de la résidence des données (sol canadien uniquement)</li>
+            <li>Audit du chiffrement en transit et au repos</li>
+            <li>Examen du contrôle d'accès et de la journalisation</li>
+            <li>Évaluation des vulnérabilités et tests d'intrusion</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">Avantage stratégique</h3>
+          <div style="background: var(--rail-slate); border-radius:12px; padding:24px; color:white;">
+            <p style="font-size:0.92rem; line-height:1.7; opacity:0.9; margin-bottom:16px;">
+              <strong style="color:var(--accent-gold-light);">Le partenariat ThinkOn accélère cela.</strong> Le consortium ThinkOn détient déjà la certification Protégé B. La dorsale nuage du CDR hérite de cette chaîne de confiance.
+            </p>
+            <p style="font-size:0.85rem; opacity:0.7; line-height:1.6;">
+              Les stations de périphérie ajoutent une nouvelle surface d'évaluation — mais plus simple : pas d'accès distant, pas d'exposition réseau, contrôle institutionnel.
+            </p>
+          </div>
+          <div style="margin-top:16px;">
+            <h3 style="color: var(--rail-slate); margin-bottom:12px;">Chronologie</h3>
+            <p style="font-size:0.88rem; color:var(--rail-grey-mid); line-height:1.6;">
+              <strong>Mois 1–2 :</strong> Documentation, modèle de menaces, cartographie des contrôles<br>
+              <strong>Mois 3–4 :</strong> Engagement d'évaluation avec évaluateur accrédité SCT<br>
+              <strong>Mois 5–6 :</strong> Remédiation, évaluation finale, autorité d'exploitation intérimaire
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 10 — PHASE 1 -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-dark" data-slide="9">
+    <div class="section-num light">09</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);"><span class="pill" style="background:rgba(200,151,62,0.25); color:var(--accent-gold-light);">Phase 1</span> &nbsp; Months 7–18</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);"><span class="pill" style="background:rgba(200,151,62,0.25); color:var(--accent-gold-light);">Phase 1</span> &nbsp; Mois 7–18</div>
+      <h2 class="anim-1" data-lang="en">Ten Stations — Real Sectors, Real Scale</h2>
+      <h2 class="anim-1" data-lang="fr">Dix stations — Vrais secteurs, vraie échelle</h2>
+      <div class="divider gold anim-2"></div>
+
+      <div class="stat-row anim-2" data-lang="en">
+        <div class="stat"><div class="stat-number gold">10</div><div class="stat-label">Active stations<br>across 3–4 sectors</div></div>
+        <div class="stat"><div class="stat-number gold">20+</div><div class="stat-label">Published protocols<br>in Registry v1</div></div>
+        <div class="stat"><div class="stat-number gold">3+</div><div class="stat-label">Cross-sector transfers<br>documented & measured</div></div>
+      </div>
+      <div class="stat-row anim-2" data-lang="fr">
+        <div class="stat"><div class="stat-number gold">10</div><div class="stat-label">Stations actives<br>dans 3–4 secteurs</div></div>
+        <div class="stat"><div class="stat-number gold">20+</div><div class="stat-label">Protocoles publiés<br>dans le Registre v1</div></div>
+        <div class="stat"><div class="stat-number gold">3+</div><div class="stat-label">Transferts inter-secteurs<br>documentés et mesurés</div></div>
+      </div>
+
+      <div class="two-col anim-3" data-lang="en" style="margin-top: 20px;">
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">What We Build</h3>
+          <ul class="check-list white-checks" style="opacity:0.85;">
+            <li>Protocol Registry v1 — search, sector filtering, deployment tracking</li>
+            <li>VAP linter handles 80%+ of abstraction automatically</li>
+            <li>CDR Managed Service: $500–2,000/month/station (monitoring, updates, support)</li>
+            <li>First revenue from managed services (~$60–240K ARR at 10 stations)</li>
+            <li>OCAP consultation with FNTC and FNIGC begins</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">What We Prove</h3>
+          <ul class="check-list white-checks" style="opacity:0.85;">
+            <li>Network effects are real — each new station adds value</li>
+            <li>Managed service model sustains operations</li>
+            <li>Cross-sector protocol reuse works at scale</li>
+            <li>ISED funding applications backed by Phase 0 case study data</li>
+            <li>Break-even trajectory visible (~30 managed stations needed)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="two-col anim-3" data-lang="fr" style="margin-top: 20px;">
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">Ce que nous construisons</h3>
+          <ul class="check-list white-checks" style="opacity:0.85;">
+            <li>Registre de protocoles v1 — recherche, filtrage par secteur, suivi des déploiements</li>
+            <li>Le linter VAP gère 80%+ de l'abstraction automatiquement</li>
+            <li>Service géré CDR : 500–2 000$/mois/station (surveillance, mises à jour, support)</li>
+            <li>Premiers revenus des services gérés (~60–240K$ RRA à 10 stations)</li>
+            <li>Consultation PCAP avec le CTPN et le CGIPN commence</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">Ce que nous prouvons</h3>
+          <ul class="check-list white-checks" style="opacity:0.85;">
+            <li>Les effets de réseau sont réels — chaque nouvelle station ajoute de la valeur</li>
+            <li>Le modèle de service géré soutient les opérations</li>
+            <li>La réutilisation inter-secteurs fonctionne à l'échelle</li>
+            <li>Demandes de financement ISDE appuyées par les données de l'étude de cas Phase 0</li>
+            <li>Trajectoire de rentabilité visible (~30 stations gérées nécessaires)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 11 — PHASE 2 & 3 -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-blue" data-slide="10">
+    <div class="section-num light">10</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Growth Trajectory</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Trajectoire de croissance</div>
+      <h2 class="anim-1" data-lang="en">Phase 2 → Phase 3 — National to Global</h2>
+      <h2 class="anim-1" data-lang="fr">Phase 2 → Phase 3 — National vers mondial</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <div class="two-col anim-3" data-lang="en" style="text-align:left; margin-top:24px;">
+        <div class="card-dark teal">
+          <h3 style="color:#7dd3e8;">Phase 2 — National Network <span style="opacity:0.5; font-size:0.8rem;">(Months 18–36)</span></h3>
+          <div style="display:flex; gap:24px; margin: 16px 0;">
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#7dd3e8;">50+</div><div class="stat-label">Nodes coast to coast</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#7dd3e8;">100+</div><div class="stat-label">Published protocols</div></div>
+          </div>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>Governance council — institutions set network rules</li>
+            <li>First Indigenous community stations (language preservation, governance tools)</li>
+            <li>Defence and government pilot contracts</li>
+            <li>Telemetry-driven protocol recommendations</li>
+            <li>Protocol Registry Premium: $200–500/month</li>
+            <li>Enterprise deployments: custom 6–7 figure contracts</li>
+          </ul>
+        </div>
+        <div class="card-dark green">
+          <h3 style="color:#81c784;">Phase 3 — Knowledge Economy <span style="opacity:0.5; font-size:0.8rem;">(36+ Months)</span></h3>
+          <div style="display:flex; gap:24px; margin: 16px 0;">
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#81c784;">500+</div><div class="stat-label">Nodes national</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#81c784;">1000+</div><div class="stat-label">Protocols in Registry</div></div>
+          </div>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>Protocol Registry = de facto standard for institutional knowledge sharing</li>
+            <li>Third-party developers building for the Registry</li>
+            <li>International interest (Five Eyes, Commonwealth)</li>
+            <li>Cross-border protocol sharing with sovereignty guarantees</li>
+            <li>"Is it on the CDR?" becomes the standard question</li>
+            <li>CDR-OS as the Red Hat of sovereign AI</li>
+          </ul>
+        </div>
+      </div>
+      <div class="two-col anim-3" data-lang="fr" style="text-align:left; margin-top:24px;">
+        <div class="card-dark teal">
+          <h3 style="color:#7dd3e8;">Phase 2 — Réseau national <span style="opacity:0.5; font-size:0.8rem;">(Mois 18–36)</span></h3>
+          <div style="display:flex; gap:24px; margin: 16px 0;">
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#7dd3e8;">50+</div><div class="stat-label">Nœuds d'un océan à l'autre</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#7dd3e8;">100+</div><div class="stat-label">Protocoles publiés</div></div>
+          </div>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>Conseil de gouvernance — les institutions établissent les règles</li>
+            <li>Premières stations communautaires autochtones</li>
+            <li>Contrats pilotes de défense et gouvernementaux</li>
+            <li>Recommandations de protocoles par télémétrie</li>
+            <li>Registre Premium : 200–500$/mois</li>
+            <li>Déploiements entreprise : contrats de 6–7 chiffres</li>
+          </ul>
+        </div>
+        <div class="card-dark green">
+          <h3 style="color:#81c784;">Phase 3 — Économie du savoir <span style="opacity:0.5; font-size:0.8rem;">(36+ mois)</span></h3>
+          <div style="display:flex; gap:24px; margin: 16px 0;">
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#81c784;">500+</div><div class="stat-label">Nœuds nationaux</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#81c784;">1000+</div><div class="stat-label">Protocoles au Registre</div></div>
+          </div>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>Le Registre = standard de facto pour le partage de connaissances institutionnel</li>
+            <li>Développeurs tiers créant pour le Registre</li>
+            <li>Intérêt international (Cinq yeux, Commonwealth)</li>
+            <li>Partage de protocoles transfrontalier avec garanties de souveraineté</li>
+            <li>« C'est sur le CDR? » devient la question standard</li>
+            <li>CDR-OS comme le Red Hat de l'IA souveraine</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 12 — TERRY TECHNICAL -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-warm" data-slide="11">
+    <div class="gc-bar"></div>
+    <div class="section-num">11</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">The AI Station Agent</div>
+      <div class="small-label anim-1" data-lang="fr">L'agent IA de station</div>
+      <h2 class="anim-1" data-lang="en">Terry — How It Works Technically 🏃</h2>
+      <h2 class="anim-1" data-lang="fr">Terry — Comment ça fonctionne techniquement 🏃</h2>
+      <div class="divider anim-2"></div>
+
+      <div class="two-col anim-3" data-lang="en">
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">Architecture</h3>
+          <div class="gap-item">
+            <div class="gap-icon gold">🧠</div>
+            <div class="gap-text">
+              <h4>Clawdbot Core</h4>
+              <p>Multi-agent architecture. Persistent memory across sessions. Skill-based tool system. Sub-agent spawning for parallel tasks.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon gold">🔄</div>
+            <div class="gap-text">
+              <h4>Reverse Prompting</h4>
+              <p>Terry doesn't wait for instructions — it asks questions. "What do you want to build?" then guides the user through creation step by step.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon gold">📚</div>
+            <div class="gap-text">
+              <h4>Memory & Context</h4>
+              <p>Daily memory files, long-term MEMORY.md, user profile. Terry knows the institution's context, past decisions, and preferences.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon gold">🏗️</div>
+            <div class="gap-text">
+              <h4>Guided Building</h4>
+              <p>Terry writes code, builds dashboards, creates pipelines — all conversationally. Non-technical users describe what they need in plain language.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">The Onboarding Flow</h3>
+          <div class="journey-step"><div class="journey-num">0</div><div class="journey-text"><strong>Intake Questionnaire</strong> — HazeyData collects institution type, user skills, pain points, existing systems, personality, schedule</div></div>
+          <div class="journey-step"><div class="journey-num">1</div><div class="journey-text"><strong>SOUL.md Generation</strong> — 5 pre-configured files generated from sector template + intake data</div></div>
+          <div class="journey-step"><div class="journey-num">2</div><div class="journey-text"><strong>Power On</strong> — CDR-OS boots, models load. Terry reads SOUL.md — <em>already knows you</em></div></div>
+          <div class="journey-step"><div class="journey-num">3</div><div class="journey-text"><strong>First Session</strong> — Terry greets with context: "I see you run a physio clinic with 3 therapists. Let's talk about that intake backlog."</div></div>
+          <div class="journey-step"><div class="journey-num">4</div><div class="journey-text"><strong>Discovery</strong> — Terry surfaces relevant protocols: "14 healthcare institutions have published tools. Here are the top 5 for clinics your size."</div></div>
+          <div class="journey-step"><div class="journey-num">5</div><div class="journey-text"><strong>Build &amp; Deploy</strong> — Guided creation with reverse prompting. Tool runs locally. Nothing leaves.</div></div>
+          <div class="journey-step"><div class="journey-num">6</div><div class="journey-text"><strong>Publish</strong> — "Terry, publish this to the Railway" → VAP abstracts → Protocol Registry</div></div>
+
+          <div style="background: rgba(196,30,58,0.06); border: 1px solid rgba(196,30,58,0.2); border-radius:8px; padding:16px 20px; margin-top:16px;">
+            <p style="font-size:0.88rem; color:var(--rail-grey-dark); line-height:1.6;"><strong style="color:var(--maple-red);">Key insight:</strong> The product IS the trainer. No onboarding consultants needed. This is proven — the interaction model powering Terry is battle-tested across thousands of hours.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5-file workspace structure -->
+      <div class="anim-4" data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:24px 32px; color:white; margin-top:20px; max-width:960px; text-align:left;">
+        <h3 style="color:var(--accent-gold-light); margin-bottom:16px; font-size:1.05rem;">📁 Terry's 5-File Workspace — Pre-Configured Per Station (Phase 0 Deliverable)</h3>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">SOUL.md</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Terry's personality, domain knowledge, guard rails for this institution type</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">USER.md</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Everything about the specific user — skills, schedule, preferences</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">TOOLS.md</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Their systems, integrations, local hardware specifics</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">AGENTS.md</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">How Terry works — memory, check-ins, escalation rules</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">HEARTBEAT.md</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">What Terry monitors proactively for this institution</p>
+          </div>
+          <div style="background:rgba(196,30,58,0.15); border:1px solid rgba(196,30,58,0.3); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:#ff8a80; margin-bottom:4px;">SOUL.md Library</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Pre-built templates per sector: clinic, retail, university, government, Indigenous governance</p>
+          </div>
+        </div>
+        <p style="font-size:0.82rem; opacity:0.6; margin-top:12px; text-align:center;">Onboarding flow: <strong style="opacity:0.9;">Intake questionnaire → File generation → Terry boot → First session</strong></p>
+      </div>
+      <div class="anim-4" data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:24px 32px; color:white; margin-top:20px; max-width:960px; text-align:left;">
+        <h3 style="color:var(--accent-gold-light); margin-bottom:16px; font-size:1.05rem;">📁 Espace de travail de Terry — 5 fichiers préconfigurés par station (livrable Phase 0)</h3>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">SOUL.md</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Personnalité de Terry, connaissances du domaine, garde-fous pour ce type d'institution</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">USER.md</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Tout sur l'utilisateur — compétences, horaire, préférences</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">TOOLS.md</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Leurs systèmes, intégrations, spécificités du matériel local</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">AGENTS.md</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Comment Terry fonctionne — mémoire, vérifications, règles d'escalade</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">HEARTBEAT.md</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Ce que Terry surveille proactivement pour cette institution</p>
+          </div>
+          <div style="background:rgba(196,30,58,0.15); border:1px solid rgba(196,30,58,0.3); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:#ff8a80; margin-bottom:4px;">Bibliothèque SOUL.md</p>
+            <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Gabarits par secteur : clinique, commerce, université, gouvernement, gouvernance autochtone</p>
+          </div>
+        </div>
+        <p style="font-size:0.82rem; opacity:0.6; margin-top:12px; text-align:center;">Flux d'intégration : <strong style="opacity:0.9;">Questionnaire → Génération de fichiers → Démarrage Terry → Première session</strong></p>
+      </div>
+
+      <div class="two-col anim-3" data-lang="fr">
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">Architecture</h3>
+          <div class="gap-item">
+            <div class="gap-icon gold">🧠</div>
+            <div class="gap-text">
+              <h4>Noyau Clawdbot</h4>
+              <p>Architecture multi-agent. Mémoire persistante entre sessions. Système d'outils basé sur les compétences. Lancement de sous-agents pour les tâches parallèles.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon gold">🔄</div>
+            <div class="gap-text">
+              <h4>Prompts inversés</h4>
+              <p>Terry n'attend pas d'instructions — il pose des questions. « Qu'est-ce que vous voulez construire? » puis guide l'utilisateur étape par étape.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon gold">📚</div>
+            <div class="gap-text">
+              <h4>Mémoire et contexte</h4>
+              <p>Fichiers mémoire quotidiens, MEMORY.md à long terme, profil utilisateur. Terry connaît le contexte de l'institution.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon gold">🏗️</div>
+            <div class="gap-text">
+              <h4>Construction guidée</h4>
+              <p>Terry écrit du code, crée des tableaux de bord, construit des pipelines — tout par conversation. Les utilisateurs non techniques décrivent leurs besoins en langage clair.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 style="color: var(--rail-slate); margin-bottom:16px;">Le flux d'intégration</h3>
+          <div class="journey-step"><div class="journey-num">0</div><div class="journey-text"><strong>Questionnaire d'admission</strong> — HazeyData recueille le type d'institution, les compétences, les points de douleur, les systèmes existants, la personnalité, l'horaire</div></div>
+          <div class="journey-step"><div class="journey-num">1</div><div class="journey-text"><strong>Génération SOUL.md</strong> — 5 fichiers préconfigurés générés à partir du gabarit sectoriel + données d'admission</div></div>
+          <div class="journey-step"><div class="journey-num">2</div><div class="journey-text"><strong>Mise sous tension</strong> — CDR-OS démarre, modèles chargés. Terry lit SOUL.md — <em>vous connaît déjà</em></div></div>
+          <div class="journey-step"><div class="journey-num">3</div><div class="journey-text"><strong>Première session</strong> — Terry accueille avec contexte : « Je vois que vous gérez une clinique de physio avec 3 thérapeutes. Parlons de ce retard à l'admission. »</div></div>
+          <div class="journey-step"><div class="journey-num">4</div><div class="journey-text"><strong>Découverte</strong> — Terry suggère des protocoles pertinents du Registre</div></div>
+          <div class="journey-step"><div class="journey-num">5</div><div class="journey-text"><strong>Construire et déployer</strong> — Création guidée par prompts inversés. L'outil fonctionne localement</div></div>
+          <div class="journey-step"><div class="journey-num">6</div><div class="journey-text"><strong>Publier</strong> — « Terry, publie ça sur le Railway » → abstraction VAP → Registre</div></div>
+
+          <div style="background: rgba(196,30,58,0.06); border: 1px solid rgba(196,30,58,0.2); border-radius:8px; padding:16px 20px; margin-top:16px;">
+            <p style="font-size:0.88rem; color:var(--rail-grey-dark); line-height:1.6;"><strong style="color:var(--maple-red);">Insight clé :</strong> Le produit EST le formateur. Pas de consultants d'intégration nécessaires. C'est prouvé — le modèle d'interaction est éprouvé sur des milliers d'heures.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 13 — PROTOCOL REGISTRY MVP -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-accent" data-slide="12">
+    <div class="section-num light">12</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Protocol Registry</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Registre de protocoles</div>
+      <h2 class="anim-1" data-lang="en">Protocol Registry — Phased Build</h2>
+      <h2 class="anim-1" data-lang="fr">Registre de protocoles — Construction par phases</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <div class="three-col anim-3" data-lang="en" style="text-align:left;">
+        <div class="card-dark">
+          <h3>📄 Phase 0: Templates</h3>
+          <p style="margin-bottom:12px;">Simple templates, configuration files, and READMEs. Human-readable documentation. Manual abstraction with Terry assistance.</p>
+          <p style="font-size:0.78rem; opacity:0.5;">Prove that knowledge can be packaged and reused at all.</p>
+        </div>
+        <div class="card-dark">
+          <h3>🤖 Phase 1: Guided Abstraction</h3>
+          <p style="margin-bottom:12px;">Terry-assisted abstraction. VAP linter auto-detects 80%+ of sensitive references. Human review still required. Search and sector filtering.</p>
+          <p style="font-size:0.78rem; opacity:0.5;">Scale from manual to semi-automated. First cross-sector transfers.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--accent-green);">
+          <h3>⚡ Phase 2: Full VAP</h3>
+          <p style="margin-bottom:12px;">Complete Variable Abstraction Protocol. Rich type system (CDR type hierarchy). Automatic adapter generation. Type-safe deployment.</p>
+          <p style="font-size:0.78rem; opacity:0.5;">Protocols are born clean — constructive, not subtractive.</p>
+        </div>
+      </div>
+      <div class="three-col anim-3" data-lang="fr" style="text-align:left;">
+        <div class="card-dark">
+          <h3>📄 Phase 0 : Gabarits</h3>
+          <p style="margin-bottom:12px;">Gabarits simples, fichiers de configuration et README. Documentation lisible par l'humain. Abstraction manuelle avec assistance de Terry.</p>
+          <p style="font-size:0.78rem; opacity:0.5;">Prouver que le savoir peut être empaqueté et réutilisé.</p>
+        </div>
+        <div class="card-dark">
+          <h3>🤖 Phase 1 : Abstraction guidée</h3>
+          <p style="margin-bottom:12px;">Abstraction assistée par Terry. Le linter VAP détecte automatiquement 80%+ des références sensibles. Revue humaine encore requise.</p>
+          <p style="font-size:0.78rem; opacity:0.5;">Passer du manuel au semi-automatisé. Premiers transferts inter-secteurs.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--accent-green);">
+          <h3>⚡ Phase 2 : VAP complet</h3>
+          <p style="margin-bottom:12px;">Protocole d'abstraction variable complet. Système de types riche. Génération automatique d'adaptateurs. Déploiement type-safe.</p>
+          <p style="font-size:0.78rem; opacity:0.5;">Les protocoles naissent propres — constructifs, pas soustractifs.</p>
+        </div>
+      </div>
+
+      <div class="anim-4" style="margin-top:28px; max-width:800px; margin-left:auto; margin-right:auto;">
+        <h3 data-lang="en" style="color:var(--accent-gold-light); margin-bottom:16px; text-align:left;">Quality Control</h3>
+        <h3 data-lang="fr" style="color:var(--accent-gold-light); margin-bottom:16px; text-align:left;">Contrôle de qualité</h3>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">⭐ Star Ratings</span>
+          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">✅ Verification Badges</span>
+          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">👥 Sector Curators</span>
+          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">🔒 Security Scanning</span>
+          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">📊 Deployment Count</span>
+          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">🏛️ Institution Verified</span>
+          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">⭐ Évaluations</span>
+          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">✅ Badges de vérification</span>
+          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">👥 Curateurs sectoriels</span>
+          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">🔒 Balayage sécurité</span>
+          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">📊 Nombre de déploiements</span>
+          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">🏛️ Institution vérifiée</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 14 — FEDERATED ANALYTICS ENGINE -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-dark" data-slide="13">
+    <div class="section-num light">13</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Federated Analytics</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Analytique fédérée</div>
+      <h2 class="anim-1" data-lang="en">Federated Analytics Engine — Query Data Without Moving It</h2>
+      <h2 class="anim-1" data-lang="fr">Moteur d'analytique fédérée — Interroger les données sans les déplacer</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:0.95rem; opacity:0.85; margin-bottom:28px; max-width:720px; margin-left:auto; margin-right:auto; line-height:1.7;">
+        The analytics engine sends the query to the data — never the data to the query. Aggregated, differentially private results come back. Raw data never leaves the institution.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:0.95rem; opacity:0.85; margin-bottom:28px; max-width:720px; margin-left:auto; margin-right:auto; line-height:1.7;">
+        Le moteur d'analytique envoie la requête aux données — jamais les données à la requête. Les résultats agrégés et différentiellement privés reviennent. Les données brutes ne quittent jamais l'institution.
+      </p>
+
+      <div class="flow anim-3" data-lang="en">
+        <div class="flow-step">
+          <div class="flow-icon">🔍</div>
+          <div class="flow-label">SQL Query</div>
+          <div class="flow-desc">Analyst submits query</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">📦</div>
+          <div class="flow-label">Containerized</div>
+          <div class="flow-desc">Sandboxed execution</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">🏛️</div>
+          <div class="flow-label">Runs Locally</div>
+          <div class="flow-desc">At each authorized station</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">🔒</div>
+          <div class="flow-label">Diff. Privacy</div>
+          <div class="flow-desc">Noise added, aggregated</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-green);">
+          <div class="flow-icon">📊</div>
+          <div class="flow-label">Results</div>
+          <div class="flow-desc">Aggregated only</div>
+        </div>
+      </div>
+      <div class="flow anim-3" data-lang="fr">
+        <div class="flow-step">
+          <div class="flow-icon">🔍</div>
+          <div class="flow-label">Requête SQL</div>
+          <div class="flow-desc">L'analyste soumet</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">📦</div>
+          <div class="flow-label">Conteneurisée</div>
+          <div class="flow-desc">Exécution isolée</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">🏛️</div>
+          <div class="flow-label">Exécution locale</div>
+          <div class="flow-desc">À chaque station autorisée</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">🔒</div>
+          <div class="flow-label">Conf. différentielle</div>
+          <div class="flow-desc">Bruit ajouté, agrégé</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-green);">
+          <div class="flow-icon">📊</div>
+          <div class="flow-label">Résultats</div>
+          <div class="flow-desc">Agrégés uniquement</div>
+        </div>
+      </div>
+
+      <div class="three-col anim-4" data-lang="en" style="text-align:left; margin-top: 24px;">
+        <div class="card-dark">
+          <h3>🔐 Differential Privacy</h3>
+          <p>Mathematically guaranteed privacy. Calibrated noise injection prevents re-identification. Privacy budget tracked per institution.</p>
+        </div>
+        <div class="card-dark">
+          <h3>📊 BI Tool Compatible</h3>
+          <p>Virtual data source interface. Compatible with Tableau, Power BI, and standard BI tools. Federated SQL — analysts use tools they already know.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--accent-teal);">
+          <h3>🏛️ Permission Controls</h3>
+          <p>Institutions set federation permissions per query type. Opt-in at every level. Full audit trail of every query executed.</p>
+        </div>
+      </div>
+      <div class="three-col anim-4" data-lang="fr" style="text-align:left; margin-top: 24px;">
+        <div class="card-dark">
+          <h3>🔐 Confidentialité différentielle</h3>
+          <p>Confidentialité garantie mathématiquement. L'injection de bruit calibré empêche la ré-identification. Budget de confidentialité suivi par institution.</p>
+        </div>
+        <div class="card-dark">
+          <h3>📊 Compatible outils BI</h3>
+          <p>Interface de source de données virtuelle. Compatible Tableau, Power BI et outils BI standards. SQL fédéré — les analystes utilisent des outils qu'ils connaissent.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--accent-teal);">
+          <h3>🏛️ Contrôle des permissions</h3>
+          <p>Les institutions définissent les permissions de fédération par type de requête. Opt-in à chaque niveau. Trace d'audit complète de chaque requête.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 15 — SUCCESS METRICS -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="14">
+    <div class="gc-bar"></div>
+    <div class="section-num">14</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en">Success Metrics</div>
+      <div class="small-label anim-1" data-lang="fr">Mesures de succès</div>
+      <h2 class="anim-1" data-lang="en">KPIs by Phase — How We Measure Success</h2>
+      <h2 class="anim-1" data-lang="fr">IRC par phase — Comment nous mesurons le succès</h2>
+      <div class="divider anim-2"></div>
+
+      <div class="metric-grid anim-3" data-lang="en">
+        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+          <div class="metric-phase" style="color:var(--maple-red);">Phase 0 (Months 1–6)</div>
+          <div class="metric-val" style="color:var(--maple-red);">4</div>
+          <div class="metric-label">Stations deployed<br>(1 internal + 3 pilot)</div>
+        </div>
+        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+          <div class="metric-phase" style="color:var(--maple-red);">Phase 0</div>
+          <div class="metric-val" style="color:var(--maple-red);">≥ 1</div>
+          <div class="metric-label">Cross-sector transfer<br>documented & measured</div>
+        </div>
+        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+          <div class="metric-phase" style="color:var(--maple-red);">Phase 0</div>
+          <div class="metric-val" style="color:var(--maple-red);"> < 2hr</div>
+          <div class="metric-label">Time-to-productive<br>(first tool built with Terry)</div>
+        </div>
+
+        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+          <div class="metric-phase" style="color:var(--accent-gold);">Phase 1 (Months 7–18)</div>
+          <div class="metric-val" style="color:var(--accent-gold);">10</div>
+          <div class="metric-label">Active stations<br>across 3–4 sectors</div>
+        </div>
+        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+          <div class="metric-phase" style="color:var(--accent-gold);">Phase 1</div>
+          <div class="metric-val" style="color:var(--accent-gold);">20+</div>
+          <div class="metric-label">Published protocols<br>in Registry</div>
+        </div>
+        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+          <div class="metric-phase" style="color:var(--accent-gold);">Phase 1</div>
+          <div class="metric-val" style="color:var(--accent-gold);">$60K+</div>
+          <div class="metric-label">Annual recurring revenue<br>(managed services)</div>
+        </div>
+
+        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+          <div class="metric-phase" style="color:var(--accent-teal);">Phase 2 (Months 18–36)</div>
+          <div class="metric-val" style="color:var(--accent-teal);">50+</div>
+          <div class="metric-label">Nodes coast to coast</div>
+        </div>
+        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+          <div class="metric-phase" style="color:var(--accent-teal);">Phase 2</div>
+          <div class="metric-val" style="color:var(--accent-teal);">✓</div>
+          <div class="metric-label">TBS Protected B<br>certification achieved</div>
+        </div>
+        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+          <div class="metric-phase" style="color:var(--accent-teal);">Phase 2</div>
+          <div class="metric-val" style="color:var(--accent-teal);"> > 80%</div>
+          <div class="metric-label">Cross-pollination<br>success rate</div>
+        </div>
+      </div>
+      <div class="metric-grid anim-3" data-lang="fr">
+        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+          <div class="metric-phase" style="color:var(--maple-red);">Phase 0 (Mois 1–6)</div>
+          <div class="metric-val" style="color:var(--maple-red);">4</div>
+          <div class="metric-label">Stations déployées<br>(1 interne + 3 pilotes)</div>
+        </div>
+        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+          <div class="metric-phase" style="color:var(--maple-red);">Phase 0</div>
+          <div class="metric-val" style="color:var(--maple-red);">≥ 1</div>
+          <div class="metric-label">Transfert inter-secteur<br>documenté et mesuré</div>
+        </div>
+        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+          <div class="metric-phase" style="color:var(--maple-red);">Phase 0</div>
+          <div class="metric-val" style="color:var(--maple-red);"> < 2h</div>
+          <div class="metric-label">Temps jusqu'à la productivité<br>(premier outil avec Terry)</div>
+        </div>
+
+        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+          <div class="metric-phase" style="color:var(--accent-gold);">Phase 1 (Mois 7–18)</div>
+          <div class="metric-val" style="color:var(--accent-gold);">10</div>
+          <div class="metric-label">Stations actives<br>dans 3–4 secteurs</div>
+        </div>
+        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+          <div class="metric-phase" style="color:var(--accent-gold);">Phase 1</div>
+          <div class="metric-val" style="color:var(--accent-gold);">20+</div>
+          <div class="metric-label">Protocoles publiés<br>au Registre</div>
+        </div>
+        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+          <div class="metric-phase" style="color:var(--accent-gold);">Phase 1</div>
+          <div class="metric-val" style="color:var(--accent-gold);">60K$+</div>
+          <div class="metric-label">Revenu récurrent annuel<br>(services gérés)</div>
+        </div>
+
+        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+          <div class="metric-phase" style="color:var(--accent-teal);">Phase 2 (Mois 18–36)</div>
+          <div class="metric-val" style="color:var(--accent-teal);">50+</div>
+          <div class="metric-label">Nœuds d'un océan à l'autre</div>
+        </div>
+        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+          <div class="metric-phase" style="color:var(--accent-teal);">Phase 2</div>
+          <div class="metric-val" style="color:var(--accent-teal);">✓</div>
+          <div class="metric-label">Certification Protégé B<br>du SCT obtenue</div>
+        </div>
+        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+          <div class="metric-phase" style="color:var(--accent-teal);">Phase 2</div>
+          <div class="metric-val" style="color:var(--accent-teal);"> > 80%</div>
+          <div class="metric-label">Taux de succès de<br>pollinisation croisée</div>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:0.88rem; color:var(--rail-grey-mid); margin-top:24px; max-width:700px; margin-left:auto; margin-right:auto;">
+        <strong>Break-even target:</strong> ~30 managed stations at $500–2,000/month = $180K–720K ARR. Achievable in Phase 1–2 transition.
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.88rem; color:var(--rail-grey-mid); margin-top:24px; max-width:700px; margin-left:auto; margin-right:auto;">
+        <strong>Objectif de rentabilité :</strong> ~30 stations gérées à 500–2 000$/mois = 180K–720K$ RRA. Atteignable en transition Phase 1–2.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 16 — RISK REGISTER -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-warm" data-slide="15">
+    <div class="gc-bar"></div>
+    <div class="section-num">15</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">Risk Register</div>
+      <div class="small-label anim-1" data-lang="fr">Registre des risques</div>
+      <h2 class="anim-1" data-lang="en">Top Risks and Mitigations</h2>
+      <h2 class="anim-1" data-lang="fr">Principaux risques et atténuations</h2>
+      <div class="divider anim-2"></div>
+
+      <div class="risk-grid anim-3" data-lang="en">
+        <div class="risk-card">
+          <div class="risk-title">🍎 Apple Hardware Dependency</div>
+          <div class="risk-desc">Over-reliance on a single US-based hardware vendor for edge stations</div>
+          <div class="risk-mitigation">✓ Mitigated: CDR-OS is hardware-agnostic. Hypertec CIARA (Canadian) is the flagship. MLX/CUDA/ROCm abstraction layer.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">🤖 Terry Quality at Scale</div>
+          <div class="risk-desc">AI assistant may not handle diverse institution types or complex workflows reliably</div>
+          <div class="risk-mitigation">✓ Mitigated: Built on Clawdbot, battle-tested across thousands of hours. Phase 0 validates with 3 diverse sectors before scaling.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">🔓 Protocol Data Leakage</div>
+          <div class="risk-desc">Protected information could inadvertently leak through published protocols</div>
+          <div class="risk-mitigation">✓ Mitigated: VAP is constructive (born clean), not subtractive. Linter + human review. grep test as acid test. Metadata taxonomy defined.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">🏛️ Government Sales Cycle</div>
+          <div class="risk-desc">Federal procurement and certification timelines can stretch 12–24+ months</div>
+          <div class="risk-mitigation">✓ Mitigated: ThinkOn partnership provides existing GC relationships. Small business + university pilots generate revenue while GC pipeline develops.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">📉 Network Effects Stall</div>
+          <div class="risk-desc">Not enough stations join to create the knowledge-sharing flywheel</div>
+          <div class="risk-mitigation">✓ Mitigated: Each station has standalone value (local AI). Network effects are bonus. Phase 0 proves value at 4 stations before scaling.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">🔧 Open-Source Sustainability</div>
+          <div class="risk-desc">Open core model must fund development while keeping trust through transparency</div>
+          <div class="risk-mitigation">✓ Mitigated: Red Hat model proven at scale. Managed service + premium registry + enterprise contracts provide revenue. Core stays open.</div>
+        </div>
+      </div>
+      <div class="risk-grid anim-3" data-lang="fr">
+        <div class="risk-card">
+          <div class="risk-title">🍎 Dépendance au matériel Apple</div>
+          <div class="risk-desc">Dépendance excessive envers un seul fournisseur de matériel basé aux É.-U.</div>
+          <div class="risk-mitigation">✓ Atténué : CDR-OS est agnostique du matériel. Hypertec CIARA (canadien) est le produit phare. Couche d'abstraction MLX/CUDA/ROCm.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">🤖 Qualité de Terry à l'échelle</div>
+          <div class="risk-desc">L'assistant IA pourrait ne pas gérer de manière fiable des types d'institutions diversifiés</div>
+          <div class="risk-mitigation">✓ Atténué : Construit sur Clawdbot, éprouvé sur des milliers d'heures. Phase 0 valide avec 3 secteurs avant la mise à l'échelle.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">🔓 Fuite de données via protocoles</div>
+          <div class="risk-desc">Des informations protégées pourraient fuir à travers les protocoles publiés</div>
+          <div class="risk-mitigation">✓ Atténué : VAP est constructif (né propre), pas soustractif. Linter + revue humaine. Test grep comme test décisif.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">🏛️ Cycle de vente gouvernemental</div>
+          <div class="risk-desc">Les délais d'approvisionnement et de certification fédéraux peuvent s'étirer sur 12–24+ mois</div>
+          <div class="risk-mitigation">✓ Atténué : Le partenariat ThinkOn fournit des relations GC existantes. Les pilotes PME + universités génèrent des revenus en attendant.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">📉 Stagnation des effets de réseau</div>
+          <div class="risk-desc">Pas assez de stations rejoignent pour créer l'effet d'entraînement du partage de connaissances</div>
+          <div class="risk-mitigation">✓ Atténué : Chaque station a une valeur autonome (IA locale). Phase 0 prouve la valeur à 4 stations avant de grandir.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">🔧 Durabilité du code ouvert</div>
+          <div class="risk-desc">Le modèle noyau ouvert doit financer le développement tout en maintenant la confiance</div>
+          <div class="risk-mitigation">✓ Atténué : Modèle Red Hat prouvé à l'échelle. Service géré + registre premium + contrats entreprise fournissent les revenus.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 17 — TEAM & PARTNERS -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-accent" data-slide="16">
+    <div class="section-num light">16</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Team & Partners</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Équipe et partenaires</div>
+      <h2 class="anim-1" data-lang="en">Who Does What</h2>
+      <h2 class="anim-1" data-lang="fr">Qui fait quoi</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <div class="partner-grid anim-3" data-lang="en" style="text-align:left;">
+        <div class="card-dark">
+          <h3 style="margin-bottom:8px;">🚂 HazeyData</h3>
+          <p style="font-size:0.82rem; opacity:0.5; margin-bottom:12px;">Lead — Platform, AI & Support</p>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>CDR-OS development and maintenance</li>
+            <li>Terry (AI Station Agent) — Clawdbot core</li>
+            <li>Protocol Registry — design, build, operate</li>
+            <li>VAP type system and linter</li>
+            <li>Network architecture and security</li>
+            <li>SOUL.md onboarding library (proprietary sector templates)</li>
+            <li>Support: Wilma (AI, 24/7, 90%) + Fred (human, on-call, 10%). No support team needed until 50+ stations</li>
+          </ul>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--maple-red);">
+          <h3 style="margin-bottom:8px;">🖥️ Hypertec</h3>
+          <p style="font-size:0.82rem; opacity:0.5; margin-bottom:12px;">Partner — Canadian Hardware</p>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>CIARA GPU servers — designed & built in Montreal</li>
+            <li>Workstation tier for mid-size institutions</li>
+            <li>Hardware certification and supply chain</li>
+            <li>Co-marketing to Canadian enterprise</li>
+            <li>Phase 0 pilot site (enterprise/government validation)</li>
+          </ul>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--accent-teal);">
+          <h3 style="margin-bottom:8px;">☁️ ThinkOn Consortium</h3>
+          <p style="font-size:0.82rem; opacity:0.5; margin-bottom:12px;">Partner — Sovereign Cloud</p>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>Protected B certified sovereign cloud backbone</li>
+            <li>Overflow compute and burst capacity</li>
+            <li>Federated query aggregation infrastructure</li>
+            <li>Existing GC relationships and certifications</li>
+            <li>Includes Aptum, eStruxture consortium members</li>
+          </ul>
+        </div>
+        <div class="card-dark" style="border-left-color: #ce93d8;">
+          <h3 style="margin-bottom:8px;">🪶 FNTC + 🎓 University</h3>
+          <p style="font-size:0.82rem; opacity:0.5; margin-bottom:12px;">Partners — Co-Design & Research</p>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>FNTC: Indigenous co-design, OCAP compliance</li>
+            <li>Indigenous Advisory Circle with compensated roles</li>
+            <li>University: Research validation, academic publications</li>
+            <li>Phase 0 pilot site (academic sector)</li>
+            <li>Federated AI research collaboration</li>
+          </ul>
+        </div>
+      </div>
+      <div class="partner-grid anim-3" data-lang="fr" style="text-align:left;">
+        <div class="card-dark">
+          <h3 style="margin-bottom:8px;">🚂 HazeyData</h3>
+          <p style="font-size:0.82rem; opacity:0.5; margin-bottom:12px;">Chef de file — Plateforme, IA et soutien</p>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>Développement et maintenance de CDR-OS</li>
+            <li>Terry (Agent IA de station) — noyau Clawdbot</li>
+            <li>Registre de protocoles — conception, construction, exploitation</li>
+            <li>Système de types VAP et linter</li>
+            <li>Architecture réseau et sécurité</li>
+            <li>Bibliothèque d'intégration SOUL.md (gabarits sectoriels propriétaires)</li>
+            <li>Soutien : Wilma (IA, 24/7, 90 %) + Fred (humain, sur appel, 10 %). Pas d'équipe de soutien avant 50+ stations</li>
+          </ul>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--maple-red);">
+          <h3 style="margin-bottom:8px;">🖥️ Hypertec</h3>
+          <p style="font-size:0.82rem; opacity:0.5; margin-bottom:12px;">Partenaire — Matériel canadien</p>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>Serveurs GPU CIARA — conçus et fabriqués à Montréal</li>
+            <li>Niveau station de travail pour institutions moyennes</li>
+            <li>Certification matérielle et chaîne d'approvisionnement</li>
+            <li>Co-marketing vers l'entreprise canadienne</li>
+            <li>Site pilote Phase 0 (validation entreprise/gouvernement)</li>
+          </ul>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--accent-teal);">
+          <h3 style="margin-bottom:8px;">☁️ Consortium ThinkOn</h3>
+          <p style="font-size:0.82rem; opacity:0.5; margin-bottom:12px;">Partenaire — Nuage souverain</p>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>Dorsale de nuage souverain certifiée Protégé B</li>
+            <li>Calcul de débordement et capacité de pointe</li>
+            <li>Infrastructure d'agrégation de requêtes fédérées</li>
+            <li>Relations GC et certifications existantes</li>
+            <li>Inclut Aptum, eStruxture comme membres du consortium</li>
+          </ul>
+        </div>
+        <div class="card-dark" style="border-left-color: #ce93d8;">
+          <h3 style="margin-bottom:8px;">🪶 CTPN + 🎓 Université</h3>
+          <p style="font-size:0.82rem; opacity:0.5; margin-bottom:12px;">Partenaires — Co-conception et recherche</p>
+          <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
+            <li>CTPN : Co-conception autochtone, conformité PCAP</li>
+            <li>Cercle consultatif autochtone avec rôles rémunérés</li>
+            <li>Université : Validation de recherche, publications académiques</li>
+            <li>Site pilote Phase 0 (secteur académique)</li>
+            <li>Collaboration de recherche en IA fédérée</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SLIDE 18 — CLOSING -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="slide slide-cover" data-slide="17">
+    <div class="flag-stripe"></div>
+    <span class="confidential" data-lang="en" style="color:rgba(255,255,255,0.35);">Partners & Internal — Draft</span>
+    <span class="confidential" data-lang="fr" style="color:rgba(255,255,255,0.35);">Partenaires et interne — Ébauche</span>
+
+    <div class="anim-1" style="font-size:3rem; margin-bottom:12px;">🚂🍁</div>
+    <h1 class="anim-1" style="font-size:2.8rem; margin-bottom:8px;" data-lang="en">Let's Build the Railway</h1>
+    <h1 class="anim-1" style="font-size:2.8rem; margin-bottom:8px;" data-lang="fr">Construisons le chemin de fer</h1>
+    <div class="divider gold center anim-2"></div>
+
+    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.85);">
+      Phase 0 is 6 months and 4 stations.<br>The thesis is testable. The plan is concrete.<br>The partners are identified.
+    </p>
+    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.85);">
+      La Phase 0 est 6 mois et 4 stations.<br>La thèse est testable. Le plan est concret.<br>Les partenaires sont identifiés.
+    </p>
+
+    <div class="anim-3" style="margin-top:32px; display:flex; gap:24px; flex-wrap:wrap; justify-content:center;">
+      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
+        <div style="font-family:'Lato',sans-serif; font-size:2.4rem; font-weight:900; color:var(--maple-red);">Phase 0</div>
+        <div data-lang="en" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Prove It Works</div>
+        <div data-lang="fr" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Prouver que ça marche</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
+        <div style="font-family:'Lato',sans-serif; font-size:2.4rem; font-weight:900; color:var(--accent-gold);">Phase 1</div>
+        <div data-lang="en" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Scale to Ten</div>
+        <div data-lang="fr" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Passer à dix</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
+        <div style="font-family:'Lato',sans-serif; font-size:2.4rem; font-weight:900; color:var(--accent-teal);">Phase 2</div>
+        <div data-lang="en" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Go National</div>
+        <div data-lang="fr" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Devenir national</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
+        <div style="font-family:'Lato',sans-serif; font-size:2.4rem; font-weight:900; color:var(--accent-green);">Phase 3</div>
+        <div data-lang="en" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Knowledge Economy</div>
+        <div data-lang="fr" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Économie du savoir</div>
+      </div>
+    </div>
+
+    <div class="quote-block anim-4" data-lang="en" style="border-color: rgba(255,255,255,0.3); max-width:600px; margin: 32px auto 0; text-align:center;">
+      "The last spike of the digital age."
+    </div>
+    <div class="quote-block anim-4" data-lang="fr" style="border-color: rgba(255,255,255,0.3); max-width:600px; margin: 32px auto 0; text-align:center;">
+      « Le dernier crampon de l'ère numérique. »
+    </div>
+
+    <div class="anim-5" style="margin-top:40px; text-align:center;">
+      <p style="font-size:1.1rem; font-weight:500; opacity:0.9; margin-bottom:8px;">hazeydata.ai</p>
+      <p style="font-size:0.9rem; opacity:0.5;">The Canadian Digital Railway &nbsp;|&nbsp; Le Chemin de fer numérique canadien</p>
+    </div>
+    <div class="anim-5" style="margin-top:24px; display:flex; gap:32px; opacity:0.5; font-size:0.85rem;">
+      <span>📧 contact@hazeydata.ai</span>
+      <span>🌐 hazeydata.ai</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <div class="nav-brand">🚂 CDR <span style="opacity:0.5; font-size:0.7rem;">PROJECT PLAN</span> &nbsp;<span data-lang="en">by</span><span data-lang="fr">par</span> hazeydata.ai</div>
+  <div class="lang-toggle" id="langToggle">
+    <button class="lang-btn active" data-langval="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-langval="fr" onclick="setLang('fr')">FR</button>
+  </div>
+  <div class="nav-center" id="navDots"></div>
+  <div class="nav-controls">
+    <button class="nav-btn" onclick="prev()" aria-label="Previous">‹</button>
+    <div class="slide-counter" id="counter">1 / 18</div>
+    <button class="nav-btn" onclick="next()" aria-label="Next">›</button>
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  // Build dots
+  const dotsEl = document.getElementById('navDots');
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateProgress() {
+    const pct = ((current + 1) / total) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  function goTo(n) {
+    if (n < 0 || n >= total || n === current) return;
+    slides[current].classList.remove('active');
+    slides[current].classList.add('exit');
+    const prev = current;
+    current = n;
+    slides[current].classList.add('active');
+    document.querySelectorAll('.nav-dot').forEach((d,i) =>
+      d.classList.toggle('active', i === current));
+    document.getElementById('counter').textContent = (current+1) + ' / ' + total;
+    updateProgress();
+    setTimeout(() => slides[prev].classList.remove('exit'), 600);
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Language toggle
+  function setLang(lang) {
+    const body = document.body;
+    if (lang === 'fr') {
+      body.classList.add('lang-fr');
+      document.documentElement.lang = 'fr';
+      document.title = 'CDR : Plan de projet et feuille de route MVP 🚂🍁 | hazeydata.ai';
+    } else {
+      body.classList.remove('lang-fr');
+      document.documentElement.lang = 'en';
+      document.title = 'CDR: Project Plan & MVP Roadmap 🚂🍁 — Canadian Digital Railway | hazeydata.ai';
+    }
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-langval') === lang);
+    });
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+
+  // Touch/swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+  });
+</script>
+
+</body>
+</html>
