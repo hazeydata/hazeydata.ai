@@ -3,302 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Theme Park Crowd Report | Know Before You Go</title>
-    <meta name="description" content="ML-powered wait time predictions for Disney, Universal, and more. Know before you go.">
+    <title>HazeyData — Data Science by Fred Hazelton</title>
+    <meta name="description" content="HazeyData is an independent data science practice by Fred Hazelton — building ML-powered tools for theme parks, sovereign AI infrastructure, school schedule data, and more.">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180.png">
     <meta name="theme-color" content="#0a1628">
     <link rel="canonical" href="https://hazeydata.ai/">
-    
+
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hazeydata.ai/">
-    <meta property="og:title" content="Theme Park Crowd Report | Know Before You Go">
-    <meta property="og:description" content="ML-powered wait time predictions for every Disney & Universal park.">
+    <meta property="og:title" content="HazeyData — Data Science by Fred Hazelton">
+    <meta property="og:description" content="Independent data science practice — ML-powered tools for theme parks, sovereign AI, and more.">
     <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@disneystatswhiz">
-    <meta name="twitter:title" content="Theme Park Crowd Report | Know Before You Go">
-    <meta name="twitter:description" content="ML-powered wait time predictions for every Disney & Universal park.">
+    <meta name="twitter:title" content="HazeyData — Data Science by Fred Hazelton">
+    <meta name="twitter:description" content="Independent data science practice — ML-powered tools for theme parks, sovereign AI, and more.">
     <meta name="twitter:image" content="https://hazeydata.ai/assets/banner.jpg">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260314">
-<!-- deploy 1772485086 -->
+    <link rel="stylesheet" href="styles.css?v=20260315">
+    <style>
+        /* Hub-specific styles */
+        .hub-hero {
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .hub-hero h1 {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
+        .hub-hero h1 .brand-accent {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hub-hero .tagline {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+        .hub-hero .subtitle {
+            color: var(--text-secondary);
+            max-width: 640px;
+            margin: 0 auto 2rem;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Projects Grid */
+        .projects-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        .projects-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .projects-section .section-sub {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--card-accent, var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .project-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--card-accent, var(--accent));
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        .project-card:hover::before {
+            opacity: 1;
+        }
+        .project-card .card-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .project-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+        .project-card .card-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+        }
+        .project-card .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .project-card .card-tag {
+            background: rgba(74, 144, 164, 0.12);
+            color: var(--accent-light);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            font-weight: 500;
+        }
+        .project-card .card-link {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .project-card:hover .card-link {
+            color: var(--accent-light);
+        }
+
+        /* Card accent colors */
+        .project-card.tpcr { --card-accent: var(--hot-pink); }
+        .project-card.tpcr .card-tag { background: rgba(235,66,123,0.12); color: var(--light-pink); }
+        .project-card.cdr { --card-accent: #C41E3A; }
+        .project-card.cdr .card-tag { background: rgba(196,30,58,0.12); color: #e88; }
+        .project-card.ssd { --card-accent: var(--accent); }
+        .project-card.accord { --card-accent: #6366f1; }
+        .project-card.accord .card-tag { background: rgba(99,102,241,0.12); color: #a5b4fc; }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .status-badge.live {
+            background: rgba(74,222,128,0.12);
+            color: #4ade80;
+        }
+        .status-badge.live::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .status-badge.dev {
+            background: rgba(250,204,21,0.12);
+            color: #facc15;
+        }
+        .status-badge.concept {
+            background: rgba(148,163,184,0.12);
+            color: #94a3b8;
+        }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+        /* About Section */
+        .about-section {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .about-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .about-section p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.25rem;
+        }
+        .about-section strong {
+            color: var(--text-primary);
+        }
+        .about-section a {
+            color: var(--mid-blue);
+            text-decoration: none;
+        }
+        .about-section a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hub Footer */
+        .hub-footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+        }
+        .hub-footer .footer-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .hub-footer .footer-brand {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+        .hub-footer .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .hub-footer .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+        .hub-footer .footer-links a:hover {
+            color: var(--text-secondary);
+        }
+        .hub-footer .footer-copy {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            width: 100%;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .hub-footer .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hub-footer .footer-links {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Hero -->
-    <section class="hero">
+    <section class="hero hub-hero">
         <div class="hero-bg"></div>
         <nav class="nav">
             <div class="nav-logo">
-                <img src="assets/icon.jpg" alt="Theme Park Crowd Report" class="nav-icon">
-                <span class="nav-title">Theme Park Crowd Report</span>
+                <span class="nav-title" style="font-family:var(--font-mono);color:var(--accent);letter-spacing:0.05em;">HAZEYDATA</span>
             </div>
             <button class="nav-hamburger" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')" aria-label="Menu">
                 <span></span><span></span><span></span>
             </button>
             <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#parks">Parks</a>
-                <a href="/blog/">Blog</a>
-                <a href="/pricing.html">Pricing</a>
-                <a href="https://discord.gg/2Estr7sbP7" class="btn btn-sm btn-primary" target="_blank">Join Discord</a>
+                <a href="#projects">Projects</a>
+                <a href="#about">About</a>
+                <a href="mailto:fred@hazeydata.ai">Contact</a>
             </div>
         </nav>
         <div class="hero-content">
-            <h1>Know Before You Go</h1>
-            <p class="hero-sub">Data-driven wait time forecasts for Disney and Universal parks. One number — the <strong>Wait Time Index</strong> — tells you what to expect, so you can plan smarter.</p>
-            <div class="hero-cta">
-                <a href="https://discord.gg/2Estr7sbP7" class="btn btn-primary" target="_blank">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-                    Join the Discord
-                </a>
-                <a href="#features" class="btn btn-outline">Learn More</a>
-            </div>
-            <p class="hero-note">🎉 100% free during beta • 12 parks • AI-powered Q&A • Updated daily</p>
+            <h1><span class="brand-accent">HazeyData</span></h1>
+            <p class="tagline">Data Science &amp; Machine Learning</p>
+            <p class="subtitle">Independent data science practice by <strong>Fred Hazelton</strong> — building ML-powered tools, predictive models, and data products that solve real problems.</p>
         </div>
     </section>
 
-    <!-- Park Ticker -->
-    <div class="park-ticker-wrap">
-        <div class="park-ticker">
-            <span>🏰 Magic Kingdom</span>
-            <span>🌐 EPCOT</span>
-            <span>🎬 Hollywood Studios</span>
-            <span>🦁 Animal Kingdom</span>
-            <span>🎠 Disneyland</span>
-            <span>🎢 California Adventure</span>
-            <span>🦈 Universal Studios Florida</span>
-            <span>🏝️ Islands of Adventure</span>
-            <span>🌟 Epic Universe</span>
-            <span>🎬 Universal Hollywood</span>
-            <span>🗼 Tokyo Disneyland</span>
-            <span>⛩️ Tokyo DisneySea</span>
-            <!-- duplicate set for seamless loop -->
-            <span>🏰 Magic Kingdom</span>
-            <span>🌐 EPCOT</span>
-            <span>🎬 Hollywood Studios</span>
-            <span>🦁 Animal Kingdom</span>
-            <span>🎠 Disneyland</span>
-            <span>🎢 California Adventure</span>
-            <span>🦈 Universal Studios Florida</span>
-            <span>🏝️ Islands of Adventure</span>
-            <span>🌟 Epic Universe</span>
-            <span>🎬 Universal Hollywood</span>
-            <span>🗼 Tokyo Disneyland</span>
-            <span>⛩️ Tokyo DisneySea</span>
-        </div>
-    </div>
+    <!-- Projects -->
+    <section id="projects" class="projects-section">
+        <h2>Projects</h2>
+        <p class="section-sub">Each project is an independent data product with its own identity, audience, and goals.</p>
 
-    <!-- Bot Preview -->
-    <section class="bot-preview">
-        <h2>See It In Action</h2>
-        <p class="section-sub">Real Discord commands. Real predictions. Instant answers.</p>
-        <div class="preview-grid preview-grid-5">
-            <div class="preview-card">
-                <div class="preview-label">/today</div>
-                <img src="assets/screenshot-today.png" alt="All parks overview showing WTI crowd levels" loading="lazy">
-                <p>All parks at a glance — one command, every morning.</p>
-            </div>
-            <div class="preview-card">
-                <div class="preview-label">/now</div>
-                <img src="assets/screenshot-now.png" alt="Live wait times for Magic Kingdom" loading="lazy">
-                <p>Live estimated actual wait times — updated every 5 minutes.</p>
-            </div>
-            <div class="preview-card">
-                <div class="preview-label">/crowd</div>
-                <img src="assets/screenshot-crowd.png" alt="Crowd forecast for a specific park" loading="lazy">
-                <p>Detailed forecast for any park, any date.</p>
-            </div>
-            <div class="preview-card">
-                <div class="preview-label">/best-day</div>
-                <img src="assets/screenshot-bestday.png" alt="Calendar heat map showing best days to visit" loading="lazy">
-                <p>Find the least crowded day — with calendar heat maps up to a year out.</p>
-            </div>
-            <div class="preview-card preview-card-highlight">
-                <div class="preview-label">/ask</div>
-                <img src="assets/screenshot-ask.png" alt="AI answering a question about park crowds" loading="lazy">
-                <p>Ask anything about crowds and wait times — powered by AI and real data.</p>
-            </div>
-        </div>
-    </section>
+        <div class="project-grid">
+            <!-- Theme Park Crowd Report -->
+            <a href="/theme-park-crowd-report/" class="project-card tpcr">
+                <div class="card-emoji">🎢</div>
+                <div class="status-badge live">Live Beta</div>
+                <h3>Theme Park Crowd Report</h3>
+                <p class="card-desc">ML-powered wait time predictions for Disney, Universal, and more. The Wait Time Index (WTI) distills crowd levels into one number — so you can plan smarter.</p>
+                <div class="card-tags">
+                    <span class="card-tag">XGBoost</span>
+                    <span class="card-tag">12 Parks</span>
+                    <span class="card-tag">Discord Bot</span>
+                    <span class="card-tag">AI Q&A</span>
+                </div>
+                <span class="card-link">Explore TPCR →</span>
+            </a>
 
-    <!-- Features -->
-    <section id="features" class="features">
-        <h2>What You Get</h2>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Daily Wait Time Forecasts</h3>
-                <p>Every park, every day. Our Wait Time Index (WTI) gives you one number that captures the whole park's wait time level.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎢</div>
-                <h3>Ride-by-Ride Predictions</h3>
-                <p>See predicted wait times for individual attractions. Know which headliners to hit first and which rides will be walk-ons.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📅</div>
-                <h3>Best Day Finder</h3>
-                <p>Pick a park and a timeframe — we'll show you the lowest-crowd days with color-coded calendar heat maps, up to a year out.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3>Ask Anything</h3>
-                <p>AI-powered Q&A backed by real data. Ask <em>"Is July 4th a good day for EPCOT?"</em> and get an instant, data-driven answer.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⏱️</div>
-                <h3>Live Wait Times</h3>
-                <p>See what's happening right now — estimated actual waits grouped by tier, updated every 5 minutes from real queue data.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">💬</div>
-                <h3>All In Discord</h3>
-                <p>Seven slash commands, zero setup. <code>/today</code> <code>/now</code> <code>/crowd</code> <code>/best-day</code> <code>/ask</code> — everything lives where you already hang out.</p>
-            </div>
-        </div>
-    </section>
+            <!-- Canadian Digital Railway -->
+            <a href="/cdr/" class="project-card cdr">
+                <div class="card-emoji">🚂🍁</div>
+                <div class="status-badge dev">In Development</div>
+                <h3>Canadian Digital Railway</h3>
+                <p class="card-desc">A coast-to-coast network of sovereign AI compute nodes — locally owned, federally connected, nobody's monopoly. Open-weight models on Canadian soil.</p>
+                <div class="card-tags">
+                    <span class="card-tag">Sovereign AI</span>
+                    <span class="card-tag">Infrastructure</span>
+                    <span class="card-tag">Open Source</span>
+                </div>
+                <span class="card-link">Explore CDR →</span>
+            </a>
 
-    <!-- Parks -->
-    <section id="parks" class="parks">
-        <h2>12 Parks. 3 Countries.</h2>
-        <p class="parks-sub">With more coming soon.</p>
-        <div class="park-grid">
-            <div class="park-group">
-                <h4>🏰 Walt Disney World</h4>
-                <ul>
-                    <li>Magic Kingdom</li>
-                    <li>EPCOT</li>
-                    <li>Hollywood Studios</li>
-                    <li>Animal Kingdom</li>
-                </ul>
-            </div>
-            <div class="park-group">
-                <h4>🎠 Disneyland Resort</h4>
-                <ul>
-                    <li>Disneyland</li>
-                    <li>California Adventure</li>
-                </ul>
-            </div>
-            <div class="park-group">
-                <h4>🦈 Universal Orlando</h4>
-                <ul>
-                    <li>Universal Studios Florida</li>
-                    <li>Islands of Adventure</li>
-                    <li>Epic Universe</li>
-                </ul>
-            </div>
-            <div class="park-group">
-                <h4>🎬 Universal Hollywood</h4>
-                <ul>
-                    <li>Universal Studios Hollywood</li>
-                </ul>
-            </div>
-            <div class="park-group">
-                <h4>🗼 Tokyo Disney Resort</h4>
-                <ul>
-                    <li>Tokyo Disneyland</li>
-                    <li>Tokyo DisneySea</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+            <!-- School Schedule Database -->
+            <a href="/ssd/" class="project-card ssd">
+                <div class="card-emoji">📅</div>
+                <div class="status-badge live">Live</div>
+                <h3>School Schedule Database</h3>
+                <p class="card-desc">Complete US school calendar dataset — 13,400+ districts, 46M+ students. Start dates, spring break, winter break, summer schedules. Structured API access.</p>
+                <div class="card-tags">
+                    <span class="card-tag">13,400+ Districts</span>
+                    <span class="card-tag">REST API</span>
+                    <span class="card-tag">AI Scraped</span>
+                </div>
+                <span class="card-link">Explore SSD →</span>
+            </a>
 
-    <!-- How it works -->
-    <section class="how-it-works">
-        <h2>How It Works</h2>
-        <div class="steps">
-            <div class="step">
-                <div class="step-num">1</div>
-                <h3>Years of Data</h3>
-                <p>We ingest millions of historical wait time observations from every park, every day.</p>
-            </div>
-            <div class="step">
-                <div class="step-num">2</div>
-                <h3>Machine Learning</h3>
-                <p>XGBoost models trained per-attraction learn seasonal patterns, day-of-week effects, and park-specific trends.</p>
-            </div>
-            <div class="step">
-                <div class="step-num">3</div>
-                <h3>Daily Forecasts</h3>
-                <p>Fresh predictions every morning. Updated with yesterday's actuals. Delivered to your Discord.</p>
-            </div>
+            <!-- ACCORD -->
+            <a href="/accord/" class="project-card accord">
+                <div class="card-emoji">📜</div>
+                <div class="status-badge concept">Concept</div>
+                <h3>ACCORD</h3>
+                <p class="card-desc">A machine-readable API that encodes Canada's federal collective agreement rules — rates of pay, leave entitlements, acting pay — into a single, auditable source of truth.</p>
+                <div class="card-tags">
+                    <span class="card-tag">Government</span>
+                    <span class="card-tag">Pay Rules</span>
+                    <span class="card-tag">API</span>
+                </div>
+                <span class="card-link">Explore ACCORD →</span>
+            </a>
         </div>
     </section>
 
     <!-- About -->
-    <section class="about">
-        <div class="about-content">
-            <h2>Built by a Theme Park Data Nerd</h2>
-            <p>I'm <strong>Fred Hazelton</strong> — an independent data scientist and former analyst at <strong>TouringPlans</strong>, where I spent years building theme park wait time predictions. Now I'm building the next generation of crowd forecasting tools on my own.</p>
-            <p>Theme Park Crowd Report is in <strong>open beta</strong>. Join the Discord to get access, give feedback, and help shape what we build next.</p>
-        </div>
-    </section>
-
-    <!-- Data Sources -->
-    <section class="data-sources">
-        <div class="about-content">
-            <h2>📡 Data Sources</h2>
-            <p>Our models are trained on a variety of data sources — but the models, techniques, and predictions are entirely our own.</p>
-            <p>Big thanks to
-                <a href="https://touringplans.com" target="_blank">TouringPlans</a>,
-                <a href="https://queue-times.com" target="_blank">Queue-Times</a>, and
-                <a href="https://www.thrill-data.com" target="_blank">Thrill-Data</a>
-                for making great theme park data available.
-            </p>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta">
-        <h2>Ready to plan smarter?</h2>
-        <p>Join the Discord for free beta access.</p>
-        <a href="https://discord.gg/2Estr7sbP7" class="btn btn-primary btn-lg" target="_blank">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-            Join the Discord
-        </a>
+    <section id="about" class="about-section">
+        <h2>About</h2>
+        <p><strong>Fred Hazelton</strong> is an independent data scientist and former statistician at <a href="https://touringplans.com" target="_blank">TouringPlans.com</a> — where he spent years building the crowd prediction and wait time models that millions of Disney visitors rely on.</p>
+        <p>Now he's building a portfolio of data products under the <strong>HazeyData</strong> brand — from theme park crowd forecasting to sovereign AI infrastructure to national-scale data collection. Each project applies machine learning and data engineering to solve a specific, underserved problem.</p>
+        <p>Based in Canada. Independently operated. Data-driven everything.</p>
+        <p style="text-align:center; margin-top:2rem;">
+            <a href="mailto:fred@hazeydata.ai" class="btn btn-outline">Get in Touch</a>
+        </p>
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="hub-footer">
         <div class="footer-content">
-            <div class="footer-brand">
-                <img src="assets/icon.jpg" alt="" class="footer-icon">
-                <span>Theme Park Crowd Report</span>
-            </div>
+            <div class="footer-brand">HAZEYDATA</div>
             <div class="footer-links">
-                <a href="/blog/">Blog</a>
-                <a href="/bio.html">About</a>
+                <a href="/theme-park-crowd-report/">Theme Park Crowd Report</a>
+                <a href="/cdr/">Canadian Digital Railway</a>
+                <a href="/ssd/">School Schedule Database</a>
+                <a href="/accord/">ACCORD</a>
                 <a href="https://discord.gg/2Estr7sbP7" target="_blank">Discord</a>
                 <a href="https://twitter.com/disneystatswhiz" target="_blank">Twitter</a>
                 <a href="mailto:fred@hazeydata.ai">Contact</a>
             </div>
-            <p class="footer-copy">© 2026 hazeydata.ai</p>
+            <p class="footer-copy">© 2026 HazeyData — Fred Hazelton</p>
         </div>
     </footer>
-
-    <!-- Lightbox -->
-    <div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; cursor:zoom-out; align-items:center; justify-content:center;">
-        <img id="lightbox-img" style="max-width:90vw; max-height:90vh; border-radius:8px; box-shadow:0 8px 40px rgba(0,0,0,0.5);">
-    </div>
-    <script>
-        document.querySelectorAll('.preview-card img').forEach(img => {
-            img.style.cursor = 'zoom-in';
-            img.addEventListener('click', () => {
-                const lb = document.getElementById('lightbox');
-                document.getElementById('lightbox-img').src = img.src;
-                lb.style.display = 'flex';
-            });
-        });
-        document.getElementById('lightbox').addEventListener('click', () => {
-            document.getElementById('lightbox').style.display = 'none';
-        });
-    </script>
 </body>
 </html>

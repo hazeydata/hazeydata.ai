@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join the Canadian Digital Railway Pilot 🚂🍁 | hazeydata.ai</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap');
+
+  :root {
+    /* Warmer railway palette */
+    --rail-charcoal: #1C1C1E;
+    --rail-charcoal-mid: #2C2C2E;
+    --rail-slate: #2A3240;
+    --rail-slate-light: #3A4A5C;
+    --rail-white: #FFFFFF;
+    --rail-grey-light: #FAF8F5;
+    --rail-grey: #EEE;
+    --rail-grey-mid: #6C757D;
+    --rail-grey-dark: #333333;
+    --rail-black: #141416;
+    /* Warm Canadian accents */
+    --maple-red: #C41E3A;
+    --maple-red-soft: #D94F63;
+    --accent-gold: #C8973E;
+    --accent-gold-light: #E4BE6A;
+    --accent-warm: #D4A84B;
+    --accent-teal: #2A8E7F;
+    --accent-green: #2E7D32;
+    --bg-warm: #FBF9F5;
+    --bg-cream: #F7F3ED;
+    --bg-blush: #FDF7F4;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+    --terry-blue: #3B6B8A;
+    --terry-blue-light: #5A94B8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--rail-charcoal);
+    color: var(--rail-grey-dark);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Language toggle ── */
+  [data-lang="fr"] { display: none !important; }
+  body.lang-fr [data-lang="en"] { display: none !important; }
+  body.lang-fr [data-lang="fr"] { display: revert !important; }
+  body.lang-fr .flow[data-lang="fr"] { display: flex !important; }
+  body.lang-fr .two-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
+  body.lang-fr .three-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr; }
+  body.lang-fr .four-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr 1fr; }
+  body.lang-fr .use-cases-grid[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
+  body.lang-fr .faq-grid[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
+  body.lang-fr .timeline-flow[data-lang="fr"] { display: flex !important; }
+
+  .lang-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lang-btn {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    border: none;
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active {
+    background: var(--maple-red);
+    color: white;
+  }
+
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* ── Progress bar ── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--maple-red), var(--accent-gold));
+    z-index: 200;
+    transition: width 0.4s ease;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ── Slides ── */
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 48px 80px 70px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  /* Slide themes — warmer than the funding deck */
+  .slide-cover {
+    background: linear-gradient(160deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    color: var(--rail-white);
+    text-align: center;
+  }
+  .slide-warm {
+    background: var(--bg-warm);
+    color: var(--rail-grey-dark);
+  }
+  .slide-cream {
+    background: var(--bg-cream);
+    color: var(--rail-grey-dark);
+  }
+  .slide-blush {
+    background: var(--bg-blush);
+    color: var(--rail-grey-dark);
+  }
+  .slide-terry {
+    background: linear-gradient(160deg, #1a3a4f 0%, #1e4d6a 40%, #2a6b8a 100%);
+    color: var(--rail-white);
+  }
+  .slide-dark {
+    background: linear-gradient(160deg, #1a1a2e 0%, var(--rail-charcoal) 100%);
+    color: var(--rail-white);
+  }
+  .slide-deep {
+    background: linear-gradient(160deg, #0d1b2a 0%, #1b2838 50%, #1a3a4f 100%);
+    color: var(--rail-white);
+  }
+  .slide-forest {
+    background: linear-gradient(160deg, #1a2e1a 0%, #1e3e2a 100%);
+    color: var(--rail-white);
+  }
+  .slide-white {
+    background: var(--rail-white);
+    color: var(--rail-grey-dark);
+  }
+
+  /* ── Typography — warmer, friendlier ── */
+  h1 {
+    font-family: 'Lato', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-family: 'Lato', sans-serif;
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+    font-weight: 300;
+    opacity: 0.85;
+    line-height: 1.65;
+    max-width: 700px;
+  }
+
+  .small-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+    margin-bottom: 14px;
+  }
+
+  /* ── Content containers ── */
+  .content-box {
+    max-width: 960px;
+    width: 100%;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px;
+    max-width: 1050px;
+    width: 100%;
+  }
+
+  .four-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 24px;
+    max-width: 1100px;
+    width: 100%;
+  }
+
+  /* ── Cards — softer ── */
+  .card {
+    background: var(--rail-white);
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--accent-gold);
+  }
+  .card h3 { color: var(--rail-slate); }
+  .card p { font-size: 0.92rem; line-height: 1.65; color: var(--rail-grey-mid); }
+
+  .card-dark {
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 28px 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 4px solid var(--accent-gold);
+  }
+  .card-dark h3 { color: var(--accent-gold-light); }
+  .card-dark p { font-size: 0.92rem; line-height: 1.65; opacity: 0.8; }
+
+  .card-warm {
+    background: rgba(255,255,255,0.7);
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    border-left: 4px solid var(--terry-blue);
+  }
+  .card-warm h3 { color: var(--terry-blue); }
+  .card-warm p { font-size: 0.92rem; line-height: 1.65; color: var(--rail-grey-mid); }
+
+  .card-persona {
+    background: var(--rail-white);
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--accent-gold);
+    text-align: center;
+  }
+  .card-persona .persona-icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .card-persona h3 { color: var(--rail-slate); font-size: 1rem; }
+  .card-persona p { font-size: 0.85rem; line-height: 1.6; color: var(--rail-grey-mid); font-style: italic; }
+
+  /* ── Use case cards ── */
+  .use-cases-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 960px;
+    width: 100%;
+  }
+  .use-case {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .use-case-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .use-case h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent-gold-light);
+    margin-bottom: 6px;
+  }
+  .use-case p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+  .use-case .persona-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: rgba(200,151,62,0.2);
+    color: var(--accent-gold-light);
+    padding: 2px 10px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+
+  /* ── FAQ ── */
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 960px;
+    width: 100%;
+  }
+  .faq-item {
+    padding: 20px 24px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .faq-item .faq-q {
+    font-weight: 700;
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+    color: var(--accent-gold-light);
+  }
+  .faq-item .faq-a {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+
+  /* ── Timeline ── */
+  .timeline-flow {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin: 28px 0;
+    justify-content: center;
+    width: 100%;
+    max-width: 960px;
+  }
+  .timeline-step {
+    flex: 1;
+    text-align: center;
+    padding: 16px 12px;
+    position: relative;
+    max-width: 200px;
+  }
+  .timeline-step::after {
+    content: '';
+    position: absolute;
+    top: 32px;
+    right: -2px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent-gold);
+    opacity: 0.5;
+  }
+  .timeline-step:last-child::after { display: none; }
+  .timeline-dot {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 12px;
+  }
+  .timeline-dot.warm { background: rgba(200,151,62,0.2); }
+  .timeline-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    color: var(--accent-gold-light);
+  }
+  .timeline-desc {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    opacity: 0.75;
+  }
+  .timeline-arrow {
+    font-size: 1.2rem;
+    opacity: 0.3;
+    align-self: center;
+    margin: 0 2px;
+    flex-shrink: 0;
+    padding-top: 16px;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: var(--maple-red);
+    margin: 20px 0;
+    border-radius: 2px;
+  }
+  .divider.gold { background: var(--accent-gold); }
+  .divider.teal { background: var(--accent-teal); }
+  .divider.center { margin: 20px auto; }
+
+  /* ── Quote block — warmer ── */
+  .quote-block {
+    border-left: 4px solid var(--accent-gold);
+    padding: 20px 28px;
+    margin: 20px 0;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    font-style: italic;
+    opacity: 0.9;
+    max-width: 780px;
+  }
+
+  /* ── Check list ── */
+  .check-list {
+    list-style: none;
+    padding: 0;
+  }
+  .check-list li {
+    padding: 8px 0;
+    padding-left: 32px;
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent-green);
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .check-list.gold-checks li::before { color: var(--accent-gold); }
+
+  /* ── Pill ── */
+  .pill {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  /* ── Gap item ── */
+  .gap-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .gap-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .gap-text h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .gap-text p {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--rail-grey-mid);
+  }
+
+  /* ── Terry chat bubble ── */
+  .terry-bubble {
+    background: rgba(59,107,138,0.15);
+    border: 1px solid rgba(59,107,138,0.25);
+    border-radius: 16px 16px 16px 4px;
+    padding: 20px 24px;
+    max-width: 600px;
+    margin: 16px 0;
+    position: relative;
+  }
+  .terry-bubble::before {
+    content: '🏃';
+    position: absolute;
+    top: -12px;
+    left: -8px;
+    font-size: 1.5rem;
+  }
+  .terry-bubble p {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--rail-grey-dark);
+  }
+  .terry-bubble.dark-bg {
+    background: rgba(90,148,184,0.15);
+    border-color: rgba(90,148,184,0.3);
+  }
+  .terry-bubble.dark-bg p {
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* ── What-you-get grid ── */
+  .offer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    max-width: 900px;
+    width: 100%;
+  }
+  .offer-item {
+    text-align: center;
+    padding: 24px 16px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .offer-item .offer-icon { font-size: 2.2rem; margin-bottom: 10px; }
+  .offer-item h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 6px; }
+  .offer-item p { font-size: 0.82rem; line-height: 1.55; opacity: 0.7; }
+
+  /* ── Nav bar ── */
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 52px;
+    background: rgba(20,20,22,0.92);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 100;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-brand {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--rail-white);
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+  }
+  .nav-center {
+    display: flex;
+    gap: 6px;
+  }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .nav-dot.active { background: var(--accent-gold); transform: scale(1.3); }
+  .nav-controls {
+    display: flex;
+    gap: 8px;
+  }
+  .nav-btn {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+    color: var(--rail-white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.1); }
+  .slide-counter {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+    min-width: 44px;
+    text-align: center;
+    line-height: 36px;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .slide.active .anim-1 { animation: fadeInUp 0.6s 0.1s both; }
+  .slide.active .anim-2 { animation: fadeInUp 0.6s 0.25s both; }
+  .slide.active .anim-3 { animation: fadeInUp 0.6s 0.4s both; }
+  .slide.active .anim-4 { animation: fadeInUp 0.6s 0.55s both; }
+  .slide.active .anim-5 { animation: fadeInUp 0.6s 0.7s both; }
+
+  /* ── Responsive: Tablet ── */
+  @media (max-width: 1024px) {
+    .slide { padding: 40px 40px 70px; }
+    h1 { font-size: 2.4rem; }
+    h2 { font-size: 1.75rem; }
+    .four-col { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .offer-grid { grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .timeline-flow { gap: 0; }
+    .timeline-step { padding: 12px 8px; }
+    .timeline-desc { font-size: 0.75rem; }
+  }
+
+  /* ── Responsive: Small tablet / large phone ── */
+  @media (max-width: 768px) {
+    .slide { padding: 32px 24px 70px; }
+    h1 { font-size: 1.9rem; }
+    h2 { font-size: 1.45rem; }
+    h3 { font-size: 1.05rem; }
+    .subtitle { font-size: 1rem; }
+    .two-col, .three-col, .four-col { grid-template-columns: 1fr; gap: 20px; }
+    .use-cases-grid { grid-template-columns: 1fr; gap: 16px; }
+    .faq-grid { grid-template-columns: 1fr; gap: 12px; }
+    .offer-grid { grid-template-columns: 1fr; gap: 16px; }
+    .timeline-flow {
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .timeline-step { max-width: 280px; width: 100%; }
+    .timeline-step::after { display: none; }
+    .timeline-arrow { transform: rotate(90deg); padding-top: 0; }
+    .card, .card-dark, .card-warm, .card-persona { padding: 20px 18px; }
+    .nav-bar { padding: 0 16px; }
+    .nav-brand { font-size: 0.75rem; }
+    .quote-block { font-size: 0.95rem; padding: 16px 20px; }
+    .terry-bubble { padding: 16px 20px; }
+  }
+
+  /* ── Responsive: Phone ── */
+  @media (max-width: 480px) {
+    .slide { padding: 28px 18px 70px; }
+    h1 { font-size: 1.55rem; }
+    h2 { font-size: 1.25rem; }
+    .subtitle { font-size: 0.9rem; }
+    .four-col { grid-template-columns: 1fr; }
+    .nav-dot { width: 6px; height: 6px; }
+    .nav-center { gap: 4px; }
+    .card-persona .persona-icon { font-size: 2rem; }
+    .use-case { flex-direction: column; gap: 8px; }
+    .use-case-icon { font-size: 1.5rem; }
+    .faq-item { padding: 16px 18px; }
+    .terry-bubble { padding: 14px 16px; }
+    .terry-bubble::before { font-size: 1.2rem; top: -10px; }
+    .offer-item { padding: 18px 12px; }
+    .timeline-dot { width: 40px; height: 40px; font-size: 1.2rem; }
+  }
+
+  /* ── Warm stripe decoration ── */
+  .warm-stripe {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--maple-red) 0%, var(--accent-gold) 50%, var(--maple-red) 100%);
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+
+<div class="deck" id="deck">
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 1 — COVER -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-cover active" data-slide="0">
+    <div class="warm-stripe"></div>
+
+    <div class="anim-1" style="font-size:3.5rem; margin-bottom:16px;">🚂🍁</div>
+    <h1 class="anim-1" data-lang="en" style="font-size:2.8rem; max-width:700px;">Join the Canadian Digital Railway Pilot</h1>
+    <h1 class="anim-1" data-lang="fr" style="font-size:2.6rem; max-width:700px;">Rejoignez le projet pilote du Chemin de fer numérique canadien</h1>
+
+    <div class="divider gold center anim-2"></div>
+
+    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:620px; color:rgba(255,255,255,0.8);">
+      Be one of the first stations on the line.<br>
+      <span style="font-size:0.95rem; opacity:0.7;">An invitation to help build Canada's sovereign AI future — starting with yours.</span>
+    </p>
+    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:620px; color:rgba(255,255,255,0.8);">
+      Soyez l'une des premières stations sur la ligne.<br>
+      <span style="font-size:0.95rem; opacity:0.7;">Une invitation à bâtir l'avenir de l'IA souveraine au Canada — en commençant par le vôtre.</span>
+    </p>
+
+    <p class="anim-3" style="font-size:0.85rem; opacity:0.4; margin-top:48px;">
+      hazeydata.ai &nbsp;|&nbsp; 2026
+    </p>
+
+    <p class="anim-4" data-lang="en" style="font-size:0.8rem; opacity:0.35; margin-top:12px; font-style:italic;">
+      Press → to begin &nbsp;|&nbsp; Swipe or use arrow keys
+    </p>
+    <p class="anim-4" data-lang="fr" style="font-size:0.8rem; opacity:0.35; margin-top:12px; font-style:italic;">
+      Appuyez sur → pour commencer &nbsp;|&nbsp; Glissez ou utilisez les flèches
+    </p>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 2 — WHAT IF... -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-warm" data-slide="1">
+    <div class="warm-stripe"></div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">Imagine</div>
+      <div class="small-label anim-1" data-lang="fr">Imaginez</div>
+      <h2 class="anim-1" data-lang="en">What if you had an AI assistant that&nbsp;actually worked <em>for&nbsp;you</em>?</h2>
+      <h2 class="anim-1" data-lang="fr">Et si vous aviez un assistant IA qui travaillait <em>vraiment pour vous</em>?</h2>
+      <div class="divider gold anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1.05rem; line-height:1.75; color: var(--rail-grey-dark); margin-bottom:28px; max-width:720px;">
+        Not a chatbot. Not a subscription to some far-off cloud service. An AI partner that lives on <strong>your</strong> machine, understands <strong>your</strong> business, and builds tools <strong>with</strong> you. Your data never leaves your building. Not ever.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1.05rem; line-height:1.75; color: var(--rail-grey-dark); margin-bottom:28px; max-width:720px;">
+        Pas un robot conversationnel. Pas un abonnement à un service infonuagique lointain. Un partenaire IA qui vit sur <strong>votre</strong> machine, comprend <strong>votre</strong> entreprise, et construit des outils <strong>avec</strong> vous. Vos données ne quittent jamais votre bâtiment. Jamais.
+      </p>
+
+      <div class="four-col anim-3" data-lang="en">
+        <div class="card-persona">
+          <div class="persona-icon">🩺</div>
+          <h3>Physio Clinic</h3>
+          <p>"Patient intake forms that fill themselves from referral letters — saving me 20 minutes per patient."</p>
+        </div>
+        <div class="card-persona">
+          <div class="persona-icon">🛁</div>
+          <h3>Retail Store</h3>
+          <p>"Inventory predictions that know which hot tubs will sell in spring before I do."</p>
+        </div>
+        <div class="card-persona">
+          <div class="persona-icon">🎓</div>
+          <h3>Research Lab</h3>
+          <p>"A reproducible pipeline from raw data to analysis to paper — all local, all auditable."</p>
+        </div>
+        <div class="card-persona">
+          <div class="persona-icon">🪶</div>
+          <h3>Community</h3>
+          <p>"A language model trained on our words, living on our machine. True data sovereignty."</p>
+        </div>
+      </div>
+      <div class="four-col anim-3" data-lang="fr">
+        <div class="card-persona">
+          <div class="persona-icon">🩺</div>
+          <h3>Clinique de physio</h3>
+          <p>« Des formulaires d'admission qui se remplissent seuls à partir des lettres de référence — 20 minutes économisées par patient. »</p>
+        </div>
+        <div class="card-persona">
+          <div class="persona-icon">🛁</div>
+          <h3>Commerce de détail</h3>
+          <p>« Des prédictions d'inventaire qui savent quels spas se vendront au printemps avant moi. »</p>
+        </div>
+        <div class="card-persona">
+          <div class="persona-icon">🎓</div>
+          <h3>Labo de recherche</h3>
+          <p>« Un pipeline reproductible, des données brutes à l'analyse au papier — tout local, tout vérifiable. »</p>
+        </div>
+        <div class="card-persona">
+          <div class="persona-icon">🪶</div>
+          <h3>Communauté</h3>
+          <p>« Un modèle linguistique entraîné avec nos mots, vivant sur notre machine. La souveraineté des données, pour vrai. »</p>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:1rem; color:var(--rail-grey-dark); margin-top:28px; text-align:center; font-weight:500;">
+        This isn't science fiction. We built it. Now we need you to help us prove it works in the real world.
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:1rem; color:var(--rail-grey-dark); margin-top:28px; text-align:center; font-weight:500;">
+        Ce n'est pas de la science-fiction. Nous l'avons construit. Maintenant, nous avons besoin de vous pour prouver que ça marche dans le vrai monde.
+      </p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 3 — MEET TERRY -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-terry" data-slide="2">
+    <div class="content-box" style="text-align:center;">
+      <div class="anim-1" style="font-size:3.5rem; margin-bottom:8px;">🏃</div>
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Your Station Agent</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Votre agent de station</div>
+      <h2 class="anim-1" data-lang="en" style="font-size:2.4rem;">Meet Terry</h2>
+      <h2 class="anim-1" data-lang="fr" style="font-size:2.4rem;">Voici Terry</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <p class="subtitle anim-2" data-lang="en" style="color:rgba(255,255,255,0.8); max-width:640px; margin: 0 auto 24px; font-size:1rem;">
+        Named after <strong>Terry Fox</strong> — the Canadian who connected this country through sheer determination. Terry is your AI partner. Not a chatbot. Not a search engine. A collaborator who <strong>already knows you</strong>. Before your station arrives, we'll ask you a few questions about your business. Terry boots up pre-configured for YOUR world — your industry, your tools, your pain points. Not a cold start. A warm handshake.
+      </p>
+      <p class="subtitle anim-2" data-lang="fr" style="color:rgba(255,255,255,0.8); max-width:640px; margin: 0 auto 24px; font-size:1rem;">
+        Nommé d'après <strong>Terry Fox</strong> — le Canadien qui a connecté ce pays par sa détermination. Terry est votre partenaire IA. Pas un chatbot. Pas un moteur de recherche. Un collaborateur qui <strong>vous connaît déjà</strong>. Avant l'arrivée de votre station, nous vous poserons quelques questions sur votre entreprise. Terry démarre préconfiguré pour VOTRE monde — votre industrie, vos outils, vos points de douleur. Pas un démarrage à froid. Une poignée de main chaleureuse.
+      </p>
+
+      <div class="terry-bubble dark-bg anim-3" style="margin: 20px auto; text-align:left;">
+        <p data-lang="en"><strong style="color:var(--accent-gold-light);">Hey, I'm Terry.</strong> I already know you run a physiotherapy clinic with three therapists — sounds like patient intake is eating up a lot of your time. Want to start there? I don't need you to know anything about AI. Just tell me what's annoying and let's fix it together.</p>
+        <p data-lang="fr"><strong style="color:var(--accent-gold-light);">Bonjour, je suis Terry.</strong> Je sais déjà que vous gérez une clinique de physiothérapie avec trois thérapeutes — on dirait que l'admission des patients vous prend beaucoup de temps. On commence par là? Pas besoin de connaître l'IA. Dites-moi ce qui est frustrant et on va le régler ensemble.</p>
+      </div>
+
+      <div class="two-col anim-4" data-lang="en" style="text-align:left; margin-top:24px; max-width:800px; margin-left:auto; margin-right:auto;">
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:14px;">🔧 Terry Builds With You</h3>
+          <ul class="check-list gold-checks" style="opacity:0.85; color:rgba(255,255,255,0.85);">
+            <li>Learns your business through conversation</li>
+            <li>Suggests tools based on what you need</li>
+            <li>Builds things step by step — you're always in control</li>
+            <li>Gets smarter the more you work together</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:14px;">🎓 Terry IS Your Trainer</h3>
+          <ul class="check-list gold-checks" style="opacity:0.85; color:rgba(255,255,255,0.85);">
+            <li>No manuals. No onboarding consultants</li>
+            <li>Terry teaches you by building with you</li>
+            <li>Asks questions, makes suggestions, explains as you go</li>
+            <li>You learn AI by doing — not by studying</li>
+          </ul>
+        </div>
+      </div>
+      <div class="two-col anim-4" data-lang="fr" style="text-align:left; margin-top:24px; max-width:800px; margin-left:auto; margin-right:auto;">
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:14px;">🔧 Terry construit avec vous</h3>
+          <ul class="check-list gold-checks" style="opacity:0.85; color:rgba(255,255,255,0.85);">
+            <li>Apprend votre entreprise par la conversation</li>
+            <li>Suggère des outils selon vos besoins</li>
+            <li>Construit étape par étape — vous gardez le contrôle</li>
+            <li>Devient plus intelligent à mesure que vous travaillez ensemble</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:14px;">🎓 Terry EST votre formateur</h3>
+          <ul class="check-list gold-checks" style="opacity:0.85; color:rgba(255,255,255,0.85);">
+            <li>Pas de manuels. Pas de consultants d'intégration</li>
+            <li>Terry vous enseigne en construisant avec vous</li>
+            <li>Pose des questions, fait des suggestions, explique au fur et à mesure</li>
+            <li>Vous apprenez l'IA en faisant — pas en étudiant</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 4 — YOUR DATA, YOUR STATION -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-cream" data-slide="3">
+    <div class="warm-stripe"></div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en">Data Sovereignty</div>
+      <div class="small-label anim-1" data-lang="fr">Souveraineté des données</div>
+      <h2 class="anim-1" data-lang="en">Your Data. Your Station. Period.</h2>
+      <h2 class="anim-1" data-lang="fr">Vos données. Votre station. Point final.</h2>
+      <div class="divider anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1.05rem; line-height:1.75; color: var(--rail-grey-dark); margin-bottom:28px; max-width:680px; margin-left:auto; margin-right:auto;">
+        You own the hardware. You own the data. Nobody — not HazeyData, not a cloud company, not a foreign government — can access your information. It physically cannot leave your machine without your explicit action.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1.05rem; line-height:1.75; color: var(--rail-grey-dark); margin-bottom:28px; max-width:680px; margin-left:auto; margin-right:auto;">
+        Vous possédez le matériel. Vous possédez les données. Personne — ni HazeyData, ni une entreprise infonuagique, ni un gouvernement étranger — ne peut accéder à vos informations. Elles ne peuvent physiquement pas quitter votre machine sans votre action explicite.
+      </p>
+
+      <div class="three-col anim-3" data-lang="en" style="text-align:left; max-width:960px;">
+        <div class="card">
+          <h3>🔒 It's Your Machine</h3>
+          <p>A small, quiet computer that sits in your office. Plugs into a normal outlet. You have the admin password. We don't.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--maple-red);">
+          <h3>🛡️ No Cloud, No Risk</h3>
+          <p>Patient records, client lists, financial data, community documents — processed locally. Nothing goes to the internet for AI processing.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-teal);">
+          <h3>👁️ Open Source</h3>
+          <p>Every line of code is auditable. You don't have to trust us — you (or anyone you hire) can read and verify the software yourself.</p>
+        </div>
+      </div>
+      <div class="three-col anim-3" data-lang="fr" style="text-align:left; max-width:960px;">
+        <div class="card">
+          <h3>🔒 C'est votre machine</h3>
+          <p>Un petit ordinateur silencieux dans votre bureau. Se branche dans une prise normale. Vous avez le mot de passe admin. Pas nous.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--maple-red);">
+          <h3>🛡️ Pas de nuage, pas de risque</h3>
+          <p>Dossiers de patients, listes de clients, données financières, documents communautaires — traités localement. Rien ne va sur Internet pour le traitement IA.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-teal);">
+          <h3>👁️ Code ouvert</h3>
+          <p>Chaque ligne de code est vérifiable. Vous n'avez pas à nous faire confiance — vous pouvez lire et vérifier le logiciel vous-même.</p>
+        </div>
+      </div>
+
+      <div class="anim-4" data-lang="en" style="background: #1a3a4f; border-radius:12px; padding:24px 32px; color:white; margin-top:28px; max-width:680px; margin-left:auto; margin-right:auto; text-align:left;">
+        <h3 style="color:var(--accent-gold-light); margin-bottom:10px;">🪶 For Indigenous Communities</h3>
+        <p style="font-size:0.92rem; line-height:1.7; opacity:0.9;">
+          OCAP® compliant <strong>by architecture</strong>, not by policy. Your data literally cannot leave your machine. We partner with the <strong>First Nations Technology Council (FNTC)</strong> and the <strong>First Nations Information Governance Centre (FNIGC)</strong> to ensure the CDR meets Indigenous data sovereignty standards. Your community decides what to build. Not us.
+        </p>
+      </div>
+      <div class="anim-4" data-lang="fr" style="background: #1a3a4f; border-radius:12px; padding:24px 32px; color:white; margin-top:28px; max-width:680px; margin-left:auto; margin-right:auto; text-align:left;">
+        <h3 style="color:var(--accent-gold-light); margin-bottom:10px;">🪶 Pour les communautés autochtones</h3>
+        <p style="font-size:0.92rem; line-height:1.7; opacity:0.9;">
+          Conforme aux PCAP® <strong>par l'architecture</strong>, pas par une politique. Vos données ne peuvent littéralement pas quitter votre machine. Nous collaborons avec le <strong>First Nations Technology Council (FNTC)</strong> et le <strong>Centre de gouvernance de l'information des Premières Nations (CGIPN)</strong> pour garantir que le CDR respecte les normes de souveraineté des données autochtones. Votre communauté décide quoi construire. Pas nous.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 5 — WHAT YOU GET -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-deep" data-slide="4">
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">The Offer</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">L'offre</div>
+      <h2 class="anim-1" data-lang="en">What You Get — All Free</h2>
+      <h2 class="anim-1" data-lang="fr">Ce que vous recevez — entièrement gratuit</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1rem; opacity:0.8; margin-bottom:32px; max-width:620px; margin-left:auto; margin-right:auto; line-height:1.7;">
+        We provide everything. You provide the real-world experience.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1rem; opacity:0.8; margin-bottom:32px; max-width:620px; margin-left:auto; margin-right:auto; line-height:1.7;">
+        Nous fournissons tout. Vous fournissez l'expérience du monde réel.
+      </p>
+
+      <div class="offer-grid anim-3" data-lang="en">
+        <div class="offer-item">
+          <div class="offer-icon">🖥️</div>
+          <h4>CDR Station Hardware</h4>
+          <p>A powerful AI computer, delivered and set up at your location. Yours to keep after the pilot.</p>
+        </div>
+        <div class="offer-item">
+          <div class="offer-icon">🏃</div>
+          <h4>Terry — Your AI Partner</h4>
+          <p>Fully configured and ready to learn about your business from day one.</p>
+        </div>
+        <div class="offer-item">
+          <div class="offer-icon">🔧</div>
+          <h4>Professional Setup</h4>
+          <p>We come to you. Two hours, and you're up and running.</p>
+        </div>
+        <div class="offer-item">
+          <div class="offer-icon">📞</div>
+          <h4>6 Months Managed Service</h4>
+          <p>24/7 monitoring, updates, and support. If something goes wrong, we fix it remotely.</p>
+        </div>
+        <div class="offer-item">
+          <div class="offer-icon">🎓</div>
+          <h4>No Training Needed</h4>
+          <p>Terry is your trainer. Learn by doing, not by reading manuals.</p>
+        </div>
+        <div class="offer-item">
+          <div class="offer-icon">🎁</div>
+          <h4>You Keep Everything</h4>
+          <p>After the pilot, the hardware, tools, and everything you built are yours.</p>
+        </div>
+      </div>
+      <div class="offer-grid anim-3" data-lang="fr">
+        <div class="offer-item">
+          <div class="offer-icon">🖥️</div>
+          <h4>Matériel de station CDR</h4>
+          <p>Un ordinateur IA puissant, livré et installé chez vous. Le vôtre à garder après le pilote.</p>
+        </div>
+        <div class="offer-item">
+          <div class="offer-icon">🏃</div>
+          <h4>Terry — Votre partenaire IA</h4>
+          <p>Entièrement configuré et prêt à découvrir votre entreprise dès le premier jour.</p>
+        </div>
+        <div class="offer-item">
+          <div class="offer-icon">🔧</div>
+          <h4>Installation professionnelle</h4>
+          <p>Nous venons chez vous. Deux heures, et c'est prêt.</p>
+        </div>
+        <div class="offer-item">
+          <div class="offer-icon">📞</div>
+          <h4>6 mois de service géré</h4>
+          <p>Surveillance 24/7, mises à jour et soutien. Si quelque chose ne va pas, on le répare à distance.</p>
+        </div>
+        <div class="offer-item">
+          <div class="offer-icon">🎓</div>
+          <h4>Aucune formation requise</h4>
+          <p>Terry est votre formateur. Apprenez en faisant, pas en lisant des manuels.</p>
+        </div>
+        <div class="offer-item">
+          <div class="offer-icon">🎁</div>
+          <h4>Vous gardez tout</h4>
+          <p>Après le pilote, le matériel, les outils et tout ce que vous avez construit sont à vous.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 6 — WHAT WE NEED FROM YOU -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-blush" data-slide="5">
+    <div class="warm-stripe"></div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">The Exchange</div>
+      <div class="small-label anim-1" data-lang="fr">L'échange</div>
+      <h2 class="anim-1" data-lang="en">What We Need From You</h2>
+      <h2 class="anim-1" data-lang="fr">Ce dont nous avons besoin de vous</h2>
+      <div class="divider gold anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1.05rem; line-height:1.75; color: var(--rail-grey-dark); margin-bottom:28px; max-width:700px;">
+        This is a partnership, not a sales pitch. We're building something new, and we need honest, real-world feedback from people like you to get it right.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1.05rem; line-height:1.75; color: var(--rail-grey-dark); margin-bottom:28px; max-width:700px;">
+        Ceci est un partenariat, pas un argumentaire de vente. Nous construisons quelque chose de nouveau, et nous avons besoin de commentaires honnêtes de gens comme vous pour bien le faire.
+      </p>
+
+      <div class="two-col anim-3" data-lang="en">
+        <div>
+          <div class="gap-item">
+            <div class="gap-icon" style="background:var(--accent-warm); color:white;">📋</div>
+            <div class="gap-text">
+              <h4 style="color:var(--rail-slate);">A Short Questionnaire</h4>
+              <p>Fill out a quick form about your business so Terry can hit the ground running. Industry, tools you use, what frustrates you. Takes 15 minutes — saves weeks of ramp-up.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon" style="background:var(--accent-gold); color:white;">⏰</div>
+            <div class="gap-text">
+              <h4 style="color:var(--rail-slate);">Your Time</h4>
+              <p>2–3 hours per week for 3 months. That's it. Use Terry the way you'd use any tool — when it's helpful, not on a schedule.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon" style="background:var(--terry-blue); color:white;">💡</div>
+            <div class="gap-text">
+              <h4 style="color:var(--rail-slate);">A Real Problem</h4>
+              <p>Something in your work that takes too long, costs too much, or frustrates you. That's what Terry is here to help with.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="gap-item">
+            <div class="gap-icon" style="background:var(--accent-green); color:white;">💬</div>
+            <div class="gap-text">
+              <h4 style="color:var(--rail-slate);">Honest Feedback</h4>
+              <p>What works. What doesn't. What's confusing. We need the truth, not politeness. Your feedback shapes the product for everyone.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon" style="background:var(--maple-red-soft); color:white;">📝</div>
+            <div class="gap-text">
+              <h4 style="color:var(--rail-slate);">A Case Study</h4>
+              <p>Permission to document your experience — anonymized by default. You choose whether to be named or stay anonymous.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="two-col anim-3" data-lang="fr">
+        <div>
+          <div class="gap-item">
+            <div class="gap-icon" style="background:var(--accent-warm); color:white;">📋</div>
+            <div class="gap-text">
+              <h4 style="color:var(--rail-slate);">Un court questionnaire</h4>
+              <p>Remplissez un formulaire rapide sur votre entreprise pour que Terry puisse démarrer en force. Industrie, outils que vous utilisez, ce qui vous frustre. 15 minutes — sauve des semaines de rodage.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon" style="background:var(--accent-gold); color:white;">⏰</div>
+            <div class="gap-text">
+              <h4 style="color:var(--rail-slate);">Votre temps</h4>
+              <p>2 à 3 heures par semaine pendant 3 mois. C'est tout. Utilisez Terry comme n'importe quel outil — quand c'est utile, pas selon un horaire.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon" style="background:var(--terry-blue); color:white;">💡</div>
+            <div class="gap-text">
+              <h4 style="color:var(--rail-slate);">Un vrai problème</h4>
+              <p>Quelque chose dans votre travail qui prend trop de temps, coûte trop cher, ou vous frustre. C'est pour ça que Terry est là.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="gap-item">
+            <div class="gap-icon" style="background:var(--accent-green); color:white;">💬</div>
+            <div class="gap-text">
+              <h4 style="color:var(--rail-slate);">Des commentaires honnêtes</h4>
+              <p>Ce qui fonctionne. Ce qui ne fonctionne pas. Ce qui est confus. Nous avons besoin de la vérité, pas de politesse.</p>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-icon" style="background:var(--maple-red-soft); color:white;">📝</div>
+            <div class="gap-text">
+              <h4 style="color:var(--rail-slate);">Une étude de cas</h4>
+              <p>La permission de documenter votre expérience — anonymisée par défaut. Vous choisissez d'être nommé ou de rester anonyme.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="anim-4" data-lang="en" style="text-align:center; margin-top:28px; background:rgba(200,151,62,0.1); border-radius:12px; padding:20px 28px; max-width:600px; margin-left:auto; margin-right:auto;">
+        <p style="font-size:0.95rem; color:var(--rail-grey-dark); line-height:1.65;">
+          <strong>You're not a customer — you're a pioneer.</strong><br>
+          This is early. It's honest. And your voice matters more now than it ever will later.
+        </p>
+      </div>
+      <div class="anim-4" data-lang="fr" style="text-align:center; margin-top:28px; background:rgba(200,151,62,0.1); border-radius:12px; padding:20px 28px; max-width:600px; margin-left:auto; margin-right:auto;">
+        <p style="font-size:0.95rem; color:var(--rail-grey-dark); line-height:1.65;">
+          <strong>Vous n'êtes pas un client — vous êtes un pionnier.</strong><br>
+          C'est le début. C'est honnête. Et votre voix compte plus maintenant qu'elle ne comptera jamais plus tard.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 7 — HOW IT WORKS (TIMELINE) -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="6">
+    <div class="warm-stripe"></div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en">The Journey</div>
+      <div class="small-label anim-1" data-lang="fr">Le parcours</div>
+      <h2 class="anim-1" data-lang="en">How It Works</h2>
+      <h2 class="anim-1" data-lang="fr">Comment ça fonctionne</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <div class="timeline-flow anim-3" data-lang="en">
+        <div class="timeline-step">
+          <div class="timeline-dot warm">📦</div>
+          <div class="timeline-label">Day 1</div>
+          <div class="timeline-desc">We install your station. Takes about 2 hours. Plug in, power on, done.</div>
+        </div>
+        <div class="timeline-arrow">→</div>
+        <div class="timeline-step">
+          <div class="timeline-dot warm">👋</div>
+          <div class="timeline-label">Day 2</div>
+          <div class="timeline-desc">Terry introduces herself. Learns about your business. Starts asking questions.</div>
+        </div>
+        <div class="timeline-arrow">→</div>
+        <div class="timeline-step">
+          <div class="timeline-dot warm">🔨</div>
+          <div class="timeline-label">Week 1</div>
+          <div class="timeline-desc">You build your first tool together. Something small and useful.</div>
+        </div>
+        <div class="timeline-arrow">→</div>
+        <div class="timeline-step">
+          <div class="timeline-dot warm">⚡</div>
+          <div class="timeline-label">Month 1</div>
+          <div class="timeline-desc">It's running. Saving you time. You're building the next thing.</div>
+        </div>
+        <div class="timeline-arrow">→</div>
+        <div class="timeline-step">
+          <div class="timeline-dot warm">🎯</div>
+          <div class="timeline-label">Month 3</div>
+          <div class="timeline-desc">You tell us if it was worth it. That's the whole pilot.</div>
+        </div>
+      </div>
+      <div class="timeline-flow anim-3" data-lang="fr">
+        <div class="timeline-step">
+          <div class="timeline-dot warm">📦</div>
+          <div class="timeline-label">Jour 1</div>
+          <div class="timeline-desc">Nous installons votre station. Environ 2 heures. On branche, on allume, c'est fait.</div>
+        </div>
+        <div class="timeline-arrow">→</div>
+        <div class="timeline-step">
+          <div class="timeline-dot warm">👋</div>
+          <div class="timeline-label">Jour 2</div>
+          <div class="timeline-desc">Terry se présente. Apprend votre entreprise. Commence à poser des questions.</div>
+        </div>
+        <div class="timeline-arrow">→</div>
+        <div class="timeline-step">
+          <div class="timeline-dot warm">🔨</div>
+          <div class="timeline-label">Semaine 1</div>
+          <div class="timeline-desc">Vous construisez votre premier outil ensemble. Quelque chose de petit et utile.</div>
+        </div>
+        <div class="timeline-arrow">→</div>
+        <div class="timeline-step">
+          <div class="timeline-dot warm">⚡</div>
+          <div class="timeline-label">Mois 1</div>
+          <div class="timeline-desc">Ça roule. Ça vous sauve du temps. Vous construisez la prochaine chose.</div>
+        </div>
+        <div class="timeline-arrow">→</div>
+        <div class="timeline-step">
+          <div class="timeline-dot warm">🎯</div>
+          <div class="timeline-label">Mois 3</div>
+          <div class="timeline-desc">Vous nous dites si ça en valait la peine. C'est ça, le pilote.</div>
+        </div>
+      </div>
+
+      <div class="terry-bubble anim-4" style="margin: 28px auto 0; text-align:left; max-width:560px; background:rgba(59,107,138,0.08); border-color:rgba(59,107,138,0.2);">
+        <p data-lang="en" style="color:var(--rail-grey-dark); font-size:0.92rem;"><strong style="color:var(--terry-blue);">Terry, Day 2:</strong> "I see you run a physiotherapy clinic. A lot of your time goes into patient intake, right? Want to start there? I can build you something that reads referral letters and fills in the intake form automatically. Sound good?"</p>
+        <p data-lang="fr" style="color:var(--rail-grey-dark); font-size:0.92rem;"><strong style="color:var(--terry-blue);">Terry, Jour 2:</strong> « Je vois que vous gérez une clinique de physiothérapie. Beaucoup de votre temps va à l'admission des patients, non? On commence par là? Je peux vous construire quelque chose qui lit les lettres de référence et remplit le formulaire automatiquement. Ça vous dit? »</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 8 — THE BIGGER PICTURE -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-dark" data-slide="7">
+    <div class="content-box" style="text-align:center;">
+      <div class="anim-1" style="font-size:3rem; margin-bottom:8px;">🍁</div>
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">The Bigger Picture</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">La vision d'ensemble</div>
+      <h2 class="anim-1" data-lang="en">You're Not Just Getting an AI Assistant</h2>
+      <h2 class="anim-1" data-lang="fr">Vous n'obtenez pas juste un assistant IA</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <p class="subtitle anim-2" data-lang="en" style="color:rgba(255,255,255,0.8); max-width:660px; margin: 0 auto 32px; font-size:1.05rem;">
+        You're helping build Canada's sovereign AI infrastructure. Your clinic, your store, your lab, your community — becomes a pioneer station on a national network.
+      </p>
+      <p class="subtitle anim-2" data-lang="fr" style="color:rgba(255,255,255,0.8); max-width:660px; margin: 0 auto 32px; font-size:1.05rem;">
+        Vous aidez à bâtir l'infrastructure IA souveraine du Canada. Votre clinique, votre magasin, votre labo, votre communauté — devient une station pionnière sur un réseau national.
+      </p>
+
+      <div class="three-col anim-3" data-lang="en" style="text-align:left;">
+        <div class="card-dark" style="border-left-color: var(--terry-blue);">
+          <h3 style="color:var(--terry-blue-light);">🔗 Knowledge Travels the Rails</h3>
+          <p>When you build something useful, other stations across Canada can benefit. When they build something, you benefit too. Shared intelligence, not shared data.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--accent-green);">
+          <h3 style="color:#81c784;">🏠 Data Stays Home</h3>
+          <p>The tools, the methods, the know-how — that travels the network. Your actual data? It never leaves your machine. Not one byte.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--maple-red-soft);">
+          <h3 style="color:#f48fb1;">🌱 Pioneer Effect</h3>
+          <p>The first stations shape the entire network. Your experience, your feedback, your ideas — they define what this becomes for everyone who follows.</p>
+        </div>
+      </div>
+      <div class="three-col anim-3" data-lang="fr" style="text-align:left;">
+        <div class="card-dark" style="border-left-color: var(--terry-blue);">
+          <h3 style="color:var(--terry-blue-light);">🔗 Le savoir voyage sur les rails</h3>
+          <p>Quand vous construisez quelque chose d'utile, d'autres stations à travers le Canada en profitent. Quand elles construisent, vous en profitez aussi. Intelligence partagée, pas données partagées.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--accent-green);">
+          <h3 style="color:#81c784;">🏠 Les données restent chez vous</h3>
+          <p>Les outils, les méthodes, le savoir-faire — ça voyage sur le réseau. Vos données réelles? Elles ne quittent jamais votre machine. Pas un seul octet.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--maple-red-soft);">
+          <h3 style="color:#f48fb1;">🌱 Effet pionnier</h3>
+          <p>Les premières stations façonnent tout le réseau. Votre expérience, vos commentaires, vos idées — ils définissent ce que ça deviendra pour tous ceux qui suivront.</p>
+        </div>
+      </div>
+
+      <div class="quote-block anim-4" data-lang="en" style="border-color: rgba(255,255,255,0.3); margin: 28px auto 0; text-align:center; max-width:640px;">
+        "In 1885, the last spike of the Canadian Pacific Railway was driven at Craigellachie. That railway didn't just move goods — it made Canada possible. We're building the digital equivalent. And we'd love for you to be one of the first stations on the line."
+      </div>
+      <div class="quote-block anim-4" data-lang="fr" style="border-color: rgba(255,255,255,0.3); margin: 28px auto 0; text-align:center; max-width:640px;">
+        « En 1885, le dernier crampon du Chemin de fer Canadien Pacifique a été enfoncé à Craigellachie. Ce chemin de fer n'a pas seulement transporté des marchandises — il a rendu le Canada possible. Nous construisons l'équivalent numérique. Et nous aimerions que vous soyez l'une des premières stations sur la ligne. »
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 9 — REAL EXAMPLES -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-deep" data-slide="8">
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">In Practice</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">En pratique</div>
+      <h2 class="anim-1" data-lang="en">What Could You Build With Terry?</h2>
+      <h2 class="anim-1" data-lang="fr">Que pourriez-vous construire avec Terry?</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <div class="use-cases-grid anim-3" data-lang="en">
+        <div class="use-case">
+          <div class="use-case-icon">🩺</div>
+          <div>
+            <div class="persona-tag">Physio Clinic</div>
+            <h4>"Terry reads my referral letters now"</h4>
+            <p>Terry helped me build a patient intake system that auto-fills from referral letters. What used to take 20 minutes per patient now takes 2. And the referral data stays on my machine — no cloud, no fax, no risk.</p>
+          </div>
+        </div>
+        <div class="use-case">
+          <div class="use-case-icon">🛁</div>
+          <div>
+            <div class="persona-tag">Hot Tub Retail</div>
+            <h4>"I know what'll sell before spring hits"</h4>
+            <p>Terry looks at my past 3 years of sales and tells me which models will move in spring. Auto-generates purchase orders for my suppliers. I didn't write a single line of code.</p>
+          </div>
+        </div>
+        <div class="use-case">
+          <div class="use-case-icon">🎓</div>
+          <div>
+            <div class="persona-tag">University Research</div>
+            <h4>"From raw data to paper — reproducibly"</h4>
+            <p>Terry manages my research pipeline — data cleaning, statistical analysis, visualization, and paper drafting. Every step is logged, reproducible, and runs entirely on my lab's machine. Reviewers love it.</p>
+          </div>
+        </div>
+        <div class="use-case">
+          <div class="use-case-icon">🪶</div>
+          <div>
+            <div class="persona-tag">Indigenous Community</div>
+            <h4>"Our language model lives on our machine"</h4>
+            <p>Our community's governance documents are processed locally. Our language model is trained on our words, by our people, on our hardware. Nobody else has access. This is what data sovereignty actually looks like.</p>
+          </div>
+        </div>
+      </div>
+      <div class="use-cases-grid anim-3" data-lang="fr">
+        <div class="use-case">
+          <div class="use-case-icon">🩺</div>
+          <div>
+            <div class="persona-tag">Clinique de physio</div>
+            <h4>« Terry lit mes lettres de référence maintenant »</h4>
+            <p>Terry m'a aidé à construire un système d'admission qui se remplit automatiquement à partir des lettres de référence. Ce qui prenait 20 minutes par patient prend maintenant 2. Et les données restent sur ma machine.</p>
+          </div>
+        </div>
+        <div class="use-case">
+          <div class="use-case-icon">🛁</div>
+          <div>
+            <div class="persona-tag">Commerce de spas</div>
+            <h4>« Je sais ce qui se vendra avant le printemps »</h4>
+            <p>Terry regarde mes 3 dernières années de ventes et me dit quels modèles vont bouger au printemps. Génère automatiquement les bons de commande. Je n'ai pas écrit une seule ligne de code.</p>
+          </div>
+        </div>
+        <div class="use-case">
+          <div class="use-case-icon">🎓</div>
+          <div>
+            <div class="persona-tag">Recherche universitaire</div>
+            <h4>« Des données brutes au papier — de façon reproductible »</h4>
+            <p>Terry gère mon pipeline de recherche — nettoyage de données, analyse statistique, visualisation et rédaction. Chaque étape est journalisée, reproductible, et tourne entièrement sur la machine de mon labo.</p>
+          </div>
+        </div>
+        <div class="use-case">
+          <div class="use-case-icon">🪶</div>
+          <div>
+            <div class="persona-tag">Communauté autochtone</div>
+            <h4>« Notre modèle linguistique vit sur notre machine »</h4>
+            <p>Les documents de gouvernance de notre communauté sont traités localement. Notre modèle linguistique est entraîné avec nos mots, par notre monde, sur notre matériel. Personne d'autre n'y a accès. C'est ça, la vraie souveraineté des données.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:0.9rem; opacity:0.6; margin-top:24px; max-width:560px; margin-left:auto; margin-right:auto; line-height:1.6;">
+        These are examples of what's possible. The real magic? You and Terry decide what to build. Your business, your problems, your solutions.
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.9rem; opacity:0.6; margin-top:24px; max-width:560px; margin-left:auto; margin-right:auto; line-height:1.6;">
+        Ce sont des exemples de ce qui est possible. La vraie magie? Vous et Terry décidez quoi construire. Votre entreprise, vos problèmes, vos solutions.
+      </p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 10 — FAQ -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-warm" data-slide="9">
+    <div class="warm-stripe"></div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en">Questions You Might Have</div>
+      <div class="small-label anim-1" data-lang="fr">Questions que vous pourriez avoir</div>
+      <h2 class="anim-1" data-lang="en">Frequently Asked Questions</h2>
+      <h2 class="anim-1" data-lang="fr">Foire aux questions</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <div class="faq-grid anim-3" data-lang="en" style="text-align:left;">
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">How does Terry know about my business?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">Before your station arrives, we'll ask you a few questions — your industry, tools you use, what frustrates you. Terry arrives pre-configured for YOUR world. Not a generic assistant. Yours.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">Do I need to be technical?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">No. That's the whole point. Terry teaches you by building with you. If you can have a conversation, you can use Terry.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">What if something breaks?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">We monitor your station 24/7 and fix issues remotely. And if Terry gets stuck, our team (Wilma + Fred) is a message away, 24/7. You're never alone.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">Is my data really safe?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">Yes. It literally cannot leave your machine without your explicit action. There's no "phone home" feature, no cloud sync, no backdoor. The code is open-source — verify it yourself.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">Can I quit?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">Yes. Anytime. No contract, no penalty. And you keep the hardware either way.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">What happens after the pilot?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">You keep everything — the hardware, Terry, and all the tools you built. We offer an optional managed service at a fair price if you want continued support and updates.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">Will this disrupt my business?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">The station is a small, silent box. Installation takes 2 hours. Terry works at your pace. Think of it like getting a really smart new hire — one that never sleeps and never complains.</div>
+        </div>
+      </div>
+      <div class="faq-grid anim-3" data-lang="fr" style="text-align:left;">
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">Comment Terry connaît-il mon entreprise?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">Avant l'arrivée de votre station, nous vous poserons quelques questions — votre industrie, les outils que vous utilisez, ce qui vous frustre. Terry arrive préconfiguré pour VOTRE monde. Pas un assistant générique. Le vôtre.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">Dois-je être technique?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">Non. C'est tout le but. Terry vous enseigne en construisant avec vous. Si vous pouvez avoir une conversation, vous pouvez utiliser Terry.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">Et si quelque chose brise?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">Nous surveillons votre station 24/7 et réglons les problèmes à distance. Et si Terry est bloqué, notre équipe (Wilma + Fred) est à un message, 24/7. Vous n'êtes jamais seul.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">Mes données sont-elles vraiment en sécurité?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">Oui. Elles ne peuvent littéralement pas quitter votre machine sans votre action explicite. Pas de « téléphone maison », pas de synchronisation nuage, pas de porte dérobée. Le code est ouvert — vérifiez-le vous-même.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">Puis-je quitter?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">Oui. N'importe quand. Pas de contrat, pas de pénalité. Et vous gardez le matériel dans tous les cas.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">Que se passe-t-il après le pilote?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">Vous gardez tout — le matériel, Terry, et tous les outils que vous avez construits. Nous offrons un service géré optionnel à un prix juste si vous voulez du soutien continu.</div>
+        </div>
+        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+          <div class="faq-q" style="color:var(--terry-blue);">Est-ce que ça va déranger mon entreprise?</div>
+          <div class="faq-a" style="color:var(--rail-grey-dark);">La station est une petite boîte silencieuse. L'installation prend 2 heures. Terry travaille à votre rythme. C'est comme embaucher quelqu'un de très intelligent — qui ne dort jamais et ne se plaint jamais.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 11 — JOIN US -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-cover" data-slide="10">
+    <div class="warm-stripe"></div>
+
+    <div class="anim-1" style="font-size:3.5rem; margin-bottom:16px;">🚂🍁</div>
+    <h1 class="anim-1" data-lang="en" style="font-size:2.6rem; max-width:640px;">Want to Be a Founding Station?</h1>
+    <h1 class="anim-1" data-lang="fr" style="font-size:2.4rem; max-width:640px;">Voulez-vous être une station fondatrice?</h1>
+    <div class="divider gold center anim-2"></div>
+
+    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:580px; color:rgba(255,255,255,0.8); font-size:1.1rem;">
+      We're looking for a handful of partners who want to be part of something meaningful. Real people, with real businesses, solving real problems — together.
+    </p>
+    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:580px; color:rgba(255,255,255,0.8); font-size:1.1rem;">
+      Nous cherchons une poignée de partenaires qui veulent faire partie de quelque chose de significatif. De vraies personnes, avec de vraies entreprises, résolvant de vrais problèmes — ensemble.
+    </p>
+
+    <div class="terry-bubble dark-bg anim-3" style="margin: 28px auto; text-align:center; max-width:480px;">
+      <p data-lang="en" style="font-size:1rem;"><strong style="color:var(--accent-gold-light);">Terry says:</strong> "I can't wait to meet you. Bring your toughest problem. Let's build something."</p>
+      <p data-lang="fr" style="font-size:1rem;"><strong style="color:var(--accent-gold-light);">Terry dit:</strong> « J'ai hâte de vous rencontrer. Apportez votre plus gros défi. Construisons quelque chose. »</p>
+    </div>
+
+    <div class="anim-4" style="margin-top:24px; display:flex; gap:40px; flex-wrap:wrap; justify-content:center; align-items:center;">
+      <div style="text-align:center;">
+        <div style="font-size:1.8rem; margin-bottom:8px;">📧</div>
+        <div style="font-size:1rem; font-weight:600; color:rgba(255,255,255,0.9);">contact@hazeydata.ai</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:1.8rem; margin-bottom:8px;">🌐</div>
+        <div style="font-size:1rem; font-weight:600; color:rgba(255,255,255,0.9);">hazeydata.ai</div>
+      </div>
+    </div>
+
+    <p class="anim-5" data-lang="en" style="font-size:0.9rem; opacity:0.5; margin-top:40px; text-align:center; max-width:500px; line-height:1.6; font-style:italic;">
+      "The last spike of the digital age."<br>Let's drive it together.
+    </p>
+    <p class="anim-5" data-lang="fr" style="font-size:0.9rem; opacity:0.5; margin-top:40px; text-align:center; max-width:500px; line-height:1.6; font-style:italic;">
+      « Le dernier crampon de l'ère numérique. »<br>Enfonçons-le ensemble.
+    </p>
+
+    <p class="anim-5" style="font-size:0.75rem; opacity:0.3; margin-top:32px;">
+      The Canadian Digital Railway &nbsp;|&nbsp; Le Chemin de fer numérique canadien &nbsp;|&nbsp; hazeydata.ai &nbsp;|&nbsp; 2026
+    </p>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <div class="nav-brand">🚂 CDR Pilot &nbsp;<span data-lang="en">by</span><span data-lang="fr">par</span> hazeydata.ai</div>
+  <div class="lang-toggle" id="langToggle">
+    <button class="lang-btn active" data-langval="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-langval="fr" onclick="setLang('fr')">FR</button>
+  </div>
+  <div class="nav-center" id="navDots"></div>
+  <div class="nav-controls">
+    <button class="nav-btn" onclick="prev()" aria-label="Previous">‹</button>
+    <div class="slide-counter" id="counter">1 / 11</div>
+    <button class="nav-btn" onclick="next()" aria-label="Next">›</button>
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  // Build dots
+  const dotsEl = document.getElementById('navDots');
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function updateProgress() {
+    const pct = ((current) / (total - 1)) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  function goTo(n) {
+    if (n < 0 || n >= total || n === current) return;
+    slides[current].classList.remove('active');
+    slides[current].classList.add('exit');
+    const prev = current;
+    current = n;
+    slides[current].classList.add('active');
+    // Update dots
+    document.querySelectorAll('.nav-dot').forEach((d,i) =>
+      d.classList.toggle('active', i === current));
+    document.getElementById('counter').textContent = (current+1) + ' / ' + total;
+    updateProgress();
+    // Clean up exit
+    setTimeout(() => slides[prev].classList.remove('exit'), 600);
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Language toggle
+  function setLang(lang) {
+    const body = document.body;
+    if (lang === 'fr') {
+      body.classList.add('lang-fr');
+      document.documentElement.lang = 'fr';
+      document.title = 'Rejoignez le pilote CDR 🚂🍁 | hazeydata.ai';
+    } else {
+      body.classList.remove('lang-fr');
+      document.documentElement.lang = 'en';
+      document.title = 'Join the Canadian Digital Railway Pilot 🚂🍁 | hazeydata.ai';
+    }
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-langval') === lang);
+    });
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+  });
+
+  // Touch/swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX, {passive:true});
+  document.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+  });
+
+  // Initial progress
+  updateProgress();
+</script>
+
+</body>
+</html>

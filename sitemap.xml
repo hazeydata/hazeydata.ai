@@ -1,88 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- HazeyData Hub -->
     <url>
         <loc>https://hazeydata.ai/</loc>
-        <lastmod>2026-03-12</lastmod>
+        <lastmod>2026-03-15</lastmod>
         <priority>1.0</priority>
     </url>
+
+    <!-- Theme Park Crowd Report -->
     <url>
-        <loc>https://hazeydata.ai/blog/</loc>
-        <lastmod>2026-03-12</lastmod>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/</loc>
+        <lastmod>2026-03-15</lastmod>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/bio.html</loc>
-        <lastmod>2026-02-27</lastmod>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/blog/</loc>
+        <lastmod>2026-03-15</lastmod>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/pricing.html</loc>
+        <lastmod>2026-03-15</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/bio.html</loc>
+        <lastmod>2026-03-15</lastmod>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/contact.html</loc>
-        <lastmod>2026-02-27</lastmod>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://hazeydata.ai/subscribe.html</loc>
-        <lastmod>2026-02-27</lastmod>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://hazeydata.ai/year-view.html</loc>
-        <lastmod>2026-03-12</lastmod>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/year-view.html</loc>
+        <lastmod>2026-03-15</lastmod>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/blog/best-time-to-visit-disney-world-2026.html</loc>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/blog/best-time-to-visit-disney-world-2026.html</loc>
         <lastmod>2026-03-12</lastmod>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/blog/disneyland-this-week-march-13-2026.html</loc>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/blog/disneyland-this-week-march-13-2026.html</loc>
         <lastmod>2026-03-13</lastmod>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/blog/epic-universe-crowds-2026.html</loc>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/blog/epic-universe-crowds-2026.html</loc>
         <lastmod>2026-03-12</lastmod>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/blog/new-metric.html</loc>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/blog/new-metric.html</loc>
         <lastmod>2026-03-03</lastmod>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/blog/orlando-this-week-march-11-2026.html</loc>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/blog/orlando-this-week-march-11-2026.html</loc>
         <lastmod>2026-03-11</lastmod>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/blog/orlando-this-week-march-18-2026.html</loc>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/blog/orlando-this-week-march-18-2026.html</loc>
         <lastmod>2026-03-18</lastmod>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/blog/tokyo-this-week-march-17-2026.html</loc>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/blog/spring-break-disney-world-2026-survival-guide.html</loc>
+        <lastmod>2026-03-13</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/blog/tokyo-this-week-march-17-2026.html</loc>
         <lastmod>2026-03-17</lastmod>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/blog/what-is-wti.html</loc>
+        <loc>https://hazeydata.ai/theme-park-crowd-report/blog/what-is-wti.html</loc>
         <lastmod>2026-03-03</lastmod>
         <priority>0.8</priority>
     </url>
+
+    <!-- Canadian Digital Railway -->
     <url>
-        <loc>https://hazeydata.ai/pricing.html</loc>
-        <lastmod>2026-03-13</lastmod>
+        <loc>https://hazeydata.ai/cdr/</loc>
+        <lastmod>2026-03-15</lastmod>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/accord.html</loc>
-        <lastmod>2026-03-14</lastmod>
+        <loc>https://hazeydata.ai/cdr/blog/</loc>
+        <lastmod>2026-03-15</lastmod>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://hazeydata.ai/blog/spring-break-disney-world-2026-survival-guide.html</loc>
-        <lastmod>2026-03-13</lastmod>
+        <loc>https://hazeydata.ai/cdr/blog/why-canada-needs-a-digital-railway.html</loc>
+        <lastmod>2026-03-15</lastmod>
         <priority>0.8</priority>
+    </url>
+
+    <!-- School Schedule Database -->
+    <url>
+        <loc>https://hazeydata.ai/ssd/</loc>
+        <lastmod>2026-03-15</lastmod>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- ACCORD -->
+    <url>
+        <loc>https://hazeydata.ai/accord/</loc>
+        <lastmod>2026-03-15</lastmod>
+        <priority>0.7</priority>
     </url>
 </urlset>

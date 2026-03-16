@@ -1,0 +1,46 @@
+# HazeyData Site Restructure — 301 Redirects
+# Old URL → New URL (permanent redirects)
+
+# TPCR Blog Posts
+/blog/best-time-to-visit-disney-world-2026.html  /theme-park-crowd-report/blog/best-time-to-visit-disney-world-2026.html  301
+/blog/disneyland-this-week-march-13-2026.html  /theme-park-crowd-report/blog/disneyland-this-week-march-13-2026.html  301
+/blog/epic-universe-crowds-2026.html  /theme-park-crowd-report/blog/epic-universe-crowds-2026.html  301
+/blog/new-metric.html  /theme-park-crowd-report/blog/new-metric.html  301
+/blog/orlando-this-week-march-11-2026.html  /theme-park-crowd-report/blog/orlando-this-week-march-11-2026.html  301
+/blog/orlando-this-week-march-18-2026.html  /theme-park-crowd-report/blog/orlando-this-week-march-18-2026.html  301
+/blog/spring-break-disney-world-2026-survival-guide.html  /theme-park-crowd-report/blog/spring-break-disney-world-2026-survival-guide.html  301
+/blog/tokyo-this-week-march-17-2026.html  /theme-park-crowd-report/blog/tokyo-this-week-march-17-2026.html  301
+/blog/what-is-wti.html  /theme-park-crowd-report/blog/what-is-wti.html  301
+
+# TPCR Blog Index
+/blog/  /theme-park-crowd-report/blog/  301
+/blog  /theme-park-crowd-report/blog/  301
+
+# CDR Blog — was a draft, now published
+/blog/why-canada-needs-a-digital-railway.html  /cdr/blog/why-canada-needs-a-digital-railway.html  301
+/blog/drafts/why-canada-needs-a-digital-railway.html  /cdr/blog/why-canada-needs-a-digital-railway.html  301
+
+# TPCR Root Pages
+/pricing.html  /theme-park-crowd-report/pricing.html  301
+/year-view.html  /theme-park-crowd-report/year-view.html  301
+/bio.html  /theme-park-crowd-report/bio.html  301
+/contact.html  /theme-park-crowd-report/contact.html  301
+/subscribe.html  /theme-park-crowd-report/subscribe.html  301
+/subscribe-success.html  /theme-park-crowd-report/subscribe-success.html  301
+/unsubscribe.html  /theme-park-crowd-report/unsubscribe.html  301
+/login.html  /theme-park-crowd-report/login.html  301
+/signup.html  /theme-park-crowd-report/signup.html  301
+
+# Project pages — old root level → new sub-dirs
+/ssd.html  /ssd/  301
+/accord.html  /accord/  301
+
+# CDR pitch pages
+/cdr-pitch.html  /cdr/pitch.html  301
+/cdr-funding-pitch.html  /cdr/funding-pitch.html  301
+/cdr-pilot-pitch.html  /cdr/pilot-pitch.html  301
+/cdr-project-plan.html  /cdr/project-plan.html  301
+/construction-pitch.html  /cdr/construction-pitch.html  301
+
+# ACCORD pitch
+/accord-pitch.html  /accord/pitch.html  301

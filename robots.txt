@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /theme-park-crowd-report/blog/drafts/
 Disallow: /blog/drafts/
 
 Sitemap: https://hazeydata.ai/sitemap.xml

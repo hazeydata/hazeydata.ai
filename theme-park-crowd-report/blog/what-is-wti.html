@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is the Wait Time Index (WTI)? | Theme Park Crowd Report</title>
+    <meta name="description" content="Learn how the Wait Time Index distills an entire park's crowd level into a single number — and why it's more useful than raw wait times.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/icon-180.png">
+    <meta name="theme-color" content="#0a1628">
+    <link rel="canonical" href="https://hazeydata.ai/theme-park-crowd-report/blog/what-is-wti.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://hazeydata.ai/theme-park-crowd-report/blog/what-is-wti.html">
+    <meta property="og:title" content="What is the Wait Time Index (WTI)?">
+    <meta property="og:description" content="Learn how the Wait Time Index distills an entire park's crowd level into a single number — and why it's more useful than raw wait times.">
+    <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@disneystatswhiz">
+    <meta name="twitter:title" content="What is the Wait Time Index (WTI)?">
+    <meta name="twitter:description" content="Learn how the Wait Time Index distills an entire park's crowd level into a single number — and why it's more useful than raw wait times.">
+    <meta name="twitter:image" content="https://hazeydata.ai/assets/banner.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css?v=20260310">
+    <link rel="stylesheet" href="blog.css?v=20260310">
+</head>
+<body>
+    <section class="hero blog-hero">
+        <div class="hero-bg"></div>
+        <nav class="nav">
+            <div class="nav-logo">
+                <a href="/" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;margin-right:0.75rem;">← HazeyData</a><a href="/theme-park-crowd-report/"><img src="../../assets/icon.jpg" alt="TPCR" class="nav-icon"></a>
+                <a href="/theme-park-crowd-report/" class="nav-title">Theme Park Crowd Report</a>
+            </div>
+            <button class="nav-hamburger" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links">
+                <a href="/">HazeyData Hub</a>
+                <a href="/theme-park-crowd-report/">Home</a>
+                <a href="/theme-park-crowd-report/blog/">Blog</a>
+                <a href="/theme-park-crowd-report/pricing.html">Pricing</a>
+                <a href="https://discord.gg/2Estr7sbP7" class="btn btn-sm" target="_blank">Join Discord</a>
+            </div>
+        </nav>
+        <div class="hero-content">
+            <h1>Blog</h1>
+            <p>Data-driven insights on theme park crowds, wait times, and trip planning.</p>
+        </div>
+    </section>
+
+    <div class="blog-container">
+        <a href="/theme-park-crowd-report/blog/" class="blog-back">← All posts</a>
+
+        <article class="blog-post">
+            <div class="blog-post-meta">
+                <span>March 3, 2026</span>
+                <span class="tag">Explainer</span>
+                <span class="tag">WTI</span>
+            </div>
+            <h2>What is the Wait Time Index (WTI)?</h2>
+
+            <p>If you've been exploring <a href="https://hazeydata.ai">hazeydata.ai</a> or chatting with our Discord bot, you've probably seen a number called <strong>WTI</strong> next to every park. But what does it actually mean, and why should you care?</p>
+
+            <p>This post breaks it all down.</p>
+
+            <div class="blog-cta-inline">
+                <span class="cta-icon">🎢</span>
+                <div class="cta-body">
+                    <p><strong>See WTI in action</strong> — free daily forecasts for Disney, Universal, and 10 more parks.</p>
+                </div>
+                <a href="https://discord.gg/2Estr7sbP7" class="btn btn-primary" target="_blank">Join Discord</a>
+            </div>
+
+            <h3>One Number, One Park, One Day</h3>
+
+            <p>The <strong>Wait Time Index</strong> is a single number that summarizes how busy a theme park is on a given day. Instead of scanning through dozens of individual ride wait times and trying to form a mental picture, WTI does the math for you and gives you one easy-to-read score.</p>
+
+            <p>Think of it like a stock market index. The S&amp;P 500 doesn't tell you what every individual stock is doing — it tells you how the market is doing <em>overall</em>. WTI does the same thing for theme park crowds.</p>
+
+            <h3>How It Works</h3>
+
+            <p>WTI aggregates individual ride wait times across every tracked attraction in a park and distills them into a single park-level index. The process looks like this:</p>
+
+            <ol>
+                <li><strong>Collect wait times</strong> — Our models predict (or observe) wait times for every major attraction in the park throughout the day.</li>
+                <li><strong>Average across all operating attractions</strong> — WTI takes the average wait time across every operating attraction in the park. No special weighting, no choosing which rides "count." Every ride contributes equally, which keeps the metric simple and consistent over time.</li>
+                <li><strong>Calibrate per park</strong> — Here's the crucial part. Each park's WTI is calibrated against <em>that park's own history</em>, not some universal scale. More on why this matters below.</li>
+            </ol>
+
+            <p>The result is a number that captures the overall crowd pressure for that specific park on that specific day.</p>
+
+            <h3>How to Interpret It</h3>
+
+            <p>The core rule is simple: <strong>higher WTI = busier park</strong>. But the real power comes from comparing a day's WTI to the historical distribution for that park.</p>
+
+            <p>Here's a rough guide for the Disney World parks:</p>
+            <ul>
+                <li><strong>WTI under 15</strong> — Light crowds. Walk-on rides, relaxed pace, dream day territory.</li>
+                <li><strong>WTI 15–22</strong> — Moderate. A solid park day. Manageable waits with minimal planning.</li>
+                <li><strong>WTI 22–30</strong> — Busy. You'll feel it, especially at headliners. Skip-the-line products (Genie+, Express Pass) start earning their keep.</li>
+                <li><strong>WTI above 30</strong> — Peak crowds. Every line is long, every restaurant is full, and patience is required. Consider whether today is the best day, or whether tomorrow looks better.</li>
+            </ul>
+
+            <p>Remember, these ranges shift from park to park. A WTI of 25 at Magic Kingdom and a WTI of 25 at Animal Kingdom are two very different experiences, because each park's score is built from its own rides and its own capacity. The numbers only make sense in the context of the park they describe — which is exactly why we track each one individually.</p>
+
+            <h3>Why Not Just Look at Raw Wait Times?</h3>
+
+            <p>Fair question. If you can see that Space Mountain is 60 minutes and Big Thunder is 45, why do you need an index?</p>
+
+            <p>A few reasons:</p>
+
+            <p><strong>Context is everything.</strong> Is a 60-minute wait for Space Mountain good or bad? If you don't know that the historical median is 45 minutes, you can't tell. WTI bakes in that context automatically.</p>
+
+            <p><strong>Individual rides fluctuate wildly.</strong> A single ride might spike to 90 minutes because of a temporary breakdown and reopening — that doesn't mean the park suddenly got busier. WTI smooths out this noise by looking at the whole park together.</p>
+
+            <p><strong>Comparing across parks is impossible with raw times.</strong> A 40-minute average wait at Epic Universe means something completely different than a 40-minute average at Animal Kingdom. They have different ride capacities, different guest volumes, different layouts. WTI accounts for each park's unique characteristics.</p>
+
+            <p><strong>Planning decisions need a summary.</strong> When you're deciding which park to visit tomorrow, you don't want to compare 120 individual ride predictions across 4 parks. You want to see four numbers and pick the lowest one. That's WTI.</p>
+
+            <h3>The Weather Analogy</h3>
+
+            <p>We like to compare WTI to a weather forecast. A temperature of 40°F means something completely different in Miami versus Minneapolis. In Miami, people are reaching for their coats. In Minneapolis, they're enjoying a warm spell.</p>
+
+            <p>Same idea with WTI. The number only makes sense in the context of the park it describes. That's why we calibrate each park individually rather than using a one-size-fits-all crowd rating.</p>
+
+            <h3>Try It Yourself</h3>
+
+            <p>The easiest way to experience WTI is through our Discord bot:</p>
+            <ul>
+                <li><code>/today</code> — See current WTI across all 12 tracked parks</li>
+                <li><code>/crowd</code> — Get a 7-day WTI forecast for any park</li>
+                <li><code>/best-day</code> — Find the lowest-WTI day in a given timeframe</li>
+            </ul>
+
+            <p>Or explore the year-view heatmaps on <a href="https://hazeydata.ai">hazeydata.ai</a> — they visualize 365 days of WTI data in one glance, making it easy to spot the best (and worst) times to visit.</p>
+
+            <div class="blog-cta-gentle">
+                <p>Want daily WTI forecasts? <a href="https://discord.gg/2Estr7sbP7" target="_blank" class="cta-link">Join the Discord</a> — free for all 12 parks.</p>
+            </div>
+
+            <p class="data-sources" style="font-size:0.85rem;color:var(--text-muted);margin-top:2rem;padding-top:1.25rem;border-top:1px solid var(--border);">📡 <strong style="color:var(--text-secondary);">Data Sources</strong> — Our models are trained on data from <a href="https://touringplans.com" target="_blank" style="color:var(--mid-blue);">TouringPlans</a>, <a href="https://queue-times.com" target="_blank" style="color:var(--mid-blue);">Queue-Times</a>, and <a href="https://www.thrill-data.com" target="_blank" style="color:var(--mid-blue);">Thrill-Data</a>. The models, techniques, and predictions are entirely our own.</p>
+            <p class="author-sig">Written by Fred Hazelton — independent theme park data analyst, former TouringPlans statistician, and the person behind <a href="https://hazeydata.ai">hazeydata.ai</a>.</p>
+        </article>
+
+        <!-- Prev / Next -->
+        <div class="blog-nav-arrows">
+            <a href="/theme-park-crowd-report/blog/new-metric.html" class="blog-nav-prev">
+                <span class="blog-nav-label">Previous</span>
+                <span class="blog-nav-title">← A New Metric to Track Theme Park Crowds</span>
+            </a>
+            <a href="/theme-park-crowd-report/blog/orlando-this-week-march-11-2026.html" class="blog-nav-next">
+                <span class="blog-nav-label">Next</span>
+                <span class="blog-nav-title">Orlando Theme Parks This Week: March 11–17 →</span>
+            </a>
+        </div>
+    </div>
+
+    <footer class="blog-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="../../assets/icon.jpg" alt="" class="footer-icon">
+                <span>Theme Park Crowd Report</span>
+            </div>
+            <div class="footer-links">
+                <a href="/">HazeyData Hub</a>
+                <a href="/theme-park-crowd-report/">Home</a>
+                <a href="/theme-park-crowd-report/blog/">Blog</a>
+                <a href="/theme-park-crowd-report/pricing.html">Pricing</a>
+                <a href="/theme-park-crowd-report/bio.html">About</a>
+                <a href="https://discord.gg/2Estr7sbP7" target="_blank">Discord</a>
+                <a href="https://twitter.com/disneystatswhiz" target="_blank">Twitter</a>
+                <a href="mailto:fred@hazeydata.ai">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 hazeydata.ai</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canadian Digital Railway — Sovereign AI Infrastructure, Coast to Coast | HazeyData</title>
+    <meta name="description" content="A coast-to-coast network of locally-owned AI compute nodes — running open-weight models on Canadian soil — connected by federated governance that no single entity controls.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/icon-180.png">
+    <meta name="theme-color" content="#0a1628">
+    <link rel="canonical" href="https://hazeydata.ai/cdr/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hazeydata.ai/cdr/">
+    <meta property="og:title" content="Canadian Digital Railway — Sovereign AI Infrastructure">
+    <meta property="og:description" content="A coast-to-coast network of locally-owned AI compute nodes — running open-weight models on Canadian soil.">
+    <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Canadian Digital Railway — Sovereign AI Infrastructure">
+    <meta name="twitter:description" content="A coast-to-coast network of locally-owned AI compute nodes — running open-weight models on Canadian soil.">
+    <meta name="twitter:image" content="https://hazeydata.ai/assets/banner.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=20260315">
+    <style>
+        .cdr-hero {
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .cdr-hero h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .cdr-hero .subtitle {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        .cdr-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2.5rem 0;
+            flex-wrap: wrap;
+        }
+        .cdr-stat {
+            text-align: center;
+        }
+        .cdr-stat .val {
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            font-weight: 700;
+            color: #C41E3A;
+        }
+        .cdr-stat .lbl {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        .cdr-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        .cdr-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .cdr-section .section-sub {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cdr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .cdr-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.2s;
+        }
+        .cdr-card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(196, 30, 58, 0.3);
+            transform: translateY(-2px);
+        }
+        .cdr-card .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .cdr-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.75rem;
+        }
+        .cdr-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .cdr-quote {
+            background: rgba(196, 30, 58, 0.06);
+            border-left: 4px solid #C41E3A;
+            padding: 1.5rem 2rem;
+            border-radius: 0 12px 12px 0;
+            margin: 2.5rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        .cdr-cta {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .cdr-cta h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .cdr-cta p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cdr-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        .cdr-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .cdr-links a:hover {
+            color: var(--text-secondary);
+            border-color: rgba(196, 30, 58, 0.3);
+        }
+        @media (max-width: 768px) {
+            .cdr-stats { gap: 1.5rem; }
+            .cdr-stat .val { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero cdr-hero">
+        <div class="hero-bg"></div>
+        <nav class="nav">
+            <div class="nav-logo">
+                <a href="/" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;margin-right:0.75rem;">← HazeyData</a>
+                <span class="nav-title">🚂🍁 Canadian Digital Railway</span>
+            </div>
+            <button class="nav-hamburger" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links">
+                <a href="/cdr/">Home</a>
+                <a href="/cdr/blog/">Blog</a>
+                <a href="mailto:fred@hazeydata.ai">Contact</a>
+            </div>
+        </nav>
+        <div class="hero-content">
+            <h1>🚂🍁 The Canadian Digital Railway</h1>
+            <p class="subtitle">Sovereign AI Infrastructure, Coast to Coast</p>
+            <p class="subtitle" style="font-size:1rem;">A coast-to-coast network of locally-owned AI compute nodes — running open-weight models on Canadian soil — connected by federated governance that no single entity controls.</p>
+
+            <div class="cdr-stats">
+                <div class="cdr-stat">
+                    <div class="val">0</div>
+                    <div class="lbl">Canada's top-30<br>supercomputers</div>
+                </div>
+                <div class="cdr-stat">
+                    <div class="val">90%+</div>
+                    <div class="lbl">AI workloads on<br>US infrastructure</div>
+                </div>
+                <div class="cdr-stat">
+                    <div class="val">$2B+</div>
+                    <div class="lbl">Federal AI spending<br>committed since 2024</div>
+                </div>
+            </div>
+
+            <div style="margin-top:2rem;">
+                <a href="/cdr/blog/why-canada-needs-a-digital-railway.html" class="btn btn-primary">Read the Vision →</a>
+                <a href="mailto:fred@hazeydata.ai?subject=Canadian%20Digital%20Railway" class="btn btn-outline" style="margin-left:0.75rem;">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Problem -->
+    <section class="cdr-section">
+        <h2>Canada Has an AI Sovereignty Crisis</h2>
+        <p class="section-sub">Over ninety percent of Canada's AI workloads run through American infrastructure, subject to the US CLOUD Act. We are the only G7 country without a top-30 supercomputer.</p>
+
+        <div class="cdr-quote">
+            "Every time a Canadian hospital uses an AI transcription tool, every time a government department processes documents through a cloud API — that data touches foreign soil. Protected B data. Health data. Indigenous community data. Crossing borders we said it wouldn't cross."
+        </div>
+
+        <div class="cdr-grid">
+            <div class="cdr-card">
+                <div class="card-icon">🏔️</div>
+                <h3>Coast to Coast</h3>
+                <p>A physically distributed network of sovereign AI compute nodes across every province and territory — on Canadian soil, under Canadian law.</p>
+            </div>
+            <div class="cdr-card">
+                <div class="card-icon">🔗</div>
+                <h3>Mesh Connected</h3>
+                <p>Encrypted mesh networking links every station. Intelligent request routing. Federated learning. No central point of failure.</p>
+            </div>
+            <div class="cdr-card">
+                <div class="card-icon">🏛️</div>
+                <h3>Community Governed</h3>
+                <p>Governed by the institutions that use it. Operated on Canadian soil. No data ever leaves the country. No single entity controls the network.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Stations -->
+    <section class="cdr-section" style="border-top: 1px solid var(--border);">
+        <h2>The Stations — Local Sovereign Compute</h2>
+        <p class="section-sub">Each station is a compact, low-power compute unit capable of running frontier-class open-weight AI models locally. No internet connection required for inference.</p>
+
+        <div class="cdr-stats">
+            <div class="cdr-stat">
+                <div class="val">512 GB</div>
+                <div class="lbl">Unified memory<br>Apple Silicon M4 Ultra</div>
+            </div>
+            <div class="cdr-stat">
+                <div class="val">40–80W</div>
+                <div class="lbl">Power consumption<br>Standard outlet</div>
+            </div>
+            <div class="cdr-stat">
+                <div class="val">$6–12K</div>
+                <div class="lbl">Cost per station</div>
+            </div>
+        </div>
+
+        <div class="cdr-grid" style="grid-template-columns: 1fr 1fr;">
+            <div class="cdr-card">
+                <h3>Who Operates Them</h3>
+                <p>Hospitals, First Nations governments, universities, municipal offices, federal departments — each owning their own station, with their data never leaving the building.</p>
+            </div>
+            <div class="cdr-card">
+                <h3>CDR-OS Platform</h3>
+                <p>Connected by CDR-OS — an open-source platform managing AI model deployment, encrypted mesh networking, intelligent request routing, and federated learning. Every line of code is auditable.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cdr-cta" style="border-top: 1px solid var(--border);">
+        <h2>Learn More</h2>
+        <p>The Canadian Digital Railway is in active development. Read the full vision, explore the pitch materials, or get in touch.</p>
+        <div class="cdr-links">
+            <a href="/cdr/blog/why-canada-needs-a-digital-railway.html">📖 Read the Article</a>
+            <a href="/cdr/blog/">📝 CDR Blog</a>
+            <a href="/cdr/pitch.html">📊 Pitch Deck</a>
+            <a href="/cdr/funding-pitch.html">💰 Funding Pitch</a>
+            <a href="/cdr/pilot-pitch.html">🧪 Pilot Pitch</a>
+            <a href="mailto:fred@hazeydata.ai?subject=Canadian%20Digital%20Railway">✉️ Contact</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid var(--border); padding: 2rem; text-align: center;">
+        <div style="display:flex; justify-content:center; gap:1.5rem; margin-bottom:1rem;">
+            <a href="/" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;">HazeyData Hub</a>
+            <a href="/cdr/" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;">CDR Home</a>
+            <a href="/cdr/blog/" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;">Blog</a>
+            <a href="mailto:fred@hazeydata.ai" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;">Contact</a>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.8rem;">© 2026 HazeyData — Canadian Digital Railway</p>
+    </footer>
+</body>
+</html>

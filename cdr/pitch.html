@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Canadian Digital Railway 🚂🍁 — Sovereign AI Infrastructure, Coast to Coast | hazeydata.ai</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap');
+
+  :root {
+    /* Railway-inspired palette */
+    --rail-charcoal: #1C1C1E;
+    --rail-charcoal-mid: #2C2C2E;
+    --rail-slate: #2A3240;
+    --rail-slate-light: #3A4A5C;
+    --rail-slate-lighter: #4E6278;
+    --rail-white: #FFFFFF;
+    --rail-grey-light: #F8F8F6;
+    --rail-grey: #EEE;
+    --rail-grey-mid: #6C757D;
+    --rail-grey-dark: #333333;
+    --rail-black: #141416;
+    /* Canadian accents */
+    --maple-red: #C41E3A;
+    --maple-red-dark: #9B1B30;
+    --accent-gold: #C8973E;
+    --accent-gold-light: #E4BE6A;
+    --accent-warm: #D4A84B;
+    --accent-teal: #2A8E7F;
+    --accent-green: #2E7D32;
+    --maple: #C41E3A;
+    --bg-warm: #FAF9F6;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--rail-charcoal);
+    color: var(--rail-grey-dark);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Language toggle ── */
+  [data-lang="fr"] { display: none !important; }
+  body.lang-fr [data-lang="en"] { display: none !important; }
+  body.lang-fr [data-lang="fr"] { display: revert !important; }
+  body.lang-fr .flow[data-lang="fr"] { display: flex !important; }
+  body.lang-fr .two-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
+  body.lang-fr .three-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr; }
+  body.lang-fr .four-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr 1fr; }
+  body.lang-fr .stat-row[data-lang="fr"] { display: flex !important; }
+
+  .lang-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lang-btn {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    border: none;
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active {
+    background: var(--maple-red);
+    color: white;
+  }
+
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* ── Slides ── */
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 100px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  /* Slide themes */
+  .slide-cover {
+    background: linear-gradient(160deg, var(--rail-black) 0%, var(--rail-charcoal) 40%, var(--rail-slate) 100%);
+    color: var(--rail-white);
+    text-align: center;
+  }
+  .slide-white {
+    background: var(--rail-white);
+    color: var(--rail-grey-dark);
+  }
+  .slide-warm {
+    background: var(--bg-warm);
+    color: var(--rail-grey-dark);
+  }
+  .slide-blue {
+    background: linear-gradient(160deg, var(--rail-slate) 0%, var(--rail-slate-light) 100%);
+    color: var(--rail-white);
+  }
+  .slide-dark {
+    background: linear-gradient(160deg, var(--rail-black) 0%, var(--rail-charcoal) 100%);
+    color: var(--rail-white);
+  }
+  .slide-accent {
+    background: linear-gradient(160deg, var(--rail-charcoal) 0%, var(--rail-slate) 100%);
+    color: var(--rail-white);
+  }
+
+  /* ── Typography ── */
+  h1 {
+    font-family: 'Lato', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-family: 'Lato', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 1.35rem;
+    font-weight: 300;
+    opacity: 0.85;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  .small-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+    margin-bottom: 16px;
+  }
+
+  /* ── Red top bar ── */
+  .gc-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--maple-red);
+  }
+
+  /* ── Logo area ── */
+  .logo-mark {
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    font-size: 3.6rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .logo-mark .maple {
+    color: var(--maple);
+    margin-left: 8px;
+    font-style: normal;
+  }
+  .logo-tagline {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 6px;
+  }
+  .logo-tagline-fr {
+    font-size: 0.95rem;
+    font-weight: 300;
+    font-style: italic;
+    opacity: 0.5;
+    margin-bottom: 40px;
+  }
+
+  /* ── Content containers ── */
+  .content-box {
+    max-width: 960px;
+    width: 100%;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    max-width: 1050px;
+    width: 100%;
+  }
+
+  .four-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 24px;
+    max-width: 1100px;
+    width: 100%;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--rail-white);
+    border-radius: 8px;
+    padding: 32px 28px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--maple-red);
+  }
+  .card h3 { color: var(--rail-slate); }
+  .card p { font-size: 0.95rem; line-height: 1.65; color: var(--rail-grey-mid); }
+
+  .card-dark {
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 32px 28px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 4px solid var(--accent-gold);
+  }
+  .card-dark h3 { color: var(--accent-gold-light); }
+  .card-dark p { font-size: 0.95rem; line-height: 1.65; opacity: 0.8; }
+
+  /* ── Stat blocks ── */
+  .stat-row {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 32px 0;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-number {
+    font-family: 'Lato', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--maple-red);
+    line-height: 1;
+  }
+  .stat-number.white { color: var(--rail-white); }
+  .stat-number.gold { color: var(--accent-gold); }
+  .stat-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 8px;
+    opacity: 0.7;
+  }
+
+  /* ── Quote block ── */
+  .quote-block {
+    border-left: 4px solid var(--accent-gold);
+    padding: 24px 32px;
+    margin: 24px 0;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    font-style: italic;
+    opacity: 0.9;
+    max-width: 800px;
+  }
+  .quote-source {
+    font-style: normal;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0.6;
+    margin-top: 12px;
+    display: block;
+  }
+
+  /* ── Flow diagram ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 36px 0;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .flow-step {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 16px 14px;
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+    max-width: 170px;
+  }
+  .flow-step .flow-icon { font-size: 1.8rem; margin-bottom: 6px; }
+  .flow-step .flow-label { font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
+  .flow-step .flow-desc { font-size: 0.7rem; opacity: 0.6; margin-top: 4px; }
+  .flow-arrow {
+    font-size: 1.3rem;
+    opacity: 0.4;
+    margin: 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* ── Gap list ── */
+  .gap-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .gap-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--maple-red);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .gap-icon.green { background: var(--accent-green); }
+  .gap-icon.gold { background: var(--accent-gold); }
+  .gap-text h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--rail-slate);
+  }
+  .gap-text p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--rail-grey-mid);
+  }
+
+  /* ── Revenue table ── */
+  .rev-table {
+    width: 100%;
+    max-width: 700px;
+    border-collapse: collapse;
+    margin: 24px 0;
+  }
+  .rev-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--rail-slate);
+    color: var(--rail-slate);
+  }
+  .rev-table td {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--rail-grey);
+  }
+  .rev-table tr:last-child td {
+    border-bottom: 2px solid var(--rail-slate);
+    font-weight: 700;
+  }
+
+  /* ── Pill badges ── */
+  .pill {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .pill-red { background: rgba(196,30,58,0.15); color: var(--maple-red); }
+  .pill-gold { background: rgba(200,151,62,0.15); color: var(--accent-gold); }
+  .pill-green { background: rgba(46,125,50,0.15); color: var(--accent-green); }
+  .pill-blue { background: rgba(58,74,92,0.15); color: var(--rail-slate-light); }
+
+  /* ── Divider ── */
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: var(--maple-red);
+    margin: 24px 0;
+    border-radius: 2px;
+  }
+  .divider.gold { background: var(--accent-gold); }
+  .divider.center { margin: 24px auto; }
+
+  /* ── Navigation ── */
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 52px;
+    background: rgba(20,20,22,0.92);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 100;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-brand {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--rail-white);
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+  }
+  .nav-center {
+    display: flex;
+    gap: 6px;
+  }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .nav-dot.active { background: var(--maple-red); transform: scale(1.3); }
+  .nav-controls {
+    display: flex;
+    gap: 8px;
+  }
+  .nav-btn {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+    color: var(--rail-white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.1); }
+  .slide-counter {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+    min-width: 40px;
+    text-align: center;
+    line-height: 36px;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .slide.active .anim-1 { animation: fadeInUp 0.6s 0.1s both; }
+  .slide.active .anim-2 { animation: fadeInUp 0.6s 0.25s both; }
+  .slide.active .anim-3 { animation: fadeInUp 0.6s 0.4s both; }
+  .slide.active .anim-4 { animation: fadeInUp 0.6s 0.55s both; }
+  .slide.active .anim-5 { animation: fadeInUp 0.6s 0.7s both; }
+
+  /* ── Responsive: Tablet ── */
+  @media (max-width: 1024px) {
+    .slide { padding: 50px 48px; }
+    h1 { font-size: 2.6rem; }
+    h2 { font-size: 1.9rem; }
+    .logo-mark { font-size: 2.8rem; }
+    .content-box { max-width: 100%; }
+    .two-col { gap: 32px; }
+    .three-col { gap: 24px; }
+    .four-col { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .flow-step { padding: 14px 10px; }
+    .flow-step .flow-label { font-size: 0.75rem; }
+    .flow-step .flow-desc { font-size: 0.65rem; }
+    .flow-arrow { font-size: 1.1rem; margin: 0 4px; }
+    .section-num { font-size: 4rem; left: 40px; }
+    .quote-block { font-size: 1rem; padding: 20px 24px; }
+  }
+
+  /* ── Responsive: Small Tablet / Large Phone ── */
+  @media (max-width: 768px) {
+    .slide { padding: 40px 28px; padding-bottom: 70px; overflow-y: auto; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.1rem; }
+    .logo-mark { font-size: 2.2rem; }
+    .subtitle { font-size: 1rem; }
+    .small-label { font-size: 0.7rem; }
+    .two-col { grid-template-columns: 1fr; gap: 24px; }
+    .three-col { grid-template-columns: 1fr; gap: 20px; }
+    .four-col { grid-template-columns: 1fr; gap: 16px; }
+    .stat-number { font-size: 2.2rem; }
+    .stat-row { gap: 24px; flex-direction: column; align-items: center; }
+    .stat { min-width: 200px; }
+    .flow {
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+    .flow-step {
+      flex: 0 0 auto;
+      min-width: 100px;
+      max-width: 130px;
+      padding: 12px 10px;
+    }
+    .flow-arrow { font-size: 1rem; margin: 0 2px; }
+    .quote-block { font-size: 0.95rem; padding: 16px 20px; }
+    .card, .card-dark { padding: 24px 20px; }
+    .section-num { font-size: 3rem; left: 24px; top: 28px; }
+    .confidential { font-size: 0.6rem; right: 20px; top: 16px; }
+    .nav-bar { padding: 0 16px; }
+    .nav-brand { font-size: 0.75rem; }
+    .rev-table td, .rev-table th { padding: 10px 10px; font-size: 0.85rem; }
+    .gap-item { gap: 12px; }
+    .gap-icon { width: 30px; height: 30px; font-size: 0.75rem; }
+  }
+
+  /* ── Responsive: Phone ── */
+  @media (max-width: 480px) {
+    .slide { padding: 32px 20px; padding-bottom: 70px; }
+    h1 { font-size: 1.65rem; }
+    h2 { font-size: 1.3rem; }
+    .logo-mark { font-size: 1.8rem; }
+    .logo-tagline { font-size: 0.85rem; }
+    .logo-tagline-fr { font-size: 0.75rem; }
+    .subtitle { font-size: 0.9rem; }
+    .stat-number { font-size: 1.9rem; }
+    .stat-label { font-size: 0.78rem; }
+    .stat-row { gap: 20px; }
+    .flow {
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .flow-step {
+      max-width: 220px;
+      width: 100%;
+      padding: 14px 16px;
+    }
+    .flow-step .flow-label { font-size: 0.82rem; }
+    .flow-step .flow-desc { font-size: 0.72rem; }
+    .flow-arrow {
+      transform: rotate(90deg);
+      font-size: 1rem;
+      margin: 2px 0;
+    }
+    .two-col, .three-col, .four-col { gap: 16px; }
+    .four-col { grid-template-columns: 1fr; }
+    .card, .card-dark { padding: 20px 16px; }
+    .card p, .card-dark p { font-size: 0.88rem; }
+    .check-list li { font-size: 0.9rem; padding-left: 28px; }
+    .quote-block { font-size: 0.88rem; padding: 14px 16px; margin: 16px 0; }
+    .quote-source { font-size: 0.72rem; }
+    .section-num { display: none; }
+    .confidential { font-size: 0.55rem; padding: 3px 8px; }
+    .divider { width: 40px; }
+    .pill { font-size: 0.68rem; padding: 3px 10px; }
+    .nav-dot { width: 6px; height: 6px; }
+    .nav-center { gap: 4px; }
+    .slide-counter { font-size: 0.7rem; }
+    .rev-table td, .rev-table th { padding: 8px 6px; font-size: 0.78rem; }
+    .gap-text h4 { font-size: 0.9rem; }
+    .gap-text p { font-size: 0.82rem; }
+  }
+
+  /* ── Railway stripe decoration ── */
+  .flag-stripe {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--maple-red) 0%, var(--maple-red) 25%, var(--accent-gold) 25%, var(--accent-gold) 75%, var(--maple-red) 75%, var(--maple-red) 100%);
+  }
+
+  /* ── Confidential watermark ── */
+  .confidential {
+    position: absolute;
+    top: 20px;
+    right: 32px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.35;
+    border: 1px solid currentColor;
+    padding: 4px 12px;
+    border-radius: 3px;
+  }
+
+  /* ── Check list ── */
+  .check-list {
+    list-style: none;
+    padding: 0;
+  }
+  .check-list li {
+    padding: 10px 0;
+    padding-left: 32px;
+    position: relative;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent-green);
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .check-list.white-checks li::before { color: var(--accent-gold); }
+
+  /* ── Section number ── */
+  .section-num {
+    font-family: 'Lato', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    opacity: 0.06;
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    line-height: 1;
+  }
+  .section-num.light { opacity: 0.08; color: var(--rail-white); }
+
+  /* ── Comparison table ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+  }
+  .compare-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 12px 16px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    color: var(--accent-gold-light);
+  }
+  .compare-table td {
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    opacity: 0.85;
+  }
+  .compare-table tr:last-child td {
+    border-bottom: 2px solid var(--accent-gold);
+    font-weight: 700;
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 1 — COVER -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-cover active" data-slide="0">
+    <div class="flag-stripe"></div>
+    <span class="confidential" data-lang="en">Private — Not for Distribution</span>
+    <span class="confidential" data-lang="fr">Privé — Ne pas distribuer</span>
+
+    <div class="anim-1" style="font-size:4rem; margin-bottom:16px;">🚂🍁</div>
+    <div class="anim-1 logo-mark">The Canadian Digital Railway</div>
+    <div class="anim-2 logo-tagline" data-lang="en">Sovereign AI Infrastructure, Coast to Coast</div>
+    <div class="anim-2 logo-tagline" data-lang="fr">Infrastructure IA souveraine, d'un océan à l'autre</div>
+    <div class="anim-2 logo-tagline-fr" data-lang="en">Infrastructure IA souveraine, d'un océan à l'autre</div>
+    <div class="anim-2 logo-tagline-fr" data-lang="fr">Sovereign AI Infrastructure, Coast to Coast</div>
+
+    <div class="divider gold center anim-3"></div>
+
+    <p class="subtitle anim-3" data-lang="en" style="text-align:center; max-width:700px;">
+      A coast-to-coast network of locally-owned AI compute nodes — running open-weight models on Canadian soil — connected by federated governance that no single entity controls.
+    </p>
+    <p class="subtitle anim-3" data-lang="fr" style="text-align:center; max-width:700px;">
+      Un réseau d'un océan à l'autre de nœuds de calcul IA détenus localement — exécutant des modèles ouverts sur le sol canadien — connectés par une gouvernance fédérée qu'aucune entité ne contrôle seule.
+    </p>
+    <p class="anim-4" style="font-size:0.85rem; opacity:0.4; margin-top:40px;">
+      hazeydata.ai &nbsp;|&nbsp; <span data-lang="en">2026</span><span data-lang="fr">2026</span>
+    </p>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 2 — THE LANDSCAPE -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="1">
+    <div class="gc-bar"></div>
+    <div class="section-num">01</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">The Landscape</div>
+      <div class="small-label anim-1" data-lang="fr">Le contexte</div>
+      <h2 class="anim-1" data-lang="en">Canada Has an AI Sovereignty Crisis</h2>
+      <h2 class="anim-1" data-lang="fr">Le Canada traverse une crise de souveraineté en IA</h2>
+      <div class="divider anim-2"></div>
+
+      <div class="stat-row anim-2" data-lang="en">
+        <div class="stat">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Top-30 supercomputers<br>Only G7 nation without one</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">90%+</div>
+          <div class="stat-label">AI workloads on<br>US infrastructure</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">$2B+</div>
+          <div class="stat-label">Federal AI spending<br>committed since 2024</div>
+        </div>
+      </div>
+      <div class="stat-row anim-2" data-lang="fr">
+        <div class="stat">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Superordinateurs dans le top 30<br>Seul pays du G7 sans un</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">90 %+</div>
+          <div class="stat-label">Charges de travail IA sur<br>l'infrastructure américaine</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">2 G$+</div>
+          <div class="stat-label">Dépenses fédérales en IA<br>engagées depuis 2024</div>
+        </div>
+      </div>
+
+      <div class="quote-block anim-3" data-lang="en">
+        "Every time a Canadian hospital uses an AI transcription tool, every time a government department processes documents through a cloud API — that data touches foreign soil. Protected B data. Health data. Indigenous community data. Crossing borders we said it wouldn't cross."
+        <span class="quote-source">— The reality of Canadian AI in 2026</span>
+      </div>
+      <div class="quote-block anim-3" data-lang="fr">
+        « Chaque fois qu'un hôpital canadien utilise un outil de transcription IA, chaque fois qu'un ministère traite des documents via une API infonuagique — ces données touchent un sol étranger. Données Protégé B. Données de santé. Données de communautés autochtones. Traversant des frontières qu'on avait promis de ne pas franchir. »
+        <span class="quote-source">— La réalité de l'IA canadienne en 2026</span>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:0.95rem; color: var(--rail-grey-mid); line-height:1.7; max-width:760px;">
+        Over ninety percent of Canada's AI workloads run through American infrastructure, subject to the US CLOUD Act. We are the only G7 country without a top-30 supercomputer. The reports all say the same thing: Canada needs sovereign AI infrastructure.
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.95rem; color: var(--rail-grey-mid); line-height:1.7; max-width:760px;">
+        Plus de quatre-vingt-dix pour cent des charges de travail IA du Canada passent par l'infrastructure américaine, assujettie au US CLOUD Act. Nous sommes le seul pays du G7 sans superordinateur dans le top 30. Tous les rapports disent la même chose : le Canada a besoin d'une infrastructure IA souveraine.
+      </p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 3 — THE GAP -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-warm" data-slide="2">
+    <div class="gc-bar"></div>
+    <div class="section-num">02</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">The Gap</div>
+      <div class="small-label anim-1" data-lang="fr">La lacune</div>
+      <h2 class="anim-1" data-lang="en">The Funding Exists — The Last Mile Is Missing</h2>
+      <h2 class="anim-1" data-lang="fr">Le financement existe — le dernier kilomètre manque</h2>
+      <div class="divider anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1.05rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:28px; max-width:760px;">
+        Canada has committed billions to sovereign compute. The data centres, the GPU clusters, the raw capacity — that foundation is being built. <strong>But none of that funding addresses who builds the tools that actually run on that infrastructure.</strong>
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1.05rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:28px; max-width:760px;">
+        Le Canada a engagé des milliards pour le calcul souverain. Les centres de données, les grappes GPU, la capacité brute — cette fondation est en construction. <strong>Mais aucun de ces investissements n'adresse qui construit les outils qui fonctionnent réellement sur cette infrastructure.</strong>
+      </p>
+
+      <div class="two-col anim-3">
+        <div>
+          <h3 data-lang="en" style="color: var(--rail-slate); margin-bottom:20px;">What's Funded ✓</h3>
+          <h3 data-lang="fr" style="color: var(--rail-slate); margin-bottom:20px;">Ce qui est financé ✓</h3>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>$1B — Sovereign Compute</h4>
+              <p>National data centre infrastructure and GPU capacity for sovereign AI processing</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>1 G$ — Calcul souverain</h4>
+              <p>Infrastructure nationale de centres de données et capacité GPU pour le traitement IA souverain</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>$700M — AI Compute Challenge</h4>
+              <p>Funding for sovereign AI data centres through ISED competitive programs</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>700 M$ — Défi du calcul IA</h4>
+              <p>Financement pour les centres de données IA souverains via les programmes compétitifs d'ISDE</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>$300M — Access Fund</h4>
+              <p>Compute access for SMEs, researchers, and innovators across Canada</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon green">✓</div>
+            <div class="gap-text">
+              <h4>300 M$ — Fonds d'accès</h4>
+              <p>Accès au calcul pour les PME, chercheurs et innovateurs à travers le Canada</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 data-lang="en" style="color: var(--maple-red); margin-bottom:20px;">What's Missing ✗</h3>
+          <h3 data-lang="fr" style="color: var(--maple-red); margin-bottom:20px;">Ce qui manque ✗</h3>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon">✗</div>
+            <div class="gap-text">
+              <h4>Local Deployment Tools</h4>
+              <p>Who helps the hospital in Medicine Hat use sovereign AI for clinical transcription?</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon">✗</div>
+            <div class="gap-text">
+              <h4>Outils de déploiement local</h4>
+              <p>Qui aide l'hôpital de Medicine Hat à utiliser l'IA souveraine pour la transcription clinique?</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon">✗</div>
+            <div class="gap-text">
+              <h4>Community Sovereignty</h4>
+              <p>Who helps First Nations in Moosonee build language tools on their own terms?</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon">✗</div>
+            <div class="gap-text">
+              <h4>Souveraineté communautaire</h4>
+              <p>Qui aide les Premières Nations à Moosonee à créer des outils linguistiques selon leurs propres conditions?</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon">✗</div>
+            <div class="gap-text">
+              <h4>Distributed Architecture</h4>
+              <p>Who builds the mesh that connects these communities without centralizing control?</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon">✗</div>
+            <div class="gap-text">
+              <h4>Architecture distribuée</h4>
+              <p>Qui construit le réseau maillé qui connecte ces communautés sans centraliser le contrôle?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:1rem; color: var(--rail-grey-dark); margin-top:28px; text-align:center; font-weight:600;">
+        The gap isn't compute. The gap is the last mile — getting sovereign AI capability into the hands of communities that need it.
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:1rem; color: var(--rail-grey-dark); margin-top:28px; text-align:center; font-weight:600;">
+        La lacune n'est pas le calcul. La lacune est le dernier kilomètre — amener la capacité IA souveraine entre les mains des communautés qui en ont besoin.
+      </p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 4 — CENTRALIZATION PROBLEM -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-blue" data-slide="3">
+    <div class="section-num light">03</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en" style="color: var(--accent-gold-light);">The Lesson</div>
+      <div class="small-label anim-1" data-lang="fr" style="color: var(--accent-gold-light);">La leçon</div>
+      <h2 class="anim-1" data-lang="en">The Problem with Centralization</h2>
+      <h2 class="anim-1" data-lang="fr">Le problème de la centralisation</h2>
+      <div class="divider gold anim-2"></div>
+
+      <div class="quote-block anim-2" data-lang="en" style="border-color: rgba(255,255,255,0.3);">
+        "We've seen what happens when we centralize critical infrastructure and hand it to a single vendor. We lived through Phoenix. We're still living through it."
+        <span class="quote-source" style="opacity:0.5;">— A decade of lessons the hard way</span>
+      </div>
+      <div class="quote-block anim-2" data-lang="fr" style="border-color: rgba(255,255,255,0.3);">
+        « Nous avons vu ce qui se passe lorsqu'on centralise l'infrastructure critique et qu'on la confie à un seul fournisseur. Nous avons vécu Phénix. Nous le vivons encore. »
+        <span class="quote-source" style="opacity:0.5;">— Une décennie de leçons apprises à la dure</span>
+      </div>
+
+      <div class="three-col anim-3">
+        <div class="card-dark">
+          <h3 data-lang="en">🏗️ Don't Build a Monolith</h3>
+          <h3 data-lang="fr">🏗️ Ne pas construire un monolithe</h3>
+          <p data-lang="en">A single sovereign cloud operated by a single company is just a Canadian-flavoured version of the same mistake. One failure point takes everything down.</p>
+          <p data-lang="fr">Un seul nuage souverain exploité par une seule entreprise n'est qu'une version canadienne de la même erreur. Un seul point de défaillance fait tout tomber.</p>
+        </div>
+        <div class="card-dark">
+          <h3 data-lang="en">🔒 Don't Force Everyone On</h3>
+          <h3 data-lang="fr">🔒 Ne pas tout forcer d'un coup</h3>
+          <p data-lang="en">Phoenix tried to migrate everyone at once. If a centralized AI provider gets acquired, raises prices, or makes a mistake — the whole country feels it.</p>
+          <p data-lang="fr">Phénix a tenté de migrer tout le monde en même temps. Si un fournisseur IA centralisé est acquis, augmente ses prix ou fait une erreur — tout le pays le ressent.</p>
+        </div>
+        <div class="card-dark">
+          <h3 data-lang="en">🤝 Don't Trust One Entity</h3>
+          <h3 data-lang="fr">🤝 Ne pas faire confiance à une seule entité</h3>
+          <p data-lang="en">No single company should control all of Canada's sovereign AI processing. Not a US company. Not a Canadian company. Not even us.</p>
+          <p data-lang="fr">Aucune entreprise ne devrait contrôler tout le traitement IA souverain du Canada. Ni une entreprise américaine. Ni une entreprise canadienne. Pas même nous.</p>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:1.1rem; opacity:0.9; margin-top:36px; text-align:center; max-width:700px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        <strong>We need something distributed. Something resilient.<br>Something that no single entity controls.</strong>
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:1.1rem; opacity:0.9; margin-top:36px; text-align:center; max-width:700px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        <strong>Nous avons besoin de quelque chose de distribué. De résilient.<br>Que personne ne contrôle seul.</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 5 — INTRODUCING CDR -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="4">
+    <div class="gc-bar"></div>
+    <div class="section-num">04</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en">The Vision</div>
+      <div class="small-label anim-1" data-lang="fr">La vision</div>
+      <h1 class="anim-1" data-lang="en" style="color: var(--rail-slate);">The Canadian Digital Railway<span style="color:var(--maple);"> 🚂🍁</span></h1>
+      <h1 class="anim-1" data-lang="fr" style="color: var(--rail-slate);">Le Chemin de fer numérique canadien<span style="color:var(--maple);"> 🚂🍁</span></h1>
+      <div class="divider center anim-2"></div>
+
+      <p class="subtitle anim-2" data-lang="en" style="color: var(--rail-grey-dark); max-width:750px; margin: 0 auto 36px;">
+        In 1885, the last spike of the Canadian Pacific Railway was driven at Craigellachie. That railway didn't just move goods — <strong>it made Canada possible.</strong> Every town along the line kept its own identity, its own economy, its own governance — but the railway gave them access to something bigger than themselves.
+      </p>
+      <p class="subtitle anim-2" data-lang="fr" style="color: var(--rail-grey-dark); max-width:750px; margin: 0 auto 36px;">
+        En 1885, le dernier crampon du Chemin de fer Canadien Pacifique a été enfoncé à Craigellachie. Ce chemin de fer n'a pas seulement transporté des marchandises — <strong>il a rendu le Canada possible.</strong> Chaque ville le long de la ligne a gardé son identité, son économie, sa gouvernance — mais le chemin de fer leur a donné accès à quelque chose de plus grand.
+      </p>
+
+      <div class="three-col anim-3" data-lang="en" style="text-align:left; max-width:1050px;">
+        <div class="card">
+          <h3>🏔️ Coast to Coast</h3>
+          <p>A physically distributed network of sovereign AI compute nodes across every province and territory — on Canadian soil, under Canadian law.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-gold);">
+          <h3>🔗 Mesh Connected</h3>
+          <p>Encrypted mesh networking links every station. Intelligent request routing. Federated learning. No central point of failure.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-teal);">
+          <h3>🏛️ Community Governed</h3>
+          <p>Governed by the institutions that use it. Operated on Canadian soil. No data ever leaves the country. No single entity controls the network.</p>
+        </div>
+      </div>
+      <div class="three-col anim-3" data-lang="fr" style="text-align:left; max-width:1050px;">
+        <div class="card">
+          <h3>🏔️ D'un océan à l'autre</h3>
+          <p>Un réseau physiquement distribué de nœuds de calcul IA souverains dans chaque province et territoire — sur le sol canadien, sous la loi canadienne.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-gold);">
+          <h3>🔗 Connecté par réseau maillé</h3>
+          <p>Un réseau maillé chiffré relie chaque station. Routage intelligent des requêtes. Apprentissage fédéré. Aucun point de défaillance central.</p>
+        </div>
+        <div class="card" style="border-left-color: var(--accent-teal);">
+          <h3>🏛️ Gouverné par la communauté</h3>
+          <p>Gouverné par les institutions qui l'utilisent. Exploité sur le sol canadien. Les données ne quittent jamais le pays. Aucune entité ne contrôle le réseau seule.</p>
+        </div>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="font-size:0.95rem; color:var(--rail-grey-mid); margin-top:32px; max-width:700px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        HazeyData builds and maintains the track. <strong>The towns along the line own their own stations.</strong>
+      </p>
+      <p class="anim-4" data-lang="fr" style="font-size:0.95rem; color:var(--rail-grey-mid); margin-top:32px; max-width:700px; margin-left:auto; margin-right:auto; line-height:1.65;">
+        HazeyData construit et entretient la voie ferrée. <strong>Les villes le long de la ligne possèdent leurs propres stations.</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 6 — THE STATIONS -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-accent" data-slide="5">
+    <div class="section-num light">05</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">How It Works</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Comment ça fonctionne</div>
+      <h2 class="anim-1" data-lang="en">The Stations — Local Sovereign Compute</h2>
+      <h2 class="anim-1" data-lang="fr">Les stations — calcul souverain local</h2>
+      <div class="divider gold anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:0.95rem; opacity:0.8; margin-bottom:24px; text-align:center; max-width:700px; margin-left:auto; margin-right:auto;">
+        Each station is a compact, low-power compute unit capable of running frontier-class open-weight AI models locally. No internet connection required for inference. No API calls to foreign servers.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:0.95rem; opacity:0.8; margin-bottom:24px; text-align:center; max-width:700px; margin-left:auto; margin-right:auto;">
+        Chaque station est une unité de calcul compacte et peu énergivore capable d'exécuter des modèles IA de pointe à poids ouverts localement. Aucune connexion Internet requise pour l'inférence. Aucun appel API vers des serveurs étrangers.
+      </p>
+
+      <div class="stat-row anim-3" data-lang="en">
+        <div class="stat">
+          <div class="stat-number gold">512 GB</div>
+          <div class="stat-label">Unified memory<br>Apple Silicon M4 Ultra</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number gold">40–80W</div>
+          <div class="stat-label">Power consumption<br>Standard outlet, no server room</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number gold">$6–12K</div>
+          <div class="stat-label">Cost per station<br>A fraction of data centre rack cost</div>
+        </div>
+      </div>
+      <div class="stat-row anim-3" data-lang="fr">
+        <div class="stat">
+          <div class="stat-number gold">512 Go</div>
+          <div class="stat-label">Mémoire unifiée<br>Apple Silicon M4 Ultra</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number gold">40–80W</div>
+          <div class="stat-label">Consommation électrique<br>Prise standard, pas de salle serveur</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number gold">6–12K$</div>
+          <div class="stat-label">Coût par station<br>Une fraction du coût d'un rack de centre de données</div>
+        </div>
+      </div>
+
+      <div class="two-col anim-4" data-lang="en" style="margin-top:32px;">
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">What Each Station Does</h3>
+          <ul class="check-list white-checks" style="opacity:0.85;">
+            <li>Runs frontier-class open-weight AI models locally</li>
+            <li>Processes Protected B data without it leaving the building</li>
+            <li>Operates offline — no internet required for inference</li>
+            <li>Manageable by a local IT department</li>
+            <li>Owned by the institution that operates it, not HazeyData</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">Who Operates Them</h3>
+          <ul class="check-list white-checks" style="opacity:0.85;">
+            <li>Hospitals — clinical transcription, diagnostic assistance</li>
+            <li>First Nations governments — OCAP-compliant language and data tools</li>
+            <li>Universities — federated research and local AI capabilities</li>
+            <li>Municipal offices — permit processing, citizen services</li>
+            <li>Federal departments — sovereign document processing</li>
+          </ul>
+        </div>
+      </div>
+      <div class="two-col anim-4" data-lang="fr" style="margin-top:32px;">
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">Ce que chaque station fait</h3>
+          <ul class="check-list white-checks" style="opacity:0.85;">
+            <li>Exécute des modèles IA de pointe à poids ouverts localement</li>
+            <li>Traite les données Protégé B sans qu'elles quittent l'édifice</li>
+            <li>Fonctionne hors ligne — pas d'Internet requis pour l'inférence</li>
+            <li>Gérable par une équipe TI locale</li>
+            <li>Propriété de l'institution qui l'exploite, pas de HazeyData</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color:var(--accent-gold-light); margin-bottom:16px;">Qui les exploite</h3>
+          <ul class="check-list white-checks" style="opacity:0.85;">
+            <li>Hôpitaux — transcription clinique, aide au diagnostic</li>
+            <li>Gouvernements des Premières Nations — outils linguistiques et de données conformes aux PCAP</li>
+            <li>Universités — recherche fédérée et capacités IA locales</li>
+            <li>Bureaux municipaux — traitement de permis, services aux citoyens</li>
+            <li>Ministères fédéraux — traitement souverain de documents</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 7 — THE TRACK (CDR-OS) -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-white" data-slide="6">
+    <div class="gc-bar"></div>
+    <div class="section-num">06</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">The Track</div>
+      <div class="small-label anim-1" data-lang="fr">La voie</div>
+      <h2 class="anim-1" data-lang="en">CDR-OS — The Open-Source Platform</h2>
+      <h2 class="anim-1" data-lang="fr">CDR-OS — La plateforme à code ouvert</h2>
+      <div class="divider anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:24px; max-width:760px;">
+        The stations are connected by CDR-OS — an open-source software platform that manages the entire network. Every line of code is auditable by any participating institution.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:24px; max-width:760px;">
+        Les stations sont connectées par CDR-OS — une plateforme logicielle à code ouvert qui gère l'ensemble du réseau. Chaque ligne de code est vérifiable par toute institution participante.
+      </p>
+
+      <div class="flow anim-3" data-lang="en">
+        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+          <div class="flow-icon">🏥</div>
+          <div class="flow-label">Station A</div>
+          <div class="flow-desc">Hospital in Saskatoon</div>
+        </div>
+        <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.12); border-color:var(--accent-gold);">
+          <div class="flow-icon">🛤️</div>
+          <div class="flow-label">CDR-OS Mesh</div>
+          <div class="flow-desc">Encrypted WireGuard/mTLS</div>
+        </div>
+        <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
+        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+          <div class="flow-icon">🏛️</div>
+          <div class="flow-label">Station B</div>
+          <div class="flow-desc">First Nation in Moosonee</div>
+        </div>
+        <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
+        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+          <div class="flow-icon">🎓</div>
+          <div class="flow-label">Station C</div>
+          <div class="flow-desc">University in Halifax</div>
+        </div>
+        <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
+        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+          <div class="flow-icon">🏢</div>
+          <div class="flow-label">Station D</div>
+          <div class="flow-desc">Federal department</div>
+        </div>
+      </div>
+      <div class="flow anim-3" data-lang="fr">
+        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+          <div class="flow-icon">🏥</div>
+          <div class="flow-label">Station A</div>
+          <div class="flow-desc">Hôpital à Saskatoon</div>
+        </div>
+        <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.12); border-color:var(--accent-gold);">
+          <div class="flow-icon">🛤️</div>
+          <div class="flow-label">Réseau CDR-OS</div>
+          <div class="flow-desc">Chiffré WireGuard/mTLS</div>
+        </div>
+        <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
+        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+          <div class="flow-icon">🏛️</div>
+          <div class="flow-label">Station B</div>
+          <div class="flow-desc">Première Nation à Moosonee</div>
+        </div>
+        <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
+        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+          <div class="flow-icon">🎓</div>
+          <div class="flow-label">Station C</div>
+          <div class="flow-desc">Université à Halifax</div>
+        </div>
+        <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
+        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+          <div class="flow-icon">🏢</div>
+          <div class="flow-label">Station D</div>
+          <div class="flow-desc">Ministère fédéral</div>
+        </div>
+      </div>
+
+      <div class="two-col anim-4">
+        <div>
+          <h3 data-lang="en" style="color: var(--rail-slate); margin-bottom:16px;">Platform Capabilities</h3>
+          <h3 data-lang="fr" style="color: var(--rail-slate); margin-bottom:16px;">Capacités de la plateforme</h3>
+          <ul class="check-list" data-lang="en">
+            <li>Pre-configured AI model management — download, update, swap</li>
+            <li>Local inference engine optimized for Apple Silicon</li>
+            <li>Encrypted mesh networking between all nodes</li>
+            <li>Intelligent request routing to nearest available capacity</li>
+            <li>Federated learning — share improvements, not raw data</li>
+          </ul>
+          <ul class="check-list" data-lang="fr">
+            <li>Gestion préconfigurée des modèles IA — téléchargement, mise à jour, échange</li>
+            <li>Moteur d'inférence local optimisé pour Apple Silicon</li>
+            <li>Réseau maillé chiffré entre tous les nœuds</li>
+            <li>Routage intelligent des requêtes vers la capacité disponible la plus proche</li>
+            <li>Apprentissage fédéré — partager les améliorations, pas les données brutes</li>
+          </ul>
+        </div>
+        <div>
+          <h3 data-lang="en" style="color: var(--rail-slate); margin-bottom:16px;">The Critical Principle</h3>
+          <h3 data-lang="fr" style="color: var(--rail-slate); margin-bottom:16px;">Le principe critique</h3>
+          <div data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:white;">
+            <p style="font-size:1rem; line-height:1.7; opacity:0.9;">
+              <strong style="color:var(--accent-gold-light);">The institution has root access. We don't.</strong><br><br>
+              We can't SSH into it. We don't have a backdoor. The software is open-source precisely so that no one has to take our word for it. They can read every line.
+            </p>
+            <p style="font-size:0.82rem; opacity:0.5; margin-top:16px;">Updates delivered via signed repository — same model as Ubuntu and Red Hat Linux distributions.</p>
+          </div>
+          <div data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:white;">
+            <p style="font-size:1rem; line-height:1.7; opacity:0.9;">
+              <strong style="color:var(--accent-gold-light);">L'institution a l'accès root. Pas nous.</strong><br><br>
+              Nous ne pouvons pas nous y connecter par SSH. Nous n'avons pas de porte dérobée. Le logiciel est à code ouvert précisément pour que personne n'ait à nous croire sur parole. Ils peuvent lire chaque ligne.
+            </p>
+            <p style="font-size:0.82rem; opacity:0.5; margin-top:16px;">Mises à jour livrées via un dépôt signé — même modèle que les distributions Linux Ubuntu et Red Hat.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 8 — GOVERNANCE -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-dark" data-slide="7">
+    <div class="section-num light">07</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Governance</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Gouvernance</div>
+      <h2 class="anim-1" data-lang="en">Distributed Trust — No Single Entity Controls the Network</h2>
+      <h2 class="anim-1" data-lang="fr">Confiance distribuée — aucune entité ne contrôle le réseau seule</h2>
+      <div class="divider gold anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1rem; opacity:0.8; margin-bottom:28px; max-width:720px; margin-left:auto; margin-right:auto; text-align:center; line-height:1.7;">
+        Not even us. Each station is owned by the institution that operates it. The hospital owns their node. The First Nations government owns theirs. The university owns theirs.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1rem; opacity:0.8; margin-bottom:28px; max-width:720px; margin-left:auto; margin-right:auto; text-align:center; line-height:1.7;">
+        Pas même nous. Chaque station est la propriété de l'institution qui l'exploite. L'hôpital possède son nœud. Le gouvernement des Premières Nations possède le sien. L'université possède le sien.
+      </p>
+
+      <div class="three-col anim-3">
+        <div class="card-dark">
+          <h3 data-lang="en">🔐 Cryptographic Verification</h3>
+          <h3 data-lang="fr">🔐 Vérification cryptographique</h3>
+          <p data-lang="en">Every data access, every model update, every inference request is logged in a multi-party audit chain that no single operator can tamper with.</p>
+          <p data-lang="fr">Chaque accès aux données, chaque mise à jour de modèle, chaque requête d'inférence est enregistré dans une chaîne d'audit multipartite qu'aucun opérateur ne peut altérer seul.</p>
+        </div>
+        <div class="card-dark">
+          <h3 data-lang="en">🏛️ Governance Council</h3>
+          <h3 data-lang="fr">🏛️ Conseil de gouvernance</h3>
+          <p data-lang="en">Participating institutions collectively set the rules for the network. This isn't a product you buy from a company. It's infrastructure you participate in as a community.</p>
+          <p data-lang="fr">Les institutions participantes établissent collectivement les règles du réseau. Ce n'est pas un produit qu'on achète d'une entreprise. C'est une infrastructure à laquelle on participe en tant que communauté.</p>
+        </div>
+        <div class="card-dark">
+          <h3 data-lang="en">🛡️ Data Isolation</h3>
+          <h3 data-lang="fr">🛡️ Isolation des données</h3>
+          <p data-lang="en">The hospital in Saskatoon's health data never touches the node in Halifax — unless explicitly authorized by Saskatoon. Transparent, verifiable record of all access.</p>
+          <p data-lang="fr">Les données de santé de l'hôpital de Saskatoon ne touchent jamais le nœud d'Halifax — sauf autorisation explicite de Saskatoon. Registre transparent et vérifiable de tous les accès.</p>
+        </div>
+      </div>
+
+      <div class="anim-4" style="background: rgba(200,151,62,0.1); border: 1px solid rgba(200,151,62,0.3); border-radius:12px; padding:28px 36px; margin-top:32px; max-width:800px; margin-left:auto; margin-right:auto; text-align:center;">
+        <h3 data-lang="en" style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.1rem;">Cryptographic Attestation</h3>
+        <h3 data-lang="fr" style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.1rem;">Attestation cryptographique</h3>
+        <p data-lang="en" style="font-size:0.95rem; opacity:0.85; line-height:1.7;">
+          Each node can prove what software it's running and that data hasn't left the network. Full audit logging — tamper-evident, append-only. Every participating institution can verify the integrity of the entire system.
+        </p>
+        <p data-lang="fr" style="font-size:0.95rem; opacity:0.85; line-height:1.7;">
+          Chaque nœud peut prouver quel logiciel il exécute et que les données n'ont pas quitté le réseau. Journalisation complète — inaltérable, en ajout seulement. Chaque institution participante peut vérifier l'intégrité de l'ensemble du système.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 9 — TERRY -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-warm" data-slide="8">
+    <div class="gc-bar"></div>
+    <div class="section-num">08</div>
+    <div class="content-box">
+      <div class="small-label anim-1" data-lang="en">The Station Agent</div>
+      <div class="small-label anim-1" data-lang="fr">L'agent de station</div>
+      <h2 class="anim-1" data-lang="en">Meet Terry 🏃</h2>
+      <h2 class="anim-1" data-lang="fr">Voici Terry 🏃</h2>
+      <div class="divider anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1.05rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:24px; max-width:760px;">
+        Named after <strong>Terry Fox</strong> — the Canadian who connected this country on foot with nothing but determination and hope. Every CDR station ships with a Terry — a local AI assistant that is the primary interface for institutions.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1.05rem; line-height:1.7; color: var(--rail-grey-dark); margin-bottom:24px; max-width:760px;">
+        Nommé d'après <strong>Terry Fox</strong> — le Canadien qui a connecté ce pays à pied avec rien d'autre que de la détermination et de l'espoir. Chaque station CDR est livrée avec un Terry — un assistant IA local qui est l'interface principale pour les institutions.
+      </p>
+
+      <div class="quote-block anim-2" data-lang="en" style="background:rgba(196,30,58,0.04); border-color:var(--maple-red); border-radius:8px;">
+        "Hey, I'm Terry. What do you want to build today?"
+        <span class="quote-source">— First thing every new station hears</span>
+      </div>
+      <div class="quote-block anim-2" data-lang="fr" style="background:rgba(196,30,58,0.04); border-color:var(--maple-red); border-radius:8px;">
+        « Bonjour, je suis Terry. Qu'est-ce que vous voulez construire aujourd'hui? »
+        <span class="quote-source">— La première chose que chaque nouvelle station entend</span>
+      </div>
+
+      <div class="two-col anim-3">
+        <div>
+          <h3 data-lang="en" style="color: var(--rail-slate); margin-bottom:16px;">What Terry Does</h3>
+          <h3 data-lang="fr" style="color: var(--rail-slate); margin-bottom:16px;">Ce que Terry fait</h3>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon gold">🎯</div>
+            <div class="gap-text">
+              <h4>Onboarding &amp; Discovery</h4>
+              <p>Greets new stations, understands institution type, suggests tools from the network. No coding required.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon gold">🎯</div>
+            <div class="gap-text">
+              <h4>Intégration et découverte</h4>
+              <p>Accueille les nouvelles stations, comprend le type d'institution, suggère des outils du réseau. Aucun codage requis.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon gold">🔧</div>
+            <div class="gap-text">
+              <h4>Guided Building</h4>
+              <p>Helps non-technical users describe what they need, then builds it conversationally. Adapts existing tools for local needs.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon gold">🔧</div>
+            <div class="gap-text">
+              <h4>Construction guidée</h4>
+              <p>Aide les utilisateurs non techniques à décrire leurs besoins, puis le construit de manière conversationnelle. Adapte les outils existants aux besoins locaux.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="en">
+            <div class="gap-icon gold">🔄</div>
+            <div class="gap-text">
+              <h4>Knowledge Sharing</h4>
+              <p>When a station builds something new, Terry packages it for the registry so every other station benefits.</p>
+            </div>
+          </div>
+          <div class="gap-item" data-lang="fr">
+            <div class="gap-icon gold">🔄</div>
+            <div class="gap-text">
+              <h4>Partage des connaissances</h4>
+              <p>Quand une station crée quelque chose de nouveau, Terry le met en paquet pour le registre afin que chaque autre station en bénéficie.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 data-lang="en" style="color: var(--rail-slate); margin-bottom:16px;">🪶 Indigenous Language Preservation</h3>
+          <h3 data-lang="fr" style="color: var(--rail-slate); margin-bottom:16px;">🪶 Préservation des langues autochtones</h3>
+          <div data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:white;">
+            <p style="font-size:0.95rem; line-height:1.7; opacity:0.9; margin-bottom:16px;">
+              Over <strong style="color:var(--accent-gold-light);">70 Indigenous languages</strong> in Canada — many critically endangered. Terry can learn local languages and dialects from community members.
+            </p>
+            <ul class="check-list white-checks" style="opacity:0.85;">
+              <li>Model weights stay local on community hardware</li>
+              <li>OCAP compliance is a feature of the architecture</li>
+              <li>Communities choose if and when to share</li>
+              <li>First truly sovereign AI language preservation system</li>
+            </ul>
+            <p style="font-size:0.8rem; opacity:0.5; margin-top:16px;">Fundable via Indigenous Languages Act, Indigenous Services Canada, Canadian Heritage</p>
+          </div>
+          <div data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:white;">
+            <p style="font-size:0.95rem; line-height:1.7; opacity:0.9; margin-bottom:16px;">
+              Plus de <strong style="color:var(--accent-gold-light);">70 langues autochtones</strong> au Canada — beaucoup en danger critique. Terry peut apprendre les langues et dialectes locaux auprès des membres de la communauté.
+            </p>
+            <ul class="check-list white-checks" style="opacity:0.85;">
+              <li>Les poids des modèles restent locaux sur le matériel communautaire</li>
+              <li>La conformité PCAP est une caractéristique de l'architecture</li>
+              <li>Les communautés choisissent si et quand partager</li>
+              <li>Premier système souverain de préservation linguistique par IA</li>
+            </ul>
+            <p style="font-size:0.8rem; opacity:0.5; margin-top:16px;">Finançable via la Loi sur les langues autochtones, Services aux Autochtones Canada, Patrimoine canadien</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 10 — NETWORK EFFECT -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-accent" data-slide="9">
+    <div class="section-num light">09</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">The Flywheel</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">L'effet d'entraînement</div>
+      <h2 class="anim-1" data-lang="en">The Network Effect — Every Station Makes Every Other Station Smarter</h2>
+      <h2 class="anim-1" data-lang="fr">L'effet de réseau — chaque station rend toutes les autres plus intelligentes</h2>
+      <div class="divider gold anim-2"></div>
+
+      <p class="anim-2" data-lang="en" style="font-size:1rem; opacity:0.8; margin-bottom:32px; max-width:720px; margin-left:auto; margin-right:auto; line-height:1.7;">
+        This is where it becomes infrastructure, not just technology. Federated learning means the models get better over time — not by collecting data centrally, but by sharing mathematical improvements while the raw data never moves.
+      </p>
+      <p class="anim-2" data-lang="fr" style="font-size:1rem; opacity:0.8; margin-bottom:32px; max-width:720px; margin-left:auto; margin-right:auto; line-height:1.7;">
+        C'est là que ça devient de l'infrastructure, pas juste de la technologie. L'apprentissage fédéré signifie que les modèles s'améliorent avec le temps — non pas en collectant des données centralement, mais en partageant des améliorations mathématiques pendant que les données brutes ne bougent jamais.
+      </p>
+
+      <div class="flow anim-3" data-lang="en">
+        <div class="flow-step">
+          <div class="flow-icon">🏥</div>
+          <div class="flow-label">Station 1 Builds</div>
+          <div class="flow-desc">Radiology support tool</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">📦</div>
+          <div class="flow-label">Terry Shares</div>
+          <div class="flow-desc">Packaged for the registry</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">🏥</div>
+          <div class="flow-label">Station 2 Adapts</div>
+          <div class="flow-desc">Customized for local needs</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">🔄</div>
+          <div class="flow-label">Improvements Flow</div>
+          <div class="flow-desc">Back to all stations</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-gold); border-width:2px;">
+          <div class="flow-icon">🚀</div>
+          <div class="flow-label">Network Grows</div>
+          <div class="flow-desc">More value per station</div>
+        </div>
+      </div>
+      <div class="flow anim-3" data-lang="fr">
+        <div class="flow-step">
+          <div class="flow-icon">🏥</div>
+          <div class="flow-label">Station 1 construit</div>
+          <div class="flow-desc">Outil d'aide en radiologie</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">📦</div>
+          <div class="flow-label">Terry partage</div>
+          <div class="flow-desc">Empaqueté pour le registre</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">🏥</div>
+          <div class="flow-label">Station 2 adapte</div>
+          <div class="flow-desc">Personnalisé localement</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+          <div class="flow-icon">🔄</div>
+          <div class="flow-label">Améliorations</div>
+          <div class="flow-desc">Retournent à toutes les stations</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="border-color:var(--accent-gold); border-width:2px;">
+          <div class="flow-icon">🚀</div>
+          <div class="flow-label">Le réseau grandit</div>
+          <div class="flow-desc">Plus de valeur par station</div>
+        </div>
+      </div>
+
+      <div class="two-col anim-4" style="margin-top:36px; text-align:left;">
+        <div class="card-dark" style="border-left-color: var(--accent-teal);">
+          <h3 data-lang="en" style="color:#7dd3e8;">📊 Federated Learning</h3>
+          <h3 data-lang="fr" style="color:#7dd3e8;">📊 Apprentissage fédéré</h3>
+          <p data-lang="en">Models improve across nodes by sharing mathematical improvements — gradients, not raw data. A hospital's patient data never moves. Only the model intelligence does.</p>
+          <p data-lang="fr">Les modèles s'améliorent à travers les nœuds en partageant des améliorations mathématiques — des gradients, pas des données brutes. Les données des patients d'un hôpital ne bougent jamais. Seule l'intelligence du modèle voyage.</p>
+        </div>
+        <div class="card-dark" style="border-left-color: var(--accent-green);">
+          <h3 data-lang="en" style="color:#81c784;">🌐 Compound Growth</h3>
+          <h3 data-lang="fr" style="color:#81c784;">🌐 Croissance composée</h3>
+          <p data-lang="en">The 50th hospital to join has access to everything the first 49 built. The second Indigenous community can build on what the first shared — if and only if the first community chose to share it.</p>
+          <p data-lang="fr">Le 50e hôpital qui rejoint le réseau a accès à tout ce que les 49 premiers ont construit. La deuxième communauté autochtone peut s'appuyer sur ce que la première a partagé — si et seulement si la première communauté a choisi de le partager.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 11 — CANADIAN-MADE -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-blue" data-slide="10">
+    <div class="section-num light">10</div>
+    <div class="content-box" style="text-align:center;">
+      <div class="anim-1" style="font-size:5rem; margin-bottom:20px;">🍁</div>
+      <h2 class="anim-1" data-lang="en">Canadian-Made. Full Stop.</h2>
+      <h2 class="anim-1" data-lang="fr">Fabriqué au Canada. Point final.</h2>
+      <div class="divider gold center anim-2"></div>
+
+      <p class="subtitle anim-2" data-lang="en" style="color:rgba(255,255,255,0.85); max-width:720px; margin: 0 auto 20px;">
+        The software is Canadian. The company is Canadian. The data stays in Canada. The governance is Canadian.
+      </p>
+      <p class="subtitle anim-2" data-lang="fr" style="color:rgba(255,255,255,0.85); max-width:720px; margin: 0 auto 20px;">
+        Le logiciel est canadien. L'entreprise est canadienne. Les données restent au Canada. La gouvernance est canadienne.
+      </p>
+
+      <div class="quote-block anim-3" data-lang="en" style="border-color: rgba(255,255,255,0.3); max-width:700px; margin: 20px auto;">
+        "The steel for the original railway was imported too. What made it Canadian wasn't where the materials came from — it was that we built it here, we operated it here, and it served Canadians from coast to coast to coast."
+      </div>
+      <div class="quote-block anim-3" data-lang="fr" style="border-color: rgba(255,255,255,0.3); max-width:700px; margin: 20px auto;">
+        « L'acier du chemin de fer original était importé aussi. Ce qui l'a rendu canadien, ce n'est pas d'où venaient les matériaux — c'est qu'on l'a construit ici, qu'on l'a exploité ici, et qu'il a servi les Canadiens d'un océan à l'autre. »
+      </div>
+
+      <div class="anim-3" style="margin: 24px auto; max-width:800px;">
+        <table class="compare-table" data-lang="en">
+          <tr><th>Player</th><th>Offering</th><th>The Gap</th></tr>
+          <tr><td>Cohere + CoreWeave</td><td>Canadian AI company, US compute</td><td style="color:#ff8a80;">Not fully sovereign — NJ data centre</td></tr>
+          <tr><td>Hypertec + Bell</td><td>End-to-end sovereign cloud</td><td style="color:#ff8a80;">Enterprise scale, not distributed</td></tr>
+          <tr><td>AWS / Azure / GCP</td><td>Canadian data residency</td><td style="color:#ff8a80;">US-owned, subject to CLOUD Act</td></tr>
+          <tr><td style="color:var(--accent-gold-light);">Canadian Digital Railway</td><td style="color:var(--accent-gold-light);">Distributed, local, open-source, federated</td><td style="color:var(--accent-gold-light);">✓ Nothing like it exists</td></tr>
+        </table>
+        <table class="compare-table" data-lang="fr">
+          <tr><th>Acteur</th><th>Offre</th><th>La lacune</th></tr>
+          <tr><td>Cohere + CoreWeave</td><td>Entreprise IA canadienne, calcul US</td><td style="color:#ff8a80;">Pas pleinement souverain — centre de données NJ</td></tr>
+          <tr><td>Hypertec + Bell</td><td>Nuage souverain de bout en bout</td><td style="color:#ff8a80;">Échelle entreprise, pas distribué</td></tr>
+          <tr><td>AWS / Azure / GCP</td><td>Résidence de données au Canada</td><td style="color:#ff8a80;">Propriété US, assujetti au CLOUD Act</td></tr>
+          <tr><td style="color:var(--accent-gold-light);">Chemin de fer num. canadien</td><td style="color:var(--accent-gold-light);">Distribué, local, code ouvert, fédéré</td><td style="color:var(--accent-gold-light);">✓ Rien de comparable n'existe</td></tr>
+        </table>
+      </div>
+
+      <p class="anim-4" data-lang="en" style="margin-top:20px; font-size:1.05rem; opacity:0.9; max-width:700px; margin-left:auto; margin-right:auto;">
+        <strong>No American cloud provider in the stack. No CLOUD Act exposure.<br>No foreign jurisdiction over Canadian data.</strong>
+      </p>
+      <p class="anim-4" data-lang="fr" style="margin-top:20px; font-size:1.05rem; opacity:0.9; max-width:700px; margin-left:auto; margin-right:auto;">
+        <strong>Aucun fournisseur infonuagique américain dans la pile. Aucune exposition au CLOUD Act.<br>Aucune juridiction étrangère sur les données canadiennes.</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SLIDE 12 — PATH FORWARD -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="slide slide-cover" data-slide="11">
+    <div class="flag-stripe"></div>
+    <span class="confidential" data-lang="en" style="color:rgba(255,255,255,0.35);">Private — Not for Distribution</span>
+    <span class="confidential" data-lang="fr" style="color:rgba(255,255,255,0.35);">Privé — Ne pas distribuer</span>
+
+    <div class="anim-1" style="font-size:3rem; margin-bottom:12px;">🚂🍁</div>
+    <h1 class="anim-1" style="font-size:2.8rem; margin-bottom:8px;" data-lang="en">The Path Forward</h1>
+    <h1 class="anim-1" style="font-size:2.8rem; margin-bottom:8px;" data-lang="fr">La voie à suivre</h1>
+    <div class="divider gold center anim-2"></div>
+
+    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.85);">
+      We're not asking for a national rollout.<br>We're asking for a pilot.
+    </p>
+    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.85);">
+      Nous ne demandons pas un déploiement national.<br>Nous demandons un projet pilote.
+    </p>
+
+    <div class="anim-3" style="margin-top:32px; display:flex; gap:24px; flex-wrap:wrap; justify-content:center;">
+      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:28px 32px; text-align:center; min-width:140px;">
+        <div style="font-family:'Lato',sans-serif; font-size:3rem; font-weight:900; color:var(--accent-gold-light);">5</div>
+        <div data-lang="en" style="font-size:0.85rem; opacity:0.7; margin-top:4px;">Stations</div>
+        <div data-lang="fr" style="font-size:0.85rem; opacity:0.7; margin-top:4px;">Stations</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:28px 32px; text-align:center; min-width:140px;">
+        <div style="font-family:'Lato',sans-serif; font-size:3rem; font-weight:900; color:var(--accent-gold-light);">6</div>
+        <div data-lang="en" style="font-size:0.85rem; opacity:0.7; margin-top:4px;">Months</div>
+        <div data-lang="fr" style="font-size:0.85rem; opacity:0.7; margin-top:4px;">Mois</div>
+      </div>
+    </div>
+
+    <div class="anim-3" data-lang="en" style="margin-top:28px; display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏥 2 Hospitals</span>
+      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🪶 1 First Nations Community</span>
+      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🎓 1 University</span>
+      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏛️ 1 Federal Department</span>
+    </div>
+    <div class="anim-3" data-lang="fr" style="margin-top:28px; display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏥 2 Hôpitaux</span>
+      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🪶 1 Communauté des Premières Nations</span>
+      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🎓 1 Université</span>
+      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏛️ 1 Ministère fédéral</span>
+    </div>
+
+    <p class="anim-4" data-lang="en" style="text-align:center; max-width:600px; color:rgba(255,255,255,0.55); font-size:1rem; margin-top:32px; line-height:1.7;">
+      The infrastructure funding exists. The policy framework exists.<br>The reports documenting the gap exist.<br><strong style="color:rgba(255,255,255,0.85);">What's missing is someone willing to build the last mile.</strong>
+    </p>
+    <p class="anim-4" data-lang="fr" style="text-align:center; max-width:600px; color:rgba(255,255,255,0.55); font-size:1rem; margin-top:32px; line-height:1.7;">
+      Le financement d'infrastructure existe. Le cadre politique existe.<br>Les rapports documentant la lacune existent.<br><strong style="color:rgba(255,255,255,0.85);">Ce qui manque, c'est quelqu'un prêt à construire le dernier kilomètre.</strong>
+    </p>
+
+    <p class="anim-4" data-lang="en" style="font-size:1.15rem; font-weight:600; color:rgba(255,255,255,0.9); margin-top:24px;">
+      We'd like to be that someone.
+    </p>
+    <p class="anim-4" data-lang="fr" style="font-size:1.15rem; font-weight:600; color:rgba(255,255,255,0.9); margin-top:24px;">
+      Nous aimerions être ce quelqu'un.
+    </p>
+
+    <div class="anim-5" style="margin-top:48px; text-align:center;">
+      <p style="font-size:1.1rem; font-weight:500; opacity:0.9; margin-bottom:8px;">hazeydata.ai</p>
+      <p data-lang="en" style="font-size:0.9rem; opacity:0.5;">The Canadian Digital Railway &nbsp;|&nbsp; Le Chemin de fer numérique canadien</p>
+      <p data-lang="fr" style="font-size:0.9rem; opacity:0.5;">Le Chemin de fer numérique canadien &nbsp;|&nbsp; The Canadian Digital Railway</p>
+    </div>
+
+    <div class="anim-5" style="margin-top:36px; display:flex; gap:32px; opacity:0.5; font-size:0.85rem;">
+      <span>📧 contact@hazeydata.ai</span>
+      <span>🌐 hazeydata.ai</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <div class="nav-brand">🚂 CDR &nbsp;<span data-lang="en">by</span><span data-lang="fr">par</span> hazeydata.ai</div>
+  <div class="lang-toggle" id="langToggle">
+    <button class="lang-btn active" data-langval="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-langval="fr" onclick="setLang('fr')">FR</button>
+  </div>
+  <div class="nav-center" id="navDots"></div>
+  <div class="nav-controls">
+    <button class="nav-btn" onclick="prev()" aria-label="Previous">‹</button>
+    <div class="slide-counter" id="counter">1/12</div>
+    <button class="nav-btn" onclick="next()" aria-label="Next">›</button>
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  // Build dots
+  const dotsEl = document.getElementById('navDots');
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(n) {
+    if (n < 0 || n >= total || n === current) return;
+    slides[current].classList.remove('active');
+    slides[current].classList.add('exit');
+    setTimeout(() => slides[current === n ? current : (current)].classList.remove('exit'), 500);
+    const prev = current;
+    current = n;
+    slides[current].classList.add('active');
+    // Update dots
+    document.querySelectorAll('.nav-dot').forEach((d,i) =>
+      d.classList.toggle('active', i === current));
+    document.getElementById('counter').textContent = (current+1) + '/' + total;
+    // Clean up previous exit
+    setTimeout(() => slides[prev].classList.remove('exit'), 600);
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Language toggle
+  function setLang(lang) {
+    const body = document.body;
+    if (lang === 'fr') {
+      body.classList.add('lang-fr');
+      document.documentElement.lang = 'fr';
+      document.title = 'Le Chemin de fer numérique canadien 🚂🍁 — Infrastructure IA souveraine | hazeydata.ai';
+    } else {
+      body.classList.remove('lang-fr');
+      document.documentElement.lang = 'en';
+      document.title = 'The Canadian Digital Railway 🚂🍁 — Sovereign AI Infrastructure, Coast to Coast | hazeydata.ai';
+    }
+    // Update toggle buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-langval') === lang);
+    });
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+
+  // Touch/swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wait Time Index — Next 365 Days - HazeyData.ai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #2b2d31;
+            color: white;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: #b5bac1;
+            margin-bottom: 15px;
+        }
+
+        .header .date-range {
+            font-size: 0.9rem;
+            color: #80848e;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #00d4ff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Enhanced park navigation */
+        .park-nav-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .park-nav-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .park-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            color: #00d4ff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .park-nav-btn:hover {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .park-nav-btn .nav-icon {
+            font-size: 0.8rem;
+            transition: transform 0.2s ease;
+        }
+
+        .park-nav-btn:hover .nav-icon {
+            transform: translateX(-2px);
+        }
+
+        .park-nav-btn.next:hover .nav-icon {
+            transform: translateX(2px);
+        }
+
+        .park-title-container {
+            flex: 1;
+            text-align: center;
+            margin: 0 2rem;
+        }
+
+        .park-title-container h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #00d4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Park selector */
+        .park-selector {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 1rem;
+            background: rgba(17, 29, 51, 0.6);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .park-chip {
+            display: inline-block;
+            padding: 0.4rem 0.9rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            color: #b5bac1;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .park-chip:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.3);
+            color: #00d4ff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 212, 255, 0.15);
+        }
+
+        .park-chip.active {
+            background: rgba(235, 66, 123, 0.2);
+            border-color: rgba(235, 66, 123, 0.4);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(235, 66, 123, 0.2);
+        }
+
+        .park-chip.active:hover {
+            background: rgba(235, 66, 123, 0.3);
+            border-color: rgba(235, 66, 123, 0.6);
+        }
+
+        .heatmap-container {
+            background: #111d33;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        .heatmap-wrapper {
+            min-width: 800px;
+            position: relative;
+        }
+
+        .month-labels {
+            display: grid;
+            grid-template-columns: 30px repeat(53, 1fr);
+            gap: 2px;
+            margin-bottom: 5px;
+        }
+
+        .month-labels .spacer {
+            grid-column: 1;
+        }
+
+        .month-label {
+            font-size: 0.8rem;
+            color: #b5bac1;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .heatmap {
+            display: grid;
+            grid-template-columns: 30px repeat(53, 1fr);
+            gap: 2px;
+        }
+
+        .day-label {
+            font-size: 0.7rem;
+            color: #b5bac1;
+            text-align: right;
+            padding-right: 5px;
+            line-height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .heatmap-cell {
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.2);
+            border: 1px solid #ffffff;
+        }
+
+        .heatmap-cell.empty {
+            background: #1a1a1a;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: #000000;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 1000;
+            pointer-events: none;
+            border: 1px solid #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        .legend-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .legend-text {
+            font-size: 0.75rem;
+            color: #b5bac1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .legend-scale {
+            width: 200px;
+            height: 14px;
+            border-radius: 3px;
+            background: linear-gradient(to right, #0a2f8f, #3c78d2, #d2c8dc, #f5b1c9, #eb427b, #a60038);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stats-card {
+            background: #111d33;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .stats-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .best-days-list {
+            list-style: none;
+        }
+
+        .best-days-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #2b2d31;
+        }
+
+        .best-days-list li:last-child {
+            border-bottom: none;
+        }
+
+        .day-name {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .wti-value {
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        .wti-description {
+            color: #80848e;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+
+        .peak-waits-container {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #2b2d31;
+        }
+
+        .peak-waits-container h3 {
+            font-size: 1.1rem;
+            margin-bottom: 14px;
+            color: #ffffff;
+        }
+
+        .peak-waits-intro {
+            font-size: 0.85rem;
+            color: #80848e;
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .peak-week-block {
+            margin-bottom: 14px;
+        }
+
+        .peak-week-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .peak-week-label {
+            font-size: 0.82rem;
+            color: #b5bac1;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .peak-rides-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+            font-size: 0.82rem;
+            color: #b5bac1;
+        }
+
+        .peak-rides-row .ride-name {
+            color: #ffffff;
+        }
+
+        .peak-rides-row .ride-wait {
+            color: #ff6b8a;
+            font-weight: 600;
+        }
+
+        .cta {
+            text-align: center;
+            background: #111d33;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+        }
+
+        .cta h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .cta p {
+            color: #b5bac1;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .discord-button {
+            display: inline-block;
+            background: #5865f2;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .discord-button:hover {
+            background: #4752c4;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .park-nav-main {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .park-title-container {
+                margin: 0;
+                order: -1;
+            }
+
+            .park-title-container h1 {
+                font-size: 2rem;
+            }
+
+            .park-nav-btn {
+                min-width: 200px;
+                padding: 0.8rem 1.5rem;
+            }
+
+            .park-selector {
+                margin: 0 -1rem;
+                border-radius: 8px;
+            }
+
+            .park-chip {
+                font-size: 0.75rem;
+                padding: 0.35rem 0.8rem;
+            }
+
+            .heatmap-container {
+                padding: 20px;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .legend-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .heatmap-wrapper {
+                min-width: 600px;
+            }
+
+            .month-labels,
+            .heatmap {
+                grid-template-columns: 25px repeat(53, 1fr);
+            }
+
+            .heatmap-cell {
+                width: 10px;
+                height: 10px;
+            }
+
+            .legend-scale {
+                width: 150px;
+                height: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="https://hazeydata.ai" class="back-link">← Back to HazeyData.ai</a>
+            <div class="park-nav-container">
+                <div class="park-nav-main">
+                    <a id="prev-park" href="#" class="park-nav-btn">
+                        <span class="nav-icon">←</span>
+                        <span id="prev-park-name">Magic Kingdom</span>
+                    </a>
+                    <div class="park-title-container">
+                        <h1 id="park-title">Magic Kingdom</h1>
+                    </div>
+                    <a id="next-park" href="#" class="park-nav-btn next">
+                        <span id="next-park-name">Magic Kingdom</span>
+                        <span class="nav-icon">→</span>
+                    </a>
+                </div>
+                <div class="park-selector" id="park-selector">
+                    <!-- Park chips will be generated by JavaScript -->
+                </div>
+            </div>
+            <div class="subtitle">Wait Time Index (WTI) — Next 365 Days</div>
+            <div class="date-range" id="date-range">January 2024 - December 2024</div>
+        </div>
+
+        <div class="heatmap-container">
+            <div class="heatmap-wrapper">
+                <div class="month-labels" id="month-labels">
+                    <div class="spacer"></div>
+                </div>
+                <div class="heatmap" id="heatmap"></div>
+                <div class="legend-container">
+                    <span class="legend-text">Shorter Waits</span>
+                    <div class="legend-scale"></div>
+                    <span class="legend-text">Longer Waits</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stats-card">
+                <h3>🎯 Best Weeks to Visit</h3>
+                <ul class="best-days-list" id="best-weeks-list"></ul>
+                <h3 style="margin-top: 20px;">🚫 Busiest Weeks to Avoid</h3>
+                <ul class="best-days-list" id="worst-weeks-list"></ul>
+            </div>
+            <div class="stats-card">
+                <h3>📊 WTI Insights</h3>
+                <div id="crowd-insights"></div>
+                <div id="peak-waits-section"></div>
+            </div>
+        </div>
+
+        <div class="cta">
+            <h3>Stay Ahead of the Long Lines</h3>
+            <p>Get daily wait time forecasts and predictions in our free Discord</p>
+            <a href="https://discord.gg/2Estr7sbP7" class="discord-button">Join the Discord for Free Alerts</a>
+        </div>
+    </div>
+
+    <script>
+        // Park names mapping
+        const PARK_NAMES = {
+            'MK': 'Magic Kingdom',
+            'EP': 'EPCOT',
+            'HS': 'Hollywood Studios',
+            'AK': 'Animal Kingdom',
+            'DL': 'Disneyland',
+            'CA': 'California Adventure',
+            'UF': 'Universal Studios Florida',
+            'IA': 'Islands of Adventure',
+            'EU': 'Epic Universe',
+            'UH': 'Universal Hollywood',
+            'TDL': 'Tokyo Disneyland',
+            'TDS': 'Tokyo DisneySea'
+        };
+
+        // Benedictus color anchors — mapped to per-park percentiles
+        // p5 → deep blue (ghost town for this park)
+        // p25 → blue
+        // median → lavender/white (normal day)
+        // p75 → light pink
+        // p95 → deep red (avoid if you can)
+        // Beyond p95 → extreme dark
+        const BENEDICTUS_COLORS = [
+            { pct: 0.00, color: [10, 47, 143] },     // deep blue (≤ p5)
+            { pct: 0.05, color: [10, 47, 143] },     // deep blue (p5)
+            { pct: 0.25, color: [60, 120, 210] },    // blue (p25)
+            { pct: 0.50, color: [210, 200, 220] },   // lavender/white (median)
+            { pct: 0.75, color: [245, 140, 175] },   // pink (p75)
+            { pct: 0.95, color: [166, 0, 56] },      // deep red (p95)
+            { pct: 1.00, color: [80, 0, 30] },       // extreme (max)
+        ];
+
+        // Per-park distribution data — loaded from distributions.json
+        let parkDistribution = null;
+
+        // WTI descriptions — now relative to the park
+        function getWTIDescription(wti) {
+            if (!parkDistribution) {
+                // Fallback if no distribution loaded
+                if (wti <= 15) return "Short waits";
+                if (wti <= 22) return "Below average waits";
+                if (wti <= 28) return "Moderate waits";
+                if (wti <= 34) return "Long waits";
+                return "Very long waits";
+            }
+            const d = parkDistribution;
+            if (wti <= d.p5) return "Shortest waits";
+            if (wti <= d.p25) return "Short waits";
+            if (wti <= d.median) return "Below average";
+            if (wti <= d.p75) return "Moderate waits";
+            if (wti <= d.p95) return "Long waits";
+            return "Very long waits";
+        }
+
+        function interpolateColor(wti, minWti, maxWti) {
+            // Per-park percentile-based color mapping
+            // Convert WTI to a percentile position within the park's historical distribution
+            let pct;
+            if (parkDistribution) {
+                const d = parkDistribution;
+                // Map WTI to approximate percentile using distribution anchors
+                const anchors = [
+                    { wti: d.min, pct: 0.00 },
+                    { wti: d.p5,  pct: 0.05 },
+                    { wti: d.p25, pct: 0.25 },
+                    { wti: d.median, pct: 0.50 },
+                    { wti: d.p75, pct: 0.75 },
+                    { wti: d.p95, pct: 0.95 },
+                    { wti: d.max, pct: 1.00 },
+                ];
+                
+                // Clamp to range
+                if (wti <= anchors[0].wti) {
+                    pct = 0;
+                } else if (wti >= anchors[anchors.length - 1].wti) {
+                    pct = 1;
+                } else {
+                    // Interpolate between anchors
+                    for (let i = 0; i < anchors.length - 1; i++) {
+                        if (wti >= anchors[i].wti && wti <= anchors[i + 1].wti) {
+                            const range = anchors[i + 1].wti - anchors[i].wti;
+                            const frac = range > 0 ? (wti - anchors[i].wti) / range : 0;
+                            pct = anchors[i].pct + frac * (anchors[i + 1].pct - anchors[i].pct);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                // Fallback: linear scale within current data range
+                pct = maxWti > minWti ? (wti - minWti) / (maxWti - minWti) : 0.5;
+            }
+
+            // Map percentile to Benedictus color
+            let lower = BENEDICTUS_COLORS[0];
+            let upper = BENEDICTUS_COLORS[BENEDICTUS_COLORS.length - 1];
+
+            for (let i = 0; i < BENEDICTUS_COLORS.length - 1; i++) {
+                if (pct >= BENEDICTUS_COLORS[i].pct && pct <= BENEDICTUS_COLORS[i + 1].pct) {
+                    lower = BENEDICTUS_COLORS[i];
+                    upper = BENEDICTUS_COLORS[i + 1];
+                    break;
+                }
+            }
+
+            const range = upper.pct - lower.pct;
+            const factor = range > 0 ? (pct - lower.pct) / range : 0;
+            const r = Math.round(lower.color[0] + (upper.color[0] - lower.color[0]) * factor);
+            const g = Math.round(lower.color[1] + (upper.color[1] - lower.color[1]) * factor);
+            const b = Math.round(lower.color[2] + (upper.color[2] - lower.color[2]) * factor);
+
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function generateSampleData(startDate) {
+            const data = [];
+            const currentDate = new Date(startDate);
+            
+            for (let i = 0; i < 365; i++) {
+                const date = new Date(currentDate);
+                date.setDate(date.getDate() + i);
+                
+                const month = date.getMonth() + 1;
+                const dayOfWeek = date.getDay();
+                
+                let baseWti;
+                
+                // Seasonal patterns
+                if (month === 9) {
+                    // September - lowest wait times
+                    baseWti = 15 + Math.random() * 3; // 15-18
+                } else if (month === 12 || month === 1) {
+                    // December/January - holidays highest
+                    baseWti = 28 + Math.random() * 7; // 28-35
+                } else if (month >= 6 && month <= 8) {
+                    // Summer - moderate
+                    baseWti = 22 + Math.random() * 4; // 22-26
+                } else if (month >= 3 && month <= 4) {
+                    // Spring break bump
+                    baseWti = 24 + Math.random() * 6; // 24-30
+                } else {
+                    // Other months
+                    baseWti = 18 + Math.random() * 8; // 18-26
+                }
+                
+                // Weekend adjustments
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    baseWti += 3 + Math.random() * 3; // Weekend boost
+                }
+                
+                // Holiday adjustments
+                const dateStr = `${month.toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+                const holidays = ['01-01', '07-04', '10-31', '11-28', '12-25'];
+                if (holidays.includes(dateStr)) {
+                    baseWti += 8 + Math.random() * 5;
+                }
+                
+                data.push({
+                    date: new Date(date),
+                    wti: Math.round(Math.min(65, Math.max(8, baseWti)))
+                });
+            }
+            
+            return data;
+        }
+
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function formatDate(date) {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            return `${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDate()}`;
+        }
+
+        function createTooltip() {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            tooltip.style.display = 'none';
+            document.body.appendChild(tooltip);
+            return tooltip;
+        }
+
+        function showTooltip(tooltip, event, content) {
+            tooltip.textContent = content;
+            tooltip.style.display = 'block';
+            
+            const rect = tooltip.getBoundingClientRect();
+            const x = event.pageX - rect.width / 2;
+            const y = event.pageY - rect.height - 10;
+            
+            tooltip.style.left = Math.max(10, Math.min(x, window.innerWidth - rect.width - 10)) + 'px';
+            tooltip.style.top = Math.max(10, y) + 'px';
+        }
+
+        function hideTooltip(tooltip) {
+            tooltip.style.display = 'none';
+        }
+
+        function renderHeatmap(data) {
+            
+            const heatmap = document.getElementById('heatmap');
+            const monthLabels = document.getElementById('month-labels');
+            
+            // Calculate min/max WTI for per-park scaling
+            const wtiValues = data.map(d => d.wti);
+            const minWti = Math.min(...wtiValues);
+            const maxWti = Math.max(...wtiValues);
+            
+            // Legend is now static CSS — no JS needed
+            
+            // Create tooltip
+            const tooltip = createTooltip();
+            
+            // Clear existing content
+            heatmap.innerHTML = '';
+            
+            // Start from the Sunday of the week containing the first data point
+            const startDate = new Date(data[0].date);
+            const gridStart = new Date(startDate);
+            gridStart.setDate(gridStart.getDate() - gridStart.getDay()); // Back to Sunday
+            
+            // Calculate how many weeks we need (365 days + partial weeks on each end)
+            const lastDate = data[data.length - 1].date;
+            const totalDays = Math.ceil((lastDate - gridStart) / (1000 * 60 * 60 * 24)) + 1;
+            const totalWeeks = Math.ceil(totalDays / 7);
+            
+            // Create month labels
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            let currentMonth = -1;
+            
+            for (let week = 0; week < totalWeeks; week++) {
+                const weekStart = new Date(gridStart);
+                weekStart.setDate(weekStart.getDate() + week * 7);
+                
+                if (weekStart.getMonth() !== currentMonth) {
+                    currentMonth = weekStart.getMonth();
+                    const monthLabel = document.createElement('div');
+                    monthLabel.className = 'month-label';
+                    monthLabel.textContent = months[currentMonth];
+                    monthLabel.style.gridColumn = week + 2;
+                    monthLabels.appendChild(monthLabel);
+                }
+            }
+            
+            // Day labels
+            const dayLabels = ['', 'M', '', 'W', '', 'F', 'S'];
+            for (let day = 0; day < 7; day++) {
+                const dayLabel = document.createElement('div');
+                dayLabel.className = 'day-label';
+                dayLabel.textContent = dayLabels[day];
+                dayLabel.style.gridRow = day + 1;
+                dayLabel.style.gridColumn = 1;
+                heatmap.appendChild(dayLabel);
+            }
+            
+            // Create data lookup by date
+            const dataByDate = {};
+            data.forEach(d => {
+                const dateKey = d.date.toISOString().split('T')[0];
+                dataByDate[dateKey] = d;
+            });
+            
+            // Create heatmap cells
+            for (let week = 0; week < totalWeeks; week++) {
+                for (let day = 0; day < 7; day++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'heatmap-cell';
+                    cell.style.gridRow = day + 1;
+                    cell.style.gridColumn = week + 2;
+                    
+                    // Calculate the date for this cell
+                    const cellDate = new Date(gridStart);
+                    cellDate.setDate(cellDate.getDate() + week * 7 + day);
+                    
+                    const dateKey = cellDate.toISOString().split('T')[0];
+                    const dayData = dataByDate[dateKey];
+                    
+                    if (dayData) {
+                        cell.style.backgroundColor = interpolateColor(dayData.wti, minWti, maxWti);
+                        
+                        cell.addEventListener('mouseenter', (e) => {
+                            const tooltipText = `${formatDate(dayData.date)} — WTI ${dayData.wti} (${getWTIDescription(dayData.wti)})`;
+                            showTooltip(tooltip, e, tooltipText);
+                        });
+                        
+                        cell.addEventListener('mouseleave', () => {
+                            hideTooltip(tooltip);
+                        });
+                        
+                        cell.addEventListener('mousemove', (e) => {
+                            const tooltipText = `${formatDate(dayData.date)} — WTI ${dayData.wti} (${getWTIDescription(dayData.wti)})`;
+                            showTooltip(tooltip, e, tooltipText);
+                        });
+                    } else {
+                        cell.classList.add('empty');
+                    }
+                    
+                    heatmap.appendChild(cell);
+                }
+            }
+            
+            return { minWti, maxWti };
+        }
+
+        function renderBestWeeks(data, headlinerPeaks) {
+            headlinerPeaks = headlinerPeaks || {};
+
+            // Group data into ISO weeks
+            const weeks = {};
+            data.forEach(d => {
+                // Get Monday of this week as the week key
+                const day = new Date(d.date);
+                const dayOfWeek = day.getDay();
+                const monday = new Date(day);
+                monday.setDate(monday.getDate() - ((dayOfWeek + 6) % 7));
+                const weekKey = monday.toISOString().split('T')[0];
+                if (!weeks[weekKey]) {
+                    weeks[weekKey] = { start: monday, key: weekKey, wtiSum: 0, count: 0 };
+                }
+                weeks[weekKey].wtiSum += d.wti;
+                weeks[weekKey].count++;
+            });
+
+            // Compute averages and sort — only full weeks (5+ days)
+            const weekList = Object.values(weeks)
+                .filter(w => w.count >= 5)
+                .map(w => ({
+                    start: w.start,
+                    key: w.key,
+                    avgWti: Math.round(w.wtiSum / w.count)
+                }));
+
+            const formatWeek = (d) => {
+                return `Week of ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+            };
+
+            // Best 5 weeks — show with WTI + description (these are the good ones)
+            const bestWeeks = [...weekList].sort((a, b) => a.avgWti - b.avgWti).slice(0, 5);
+            const bestList = document.getElementById('best-weeks-list');
+            bestList.innerHTML = '';
+            bestWeeks.forEach(week => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="day-name">${formatWeek(week.start)}</span>
+                    <span>
+                        <span class="wti-value">WTI ${week.avgWti}</span>
+                        <span class="wti-description">(${getWTIDescription(week.avgWti)})</span>
+                    </span>
+                `;
+                bestList.appendChild(li);
+            });
+
+            // Worst 5 weeks — compact list with WTI (like best weeks)
+            const worstWeeks = [...weekList].sort((a, b) => b.avgWti - a.avgWti).slice(0, 5);
+            const worstList = document.getElementById('worst-weeks-list');
+            worstList.innerHTML = '';
+            worstWeeks.forEach(week => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="day-name">${formatWeek(week.start)}</span>
+                    <span>
+                        <span class="wti-value" style="color: #ff6b8a;">WTI ${week.avgWti}</span>
+                    </span>
+                `;
+                worstList.appendChild(li);
+            });
+
+            // Render peak wait times in the right card (below WTI Insights)
+            const peakSection = document.getElementById('peak-waits-section');
+            peakSection.innerHTML = '';
+
+            // Only show if we have headliner data
+            const worstWithPeaks = worstWeeks.filter(w => headlinerPeaks[w.key] && headlinerPeaks[w.key].length > 0);
+            if (worstWithPeaks.length > 0) {
+                let html = `<div class="peak-waits-container">
+                    <h3>⚠️ Peak Wait Times</h3>
+                    <div class="peak-waits-intro">Expected peak waits during the busiest weeks:</div>`;
+
+                // Show top 3 busiest weeks with ride details
+                worstWithPeaks.slice(0, 3).forEach(week => {
+                    const rides = headlinerPeaks[week.key];
+                    const weekLabel = formatWeek(week.start);
+                    html += `<div class="peak-week-block">
+                        <div class="peak-week-label">${weekLabel}</div>
+                        <div class="peak-rides-row">
+                            ${rides.map(r => `<span><span class="ride-name">${r.ride}:</span> <span class="ride-wait">${r.peak} min</span></span>`).join('')}
+                        </div>
+                    </div>`;
+                });
+
+                html += `</div>`;
+                peakSection.innerHTML = html;
+            }
+        }
+
+        // Park-specific context for smarter insights
+        const PARK_CONTEXT = {
+            MK: { rides: "25+", note: "More attractions spread guests out, keeping per-ride waits moderate" },
+            EP: { rides: "15+", note: "World Showcase absorbs guests into dining and shopping, easing ride queues" },
+            HS: { rides: "10+", note: "Fewer attractions concentrate demand — headliners see the longest waits" },
+            AK: { rides: "10+", note: "Smaller ride roster means headliners like Flight of Passage drive WTI year-round" },
+            DL: { rides: "30+", note: "Highest ride count of any park helps distribute wait times" },
+            CA: { rides: "20+", note: "Radiator Springs Racers dominates — overall WTI tracks with this one ride" },
+            UF: { rides: "15+", note: "Express Pass availability keeps standby lines longer" },
+            IA: { rides: "15+", note: "Hagrid's and VelociCoaster anchor the WTI" },
+            EU: { rides: "20+", note: "Newest park — expect higher demand as guests explore" },
+            UH: { rides: "10+", note: "Compact park with heavy local attendance on weekends" },
+            TDL: { rides: "20+", note: "Exceptionally well-managed queues keep WTI lower than you'd expect" },
+            TDS: { rides: "15+", note: "Fantasy Springs expansion adds capacity but also demand" },
+        };
+
+        function renderCrowdInsights(data, minWti, maxWti) {
+            const insights = document.getElementById('crowd-insights');
+            const park = getQueryParam('park') || 'MK';
+            const parkCtx = PARK_CONTEXT[park] || {};
+            
+            const avgWti = Math.round(data.reduce((sum, d) => sum + d.wti, 0) / data.length);
+            const bestMonth = getBestMonth(data);
+            const worstMonth = getWorstMonth(data);
+            const spread = maxWti - minWti;
+            
+            // Generate a contextual summary
+            let summary = '';
+            if (parkCtx.note) {
+                summary = `<div style="margin-bottom: 15px; color: #b5bac1; font-size: 0.9rem; line-height: 1.4;">
+                    ${parkCtx.rides} attractions. ${parkCtx.note}.
+                </div>`;
+            }
+            
+            insights.innerHTML = `
+                ${summary}
+                <div style="margin-bottom: 12px;">
+                    <strong style="color: #ffffff;">Average WTI:</strong> 
+                    <span class="wti-value">${avgWti}</span>
+                    <span class="wti-description">(range: ${minWti}–${maxWti})</span>
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <strong style="color: #ffffff;">Best Month:</strong> 
+                    <span style="color: #00d4ff;">${bestMonth}</span>
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <strong style="color: #ffffff;">Busiest Month:</strong> 
+                    <span style="color: #ff6b6b;">${worstMonth}</span>
+                </div>
+                <div>
+                    <strong style="color: #ffffff;">Seasonal Spread:</strong> 
+                    <span style="color: #b5bac1;">${spread} WTI points${spread < 10 ? ' (consistent year-round)' : spread > 20 ? ' (highly seasonal)' : ''}</span>
+                </div>
+            `;
+        }
+
+        function getBestMonth(data) {
+            const monthAverages = {};
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            data.forEach(d => {
+                const month = d.date.getMonth();
+                if (!monthAverages[month]) {
+                    monthAverages[month] = { sum: 0, count: 0 };
+                }
+                monthAverages[month].sum += d.wti;
+                monthAverages[month].count++;
+            });
+            
+            let bestMonth = 0;
+            let bestAvg = Infinity;
+            
+            Object.keys(monthAverages).forEach(month => {
+                const avg = monthAverages[month].sum / monthAverages[month].count;
+                if (avg < bestAvg) {
+                    bestAvg = avg;
+                    bestMonth = parseInt(month);
+                }
+            });
+            
+            return monthNames[bestMonth];
+        }
+
+        function getWorstMonth(data) {
+            const monthAverages = {};
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            data.forEach(d => {
+                const month = d.date.getMonth();
+                if (!monthAverages[month]) {
+                    monthAverages[month] = { sum: 0, count: 0 };
+                }
+                monthAverages[month].sum += d.wti;
+                monthAverages[month].count++;
+            });
+            
+            let worstMonth = 0;
+            let worstAvg = -Infinity;
+            
+            Object.keys(monthAverages).forEach(month => {
+                const avg = monthAverages[month].sum / monthAverages[month].count;
+                if (avg > worstAvg) {
+                    worstAvg = avg;
+                    worstMonth = parseInt(month);
+                }
+            });
+            
+            return monthNames[worstMonth];
+        }
+
+        // Park navigation order
+        const PARK_ORDER = ['MK', 'EP', 'HS', 'AK', 'DL', 'CA', 'UF', 'IA', 'EU', 'UH', 'TDL', 'TDS'];
+
+        // Initialize the page
+        async function init() {
+            const park = getQueryParam('park') || 'MK';
+            const parkName = PARK_NAMES[park] || 'Magic Kingdom';
+            
+            // Set up prev/next park navigation
+            const parkIdx = PARK_ORDER.indexOf(park);
+            const prevIdx = parkIdx <= 0 ? PARK_ORDER.length - 1 : parkIdx - 1;
+            const nextIdx = parkIdx >= PARK_ORDER.length - 1 ? 0 : parkIdx + 1;
+            const prevPark = PARK_ORDER[prevIdx];
+            const nextPark = PARK_ORDER[nextIdx];
+            
+            document.getElementById('prev-park').href = `/year-view?park=${prevPark}`;
+            document.getElementById('prev-park-name').textContent = PARK_NAMES[prevPark];
+            document.getElementById('next-park').href = `/year-view?park=${nextPark}`;
+            document.getElementById('next-park-name').textContent = PARK_NAMES[nextPark];
+
+            // Generate park selector chips
+            const parkSelector = document.getElementById('park-selector');
+            parkSelector.innerHTML = '';
+            PARK_ORDER.forEach(parkCode => {
+                const chip = document.createElement('a');
+                chip.href = `/year-view?park=${parkCode}`;
+                chip.className = `park-chip${parkCode === park ? ' active' : ''}`;
+                chip.textContent = PARK_NAMES[parkCode];
+                chip.title = PARK_NAMES[parkCode];
+                parkSelector.appendChild(chip);
+            });
+
+            // Update page title and header
+            document.title = `${parkName} — Wait Time Index — HazeyData.ai`;
+            document.getElementById('park-title').textContent = parkName;
+            
+            // Fetch per-park distribution for color scaling
+            try {
+                const distResp = await fetch('/theme-park-crowd-report/year-view-data/distributions.json');
+                if (distResp.ok) {
+                    const allDist = await distResp.json();
+                    parkDistribution = allDist[park] || null;
+                    if (parkDistribution) {
+                        console.log(`Loaded ${park} distribution: p5=${parkDistribution.p5}, median=${parkDistribution.median}, p95=${parkDistribution.p95} (${parkDistribution.n_days} days of history)`);
+                    }
+                }
+            } catch (e) {
+                console.warn('Could not load distributions:', e.message);
+            }
+
+            // Try to fetch real data, fall back to sample data
+            let data;
+            let headlinerPeaks = {};
+            try {
+                const response = await fetch(`/theme-park-crowd-report/year-view-data/${park}.json`);
+                if (response.ok) {
+                    const json = await response.json();
+                    data = json.days.map(d => ({
+                        date: new Date(d.date + 'T00:00:00'),
+                        wti: Math.round(d.wti)
+                    }));
+                    headlinerPeaks = json.headliner_peaks || {};
+                } else {
+                    throw new Error('No data file');
+                }
+            } catch (e) {
+                // Fallback to sample data if JSON not available
+                console.warn('Using sample data (real data not available):', e.message);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                data = generateSampleData(today);
+            }
+            
+            // Update date range from actual data
+            if (data.length > 0) {
+                const firstDate = data[0].date;
+                const lastDate = data[data.length - 1].date;
+                const dateRange = document.getElementById('date-range');
+                const fmt = { month: 'short', year: 'numeric' };
+                dateRange.textContent = `${firstDate.toLocaleDateString('en-US', fmt)} — ${lastDate.toLocaleDateString('en-US', fmt)}`;
+            }
+            
+            // Render components
+            const { minWti, maxWti } = renderHeatmap(data);
+            renderBestWeeks(data, headlinerPeaks);
+            renderCrowdInsights(data, minWti, maxWti);
+        }
+
+        // Start the app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
