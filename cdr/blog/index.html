@@ -26,35 +26,178 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../styles.css?v=20260315">
-    <link rel="stylesheet" href="blog.css?v=20260315">
+    <link rel="stylesheet" href="../../styles.css?v=20260315b">
+    <link rel="stylesheet" href="blog.css?v=20260315b">
+    <style>
+        /* CDR Blog-specific overrides */
+        .cdr-blog-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+        .cdr-blog-nav.scrolled {
+            background: rgba(10, 22, 40, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .cdr-blog-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cdr-blog-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .cdr-blog-back {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-family: var(--font-mono);
+            transition: color 0.2s;
+        }
+        .cdr-blog-back:hover { color: var(--text-secondary); }
+        .cdr-blog-title {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .cdr-blog-title:hover { color: var(--accent-light); }
+        .cdr-blog-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .cdr-blog-links a {
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .cdr-blog-links a:hover { color: #e85555; }
+
+        .cdr-blog-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 20;
+        }
+        .cdr-blog-hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-secondary);
+            margin: 5px 0;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+        .cdr-blog-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .cdr-blog-hamburger.open span:nth-child(2) { opacity: 0; }
+        .cdr-blog-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* Blog hero override for CDR */
+        .cdr-blog-hero {
+            position: relative;
+            z-index: 1;
+            padding: 8rem 2rem 3rem;
+            text-align: center;
+            min-height: auto;
+        }
+        .cdr-blog-hero-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .cdr-blog-hero h1 {
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+        .cdr-blog-hero p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* CDR Blog card accent — red instead of pink/blue */
+        .blog-card:hover {
+            border-color: rgba(196, 30, 58, 0.4) !important;
+        }
+        .blog-card-meta .tag {
+            background: rgba(196, 30, 58, 0.12) !important;
+            color: #e88 !important;
+        }
+        .blog-card .read-more {
+            color: #C41E3A !important;
+        }
+
+        @media (max-width: 768px) {
+            .cdr-blog-nav { padding: 0.75rem 1.25rem; }
+            .cdr-blog-hamburger { display: block; }
+            .cdr-blog-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 1rem;
+                background: rgba(10, 22, 40, 0.95);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 0.75rem 1rem;
+                min-width: 180px;
+                flex-direction: column;
+                gap: 0.25rem;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(16px);
+            }
+            .cdr-blog-links.open { display: flex; }
+            .cdr-blog-links a { display: block; padding: 0.5rem 0.25rem; }
+            .cdr-blog-hero { padding: 6rem 1.5rem 2rem; }
+        }
+    </style>
 </head>
 <body>
-    <section class="hero blog-hero">
-        <div class="hero-bg"></div>
-        <nav class="nav">
-            <div class="nav-logo">
-                <a href="/" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;margin-right:0.75rem;">← HazeyData</a>
-                <a href="/cdr/" class="nav-title">Canadian Digital Railway</a>
+    <!-- Navigation -->
+    <nav class="cdr-blog-nav" id="blogNav">
+        <div class="cdr-blog-nav-inner">
+            <div class="cdr-blog-brand">
+                <a href="/" class="cdr-blog-back">← HazeyData</a>
+                <a href="/cdr/" class="cdr-blog-title">Canadian Digital Railway</a>
             </div>
-            <button class="nav-hamburger" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')" aria-label="Menu">
+            <button class="cdr-blog-hamburger" id="blogHamburger" aria-label="Menu">
                 <span></span><span></span><span></span>
             </button>
-            <div class="nav-links">
+            <div class="cdr-blog-links" id="blogNavLinks">
                 <a href="/cdr/">CDR Home</a>
                 <a href="/cdr/blog/">Blog</a>
                 <a href="https://discord.gg/2Estr7sbP7" class="btn btn-sm" target="_blank">Join Discord</a>
             </div>
-        </nav>
-        <div class="hero-content">
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="cdr-blog-hero">
+        <div class="cdr-blog-hero-content">
             <h1>🚂🍁 CDR Blog</h1>
             <p>Insights and updates on sovereign AI infrastructure for Canada.</p>
         </div>
     </section>
 
+    <!-- Blog List -->
     <div class="blog-container">
         <div class="blog-list">
-            <!-- Article — Why Canada Needs a Digital Railway -->
             <a href="/cdr/blog/why-canada-needs-a-digital-railway.html" class="blog-card">
                 <div class="blog-card-meta">
                     <span>March 2026</span>
@@ -69,6 +212,7 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="blog-footer">
         <div class="footer-content">
             <div class="footer-brand">
@@ -83,5 +227,24 @@
             <p class="footer-copy">© 2026 HazeyData — Canadian Digital Railway</p>
         </div>
     </footer>
+
+    <script>
+        const nav = document.getElementById('blogNav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 40);
+        });
+        const hamburger = document.getElementById('blogHamburger');
+        const navLinks = document.getElementById('blogNavLinks');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                navLinks.classList.remove('open');
+            });
+        });
+    </script>
 </body>
 </html>

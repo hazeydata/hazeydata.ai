@@ -26,277 +26,712 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css?v=20260315">
+    <link rel="stylesheet" href="../styles.css?v=20260315b">
     <style>
+        /* ========================================
+           CDR-SPECIFIC STYLES
+           ======================================== */
+
+        :root {
+            --cdr-red: #C41E3A;
+            --cdr-red-light: #e85555;
+            --cdr-red-glow: rgba(196, 30, 58, 0.12);
+            --cdr-red-subtle: rgba(196, 30, 58, 0.06);
+        }
+
+        /* --- Ambient Background --- */
+        .cdr-ambient {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .cdr-ambient .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.08;
+        }
+        .cdr-ambient .orb-1 {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, #C41E3A 0%, transparent 70%);
+            top: -15%; left: -10%;
+            animation: cdr-drift 25s ease-in-out infinite alternate;
+        }
+        .cdr-ambient .orb-2 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, #4a90a4 0%, transparent 70%);
+            bottom: -10%; right: -10%;
+            animation: cdr-drift 30s ease-in-out infinite alternate-reverse;
+        }
+        @keyframes cdr-drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, -30px); }
+        }
+
+        /* --- Nav --- */
+        .cdr-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+        .cdr-nav.scrolled {
+            background: rgba(10, 22, 40, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .cdr-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cdr-nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .cdr-nav-back {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-family: var(--font-mono);
+            transition: color 0.2s;
+            letter-spacing: 0.03em;
+        }
+        .cdr-nav-back:hover { color: var(--text-secondary); }
+        .cdr-nav-title {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-primary);
+            letter-spacing: 0.03em;
+        }
+        .cdr-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .cdr-nav-links a {
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .cdr-nav-links a:hover { color: var(--cdr-red-light); }
+
+        .cdr-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 20;
+        }
+        .cdr-hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-secondary);
+            margin: 5px 0;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+        .cdr-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .cdr-hamburger.open span:nth-child(2) { opacity: 0; }
+        .cdr-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* --- Hero --- */
         .cdr-hero {
-            padding: 6rem 2rem 4rem;
-            text-align: center;
-            min-height: 70vh;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+        }
+        .cdr-hero-content {
+            max-width: 800px;
+        }
+        .cdr-hero-label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--cdr-red-light);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        .cdr-hero-label::before,
+        .cdr-hero-label::after {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--cdr-red);
+            opacity: 0.4;
         }
         .cdr-hero h1 {
-            font-size: clamp(2rem, 5vw, 3rem);
-            margin-bottom: 1rem;
-            line-height: 1.2;
+            font-size: clamp(2.5rem, 6vw, 3.8rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.01em;
         }
-        .cdr-hero .subtitle {
+        .cdr-hero h1 .cdr-title-main {
+            display: block;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.85) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .cdr-hero .hero-sub {
+            font-size: 1.3rem;
             color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            font-size: 1.1rem;
-            line-height: 1.7;
-        }
-        .cdr-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin: 2.5rem 0;
-            flex-wrap: wrap;
-        }
-        .cdr-stat {
-            text-align: center;
-        }
-        .cdr-stat .val {
-            font-family: var(--font-mono);
-            font-size: 2rem;
-            font-weight: 700;
-            color: #C41E3A;
-        }
-        .cdr-stat .lbl {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-        .cdr-section {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-        .cdr-section h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        .cdr-section .section-sub {
-            color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 2.5rem;
-            max-width: 640px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .cdr-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        .cdr-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.2s;
-        }
-        .cdr-card:hover {
-            background: var(--bg-card-hover);
-            border-color: rgba(196, 30, 58, 0.3);
-            transform: translateY(-2px);
-        }
-        .cdr-card .card-icon {
-            font-size: 2rem;
+            font-weight: 500;
             margin-bottom: 1rem;
         }
-        .cdr-card h3 {
-            font-size: 1.15rem;
-            margin-bottom: 0.75rem;
-        }
-        .cdr-card p {
+        .cdr-hero .hero-desc {
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.7;
-        }
-        .cdr-quote {
-            background: rgba(196, 30, 58, 0.06);
-            border-left: 4px solid #C41E3A;
-            padding: 1.5rem 2rem;
-            border-radius: 0 12px 12px 0;
-            margin: 2.5rem 0;
-            font-style: italic;
-            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
             font-size: 1.05rem;
-            line-height: 1.7;
+            line-height: 1.8;
+            opacity: 0.85;
         }
-        .cdr-cta {
-            text-align: center;
-            padding: 4rem 2rem;
-        }
-        .cdr-cta h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-        .cdr-cta p {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            max-width: 500px;
+
+        /* Crisis stats */
+        .cdr-crisis-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 3rem 0;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
         }
-        .cdr-links {
+        .crisis-stat {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            background: rgba(10, 22, 40, 0.6);
+            backdrop-filter: blur(8px);
+        }
+        .crisis-stat .val {
+            font-family: var(--font-mono);
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--cdr-red);
+            line-height: 1.1;
+        }
+        .crisis-stat .lbl {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .cdr-hero-cta {
             display: flex;
             justify-content: center;
             gap: 1rem;
             flex-wrap: wrap;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
         }
-        .cdr-links a {
+        .btn-cdr {
+            background: linear-gradient(135deg, var(--cdr-red) 0%, #9a1530 100%);
+            color: white;
+        }
+        .btn-cdr:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 30px rgba(196, 30, 58, 0.3);
+            background: linear-gradient(135deg, var(--cdr-red-light) 0%, var(--cdr-red) 100%);
+        }
+
+        /* --- Sections --- */
+        .cdr-section {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+        .cdr-section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .cdr-section-header .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--cdr-red-light);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .cdr-section-header h2 {
+            font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .cdr-section-header p {
+            color: var(--text-secondary);
+            max-width: 640px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* Blockquote */
+        .cdr-blockquote {
+            background: var(--cdr-red-subtle);
+            border-left: 4px solid var(--cdr-red);
+            padding: 1.75rem 2rem;
+            border-radius: 0 16px 16px 0;
+            margin: 3rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.75;
+            position: relative;
+        }
+        .cdr-blockquote::before {
+            content: '"';
+            position: absolute;
+            top: 0.5rem;
+            left: 0.75rem;
+            font-size: 3rem;
+            color: var(--cdr-red);
+            opacity: 0.2;
+            font-style: normal;
+            line-height: 1;
+        }
+
+        /* Pillars grid */
+        .cdr-pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .cdr-pillar {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 2.25rem 1.75rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .cdr-pillar:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(196, 30, 58, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+        .cdr-pillar .pillar-icon {
+            font-size: 2.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .cdr-pillar h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        .cdr-pillar p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        /* Spec stats */
+        .cdr-spec-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 2.5rem 0;
+        }
+        .spec-stat {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            background: rgba(10, 22, 40, 0.6);
+            backdrop-filter: blur(8px);
+        }
+        .spec-stat .val {
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            line-height: 1.1;
+        }
+        .spec-stat .lbl {
+            font-size: 0.8rem;
             color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            margin-top: 0.5rem;
+            line-height: 1.4;
+        }
+
+        /* Station detail grid */
+        .cdr-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .cdr-detail-card {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             transition: all 0.2s;
         }
-        .cdr-links a:hover {
-            color: var(--text-secondary);
-            border-color: rgba(196, 30, 58, 0.3);
+        .cdr-detail-card:hover {
+            border-color: rgba(74, 144, 164, 0.25);
         }
+        .cdr-detail-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        .cdr-detail-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cdr-cta-section {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 5rem 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .cdr-cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .cdr-cta-section p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+        .cdr-resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+        .cdr-resource-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .cdr-resource-link:hover {
+            border-color: rgba(196, 30, 58, 0.3);
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-1px);
+        }
+
+        /* Footer */
+        .cdr-footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 2.5rem 2rem;
+        }
+        .cdr-footer-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .cdr-footer-brand {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .cdr-footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .cdr-footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+        .cdr-footer-links a:hover { color: var(--text-secondary); }
+        .cdr-footer-copy {
+            width: 100%;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            margin-top: 1rem;
+        }
+
+        /* Divider */
+        .cdr-divider {
+            max-width: 1000px;
+            margin: 0 auto;
+            border: 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* --- Responsive --- */
         @media (max-width: 768px) {
-            .cdr-stats { gap: 1.5rem; }
-            .cdr-stat .val { font-size: 1.5rem; }
+            .cdr-nav { padding: 0.75rem 1.25rem; }
+            .cdr-hamburger { display: block; }
+            .cdr-nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 1rem;
+                background: rgba(10, 22, 40, 0.95);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 0.75rem 1rem;
+                min-width: 180px;
+                flex-direction: column;
+                gap: 0.25rem;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(16px);
+            }
+            .cdr-nav-links.open { display: flex; }
+            .cdr-nav-links a { display: block; padding: 0.5rem 0.25rem; }
+            .cdr-hero {
+                min-height: auto;
+                padding: 7rem 1.5rem 3rem;
+            }
+            .cdr-crisis-stats { grid-template-columns: 1fr; }
+            .cdr-pillars { grid-template-columns: 1fr; }
+            .cdr-spec-stats { grid-template-columns: 1fr; }
+            .cdr-detail-grid { grid-template-columns: 1fr; }
+            .crisis-stat .val { font-size: 1.8rem; }
+            .cdr-footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+            .cdr-footer-links { justify-content: center; flex-wrap: wrap; }
         }
     </style>
 </head>
 <body>
-    <section class="hero cdr-hero">
-        <div class="hero-bg"></div>
-        <nav class="nav">
-            <div class="nav-logo">
-                <a href="/" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;margin-right:0.75rem;">← HazeyData</a>
-                <span class="nav-title">🚂🍁 Canadian Digital Railway</span>
+    <!-- Ambient background -->
+    <div class="cdr-ambient" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="cdr-nav" id="cdrNav">
+        <div class="cdr-nav-inner">
+            <div class="cdr-nav-brand">
+                <a href="/" class="cdr-nav-back">← HazeyData</a>
+                <span class="cdr-nav-title">🚂🍁 Canadian Digital Railway</span>
             </div>
-            <button class="nav-hamburger" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')" aria-label="Menu">
+            <button class="cdr-hamburger" id="cdrHamburger" aria-label="Menu">
                 <span></span><span></span><span></span>
             </button>
-            <div class="nav-links">
+            <div class="cdr-nav-links" id="cdrNavLinks">
                 <a href="/cdr/">Home</a>
                 <a href="/cdr/blog/">Blog</a>
                 <a href="mailto:fred@hazeydata.ai">Contact</a>
             </div>
-        </nav>
-        <div class="hero-content">
-            <h1>🚂🍁 The Canadian Digital Railway</h1>
-            <p class="subtitle">Sovereign AI Infrastructure, Coast to Coast</p>
-            <p class="subtitle" style="font-size:1rem;">A coast-to-coast network of locally-owned AI compute nodes — running open-weight models on Canadian soil — connected by federated governance that no single entity controls.</p>
+        </div>
+    </nav>
 
-            <div class="cdr-stats">
-                <div class="cdr-stat">
+    <!-- Hero -->
+    <section class="cdr-hero">
+        <div class="cdr-hero-content">
+            <div class="cdr-hero-label">A HazeyData Project</div>
+            <h1>
+                <span class="cdr-title-main">The Canadian<br>Digital Railway</span>
+            </h1>
+            <p class="hero-sub">Sovereign AI Infrastructure, Coast to Coast</p>
+            <p class="hero-desc">A coast-to-coast network of locally-owned AI compute nodes — running open-weight models on Canadian soil — connected by federated governance that no single entity controls.</p>
+
+            <div class="cdr-crisis-stats">
+                <div class="crisis-stat">
                     <div class="val">0</div>
                     <div class="lbl">Canada's top-30<br>supercomputers</div>
                 </div>
-                <div class="cdr-stat">
+                <div class="crisis-stat">
                     <div class="val">90%+</div>
                     <div class="lbl">AI workloads on<br>US infrastructure</div>
                 </div>
-                <div class="cdr-stat">
+                <div class="crisis-stat">
                     <div class="val">$2B+</div>
-                    <div class="lbl">Federal AI spending<br>committed since 2024</div>
+                    <div class="lbl">Federal AI spending<br>since 2024</div>
                 </div>
             </div>
 
-            <div style="margin-top:2rem;">
-                <a href="/cdr/blog/why-canada-needs-a-digital-railway.html" class="btn btn-primary">Read the Vision →</a>
-                <a href="mailto:fred@hazeydata.ai?subject=Canadian%20Digital%20Railway" class="btn btn-outline" style="margin-left:0.75rem;">Get in Touch</a>
+            <div class="cdr-hero-cta">
+                <a href="/cdr/blog/why-canada-needs-a-digital-railway.html" class="btn btn-cdr btn-lg">Read the Vision →</a>
+                <a href="mailto:fred@hazeydata.ai?subject=Canadian%20Digital%20Railway" class="btn btn-outline btn-lg">Get in Touch</a>
             </div>
         </div>
     </section>
 
     <!-- The Problem -->
     <section class="cdr-section">
-        <h2>Canada Has an AI Sovereignty Crisis</h2>
-        <p class="section-sub">Over ninety percent of Canada's AI workloads run through American infrastructure, subject to the US CLOUD Act. We are the only G7 country without a top-30 supercomputer.</p>
-
-        <div class="cdr-quote">
-            "Every time a Canadian hospital uses an AI transcription tool, every time a government department processes documents through a cloud API — that data touches foreign soil. Protected B data. Health data. Indigenous community data. Crossing borders we said it wouldn't cross."
+        <div class="cdr-section-header">
+            <div class="section-label">The Problem</div>
+            <h2>Canada Has an AI Sovereignty Crisis</h2>
+            <p>Over ninety percent of Canada's AI workloads run through American infrastructure, subject to the US CLOUD Act. We are the only G7 country without a top-30 supercomputer.</p>
         </div>
 
-        <div class="cdr-grid">
-            <div class="cdr-card">
-                <div class="card-icon">🏔️</div>
+        <div class="cdr-blockquote">
+            Every time a Canadian hospital uses an AI transcription tool, every time a government department processes documents through a cloud API — that data touches foreign soil. Protected B data. Health data. Indigenous community data. Crossing borders we said it wouldn't cross.
+        </div>
+
+        <div class="cdr-pillars">
+            <div class="cdr-pillar">
+                <div class="pillar-icon">🏔️</div>
                 <h3>Coast to Coast</h3>
                 <p>A physically distributed network of sovereign AI compute nodes across every province and territory — on Canadian soil, under Canadian law.</p>
             </div>
-            <div class="cdr-card">
-                <div class="card-icon">🔗</div>
+            <div class="cdr-pillar">
+                <div class="pillar-icon">🔗</div>
                 <h3>Mesh Connected</h3>
                 <p>Encrypted mesh networking links every station. Intelligent request routing. Federated learning. No central point of failure.</p>
             </div>
-            <div class="cdr-card">
-                <div class="card-icon">🏛️</div>
+            <div class="cdr-pillar">
+                <div class="pillar-icon">🏛️</div>
                 <h3>Community Governed</h3>
                 <p>Governed by the institutions that use it. Operated on Canadian soil. No data ever leaves the country. No single entity controls the network.</p>
             </div>
         </div>
     </section>
 
-    <!-- The Stations -->
-    <section class="cdr-section" style="border-top: 1px solid var(--border);">
-        <h2>The Stations — Local Sovereign Compute</h2>
-        <p class="section-sub">Each station is a compact, low-power compute unit capable of running frontier-class open-weight AI models locally. No internet connection required for inference.</p>
+    <hr class="cdr-divider">
 
-        <div class="cdr-stats">
-            <div class="cdr-stat">
+    <!-- The Stations -->
+    <section class="cdr-section">
+        <div class="cdr-section-header">
+            <div class="section-label">The Hardware</div>
+            <h2>Local Sovereign Compute Stations</h2>
+            <p>Each station is a compact, low-power compute unit capable of running frontier-class open-weight AI models locally. No internet connection required for inference.</p>
+        </div>
+
+        <div class="cdr-spec-stats">
+            <div class="spec-stat">
                 <div class="val">512 GB</div>
-                <div class="lbl">Unified memory<br>Apple Silicon M4 Ultra</div>
+                <div class="lbl">Unified Memory<br>Apple Silicon M4 Ultra</div>
             </div>
-            <div class="cdr-stat">
+            <div class="spec-stat">
                 <div class="val">40–80W</div>
-                <div class="lbl">Power consumption<br>Standard outlet</div>
+                <div class="lbl">Power Draw<br>Standard Outlet</div>
             </div>
-            <div class="cdr-stat">
+            <div class="spec-stat">
                 <div class="val">$6–12K</div>
-                <div class="lbl">Cost per station</div>
+                <div class="lbl">Cost Per Station</div>
             </div>
         </div>
 
-        <div class="cdr-grid" style="grid-template-columns: 1fr 1fr;">
-            <div class="cdr-card">
+        <div class="cdr-detail-grid">
+            <div class="cdr-detail-card">
                 <h3>Who Operates Them</h3>
                 <p>Hospitals, First Nations governments, universities, municipal offices, federal departments — each owning their own station, with their data never leaving the building.</p>
             </div>
-            <div class="cdr-card">
+            <div class="cdr-detail-card">
                 <h3>CDR-OS Platform</h3>
                 <p>Connected by CDR-OS — an open-source platform managing AI model deployment, encrypted mesh networking, intelligent request routing, and federated learning. Every line of code is auditable.</p>
             </div>
         </div>
     </section>
 
+    <hr class="cdr-divider">
+
     <!-- CTA -->
-    <section class="cdr-cta" style="border-top: 1px solid var(--border);">
+    <section class="cdr-cta-section">
         <h2>Learn More</h2>
         <p>The Canadian Digital Railway is in active development. Read the full vision, explore the pitch materials, or get in touch.</p>
-        <div class="cdr-links">
-            <a href="/cdr/blog/why-canada-needs-a-digital-railway.html">📖 Read the Article</a>
-            <a href="/cdr/blog/">📝 CDR Blog</a>
-            <a href="/cdr/pitch.html">📊 Pitch Deck</a>
-            <a href="/cdr/funding-pitch.html">💰 Funding Pitch</a>
-            <a href="/cdr/pilot-pitch.html">🧪 Pilot Pitch</a>
-            <a href="mailto:fred@hazeydata.ai?subject=Canadian%20Digital%20Railway">✉️ Contact</a>
+        <div class="cdr-resource-grid">
+            <a href="/cdr/blog/why-canada-needs-a-digital-railway.html" class="cdr-resource-link">📖 Read the Article</a>
+            <a href="/cdr/blog/" class="cdr-resource-link">📝 CDR Blog</a>
+            <a href="/cdr/pitch.html" class="cdr-resource-link">📊 Pitch Deck</a>
+            <a href="/cdr/funding-pitch.html" class="cdr-resource-link">💰 Funding Pitch</a>
+            <a href="/cdr/pilot-pitch.html" class="cdr-resource-link">🧪 Pilot Pitch</a>
+            <a href="mailto:fred@hazeydata.ai?subject=Canadian%20Digital%20Railway" class="cdr-resource-link">✉️ Contact</a>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer style="border-top: 1px solid var(--border); padding: 2rem; text-align: center;">
-        <div style="display:flex; justify-content:center; gap:1.5rem; margin-bottom:1rem;">
-            <a href="/" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;">HazeyData Hub</a>
-            <a href="/cdr/" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;">CDR Home</a>
-            <a href="/cdr/blog/" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;">Blog</a>
-            <a href="mailto:fred@hazeydata.ai" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;">Contact</a>
+    <footer class="cdr-footer">
+        <div class="cdr-footer-inner">
+            <div class="cdr-footer-brand">🚂🍁 Canadian Digital Railway</div>
+            <div class="cdr-footer-links">
+                <a href="/">HazeyData Hub</a>
+                <a href="/cdr/">CDR Home</a>
+                <a href="/cdr/blog/">Blog</a>
+                <a href="mailto:fred@hazeydata.ai">Contact</a>
+            </div>
+            <p class="cdr-footer-copy">© 2026 HazeyData — Canadian Digital Railway</p>
         </div>
-        <p style="color:var(--text-muted);font-size:0.8rem;">© 2026 HazeyData — Canadian Digital Railway</p>
     </footer>
+
+    <script>
+        // Sticky nav
+        const nav = document.getElementById('cdrNav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 40);
+        });
+        // Hamburger
+        const hamburger = document.getElementById('cdrHamburger');
+        const navLinks = document.getElementById('cdrNavLinks');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                navLinks.classList.remove('open');
+            });
+        });
+    </script>
 </body>
 </html>
