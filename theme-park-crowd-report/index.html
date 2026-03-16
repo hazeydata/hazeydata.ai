@@ -9,65 +9,1072 @@
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icon-180.png">
     <meta name="theme-color" content="#0a1628">
     <link rel="canonical" href="https://hazeydata.ai/theme-park-crowd-report/">
-    
+
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hazeydata.ai/theme-park-crowd-report/">
     <meta property="og:title" content="Theme Park Crowd Report | Know Before You Go">
     <meta property="og:description" content="ML-powered wait time predictions for every Disney & Universal park.">
     <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@disneystatswhiz">
     <meta name="twitter:title" content="Theme Park Crowd Report | Know Before You Go">
     <meta name="twitter:description" content="ML-powered wait time predictions for every Disney & Universal park.">
     <meta name="twitter:image" content="https://hazeydata.ai/assets/banner.jpg">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css?v=20260314">
-<!-- deploy 1772485086 -->
+    <link rel="stylesheet" href="../styles.css?v=20260315b">
+    <style>
+        /* ============================================
+           TPCR HOMEPAGE — Refreshed Design
+           Accent: Hot Pink #EB427B
+           ============================================ */
+
+        /* --- Ambient Background --- */
+        .tpcr-ambient {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .tpcr-ambient .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            animation: orb-drift 20s ease-in-out infinite alternate;
+        }
+        .tpcr-ambient .orb-1 {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, #EB427B 0%, transparent 70%);
+            top: -10%; left: -10%;
+            animation-delay: 0s;
+        }
+        .tpcr-ambient .orb-2 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, #ff6b9d 0%, transparent 70%);
+            top: 40%; right: -15%;
+            animation-delay: -7s;
+            animation-duration: 25s;
+        }
+        .tpcr-ambient .orb-3 {
+            width: 450px; height: 450px;
+            background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+            bottom: -5%; left: 30%;
+            animation-delay: -14s;
+            animation-duration: 30s;
+        }
+        .tpcr-ambient .orb-4 {
+            width: 350px; height: 350px;
+            background: radial-gradient(circle, #EB427B 0%, transparent 70%);
+            bottom: 30%; right: 10%;
+            animation-delay: -10s;
+            animation-duration: 35s;
+            opacity: 0.08;
+        }
+        @keyframes orb-drift {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 15px) scale(0.95); }
+            100% { transform: translate(10px, -10px) scale(1.02); }
+        }
+
+        /* --- Sticky Nav --- */
+        .tpcr-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+        .tpcr-nav.scrolled {
+            background: rgba(10, 22, 40, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        .tpcr-nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tpcr-nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .tpcr-nav-back {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            transition: color 0.2s;
+            margin-right: 0.5rem;
+        }
+        .tpcr-nav-back:hover {
+            color: var(--text-secondary);
+        }
+        .tpcr-nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .tpcr-nav-logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
+        .tpcr-nav-logo span {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.04em;
+            color: var(--text-primary);
+        }
+        .tpcr-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .tpcr-nav-links a {
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .tpcr-nav-links a:hover {
+            color: #FFB1C9;
+        }
+        .tpcr-nav-links .btn {
+            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #EB427B 0%, #c93566 100%);
+            border: none;
+        }
+        .tpcr-nav-links .btn:hover {
+            background: linear-gradient(135deg, #ff6b9d 0%, #EB427B 100%);
+            box-shadow: 0 8px 30px rgba(235, 66, 123, 0.3);
+        }
+
+        /* Mobile hamburger */
+        .tpcr-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 20;
+        }
+        .tpcr-hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-secondary);
+            margin: 5px 0;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+        .tpcr-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .tpcr-hamburger.open span:nth-child(2) { opacity: 0; }
+        .tpcr-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* --- Hero --- */
+        .tpcr-hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+        }
+        .tpcr-hero-content {
+            max-width: 720px;
+            position: relative;
+        }
+
+        .hero-sparkle-line {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            opacity: 0.6;
+        }
+        .hero-sparkle-line span {
+            display: inline-block;
+            padding: 0 0.75rem;
+            position: relative;
+        }
+        .hero-sparkle-line span:not(:last-child)::after {
+            content: '✦';
+            position: absolute;
+            right: -4px;
+            color: #EB427B;
+            font-size: 0.6rem;
+        }
+
+        .tpcr-hero h1 {
+            font-size: clamp(3rem, 7vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        .tpcr-hero h1 .hero-line-1 {
+            display: block;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.85) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .tpcr-hero h1 .hero-line-2 {
+            display: block;
+            background: linear-gradient(135deg, #EB427B 0%, #FFB1C9 40%, #ff6b9d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tpcr-hero .hero-tagline {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: #EB427B;
+            letter-spacing: 0.06em;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .tpcr-hero .hero-desc {
+            color: var(--text-secondary);
+            max-width: 580px;
+            margin: 0 auto 2.5rem;
+            font-size: 1.15rem;
+            line-height: 1.8;
+        }
+
+        .hero-cta-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .hero-cta-row .btn-primary {
+            background: linear-gradient(135deg, #EB427B 0%, #c93566 100%);
+        }
+        .hero-cta-row .btn-primary:hover {
+            background: linear-gradient(135deg, #ff6b9d 0%, #EB427B 100%);
+            box-shadow: 0 8px 30px rgba(235, 66, 123, 0.3);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: #EB427B;
+            letter-spacing: 0.04em;
+            background: rgba(235, 66, 123, 0.08);
+            border: 1px solid rgba(235, 66, 123, 0.2);
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+        }
+
+        /* Scroll indicator */
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-family: var(--font-mono);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            animation: float-hint 3s ease-in-out infinite;
+        }
+        .scroll-hint svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-muted);
+            stroke-width: 2;
+            fill: none;
+        }
+        @keyframes float-hint {
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
+            50% { transform: translateX(-50%) translateY(6px); opacity: 0.8; }
+        }
+
+        /* --- Metrics Bar --- */
+        .tpcr-metrics {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem 2rem;
+        }
+        .tpcr-metrics-inner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: rgba(235, 66, 123, 0.06);
+            border: 1px solid rgba(235, 66, 123, 0.12);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .tpcr-metric {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            background: rgba(10, 22, 40, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .tpcr-metric-val {
+            font-family: var(--font-mono);
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFB1C9, #EB427B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+        .tpcr-metric-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+            line-height: 1.4;
+        }
+
+        /* --- Park Ticker --- */
+        .tpcr-ticker-wrap {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            overflow: hidden;
+            padding: 2rem 0 3rem;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+        .tpcr-ticker {
+            display: flex;
+            gap: 2.5rem;
+            animation: ticker-scroll 40s linear infinite;
+            width: max-content;
+        }
+        .tpcr-ticker span {
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 500;
+            white-space: nowrap;
+            letter-spacing: 0.04em;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        .tpcr-ticker:hover span { opacity: 1; }
+        .tpcr-ticker:hover { animation-play-state: paused; }
+        @keyframes ticker-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- Section Headers --- */
+        .tpcr-section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+        .tpcr-section-header .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #EB427B;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .tpcr-section-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .tpcr-section-header .section-desc {
+            color: var(--text-secondary);
+            max-width: 580px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* --- Divider --- */
+        .tpcr-divider {
+            max-width: 1100px;
+            margin: 0 auto;
+            border: 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* --- Bot Preview Section --- */
+        .tpcr-preview {
+            position: relative;
+            z-index: 1;
+            padding: 6rem 2rem 5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .tpcr-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .tpcr-preview-card {
+            background: rgba(255, 255, 255, 0.025);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .tpcr-preview-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #EB427B, transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .tpcr-preview-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(235, 66, 123, 0.3);
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.3),
+                0 0 40px rgba(235, 66, 123, 0.06);
+        }
+        .tpcr-preview-card:hover::before {
+            opacity: 1;
+        }
+        .tpcr-preview-card.highlight {
+            border-color: rgba(235, 66, 123, 0.2);
+            background: linear-gradient(180deg, rgba(235, 66, 123, 0.04) 0%, rgba(255, 255, 255, 0.025) 40%);
+        }
+
+        .tpcr-cmd-badge {
+            display: inline-block;
+            background: rgba(235, 66, 123, 0.1);
+            color: #EB427B;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(235, 66, 123, 0.2);
+        }
+        .tpcr-preview-card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+        .tpcr-preview-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* 5-card: 3 + 2 centered */
+        @media (min-width: 769px) {
+            .tpcr-preview-grid {
+                display: grid;
+                grid-template-columns: repeat(6, 1fr);
+                gap: 1.5rem;
+            }
+            .tpcr-preview-grid .tpcr-preview-card:nth-child(1),
+            .tpcr-preview-grid .tpcr-preview-card:nth-child(2),
+            .tpcr-preview-grid .tpcr-preview-card:nth-child(3) {
+                grid-column: span 2;
+            }
+            .tpcr-preview-grid .tpcr-preview-card:nth-child(4) {
+                grid-column: 2 / span 2;
+            }
+            .tpcr-preview-grid .tpcr-preview-card:nth-child(5) {
+                grid-column: 4 / span 2;
+            }
+        }
+
+        /* --- Features Section --- */
+        .tpcr-features {
+            position: relative;
+            z-index: 1;
+            padding: 6rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .tpcr-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .tpcr-feature-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+        .tpcr-feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 100px;
+            background: linear-gradient(180deg, rgba(235, 66, 123, 0.04) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .tpcr-feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(235, 66, 123, 0.25);
+            box-shadow: 0 16px 50px rgba(0,0,0,0.25), 0 0 30px rgba(235, 66, 123, 0.05);
+        }
+        .tpcr-feature-card:hover::after {
+            opacity: 1;
+        }
+        .tpcr-feature-icon {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        .tpcr-feature-card h3 {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.03em;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 1;
+        }
+        .tpcr-feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+        .tpcr-feature-card code {
+            background: rgba(235, 66, 123, 0.1);
+            color: #FFB1C9;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-family: var(--font-mono);
+        }
+
+        /* --- Parks Section --- */
+        .tpcr-parks {
+            position: relative;
+            z-index: 1;
+            padding: 6rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .tpcr-park-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .tpcr-park-group {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+        .tpcr-park-group:hover {
+            border-color: rgba(235, 66, 123, 0.2);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        .tpcr-park-group h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+        .tpcr-park-group ul {
+            list-style: none;
+        }
+        .tpcr-park-group li {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            padding: 0.3rem 0;
+            padding-left: 0.75rem;
+            position: relative;
+        }
+        .tpcr-park-group li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #EB427B;
+            transform: translateY(-50%);
+            opacity: 0.6;
+        }
+
+        /* --- How It Works --- */
+        .tpcr-how {
+            position: relative;
+            z-index: 1;
+            padding: 6rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .tpcr-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 0.5rem;
+            position: relative;
+        }
+        /* Connecting line between steps */
+        .tpcr-steps::before {
+            content: '';
+            position: absolute;
+            top: 32px;
+            left: 15%;
+            right: 15%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(235, 66, 123, 0.3), rgba(235, 66, 123, 0.3), transparent);
+            z-index: 0;
+        }
+        .tpcr-step {
+            text-align: center;
+            padding: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .tpcr-step-num {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #EB427B 0%, #c93566 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 0 auto 1.25rem;
+            box-shadow: 0 4px 20px rgba(235, 66, 123, 0.3);
+            position: relative;
+        }
+        .tpcr-step h3 {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.03em;
+            color: var(--text-primary);
+        }
+        .tpcr-step p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* --- About Section --- */
+        .tpcr-about {
+            position: relative;
+            z-index: 1;
+            padding: 6rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .tpcr-about-card {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 3rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            text-align: center;
+        }
+        .tpcr-about-card h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        .tpcr-about-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.85;
+            margin-bottom: 1.25rem;
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .tpcr-about-card strong {
+            color: var(--text-primary);
+        }
+
+        /* --- Data Sources --- */
+        .tpcr-data-sources {
+            position: relative;
+            z-index: 1;
+            padding: 3rem 2rem 6rem;
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .tpcr-data-sources h3 {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .tpcr-data-sources p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+        .tpcr-data-sources a {
+            color: #EB427B;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .tpcr-data-sources a:hover {
+            color: #FFB1C9;
+            text-decoration: underline;
+        }
+
+        /* --- CTA Section --- */
+        .tpcr-cta {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 5rem 2rem;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+        .tpcr-cta h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .tpcr-cta p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+        .tpcr-cta .btn-primary {
+            font-size: 1.15rem;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #EB427B 0%, #c93566 100%);
+        }
+        .tpcr-cta .btn-primary:hover {
+            background: linear-gradient(135deg, #ff6b9d 0%, #EB427B 100%);
+            box-shadow: 0 8px 30px rgba(235, 66, 123, 0.3);
+        }
+
+        /* --- Footer --- */
+        .tpcr-footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 3rem 2rem;
+        }
+        .tpcr-footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .tpcr-footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .tpcr-footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .tpcr-footer-brand img {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+        }
+        .tpcr-footer-brand span {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .tpcr-footer-columns {
+            display: flex;
+            gap: 3rem;
+        }
+        .tpcr-footer-col h4 {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+        .tpcr-footer-col a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.25rem 0;
+            transition: color 0.2s;
+        }
+        .tpcr-footer-col a:hover {
+            color: #FFB1C9;
+        }
+        .tpcr-footer-copy {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 900px) {
+            .tpcr-metrics-inner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .tpcr-steps {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .tpcr-steps::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tpcr-nav {
+                padding: 0.75rem 1.25rem;
+            }
+            .tpcr-hamburger {
+                display: block;
+            }
+            .tpcr-nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 1rem;
+                background: rgba(10, 22, 40, 0.95);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 0.75rem 1rem;
+                min-width: 180px;
+                flex-direction: column;
+                gap: 0.25rem;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(16px);
+            }
+            .tpcr-nav-links.open {
+                display: flex;
+            }
+            .tpcr-nav-links a {
+                display: block;
+                padding: 0.5rem 0.25rem;
+                font-size: 0.9rem;
+            }
+            .tpcr-nav-logo span {
+                display: none;
+            }
+            .tpcr-hero {
+                min-height: auto;
+                padding: 7rem 1.5rem 4rem;
+            }
+            .scroll-hint {
+                display: none;
+            }
+            .hero-sparkle-line {
+                display: none;
+            }
+            .tpcr-preview-grid {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+                margin: 0 auto;
+            }
+            .tpcr-feature-grid {
+                grid-template-columns: 1fr;
+            }
+            .tpcr-park-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .tpcr-footer-columns {
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tpcr-metrics-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+            .tpcr-metric-val {
+                font-size: 1.4rem;
+            }
+            .tpcr-park-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-cta-row {
+                flex-direction: column;
+                align-items: center;
+            }
+            .tpcr-footer-columns {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .tpcr-footer-top {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .tpcr-about-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-bg"></div>
-        <nav class="nav">
-            <div class="nav-logo">
-                <a href="/" style="color:var(--text-muted);text-decoration:none;font-size:0.8rem;margin-right:0.75rem;">← HazeyData</a>
-                <img src="../assets/icon.jpg" alt="Theme Park Crowd Report" class="nav-icon">
-                <span class="nav-title">Theme Park Crowd Report</span>
+    <!-- Ambient background orbs -->
+    <div class="tpcr-ambient" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="tpcr-nav" id="tpcrNav">
+        <div class="tpcr-nav-inner">
+            <div class="tpcr-nav-brand">
+                <a href="/" class="tpcr-nav-back">← HazeyData</a>
+                <a href="/theme-park-crowd-report/" class="tpcr-nav-logo">
+                    <img src="../assets/icon.jpg" alt="TPCR">
+                    <span>Theme Park Crowd Report</span>
+                </a>
             </div>
-            <button class="nav-hamburger" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')" aria-label="Menu">
+            <button class="tpcr-hamburger" id="tpcrHamburger" aria-label="Menu">
                 <span></span><span></span><span></span>
             </button>
-            <div class="nav-links">
+            <div class="tpcr-nav-links" id="tpcrNavLinks">
                 <a href="#features">Features</a>
                 <a href="#parks">Parks</a>
                 <a href="/theme-park-crowd-report/blog/">Blog</a>
                 <a href="/theme-park-crowd-report/pricing.html">Pricing</a>
                 <a href="https://discord.gg/2Estr7sbP7" class="btn btn-sm btn-primary" target="_blank">Join Discord</a>
             </div>
-        </nav>
-        <div class="hero-content">
-            <h1>Know Before You Go</h1>
-            <p class="hero-sub">Data-driven wait time forecasts for Disney and Universal parks. One number — the <strong>Wait Time Index</strong> — tells you what to expect, so you can plan smarter.</p>
-            <div class="hero-cta">
-                <a href="https://discord.gg/2Estr7sbP7" class="btn btn-primary" target="_blank">
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="tpcr-hero">
+        <div class="tpcr-hero-content">
+            <div class="hero-sparkle-line">
+                <span>12 Parks</span>
+                <span>ML-Powered</span>
+                <span>Updated Daily</span>
+                <span>100% Free Beta</span>
+            </div>
+            <h1>
+                <span class="hero-line-1">Know Before</span>
+                <span class="hero-line-2">You Go 🎢</span>
+            </h1>
+            <p class="hero-tagline">ML-powered crowd forecasting for theme parks</p>
+            <p class="hero-desc">Data-driven wait time forecasts for Disney and Universal parks. One number — the <strong>Wait Time Index</strong> — tells you what to expect, so you can plan smarter.</p>
+            <div class="hero-cta-row">
+                <a href="https://discord.gg/2Estr7sbP7" class="btn btn-primary btn-lg" target="_blank">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
                     Join the Discord
                 </a>
-                <a href="#features" class="btn btn-outline">Learn More</a>
+                <a href="#features" class="btn btn-outline btn-lg">Learn More</a>
             </div>
-            <p class="hero-note">🎉 100% free during beta • 12 parks • AI-powered Q&A • Updated daily</p>
+            <div class="hero-badge">🎉 100% free during beta • AI-powered Q&A • Updated daily</div>
+        </div>
+        <div class="scroll-hint">
+            <span>Scroll</span>
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
         </div>
     </section>
 
+    <!-- Metrics Bar -->
+    <div class="tpcr-metrics">
+        <div class="tpcr-metrics-inner">
+            <div class="tpcr-metric">
+                <div class="tpcr-metric-val">12</div>
+                <div class="tpcr-metric-label">Parks Tracked</div>
+            </div>
+            <div class="tpcr-metric">
+                <div class="tpcr-metric-val">3</div>
+                <div class="tpcr-metric-label">Countries</div>
+            </div>
+            <div class="tpcr-metric">
+                <div class="tpcr-metric-val">7</div>
+                <div class="tpcr-metric-label">Slash Commands</div>
+            </div>
+            <div class="tpcr-metric">
+                <div class="tpcr-metric-val">5 min</div>
+                <div class="tpcr-metric-label">Live Update Interval</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Park Ticker -->
-    <div class="park-ticker-wrap">
-        <div class="park-ticker">
+    <div class="tpcr-ticker-wrap">
+        <div class="tpcr-ticker">
             <span>🏰 Magic Kingdom</span>
             <span>🌐 EPCOT</span>
             <span>🎬 Hollywood Studios</span>
@@ -97,81 +1104,95 @@
     </div>
 
     <!-- Bot Preview -->
-    <section class="bot-preview">
-        <h2>See It In Action</h2>
-        <p class="section-sub">Real Discord commands. Real predictions. Instant answers.</p>
-        <div class="preview-grid preview-grid-5">
-            <div class="preview-card">
-                <div class="preview-label">/today</div>
+    <section class="tpcr-preview">
+        <div class="tpcr-section-header">
+            <div class="section-label">See It In Action</div>
+            <h2>Real Commands. Real Predictions.</h2>
+            <p class="section-desc">Instant answers from real data — right in your Discord server.</p>
+        </div>
+        <div class="tpcr-preview-grid">
+            <div class="tpcr-preview-card">
+                <div class="tpcr-cmd-badge">/today</div>
                 <img src="../assets/screenshot-today.png" alt="All parks overview showing WTI crowd levels" loading="lazy">
                 <p>All parks at a glance — one command, every morning.</p>
             </div>
-            <div class="preview-card">
-                <div class="preview-label">/now</div>
+            <div class="tpcr-preview-card">
+                <div class="tpcr-cmd-badge">/now</div>
                 <img src="../assets/screenshot-now.png" alt="Live wait times for Magic Kingdom" loading="lazy">
                 <p>Live estimated actual wait times — updated every 5 minutes.</p>
             </div>
-            <div class="preview-card">
-                <div class="preview-label">/crowd</div>
+            <div class="tpcr-preview-card">
+                <div class="tpcr-cmd-badge">/crowd</div>
                 <img src="../assets/screenshot-crowd.png" alt="Crowd forecast for a specific park" loading="lazy">
                 <p>Detailed forecast for any park, any date.</p>
             </div>
-            <div class="preview-card">
-                <div class="preview-label">/best-day</div>
+            <div class="tpcr-preview-card">
+                <div class="tpcr-cmd-badge">/best-day</div>
                 <img src="../assets/screenshot-bestday.png" alt="Calendar heat map showing best days to visit" loading="lazy">
                 <p>Find the least crowded day — with calendar heat maps up to a year out.</p>
             </div>
-            <div class="preview-card preview-card-highlight">
-                <div class="preview-label">/ask</div>
+            <div class="tpcr-preview-card highlight">
+                <div class="tpcr-cmd-badge">/ask</div>
                 <img src="../assets/screenshot-ask.png" alt="AI answering a question about park crowds" loading="lazy">
                 <p>Ask anything about crowds and wait times — powered by AI and real data.</p>
             </div>
         </div>
     </section>
 
+    <hr class="tpcr-divider">
+
     <!-- Features -->
-    <section id="features" class="features">
-        <h2>What You Get</h2>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
+    <section id="features" class="tpcr-features">
+        <div class="tpcr-section-header">
+            <div class="section-label">Features</div>
+            <h2>What You Get</h2>
+            <p class="section-desc">Everything you need to outsmart the crowds — powered by machine learning and delivered to Discord.</p>
+        </div>
+        <div class="tpcr-feature-grid">
+            <div class="tpcr-feature-card">
+                <div class="tpcr-feature-icon">📊</div>
                 <h3>Daily Wait Time Forecasts</h3>
                 <p>Every park, every day. Our Wait Time Index (WTI) gives you one number that captures the whole park's wait time level.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎢</div>
+            <div class="tpcr-feature-card">
+                <div class="tpcr-feature-icon">🎢</div>
                 <h3>Ride-by-Ride Predictions</h3>
                 <p>See predicted wait times for individual attractions. Know which headliners to hit first and which rides will be walk-ons.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">📅</div>
+            <div class="tpcr-feature-card">
+                <div class="tpcr-feature-icon">📅</div>
                 <h3>Best Day Finder</h3>
                 <p>Pick a park and a timeframe — we'll show you the lowest-crowd days with color-coded calendar heat maps, up to a year out.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
+            <div class="tpcr-feature-card">
+                <div class="tpcr-feature-icon">🤖</div>
                 <h3>Ask Anything</h3>
                 <p>AI-powered Q&A backed by real data. Ask <em>"Is July 4th a good day for EPCOT?"</em> and get an instant, data-driven answer.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">⏱️</div>
+            <div class="tpcr-feature-card">
+                <div class="tpcr-feature-icon">⏱️</div>
                 <h3>Live Wait Times</h3>
                 <p>See what's happening right now — estimated actual waits grouped by tier, updated every 5 minutes from real queue data.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">💬</div>
+            <div class="tpcr-feature-card">
+                <div class="tpcr-feature-icon">💬</div>
                 <h3>All In Discord</h3>
                 <p>Seven slash commands, zero setup. <code>/today</code> <code>/now</code> <code>/crowd</code> <code>/best-day</code> <code>/ask</code> — everything lives where you already hang out.</p>
             </div>
         </div>
     </section>
 
+    <hr class="tpcr-divider">
+
     <!-- Parks -->
-    <section id="parks" class="parks">
-        <h2>12 Parks. 3 Countries.</h2>
-        <p class="parks-sub">With more coming soon.</p>
-        <div class="park-grid">
-            <div class="park-group">
+    <section id="parks" class="tpcr-parks">
+        <div class="tpcr-section-header">
+            <div class="section-label">Coverage</div>
+            <h2>12 Parks. 3 Countries.</h2>
+            <p class="section-desc">With more coming soon.</p>
+        </div>
+        <div class="tpcr-park-grid">
+            <div class="tpcr-park-group">
                 <h4>🏰 Walt Disney World</h4>
                 <ul>
                     <li>Magic Kingdom</li>
@@ -180,14 +1201,14 @@
                     <li>Animal Kingdom</li>
                 </ul>
             </div>
-            <div class="park-group">
+            <div class="tpcr-park-group">
                 <h4>🎠 Disneyland Resort</h4>
                 <ul>
                     <li>Disneyland</li>
                     <li>California Adventure</li>
                 </ul>
             </div>
-            <div class="park-group">
+            <div class="tpcr-park-group">
                 <h4>🦈 Universal Orlando</h4>
                 <ul>
                     <li>Universal Studios Florida</li>
@@ -195,13 +1216,13 @@
                     <li>Epic Universe</li>
                 </ul>
             </div>
-            <div class="park-group">
+            <div class="tpcr-park-group">
                 <h4>🎬 Universal Hollywood</h4>
                 <ul>
                     <li>Universal Studios Hollywood</li>
                 </ul>
             </div>
-            <div class="park-group">
+            <div class="tpcr-park-group">
                 <h4>🗼 Tokyo Disney Resort</h4>
                 <ul>
                     <li>Tokyo Disneyland</li>
@@ -211,54 +1232,59 @@
         </div>
     </section>
 
-    <!-- How it works -->
-    <section class="how-it-works">
-        <h2>How It Works</h2>
-        <div class="steps">
-            <div class="step">
-                <div class="step-num">1</div>
+    <hr class="tpcr-divider">
+
+    <!-- How It Works -->
+    <section class="tpcr-how">
+        <div class="tpcr-section-header">
+            <div class="section-label">The Science</div>
+            <h2>How It Works</h2>
+        </div>
+        <div class="tpcr-steps">
+            <div class="tpcr-step">
+                <div class="tpcr-step-num">1</div>
                 <h3>Years of Data</h3>
                 <p>We ingest millions of historical wait time observations from every park, every day.</p>
             </div>
-            <div class="step">
-                <div class="step-num">2</div>
+            <div class="tpcr-step">
+                <div class="tpcr-step-num">2</div>
                 <h3>Machine Learning</h3>
                 <p>XGBoost models trained per-attraction learn seasonal patterns, day-of-week effects, and park-specific trends.</p>
             </div>
-            <div class="step">
-                <div class="step-num">3</div>
+            <div class="tpcr-step">
+                <div class="tpcr-step-num">3</div>
                 <h3>Daily Forecasts</h3>
                 <p>Fresh predictions every morning. Updated with yesterday's actuals. Delivered to your Discord.</p>
             </div>
         </div>
     </section>
 
+    <hr class="tpcr-divider">
+
     <!-- About -->
-    <section class="about">
-        <div class="about-content">
-            <h2>Built by a Theme Park Data Nerd</h2>
+    <section class="tpcr-about">
+        <div class="tpcr-about-card">
+            <h2>Built by a Theme Park Data Nerd 🎡</h2>
             <p>I'm <strong>Fred Hazelton</strong> — an independent data scientist and former analyst at <strong>TouringPlans</strong>, where I spent years building theme park wait time predictions. Now I'm building the next generation of crowd forecasting tools on my own.</p>
             <p>Theme Park Crowd Report is in <strong>open beta</strong>. Join the Discord to get access, give feedback, and help shape what we build next.</p>
         </div>
     </section>
 
     <!-- Data Sources -->
-    <section class="data-sources">
-        <div class="about-content">
-            <h2>📡 Data Sources</h2>
-            <p>Our models are trained on a variety of data sources — but the models, techniques, and predictions are entirely our own.</p>
-            <p>Big thanks to
-                <a href="https://touringplans.com" target="_blank">TouringPlans</a>,
-                <a href="https://queue-times.com" target="_blank">Queue-Times</a>, and
-                <a href="https://www.thrill-data.com" target="_blank">Thrill-Data</a>
-                for making great theme park data available.
-            </p>
-        </div>
-    </section>
+    <div class="tpcr-data-sources">
+        <h3>📡 Data Sources</h3>
+        <p>Our models are trained on a variety of data sources — but the models, techniques, and predictions are entirely our own.</p>
+        <p>Big thanks to
+            <a href="https://touringplans.com" target="_blank">TouringPlans</a>,
+            <a href="https://queue-times.com" target="_blank">Queue-Times</a>, and
+            <a href="https://www.thrill-data.com" target="_blank">Thrill-Data</a>
+            for making great theme park data available.
+        </p>
+    </div>
 
     <!-- CTA -->
-    <section class="cta">
-        <h2>Ready to plan smarter?</h2>
+    <section class="tpcr-cta">
+        <h2>Ready to plan smarter? 🎯</h2>
         <p>Join the Discord for free beta access.</p>
         <a href="https://discord.gg/2Estr7sbP7" class="btn btn-primary btn-lg" target="_blank">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
@@ -267,21 +1293,33 @@
     </section>
 
     <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-brand">
-                <img src="../assets/icon.jpg" alt="" class="footer-icon">
-                <span>Theme Park Crowd Report</span>
+    <footer class="tpcr-footer">
+        <div class="tpcr-footer-inner">
+            <div class="tpcr-footer-top">
+                <div class="tpcr-footer-brand">
+                    <img src="../assets/icon.jpg" alt="">
+                    <span>Theme Park Crowd Report</span>
+                </div>
+                <div class="tpcr-footer-columns">
+                    <div class="tpcr-footer-col">
+                        <h4>Navigate</h4>
+                        <a href="/">HazeyData Hub</a>
+                        <a href="/theme-park-crowd-report/blog/">Blog</a>
+                        <a href="/theme-park-crowd-report/pricing.html">Pricing</a>
+                        <a href="/theme-park-crowd-report/bio.html">About</a>
+                        <a href="/theme-park-crowd-report/year-view.html">Year View</a>
+                    </div>
+                    <div class="tpcr-footer-col">
+                        <h4>Connect</h4>
+                        <a href="https://discord.gg/2Estr7sbP7" target="_blank">Discord</a>
+                        <a href="https://twitter.com/disneystatswhiz" target="_blank">Twitter / X</a>
+                        <a href="mailto:fred@hazeydata.ai">Email</a>
+                    </div>
+                </div>
             </div>
-            <div class="footer-links">
-                <a href="/">HazeyData Hub</a>
-                <a href="/theme-park-crowd-report/blog/">Blog</a>
-                <a href="/theme-park-crowd-report/bio.html">About</a>
-                <a href="https://discord.gg/2Estr7sbP7" target="_blank">Discord</a>
-                <a href="https://twitter.com/disneystatswhiz" target="_blank">Twitter</a>
-                <a href="mailto:fred@hazeydata.ai">Contact</a>
+            <div class="tpcr-footer-copy">
+                © 2026 HazeyData — Fred Hazelton. All rights reserved.
             </div>
-            <p class="footer-copy">© 2026 hazeydata.ai</p>
         </div>
     </footer>
 
@@ -290,7 +1328,30 @@
         <img id="lightbox-img" style="max-width:90vw; max-height:90vh; border-radius:8px; box-shadow:0 8px 40px rgba(0,0,0,0.5);">
     </div>
     <script>
-        document.querySelectorAll('.preview-card img').forEach(img => {
+        // Sticky nav background
+        const nav = document.getElementById('tpcrNav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // Hamburger
+        const hamburger = document.getElementById('tpcrHamburger');
+        const navLinks = document.getElementById('tpcrNavLinks');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            navLinks.classList.toggle('open');
+        });
+
+        // Close mobile nav on link click
+        navLinks.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // Lightbox for screenshots
+        document.querySelectorAll('.tpcr-preview-card img').forEach(img => {
             img.style.cursor = 'zoom-in';
             img.addEventListener('click', () => {
                 const lb = document.getElementById('lightbox');
