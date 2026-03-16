@@ -67,13 +67,38 @@
         .nav-brand {
             font-weight: 800;
             font-size: 1rem;
-            color: var(--gc-blue);
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        .nav-brand img { width: 28px; height: 28px; border-radius: 6px; }
+        .nav-brand .logo-mark {
+            font-family: var(--font-mono, 'JetBrains Mono', monospace);
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 0.12em;
+            background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logo-shimmer 6s linear infinite;
+        }
+        .nav-brand .logo-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4a90a4;
+            margin-left: 2px;
+            animation: pulse 2s ease-in-out infinite;
+            vertical-align: middle;
+        }
+        @keyframes logo-shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
         .nav-links { display: flex; gap: 1.5rem; align-items: center; }
         .nav-links a {
             color: var(--gc-grey-mid);
@@ -319,8 +344,7 @@
     <div class="gc-bar"></div>
     <nav class="nav">
         <a href="/" class="nav-brand">
-            <img src="../assets/icon.jpg" alt="hazeydata">
-            hazeydata.ai
+            <span class="logo-mark">HAZEYDATA</span><span class="logo-dot"></span>
         </a>
         <div class="nav-links">
             <a href="/">Home</a>

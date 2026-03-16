@@ -56,13 +56,22 @@
             gap: 1rem;
         }
         .cdr-blog-back {
-            color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.78rem;
+            font-size: 1.2rem;
             font-family: var(--font-mono);
-            transition: color 0.2s;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logo-shimmer 6s linear infinite;
         }
-        .cdr-blog-back:hover { color: var(--text-secondary); }
+        @keyframes logo-shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
         .cdr-blog-title {
             font-family: var(--font-mono);
             font-weight: 700;
@@ -173,7 +182,7 @@
     <nav class="cdr-blog-nav" id="blogNav">
         <div class="cdr-blog-nav-inner">
             <div class="cdr-blog-brand">
-                <a href="/" class="cdr-blog-back">← HazeyData</a>
+                <a href="/" class="cdr-blog-back">HAZEYDATA</a>
                 <a href="/cdr/" class="cdr-blog-title">Canadian Digital Railway</a>
             </div>
             <button class="cdr-blog-hamburger" id="blogHamburger" aria-label="Menu">

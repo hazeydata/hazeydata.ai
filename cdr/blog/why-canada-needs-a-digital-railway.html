@@ -152,13 +152,22 @@
             gap: 1rem;
         }
         .article-nav-back {
-            color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.78rem;
+            font-size: 1.2rem;
             font-family: var(--font-mono);
-            transition: color 0.2s;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logo-shimmer 6s linear infinite;
         }
-        .article-nav-back:hover { color: var(--text-secondary); }
+        @keyframes logo-shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
         .article-nav-title {
             font-family: var(--font-mono);
             font-weight: 700;
@@ -250,7 +259,7 @@
     <nav class="article-nav" id="articleNav">
         <div class="article-nav-inner">
             <div class="article-nav-brand">
-                <a href="/" class="article-nav-back">← HazeyData</a>
+                <a href="/" class="article-nav-back">HAZEYDATA</a>
                 <a href="/cdr/" class="article-nav-title">Canadian Digital Railway</a>
             </div>
             <button class="article-hamburger" id="articleHamburger" aria-label="Menu">

@@ -97,14 +97,22 @@
             gap: 1rem;
         }
         .cdr-nav-back {
-            color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.78rem;
+            font-size: 1.2rem;
             font-family: var(--font-mono);
-            transition: color 0.2s;
-            letter-spacing: 0.03em;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logo-shimmer 6s linear infinite;
         }
-        .cdr-nav-back:hover { color: var(--text-secondary); }
+        @keyframes logo-shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
         .cdr-nav-title {
             font-family: var(--font-mono);
             font-weight: 700;
@@ -569,7 +577,7 @@
     <nav class="cdr-nav" id="cdrNav">
         <div class="cdr-nav-inner">
             <div class="cdr-nav-brand">
-                <a href="/" class="cdr-nav-back">← HazeyData</a>
+                <a href="/" class="cdr-nav-back">HAZEYDATA</a>
                 <span class="cdr-nav-title">🚂🍁 Canadian Digital Railway</span>
             </div>
             <button class="cdr-hamburger" id="cdrHamburger" aria-label="Menu">

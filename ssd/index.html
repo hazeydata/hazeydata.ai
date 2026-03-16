@@ -95,10 +95,19 @@
         }
         .logo {
             font-family: var(--font-mono);
-            font-size: 16px; font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 2px;
+            font-size: 1.2rem; font-weight: 800;
+            letter-spacing: 0.12em;
             text-decoration: none;
+            background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logo-shimmer 6s linear infinite;
+        }
+        @keyframes logo-shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
         }
         .nav-links { display: flex; gap: 24px; align-items: center; }
         .nav-links a {
