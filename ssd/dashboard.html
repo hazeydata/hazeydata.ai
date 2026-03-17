@@ -1150,6 +1150,154 @@
         if (dailyData.length) renderTimeline();
     });
 
+    // ── District Explorer ──
+    function populateStateSelect() {
+        const sel = document.getElementById('stateSelect');
+        const states = Object.keys(districtData).sort();
+        sel.innerHTML = '<option value="">— Select State —</option>';
+        states.forEach(st => {
+            const count = districtData[st].length;
+            sel.innerHTML += `<option value="${st}">${st} (${count})</option>`;
+        });
+    }
+
+    function onStateSelect() {
+        const st = document.getElementById('stateSelect').value;
+        document.getElementById('districtSearch').value = '';
+        selectedDistrictId = null;
+        document.getElementById('districtDetail').style.display = 'none';
+        if (!st) {
+            document.getElementById('districtList').innerHTML = '<div class="explorer-empty">Select a state or search to browse districts</div>';
+            document.getElementById('districtCount').textContent = '';
+            return;
+        }
+        renderDistrictList(districtData[st] || [], st);
+    }
+
+    let searchTimeout = null;
+    function onDistrictSearch() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const q = document.getElementById('districtSearch').value.trim().toLowerCase();
+            if (q.length < 2) {
+                const st = document.getElementById('stateSelect').value;
+                if (st) {
+                    renderDistrictList(districtData[st] || [], st);
+                } else {
+                    document.getElementById('districtList').innerHTML = '<div class="explorer-empty">Type at least 2 characters to search</div>';
+                    document.getElementById('districtCount').textContent = '';
+                }
+                return;
+            }
+            document.getElementById('stateSelect').value = '';
+            const results = [];
+            for (const [st, districts] of Object.entries(districtData)) {
+                for (const d of districts) {
+                    if (d.name.toLowerCase().includes(q) || d.city.toLowerCase().includes(q)) {
+                        results.push({...d, _state: st});
+                    }
+                }
+            }
+            results.sort((a, b) => b.enrollment - a.enrollment);
+            renderDistrictList(results.slice(0, 200), null, true);
+        }, 200);
+    }
+
+    function renderDistrictList(districts, stateName, showState) {
+        const container = document.getElementById('districtList');
+        const countEl = document.getElementById('districtCount');
+        if (!districts.length) {
+            container.innerHTML = '<div class="explorer-empty">No districts found</div>';
+            countEl.textContent = '';
+            return;
+        }
+        countEl.textContent = `${districts.length} district${districts.length !== 1 ? 's' : ''}`;
+        container.innerHTML = districts.map(d => {
+            const conf = d.confidence || 'none';
+            const badgeClass = conf === 'confirmed' ? 'confirmed' : conf === 'medium' ? 'medium' : 'none';
+            const enr = d.enrollment >= 1e6 ? (d.enrollment/1e6).toFixed(1)+'M' :
+                        d.enrollment >= 1e3 ? (d.enrollment/1e3).toFixed(1)+'K' : d.enrollment;
+            const stLabel = showState ? `, ${d._state || stateName || ''}` : '';
+            const safeState = (d._state || stateName || '').replace(/'/g, "\\'");
+            return `<div class="district-row ${d.id === selectedDistrictId ? 'active' : ''}" onclick="selectDistrict('${d.id}', '${safeState}', this)">
+                <div class="district-row-name">${escHtml(d.name)}</div>
+                <div class="district-row-city">${escHtml(d.city)}${stLabel}</div>
+                <div class="district-row-enrollment">${enr}</div>
+                <div class="district-row-badge ${badgeClass}">${conf || 'none'}</div>
+            </div>`;
+        }).join('');
+    }
+
+    function selectDistrict(id, stateName, el) {
+        selectedDistrictId = id;
+        let dist = null;
+        const st = stateName || document.getElementById('stateSelect').value;
+        if (st && districtData[st]) {
+            dist = districtData[st].find(d => d.id === id);
+        }
+        if (!dist) {
+            for (const [s, districts] of Object.entries(districtData)) {
+                const found = districts.find(d => d.id === id);
+                if (found) { dist = {...found, _state: s}; break; }
+            }
+        }
+        if (!dist) return;
+        document.querySelectorAll('.district-row').forEach(r => r.classList.remove('active'));
+        if (el) el.classList.add('active');
+
+        const panel = document.getElementById('districtDetail');
+        panel.style.display = 'block';
+        const useSt = st || dist._state || '';
+        document.getElementById('detailName').textContent = dist.name;
+        document.getElementById('detailMeta').textContent = `${dist.city}${dist.city ? ', ' : ''}${useSt} · ${dist.enrollment.toLocaleString()} students`;
+        document.getElementById('detailFirstDay').textContent = fmtDate(dist.first_day);
+        document.getElementById('detailLastDay').textContent = fmtDate(dist.last_day);
+        document.getElementById('detailSpringStart').textContent = fmtDate(dist.spring_start);
+        document.getElementById('detailSpringEnd').textContent = fmtDate(dist.spring_end);
+        document.getElementById('detailWinterStart').textContent = fmtDate(dist.winter_start);
+        document.getElementById('detailWinterEnd').textContent = fmtDate(dist.winter_end);
+        document.getElementById('detailSummerStart').textContent = fmtDate(dist.summer_start);
+        document.getElementById('detailSummerEnd').textContent = fmtDate(dist.summer_end);
+        const confBadge = dist.confidence === 'confirmed' ? '🟢 Confirmed' :
+                          dist.confidence === 'medium' ? '🟡 Medium' : '🔴 No Data';
+        document.getElementById('detailSource').textContent = '📡 ' + (dist.source || 'unknown');
+        document.getElementById('detailConfidence').textContent = confBadge;
+        document.getElementById('detailNCES').textContent = '🏫 NCES: ' + dist.id;
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function closeDetail() {
+        document.getElementById('districtDetail').style.display = 'none';
+        selectedDistrictId = null;
+        document.querySelectorAll('.district-row').forEach(r => r.classList.remove('active'));
+    }
+
+    function fmtDate(d) {
+        if (!d) return '—';
+        try {
+            const dt = new Date(d + 'T12:00:00');
+            return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        } catch { return d; }
+    }
+
+    function escHtml(s) {
+        const el = document.createElement('span');
+        el.textContent = s;
+        return el.innerHTML;
+    }
+
+    // Click state name in table → jump to explorer
+    document.querySelector('.state-table').addEventListener('click', (e) => {
+        const td = e.target.closest('td');
+        if (td && td.cellIndex === 0) {
+            const stateName = td.textContent.trim();
+            document.getElementById('stateSelect').value = stateName;
+            document.getElementById('districtSearch').value = '';
+            onStateSelect();
+            document.getElementById('districtExplorer').scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+
     // Initial load
     loadData();
     </script>
