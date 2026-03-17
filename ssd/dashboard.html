@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSD Live Dashboard — HazeyData.ai</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icon-32.png">
+    <meta name="theme-color" content="#0a1628">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════════════
+           DESIGN SYSTEM — HazeyData Brand
+           ═══════════════════════════════════════════════════ */
+        :root {
+            --bg-primary: #0a1628;
+            --bg-secondary: #111d32;
+            --bg-card: #152238;
+            --bg-card-hover: #1a2a45;
+            --border: #1e3354;
+            --text-primary: #e8ecf4;
+            --text-secondary: #8899b4;
+            --text-muted: #5a6d8a;
+            --accent-blue: #4a9eff;
+            --accent-green: #34d399;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #a78bfa;
+            --accent-cyan: #22d3ee;
+            --gradient-blue: linear-gradient(135deg, #4a9eff, #2563eb);
+            --gradient-green: linear-gradient(135deg, #34d399, #059669);
+            --gradient-amber: linear-gradient(135deg, #f59e0b, #d97706);
+            --shadow: 0 4px 24px rgba(0,0,0,0.3);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: var(--gradient-blue);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header-badge {
+            background: rgba(74, 158, 255, 0.15);
+            color: var(--accent-blue);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .header-preview {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-amber);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .last-updated {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .refresh-btn {
+            background: rgba(74, 158, 255, 0.1);
+            border: 1px solid rgba(74, 158, 255, 0.3);
+            color: var(--accent-blue);
+            padding: 6px 14px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .refresh-btn:hover {
+            background: rgba(74, 158, 255, 0.2);
+        }
+        .refresh-btn.spinning svg {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Main Layout ── */
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* ── Today Banner ── */
+        .today-banner {
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(74,158,255,0.08) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 32px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .today-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .today-date {
+            font-size: 28px;
+            font-weight: 800;
+            margin-top: 4px;
+        }
+        .today-stat {
+            text-align: center;
+        }
+        .today-stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .today-stat-value.break { color: var(--accent-amber); }
+        .today-stat-value.session { color: var(--accent-green); }
+        .today-stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* ── KPI Cards ── */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: all 0.2s;
+        }
+        .kpi-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        .kpi-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+        }
+        .kpi-value {
+            font-size: 32px;
+            font-weight: 800;
+            margin-top: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1;
+        }
+        .kpi-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+        .kpi-value.blue { color: var(--accent-blue); }
+        .kpi-value.green { color: var(--accent-green); }
+        .kpi-value.amber { color: var(--accent-amber); }
+        .kpi-value.purple { color: var(--accent-purple); }
+
+        /* ── Section Headers ── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 32px 0 16px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ── Chart Container ── */
+        .chart-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .chart-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        /* ── Canvas Chart ── */
+        #timelineChart {
+            width: 100%;
+            height: 300px;
+            cursor: crosshair;
+        }
+        .chart-legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* ── Confidence Bars ── */
+        .confidence-bar-container {
+            margin-bottom: 24px;
+        }
+        .conf-bar-wrapper {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            height: 40px;
+            display: flex;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .conf-bar-segment {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s;
+            min-width: 40px;
+        }
+        .conf-bar-segment.confirmed { background: var(--accent-green); color: #000; }
+        .conf-bar-segment.medium { background: var(--accent-amber); color: #000; }
+        .conf-bar-segment.none { background: var(--accent-red); color: #fff; }
+
+        /* ── State Table ── */
+        .state-table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .state-table-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .state-search {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            width: 220px;
+            transition: border-color 0.2s;
+        }
+        .state-search:focus {
+            border-color: var(--accent-blue);
+        }
+        .state-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .state-table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+        }
+        .state-table th:hover {
+            color: var(--text-secondary);
+        }
+        .state-table th.sorted-asc::after { content: ' ▲'; color: var(--accent-blue); }
+        .state-table th.sorted-desc::after { content: ' ▼'; color: var(--accent-blue); }
+        .state-table td {
+            padding: 10px 16px;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(30,51,84,0.5);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .state-table tbody tr {
+            transition: background 0.15s;
+        }
+        .state-table tbody tr:hover {
+            background: var(--bg-card-hover);
+        }
+        .mini-bar {
+            display: flex;
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.05);
+            min-width: 100px;
+        }
+        .mini-bar .confirmed { background: var(--accent-green); }
+        .mini-bar .medium { background: var(--accent-amber); }
+        .mini-bar .none { background: var(--accent-red); }
+
+        /* ── Tooltip ── */
+        .tooltip {
+            position: fixed;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            max-width: 280px;
+        }
+        .tooltip-date {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .tooltip-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-amber);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .dashboard { padding: 12px; }
+            .today-banner { padding: 16px; flex-direction: column; text-align: center; }
+            .today-stat-value { font-size: 28px; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .kpi-value { font-size: 24px; }
+            .header { padding: 12px 16px; }
+            .state-table { font-size: 12px; }
+            .state-table td, .state-table th { padding: 8px 10px; }
+        }
+        
+        /* ── Skeleton loading ── */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card-hover) 50%, var(--bg-card) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: var(--radius-sm);
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ── Today marker ── */
+        .today-marker {
+            position: absolute;
+            border-left: 2px dashed var(--accent-cyan);
+            height: calc(100% - 70px);
+            top: 50px;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .today-marker-label {
+            position: absolute;
+            top: -18px;
+            left: -16px;
+            font-size: 10px;
+            color: var(--accent-cyan);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* ── Tab Switcher ── */
+        .chart-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+        .chart-tab {
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        .chart-tab:hover { color: var(--text-secondary); }
+        .chart-tab.active {
+            background: rgba(74, 158, 255, 0.1);
+            color: var(--accent-blue);
+            border-color: rgba(74, 158, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <span class="header-logo">📊 SSD Dashboard</span>
+            <span class="header-badge">Live</span>
+            <span class="header-preview">Preview — Internal Only</span>
+        </div>
+        <div class="header-right">
+            <span class="last-updated" id="lastUpdated">Loading...</span>
+            <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align: middle; margin-right: 4px;">
+                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0118.8-4.3M22 12.5a10 10 0 01-18.8 4.3"/>
+                </svg>
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-date" id="tooltipDate"></div>
+        <div class="tooltip-value" id="tooltipValue"></div>
+    </div>
+
+    <div class="dashboard">
+        <!-- Today Banner -->
+        <div class="today-banner" id="todayBanner">
+            <div>
+                <div class="today-label">Today</div>
+                <div class="today-date" id="todayDate">—</div>
+            </div>
+            <div class="today-stat">
+                <div class="today-stat-value break" id="todayBreak">—</div>
+                <div class="today-stat-label">Students On Break</div>
+            </div>
+            <div class="today-stat">
+                <div class="today-stat-value session" id="todaySession">—</div>
+                <div class="today-stat-label">Students In Session</div>
+            </div>
+            <div class="today-stat">
+                <div class="today-stat-value" id="todayReason" style="font-size:18px; color: var(--accent-purple);">—</div>
+                <div class="today-stat-label">Primary Reason</div>
+            </div>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-grid" id="kpiGrid">
+            <div class="kpi-card">
+                <div class="kpi-label">Total Districts</div>
+                <div class="kpi-value blue" id="kpiTotalDistricts">—</div>
+                <div class="kpi-sub" id="kpiTotalEnrollment">—</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Confirmed (High)</div>
+                <div class="kpi-value green" id="kpiConfirmed">—</div>
+                <div class="kpi-sub" id="kpiConfirmedPct">—</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Medium Confidence</div>
+                <div class="kpi-value amber" id="kpiMedium">—</div>
+                <div class="kpi-sub" id="kpiMediumPct">—</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Enrollment Coverage</div>
+                <div class="kpi-value purple" id="kpiEnrollCoverage">—</div>
+                <div class="kpi-sub" id="kpiEnrollSub">Confirmed by enrollment</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Spring Break Data</div>
+                <div class="kpi-value green" id="kpiSpring">—</div>
+                <div class="kpi-sub">Districts with dates</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">States + DC</div>
+                <div class="kpi-value blue" id="kpiStates">—</div>
+                <div class="kpi-sub">Unique state coverage</div>
+            </div>
+        </div>
+
+        <!-- Confidence Breakdown Bar -->
+        <div class="chart-container confidence-bar-container">
+            <div class="chart-title">Data Confidence — District Count</div>
+            <div class="conf-bar-wrapper" id="confBarDistricts"></div>
+            <div style="height:16px"></div>
+            <div class="chart-title">Data Confidence — By Enrollment</div>
+            <div class="conf-bar-wrapper" id="confBarEnrollment"></div>
+            <div class="chart-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:var(--accent-green)"></div> Confirmed</div>
+                <div class="legend-item"><div class="legend-dot" style="background:var(--accent-amber)"></div> Medium</div>
+                <div class="legend-item"><div class="legend-dot" style="background:var(--accent-red)"></div> No Data</div>
+            </div>
+        </div>
+
+        <!-- Timeline Chart -->
+        <div class="chart-container">
+            <div class="chart-tabs">
+                <div class="chart-tab active" data-view="break" onclick="switchChartView('break')">% On Break</div>
+                <div class="chart-tab" data-view="session" onclick="switchChartView('session')">% In Session</div>
+            </div>
+            <canvas id="timelineChart"></canvas>
+            <div class="chart-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:var(--accent-amber)"></div> On Break</div>
+                <div class="legend-item"><div class="legend-dot" style="background:var(--accent-green)"></div> In Session</div>
+                <div class="legend-item"><div class="legend-dot" style="background:var(--accent-cyan)"></div> Today</div>
+            </div>
+        </div>
+
+        <!-- State Table -->
+        <div class="section-header">
+            <div>
+                <div class="section-title">Coverage by State</div>
+                <div class="section-subtitle">Click column headers to sort</div>
+            </div>
+        </div>
+        <div class="state-table-container">
+            <div class="state-table-header">
+                <span style="font-weight:600;">All States</span>
+                <input type="text" class="state-search" id="stateSearch" placeholder="Search states..." oninput="filterStates()">
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="state-table">
+                    <thead>
+                        <tr>
+                            <th data-col="state" onclick="sortTable('state')">State</th>
+                            <th data-col="total_districts" onclick="sortTable('total_districts')">Districts</th>
+                            <th data-col="enrollment_total" onclick="sortTable('enrollment_total')">Enrollment</th>
+                            <th data-col="confirmed" onclick="sortTable('confirmed')">Confirmed</th>
+                            <th data-col="medium" onclick="sortTable('medium')">Medium</th>
+                            <th data-col="no_data" onclick="sortTable('no_data')">No Data</th>
+                            <th data-col="pct_confirmed" onclick="sortTable('pct_confirmed')">% Confirmed</th>
+                            <th>Coverage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stateTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="text-align:center; padding: 40px 0 20px; color: var(--text-muted); font-size: 12px;">
+            School Schedule Database — HazeyData.ai — Internal Preview Dashboard<br>
+            Data updates when the pipeline runs. Last generated: <span id="footerGenerated">—</span>
+        </div>
+    </div>
+
+    <script>
+    // ═══════════════════════════════════════════════════
+    // Dashboard Logic
+    // ═══════════════════════════════════════════════════
+    let summaryData = null;
+    let stateData = [];
+    let dailyData = [];
+    let chartView = 'break';
+    let sortCol = 'enrollment_total';
+    let sortDir = 'desc';
+
+    async function loadData() {
+        const btn = document.getElementById('refreshBtn');
+        btn.classList.add('spinning');
+        
+        try {
+            const [summaryRes, dailyRes] = await Promise.all([
+                fetch('dashboard-data.json?' + Date.now()),
+                fetch('daily-data.json?' + Date.now())
+            ]);
+            
+            const dashData = await summaryRes.json();
+            dailyData = await dailyRes.json();
+            summaryData = dashData.summary;
+            stateData = dashData.by_state;
+            
+            renderKPIs();
+            renderConfidenceBars();
+            renderTimeline();
+            renderStateTable();
+            renderToday();
+            
+            const genDate = new Date(dashData.generated_at);
+            document.getElementById('lastUpdated').textContent = 'Updated: ' + genDate.toLocaleString();
+            document.getElementById('footerGenerated').textContent = genDate.toLocaleString();
+        } catch (err) {
+            console.error('Failed to load data:', err);
+            document.getElementById('lastUpdated').textContent = 'Error loading data';
+        }
+        
+        btn.classList.remove('spinning');
+    }
+
+    function renderToday() {
+        const today = new Date().toISOString().split('T')[0];
+        const todayData = dailyData.find(d => d.date === today);
+        
+        const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('todayDate').textContent = dateStr;
+        
+        if (todayData) {
+            document.getElementById('todayBreak').textContent = todayData.pct_on_break.toFixed(1) + '%';
+            document.getElementById('todaySession').textContent = todayData.pct_in_session.toFixed(1) + '%';
+            const reason = todayData.reason.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            document.getElementById('todayReason').textContent = reason || 'Normal Session';
+        }
+    }
+
+    function renderKPIs() {
+        const s = summaryData;
+        document.getElementById('kpiTotalDistricts').textContent = s.total_districts.toLocaleString();
+        document.getElementById('kpiTotalEnrollment').textContent = (s.total_enrollment / 1e6).toFixed(1) + 'M students';
+        document.getElementById('kpiConfirmed').textContent = s.confirmed_districts.toLocaleString();
+        document.getElementById('kpiConfirmedPct').textContent = s.pct_confirmed_districts + '% of districts';
+        document.getElementById('kpiMedium').textContent = s.medium_districts.toLocaleString();
+        document.getElementById('kpiMediumPct').textContent = s.pct_with_data_districts + '% total coverage';
+        document.getElementById('kpiEnrollCoverage').textContent = s.pct_confirmed_enrollment + '%';
+        document.getElementById('kpiSpring').textContent = s.has_spring_break.toLocaleString();
+        document.getElementById('kpiStates').textContent = stateData.length;
+    }
+
+    function renderConfidenceBars() {
+        const s = summaryData;
+        
+        // Districts bar
+        const confPct = s.pct_confirmed_districts;
+        const medPct = ((s.medium_districts / s.total_districts) * 100).toFixed(1);
+        const nonePct = (100 - confPct - medPct).toFixed(1);
+        document.getElementById('confBarDistricts').innerHTML = `
+            <div class="conf-bar-segment confirmed" style="width:${confPct}%">${confPct}%</div>
+            <div class="conf-bar-segment medium" style="width:${medPct}%">${medPct}%</div>
+            ${parseFloat(nonePct) > 0.5 ? `<div class="conf-bar-segment none" style="width:${nonePct}%">${nonePct}%</div>` : ''}
+        `;
+        
+        // Enrollment bar
+        const confEnrPct = s.pct_confirmed_enrollment;
+        const medEnrPct = (s.pct_with_data_enrollment - confEnrPct).toFixed(1);
+        const noneEnrPct = (100 - s.pct_with_data_enrollment).toFixed(1);
+        document.getElementById('confBarEnrollment').innerHTML = `
+            <div class="conf-bar-segment confirmed" style="width:${confEnrPct}%">${confEnrPct}%</div>
+            <div class="conf-bar-segment medium" style="width:${medEnrPct}%">${medEnrPct}%</div>
+            ${parseFloat(noneEnrPct) > 0.5 ? `<div class="conf-bar-segment none" style="width:${noneEnrPct}%">${noneEnrPct}%</div>` : ''}
+        `;
+    }
+
+    // ── Timeline Chart (Canvas) ──
+    function renderTimeline() {
+        const canvas = document.getElementById('timelineChart');
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+        
+        const W = rect.width;
+        const H = rect.height;
+        const pad = { top: 30, right: 20, bottom: 40, left: 50 };
+        const plotW = W - pad.left - pad.right;
+        const plotH = H - pad.top - pad.bottom;
+        
+        ctx.clearRect(0, 0, W, H);
+        
+        // Grid lines
+        ctx.strokeStyle = 'rgba(30,51,84,0.5)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 5; i++) {
+            const y = pad.top + (plotH / 5) * i;
+            ctx.beginPath();
+            ctx.moveTo(pad.left, y);
+            ctx.lineTo(W - pad.right, y);
+            ctx.stroke();
+            
+            const val = 100 - (i * 20);
+            ctx.fillStyle = '#5a6d8a';
+            ctx.font = '11px JetBrains Mono';
+            ctx.textAlign = 'right';
+            ctx.fillText(val + '%', pad.left - 8, y + 4);
+        }
+        
+        // Month labels
+        const months = ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'];
+        ctx.fillStyle = '#5a6d8a';
+        ctx.font = '11px Inter';
+        ctx.textAlign = 'center';
+        for (let i = 0; i < 12; i++) {
+            const x = pad.left + (plotW / 12) * (i + 0.5);
+            ctx.fillText(months[i], x, H - pad.bottom + 20);
+            
+            // Month separator
+            if (i > 0) {
+                const sepX = pad.left + (plotW / 12) * i;
+                ctx.strokeStyle = 'rgba(30,51,84,0.3)';
+                ctx.beginPath();
+                ctx.moveTo(sepX, pad.top);
+                ctx.lineTo(sepX, H - pad.bottom);
+                ctx.stroke();
+            }
+        }
+        
+        // Data line
+        const field = chartView === 'break' ? 'pct_on_break' : 'pct_in_session';
+        const color = chartView === 'break' ? '#f59e0b' : '#34d399';
+        const fillColor = chartView === 'break' ? 'rgba(245,158,11,0.1)' : 'rgba(52,211,153,0.1)';
+        
+        // Fill area
+        ctx.beginPath();
+        ctx.moveTo(pad.left, H - pad.bottom);
+        dailyData.forEach((d, i) => {
+            const x = pad.left + (i / (dailyData.length - 1)) * plotW;
+            const y = pad.top + (1 - d[field] / 100) * plotH;
+            if (i === 0) ctx.lineTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.lineTo(pad.left + plotW, H - pad.bottom);
+        ctx.closePath();
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+        
+        // Line
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        dailyData.forEach((d, i) => {
+            const x = pad.left + (i / (dailyData.length - 1)) * plotW;
+            const y = pad.top + (1 - d[field] / 100) * plotH;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        
+        // Today marker
+        const today = new Date().toISOString().split('T')[0];
+        const todayIdx = dailyData.findIndex(d => d.date === today);
+        if (todayIdx >= 0) {
+            const tx = pad.left + (todayIdx / (dailyData.length - 1)) * plotW;
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = '#22d3ee';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(tx, pad.top);
+            ctx.lineTo(tx, H - pad.bottom);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = '#22d3ee';
+            ctx.font = 'bold 10px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('TODAY', tx, pad.top - 8);
+        }
+        
+        // Hover interaction
+        canvas.onmousemove = (e) => {
+            const mouseX = e.offsetX;
+            const mouseY = e.offsetY;
+            if (mouseX < pad.left || mouseX > W - pad.right) {
+                document.getElementById('tooltip').style.display = 'none';
+                return;
+            }
+            const idx = Math.round(((mouseX - pad.left) / plotW) * (dailyData.length - 1));
+            if (idx >= 0 && idx < dailyData.length) {
+                const d = dailyData[idx];
+                const tooltip = document.getElementById('tooltip');
+                const dateObj = new Date(d.date + 'T12:00:00');
+                document.getElementById('tooltipDate').textContent = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+                const reason = d.reason ? d.reason.replace(/_/g, ' ') : 'Normal';
+                document.getElementById('tooltipValue').innerHTML = `
+                    On break: ${d.pct_on_break}% · In session: ${d.pct_in_session}%<br>
+                    <span style="color: var(--text-muted)">${(d.on_break/1e6).toFixed(1)}M students on break</span><br>
+                    <span style="color: var(--accent-purple)">${reason}</span>
+                `;
+                tooltip.style.display = 'block';
+                tooltip.style.left = Math.min(e.clientX + 12, window.innerWidth - 300) + 'px';
+                tooltip.style.top = (e.clientY - 10) + 'px';
+            }
+        };
+        canvas.onmouseleave = () => {
+            document.getElementById('tooltip').style.display = 'none';
+        };
+    }
+
+    function switchChartView(view) {
+        chartView = view;
+        document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+        document.querySelector(`.chart-tab[data-view="${view}"]`).classList.add('active');
+        renderTimeline();
+    }
+
+    // ── State Table ──
+    function renderStateTable() {
+        const tbody = document.getElementById('stateTableBody');
+        const filter = (document.getElementById('stateSearch').value || '').toLowerCase();
+        
+        let data = stateData;
+        if (filter) {
+            data = data.filter(s => s.state.toLowerCase().includes(filter));
+        }
+        
+        data.sort((a, b) => {
+            let va = a[sortCol], vb = b[sortCol];
+            if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+            if (sortDir === 'asc') return va > vb ? 1 : va < vb ? -1 : 0;
+            return va < vb ? 1 : va > vb ? -1 : 0;
+        });
+        
+        // Update header classes
+        document.querySelectorAll('.state-table th').forEach(th => {
+            th.classList.remove('sorted-asc', 'sorted-desc');
+            if (th.dataset.col === sortCol) {
+                th.classList.add(sortDir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+            }
+        });
+        
+        tbody.innerHTML = data.map(s => `
+            <tr>
+                <td style="font-weight:600; font-family:Inter,sans-serif;">${s.state}</td>
+                <td>${s.total_districts.toLocaleString()}</td>
+                <td>${s.enrollment_total >= 1e6 ? (s.enrollment_total/1e6).toFixed(1)+'M' : s.enrollment_total >= 1e3 ? (s.enrollment_total/1e3).toFixed(0)+'K' : s.enrollment_total}</td>
+                <td style="color:var(--accent-green)">${s.confirmed}</td>
+                <td style="color:var(--accent-amber)">${s.medium}</td>
+                <td style="color:${s.no_data > 0 ? 'var(--accent-red)' : 'var(--text-muted)'}">${s.no_data}</td>
+                <td>${s.pct_confirmed}%</td>
+                <td>
+                    <div class="mini-bar">
+                        <div class="confirmed" style="width:${s.pct_confirmed}%"></div>
+                        <div class="medium" style="width:${s.pct_with_data - s.pct_confirmed}%"></div>
+                        <div class="none" style="width:${100 - s.pct_with_data}%"></div>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function sortTable(col) {
+        if (sortCol === col) {
+            sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+            sortCol = col;
+            sortDir = col === 'state' ? 'asc' : 'desc';
+        }
+        renderStateTable();
+    }
+
+    function filterStates() {
+        renderStateTable();
+    }
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+        if (dailyData.length) renderTimeline();
+    });
+
+    // Initial load
+    loadData();
+    </script>
+</body>
+</html>
