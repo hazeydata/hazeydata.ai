@@ -392,6 +392,188 @@
             color: var(--accent-amber);
         }
 
+        /* ── District Explorer ── */
+        .district-explorer {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .explorer-controls {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .explorer-select {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            min-width: 180px;
+            cursor: pointer;
+        }
+        .explorer-select:focus { border-color: var(--accent-blue); }
+        .explorer-search {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            flex: 1;
+            min-width: 200px;
+        }
+        .explorer-search:focus { border-color: var(--accent-blue); }
+        .explorer-count {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            white-space: nowrap;
+        }
+        .district-list {
+            max-height: 400px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+        .district-list::-webkit-scrollbar { width: 6px; }
+        .district-list::-webkit-scrollbar-track { background: transparent; }
+        .district-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        .explorer-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .district-row {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(30,51,84,0.4);
+            cursor: pointer;
+            transition: background 0.15s;
+            gap: 12px;
+        }
+        .district-row:hover { background: var(--bg-card-hover); }
+        .district-row.active { background: rgba(74,158,255,0.08); border-left: 3px solid var(--accent-blue); }
+        .district-row-name {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .district-row-city {
+            color: var(--text-muted);
+            font-size: 12px;
+            width: 120px;
+            text-align: right;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .district-row-enrollment {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+            width: 80px;
+            text-align: right;
+        }
+        .district-row-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 72px;
+            text-align: center;
+        }
+        .district-row-badge.confirmed { background: rgba(52,211,153,0.15); color: var(--accent-green); }
+        .district-row-badge.medium { background: rgba(245,158,11,0.15); color: var(--accent-amber); }
+        .district-row-badge.none { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+        
+        /* Detail Panel */
+        .district-detail {
+            border-top: 1px solid var(--border);
+            padding: 20px;
+            background: rgba(74,158,255,0.03);
+        }
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        .detail-name {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .detail-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        .detail-close {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+        .detail-close:hover { background: rgba(255,255,255,0.15); color: var(--text-primary); }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .detail-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+        }
+        .detail-card-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 13px;
+        }
+        .detail-row span:first-child { color: var(--text-secondary); }
+        .detail-row span:last-child { font-family: 'JetBrains Mono', monospace; color: var(--text-primary); font-weight: 500; }
+        .detail-footer {
+            display: flex;
+            gap: 16px;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
         /* ── Responsive ── */
         @media (max-width: 768px) {
             .dashboard { padding: 12px; }
@@ -598,6 +780,63 @@
             </div>
         </div>
 
+        <!-- District Explorer -->
+        <div class="section-header">
+            <div>
+                <div class="section-title">🔍 District Explorer</div>
+                <div class="section-subtitle">Select a state to browse districts, or search by name</div>
+            </div>
+        </div>
+        <div class="district-explorer" id="districtExplorer">
+            <div class="explorer-controls">
+                <select class="explorer-select" id="stateSelect" onchange="onStateSelect()">
+                    <option value="">— Select State —</option>
+                </select>
+                <input type="text" class="explorer-search" id="districtSearch" placeholder="Search any district..." oninput="onDistrictSearch()">
+                <span class="explorer-count" id="districtCount"></span>
+            </div>
+            <div class="district-list" id="districtList">
+                <div class="explorer-empty">Select a state or search to browse districts</div>
+            </div>
+            <!-- District Detail Panel -->
+            <div class="district-detail" id="districtDetail" style="display:none;">
+                <div class="detail-header">
+                    <div>
+                        <div class="detail-name" id="detailName">—</div>
+                        <div class="detail-meta" id="detailMeta">—</div>
+                    </div>
+                    <button class="detail-close" onclick="closeDetail()">✕</button>
+                </div>
+                <div class="detail-grid">
+                    <div class="detail-card">
+                        <div class="detail-card-title">📚 School Year</div>
+                        <div class="detail-row"><span>First Day</span><span id="detailFirstDay">—</span></div>
+                        <div class="detail-row"><span>Last Day</span><span id="detailLastDay">—</span></div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-card-title">🌸 Spring Break</div>
+                        <div class="detail-row"><span>Start</span><span id="detailSpringStart">—</span></div>
+                        <div class="detail-row"><span>End</span><span id="detailSpringEnd">—</span></div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-card-title">❄️ Winter Break</div>
+                        <div class="detail-row"><span>Start</span><span id="detailWinterStart">—</span></div>
+                        <div class="detail-row"><span>End</span><span id="detailWinterEnd">—</span></div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-card-title">☀️ Summer</div>
+                        <div class="detail-row"><span>Start</span><span id="detailSummerStart">—</span></div>
+                        <div class="detail-row"><span>End</span><span id="detailSummerEnd">—</span></div>
+                    </div>
+                </div>
+                <div class="detail-footer">
+                    <span id="detailSource">—</span>
+                    <span id="detailConfidence">—</span>
+                    <span id="detailNCES">—</span>
+                </div>
+            </div>
+        </div>
+
         <div style="text-align:center; padding: 40px 0 20px; color: var(--text-muted); font-size: 12px;">
             School Schedule Database — HazeyData.ai — Internal Preview Dashboard<br>
             Data updates when the pipeline runs. Last generated: <span id="footerGenerated">—</span>
@@ -611,22 +850,26 @@
     let summaryData = null;
     let stateData = [];
     let dailyData = [];
+    let districtData = {};
     let chartView = 'break';
     let sortCol = 'enrollment_total';
     let sortDir = 'desc';
+    let selectedDistrictId = null;
 
     async function loadData() {
         const btn = document.getElementById('refreshBtn');
         btn.classList.add('spinning');
         
         try {
-            const [summaryRes, dailyRes] = await Promise.all([
+            const [summaryRes, dailyRes, districtRes] = await Promise.all([
                 fetch('dashboard-data.json?' + Date.now()),
-                fetch('daily-data.json?' + Date.now())
+                fetch('daily-data.json?' + Date.now()),
+                fetch('districts-data.json?' + Date.now())
             ]);
             
             const dashData = await summaryRes.json();
             dailyData = await dailyRes.json();
+            districtData = await districtRes.json();
             summaryData = dashData.summary;
             stateData = dashData.by_state;
             
@@ -635,6 +878,7 @@
             renderTimeline();
             renderStateTable();
             renderToday();
+            populateStateSelect();
             
             const genDate = new Date(dashData.generated_at);
             document.getElementById('lastUpdated').textContent = 'Updated: ' + genDate.toLocaleString();
