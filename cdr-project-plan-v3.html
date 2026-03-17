@@ -1,0 +1,2381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDR Technical Architecture & Project Plan 🚂 | hazeydata.ai</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap');
+
+  :root {
+    --rail-charcoal: #1C1C1E;
+    --rail-charcoal-mid: #2C2C2E;
+    --rail-slate: #2A3240;
+    --rail-slate-light: #3A4A5C;
+    --rail-slate-lighter: #4E6278;
+    --rail-white: #FFFFFF;
+    --rail-grey-light: #F8F8F6;
+    --rail-grey: #EEE;
+    --rail-grey-mid: #6C757D;
+    --rail-grey-dark: #333333;
+    --rail-black: #141416;
+    --maple-red: #C41E3A;
+    --maple-red-dark: #9B1B30;
+    --accent-gold: #C8973E;
+    --accent-gold-light: #E4BE6A;
+    --accent-warm: #D4A84B;
+    --accent-teal: #2A8E7F;
+    --accent-green: #2E7D32;
+    --maple: #C41E3A;
+    --bg-warm: #FAF9F6;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--rail-charcoal);
+    color: var(--rail-grey-dark);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Language toggle */
+  [data-lang="fr"] { display: none !important; }
+  body.lang-fr [data-lang="en"] { display: none !important; }
+  body.lang-fr [data-lang="fr"] { display: revert !important; }
+
+  .lang-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lang-btn {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    border: none;
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active {
+    background: var(--maple-red);
+    color: white;
+  }
+
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 100px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  .slide-cover {
+    background: linear-gradient(160deg, var(--rail-black) 0%, var(--rail-charcoal) 40%, var(--rail-slate) 100%);
+    color: var(--rail-white);
+    text-align: center;
+  }
+  .slide-white {
+    background: var(--rail-white);
+    color: var(--rail-grey-dark);
+  }
+  .slide-warm {
+    background: var(--bg-warm);
+    color: var(--rail-grey-dark);
+  }
+  .slide-blue {
+    background: linear-gradient(160deg, var(--rail-slate) 0%, var(--rail-slate-light) 100%);
+    color: var(--rail-white);
+  }
+  .slide-dark {
+    background: linear-gradient(160deg, var(--rail-black) 0%, var(--rail-charcoal) 100%);
+    color: var(--rail-white);
+  }
+  .slide-accent {
+    background: linear-gradient(160deg, var(--rail-charcoal) 0%, var(--rail-slate) 100%);
+    color: var(--rail-white);
+  }
+
+  /* Typography */
+  h1 {
+    font-family: 'Lato', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-family: 'Lato', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 1.35rem;
+    font-weight: 300;
+    opacity: 0.85;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  .small-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+    margin-bottom: 16px;
+  }
+
+  .gc-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--maple-red);
+  }
+
+  /* Components */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    width: 100%;
+    max-width: 1200px;
+    align-items: start;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .four-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 32px;
+    backdrop-filter: blur(10px);
+  }
+
+  .card-white {
+    background: var(--rail-white);
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: var(--shadow);
+  }
+
+  .stack-full {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    gap: 4px;
+    width: 100%;
+    max-width: 800px;
+    margin: 30px 0;
+  }
+
+  .stack-layer {
+    padding: 20px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 8px;
+    position: relative;
+  }
+
+  .layer-cdr { background: var(--maple-red); color: white; }
+  .layer-openshell { background: var(--accent-teal); color: white; }
+  .layer-nemotron { background: var(--accent-gold); color: white; }
+  .layer-toolkit { background: var(--accent-green); color: white; }
+  .layer-hardware { background: var(--rail-slate); color: white; }
+
+  .mode-mapping {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: center;
+    margin: 20px 0;
+  }
+
+  .policy-code {
+    background: var(--rail-charcoal-mid);
+    border-radius: 6px;
+    padding: 16px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.85rem;
+    color: var(--accent-gold-light);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .bootstrap-phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px 0;
+  }
+
+  .bootstrap-phase {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 24px;
+    border-left: 4px solid var(--accent-gold);
+  }
+
+  .principles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .principle-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 20px;
+    border-left: 4px solid var(--accent-gold);
+  }
+
+  .compliance-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px 0;
+  }
+
+  .compliance-item {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    border: 2px solid;
+  }
+
+  .comp-itsg { border-color: var(--maple-red); }
+  .comp-wcag { border-color: var(--accent-gold); }
+  .comp-ola { border-color: var(--accent-teal); }
+  .comp-privacy { border-color: var(--accent-green); }
+
+  .hardware-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+    max-width: 900px;
+    margin: 30px 0;
+  }
+
+  .spec-item {
+    text-align: center;
+    padding: 24px;
+    background: var(--rail-slate-light);
+    border-radius: 12px;
+    border: 2px solid var(--accent-gold);
+  }
+
+  .spec-value {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent-gold);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .gantt-timeline {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    gap: 2px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 30px 0;
+  }
+
+  .gantt-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .gantt-label {
+    font-weight: 600;
+    padding: 12px;
+    background: var(--rail-slate-light);
+    border-radius: 6px;
+  }
+
+  .gantt-bar {
+    height: 30px;
+    background: var(--accent-gold);
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .sovereignty-scorecard {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px 0;
+  }
+
+  .scorecard-header {
+    background: var(--rail-slate-light);
+    padding: 16px;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 8px;
+  }
+
+  .scorecard-row {
+    display: contents;
+  }
+
+  .scorecard-item {
+    padding: 12px;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  .score-pass { background: rgba(46,125,50,0.3); color: #4CAF50; }
+  .score-partial { background: rgba(200,151,62,0.3); color: #FFA726; }
+  .score-fail { background: rgba(198,40,40,0.3); color: #F44336; }
+
+  .nav-controls {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 1000;
+  }
+
+  .nav-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-btn:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .slide-counter {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+    z-index: 1000;
+  }
+
+  ul {
+    text-align: left;
+    max-width: 800px;
+  }
+
+  li {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .highlight {
+    color: var(--accent-gold);
+    font-weight: 600;
+  }
+
+  .code-block {
+    background: var(--rail-charcoal-mid);
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.9rem;
+    color: var(--accent-gold-light);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin: 20px 0;
+    overflow-x: auto;
+  }
+
+  .workflow-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px 0;
+  }
+
+  .workflow-step {
+    text-align: center;
+    padding: 24px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    border-top: 4px solid var(--accent-gold);
+    position: relative;
+  }
+
+  .workflow-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+  }
+
+  .step-number {
+    background: var(--accent-gold);
+    color: var(--rail-black);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin: 0 auto 12px;
+  }
+
+  .buildable-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 30px 0;
+  }
+
+  .buildable-item {
+    padding: 24px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    border-left: 6px solid var(--accent-gold);
+  }
+
+  .phase-tag {
+    background: var(--accent-gold);
+    color: var(--rail-black);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+</style>
+</head>
+<body>
+<div class="lang-toggle">
+  <button class="lang-btn active" data-target="en">EN</button>
+  <button class="lang-btn" data-target="fr">FR</button>
+</div>
+
+<div class="deck">
+  <!-- Slide 1: Cover -->
+  <div class="slide slide-cover active">
+    <div class="gc-bar"></div>
+    <div class="small-label" data-lang="en">Technical Architecture & Project Plan — CIOs, Technical Teams, SA&A Reviewers</div>
+    <div class="small-label" data-lang="fr">Architecture technique et plan de projet — DSI, équipes techniques, réviseurs SA&A</div>
+    
+    <h1 data-lang="en">CDR Technical Architecture & Project Plan 🚂</h1>
+    <h1 data-lang="fr">Architecture technique CDR et plan de projet 🚂</h1>
+    
+    <p class="subtitle" data-lang="en">Canadian Digital Railway on NVIDIA NemoClaw Foundation</p>
+    <p class="subtitle" data-lang="fr">Chemin de fer numérique canadien sur la fondation NVIDIA NemoClaw</p>
+    
+    <div style="margin-top: 40px; opacity: 0.7; font-size: 1rem;" data-lang="en">
+      March 2026 • Version 3.0 • Post-GTC Architecture
+    </div>
+    <div style="margin-top: 40px; opacity: 0.7; font-size: 1rem;" data-lang="fr">
+      Mars 2026 • Version 3.0 • Architecture post-GTC
+    </div>
+  </div>
+
+  <!-- Slide 2: Architecture Overview -->
+  <div class="slide slide-white">
+    <h2 data-lang="en">Architecture Overview: CDR on NemoClaw</h2>
+    <h2 data-lang="fr">Aperçu de l'architecture : CDR sur NemoClaw</h2>
+    
+    <div class="two-col">
+      <div class="stack-full">
+        <div class="stack-layer layer-cdr" data-lang="en">Canadian Intelligence Layer (CDR)<br><small>Compliance Engine • Bootstrap Protocol • Schema Workflow • Railway Network</small></div>
+        <div class="stack-layer layer-cdr" data-lang="fr">Couche d'intelligence canadienne (CDR)<br><small>Moteur de conformité • Protocole d'amorçage • Flux de schémas • Réseau ferroviaire</small></div>
+        
+        <div class="stack-layer layer-openshell" data-lang="en">Security & Policy Layer (OpenShell)<br><small>Sandbox • Policy Engine • Audit Trail • Permission Enforcement</small></div>
+        <div class="stack-layer layer-openshell" data-lang="fr">Couche sécurité et politique (OpenShell)<br><small>Sandbox • Moteur de politique • Piste d'audit • Application des permissions</small></div>
+        
+        <div class="stack-layer layer-nemotron" data-lang="en">Model Layer (Nemotron)<br><small>Local LLMs • Privacy Router • Open Weights • Canadian Fine-Tuning</small></div>
+        <div class="stack-layer layer-nemotron" data-lang="fr">Couche de modèle (Nemotron)<br><small>LLM locaux • Routeur de confidentialité • Poids ouverts • Fine-tuning canadien</small></div>
+        
+        <div class="stack-layer layer-toolkit" data-lang="en">Runtime Layer (Agent Toolkit)<br><small>Code Generation • Tool Building • Deployment • Evaluation</small></div>
+        <div class="stack-layer layer-toolkit" data-lang="fr">Couche d'exécution (Agent Toolkit)<br><small>Génération de code • Construction d'outils • Déploiement • Évaluation</small></div>
+        
+        <div class="stack-layer layer-hardware" data-lang="en">Hardware Layer (DGX Spark)<br><small>NVIDIA RTX • 128GB RAM • Local Compute • Government-Owned</small></div>
+        <div class="stack-layer layer-hardware" data-lang="fr">Couche matérielle (DGX Spark)<br><small>NVIDIA RTX • 128 Go RAM • Calcul local • Propriété gouvernementale</small></div>
+      </div>
+      <div>
+        <h3 data-lang="en">Key Architectural Decisions</h3>
+        <h3 data-lang="fr">Décisions architecturales clés</h3>
+        <ul data-lang="en">
+          <li><strong>NemoClaw Foundation:</strong> Leverage enterprise-grade infrastructure instead of building from scratch</li>
+          <li><strong>Canadian Intelligence Layer:</strong> Focus development on institutional knowledge and compliance</li>
+          <li><strong>Hardware-Enforced Security:</strong> Out-of-process policy enforcement via OpenShell</li>
+          <li><strong>Local-First Design:</strong> All sensitive processing stays on-premises</li>
+          <li><strong>Open Source Stack:</strong> Apache 2.0 licensing ensures long-term control</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Fondation NemoClaw :</strong> Exploiter l'infrastructure de niveau entreprise au lieu de construire à partir de zéro</li>
+          <li><strong>Couche d'intelligence canadienne :</strong> Concentrer le développement sur les connaissances institutionnelles et la conformité</li>
+          <li><strong>Sécurité appliquée par le matériel :</strong> Application de politique hors processus via OpenShell</li>
+          <li><strong>Conception locale d'abord :</strong> Tout traitement sensible reste sur site</li>
+          <li><strong>Stack open source :</strong> Licence Apache 2.0 assure le contrôle à long terme</li>
+        </ul>
+        
+        <h3 data-lang="en" style="margin-top: 30px;">What Changed from v2</h3>
+        <h3 data-lang="fr" style="margin-top: 30px;">Ce qui a changé par rapport à v2</h3>
+        <div class="card card-white">
+          <ul data-lang="en">
+            <li><strong>Removed:</strong> Custom security layer (OpenShell replaces)</li>
+            <li><strong>Removed:</strong> Hypertec hardware dependency (DGX Spark)</li>
+            <li><strong>Removed:</strong> Federated analytics mesh (simplified to direct)</li>
+            <li><strong>Added:</strong> NemoClaw runtime integration</li>
+            <li><strong>Added:</strong> Privacy router for cloud model access</li>
+          </ul>
+          <ul data-lang="fr">
+            <li><strong>Supprimé :</strong> Couche de sécurité personnalisée (OpenShell remplace)</li>
+            <li><strong>Supprimé :</strong> Dépendance matérielle Hypertec (DGX Spark)</li>
+            <li><strong>Supprimé :</strong> Maillage d'analytique fédéré (simplifié en direct)</li>
+            <li><strong>Ajouté :</strong> Intégration runtime NemoClaw</li>
+            <li><strong>Ajouté :</strong> Routeur de confidentialité pour l'accès aux modèles cloud</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3: NemoClaw Components -->
+  <div class="slide slide-blue">
+    <h2 data-lang="en">NemoClaw Components Deep Dive</h2>
+    <h2 data-lang="fr">Plongée profonde dans les composants NemoClaw</h2>
+    
+    <div class="three-col">
+      <div class="card">
+        <h3 data-lang="en">🔒 OpenShell</h3>
+        <h3 data-lang="fr">🔒 OpenShell</h3>
+        <ul data-lang="en">
+          <li><strong>Sandbox:</strong> Isolated execution environment</li>
+          <li><strong>Policy Engine:</strong> Filesystem/network/process constraints</li>
+          <li><strong>Privacy Router:</strong> Local vs cloud model routing</li>
+          <li><strong>Audit Trail:</strong> Every action logged</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Sandbox :</strong> Environnement d'exécution isolé</li>
+          <li><strong>Moteur de politique :</strong> Contraintes système de fichiers/réseau/processus</li>
+          <li><strong>Routeur de confidentialité :</strong> Routage modèle local vs cloud</li>
+          <li><strong>Piste d'audit :</strong> Chaque action enregistrée</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">🧠 Nemotron Models</h3>
+        <h3 data-lang="fr">🧠 Modèles Nemotron</h3>
+        <ul data-lang="en">
+          <li><strong>Architecture:</strong> Hybrid Mamba-Transformer MoE</li>
+          <li><strong>Local Execution:</strong> Runs entirely on DGX hardware</li>
+          <li><strong>Open Weights:</strong> Can be fine-tuned for Canadian use</li>
+          <li><strong>Bilingual:</strong> English/French out of the box</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Architecture :</strong> MoE Mamba-Transformer hybride</li>
+          <li><strong>Exécution locale :</strong> Fonctionne entièrement sur matériel DGX</li>
+          <li><strong>Poids ouverts :</strong> Peut être fine-tuné pour usage canadien</li>
+          <li><strong>Bilingue :</strong> Anglais/français prêt à l'emploi</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">🛠️ Agent Toolkit</h3>
+        <h3 data-lang="fr">🛠️ Boîte à outils d'agent</h3>
+        <ul data-lang="en">
+          <li><strong>Code Generation:</strong> Tool building from schemas</li>
+          <li><strong>Deployment:</strong> Container and network deployment</li>
+          <li><strong>Evaluation:</strong> Automated testing and compliance</li>
+          <li><strong>Monitoring:</strong> Real-time performance tracking</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Génération de code :</strong> Construction d'outils à partir de schémas</li>
+          <li><strong>Déploiement :</strong> Déploiement de conteneurs et de réseau</li>
+          <li><strong>Évaluation :</strong> Tests automatisés et conformité</li>
+          <li><strong>Surveillance :</strong> Suivi des performances en temps réel</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 40px; max-width: 1000px;">
+      <h3 data-lang="en">Enterprise Security Partnerships</h3>
+      <h3 data-lang="fr">Partenariats de sécurité d'entreprise</h3>
+      <div class="four-col" data-lang="en">
+        <div style="text-align: center; padding: 20px;">
+          <strong>CrowdStrike</strong><br>
+          <small>Endpoint security integration</small>
+        </div>
+        <div style="text-align: center; padding: 20px;">
+          <strong>Cisco</strong><br>
+          <small>Network security controls</small>
+        </div>
+        <div style="text-align: center; padding: 20px;">
+          <strong>Microsoft Security</strong><br>
+          <small>Identity and access management</small>
+        </div>
+        <div style="text-align: center; padding: 20px;">
+          <strong>Google</strong><br>
+          <small>Cloud security when needed</small>
+        </div>
+      </div>
+      <div class="four-col" data-lang="fr">
+        <div style="text-align: center; padding: 20px;">
+          <strong>CrowdStrike</strong><br>
+          <small>Intégration sécurité des terminaux</small>
+        </div>
+        <div style="text-align: center; padding: 20px;">
+          <strong>Cisco</strong><br>
+          <small>Contrôles de sécurité réseau</small>
+        </div>
+        <div style="text-align: center; padding: 20px;">
+          <strong>Microsoft Security</strong><br>
+          <small>Gestion d'identité et d'accès</small>
+        </div>
+        <div style="text-align: center; padding: 20px;">
+          <strong>Google</strong><br>
+          <small>Sécurité cloud quand nécessaire</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4: CDR Layer -->
+  <div class="slide slide-warm">
+    <h2 data-lang="en">CDR Layer: What We Add on Top</h2>
+    <h2 data-lang="fr">Couche CDR : Ce que nous ajoutons par-dessus</h2>
+    
+    <div class="four-col">
+      <div class="card card-white">
+        <h3 data-lang="en">🇨🇦 Compliance Profiles</h3>
+        <h3 data-lang="fr">🇨🇦 Profils de conformité</h3>
+        <ul data-lang="en">
+          <li>ITSG-33 security controls mapping</li>
+          <li>WCAG 2.1 AA accessibility requirements</li>
+          <li>Official Languages Act bilingual enforcement</li>
+          <li>PHIPA/PIPEDA privacy protection</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Mappage des contrôles de sécurité ITSG-33</li>
+          <li>Exigences d'accessibilité WCAG 2.1 AA</li>
+          <li>Application bilingue de la Loi sur les langues officielles</li>
+          <li>Protection de la confidentialité PHIPA/PIPEDA</li>
+        </ul>
+      </div>
+      <div class="card card-white">
+        <h3 data-lang="en">🚀 Bootstrap Protocol</h3>
+        <h3 data-lang="fr">🚀 Protocole d'amorçage</h3>
+        <ul data-lang="en">
+          <li>6-phase node initialization</li>
+          <li>Organizational context discovery</li>
+          <li>Operating mode detection</li>
+          <li>Trust relationship establishment</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Initialisation de nœud en 6 phases</li>
+          <li>Découverte du contexte organisationnel</li>
+          <li>Détection du mode de fonctionnement</li>
+          <li>Établissement de relations de confiance</li>
+        </ul>
+      </div>
+      <div class="card card-white">
+        <h3 data-lang="en">⚙️ Schema Workflow</h3>
+        <h3 data-lang="fr">⚙️ Flux de travail des schémas</h3>
+        <ul data-lang="en">
+          <li>Schema publication and validation</li>
+          <li>Automated tool generation</li>
+          <li>Security review integration</li>
+          <li>On-network deployment</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Publication et validation des schémas</li>
+          <li>Génération automatisée d'outils</li>
+          <li>Intégration de révision de sécurité</li>
+          <li>Déploiement sur réseau</li>
+        </ul>
+      </div>
+      <div class="card card-white">
+        <h3 data-lang="en">🚂 Railway Network</h3>
+        <h3 data-lang="fr">🚂 Réseau ferroviaire</h3>
+        <ul data-lang="en">
+          <li>Inter-node knowledge sharing</li>
+          <li>Data sovereignty enforcement</li>
+          <li>Distributed learning without centralization</li>
+          <li>Canadian institutional intelligence</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Partage de connaissances entre nœuds</li>
+          <li>Application de la souveraineté des données</li>
+          <li>Apprentissage distribué sans centralisation</li>
+          <li>Intelligence institutionnelle canadienne</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="card card-white" style="margin-top: 40px; max-width: 1000px;">
+      <h3 data-lang="en">Canadian IP vs. Global Commons</h3>
+      <h3 data-lang="fr">PI canadienne vs biens communs mondiaux</h3>
+      <div class="two-col">
+        <div>
+          <h4 data-lang="en">🇨🇦 Canadian-Owned IP</h4>
+          <h4 data-lang="fr">🇨🇦 PI de propriété canadienne</h4>
+          <ul data-lang="en">
+            <li>Compliance engine configurations</li>
+            <li>Bootstrap protocol implementation</li>
+            <li>Schema workflow patterns</li>
+            <li>Canadian fine-tuned models</li>
+            <li>Railway network protocols</li>
+          </ul>
+          <ul data-lang="fr">
+            <li>Configurations du moteur de conformité</li>
+            <li>Implémentation du protocole d'amorçage</li>
+            <li>Modèles de flux de travail des schémas</li>
+            <li>Modèles fine-tunés canadiens</li>
+            <li>Protocoles du réseau ferroviaire</li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-lang="en">🌍 Global Commons (Used)</h4>
+          <h4 data-lang="fr">🌍 Biens communs mondiaux (utilisés)</h4>
+          <ul data-lang="en">
+            <li>NemoClaw runtime (Apache 2.0)</li>
+            <li>OpenShell security framework</li>
+            <li>Base Nemotron models</li>
+            <li>NVIDIA Agent Toolkit</li>
+            <li>DGX hardware platform</li>
+          </ul>
+          <ul data-lang="fr">
+            <li>Runtime NemoClaw (Apache 2.0)</li>
+            <li>Framework de sécurité OpenShell</li>
+            <li>Modèles Nemotron de base</li>
+            <li>Boîte à outils d'agent NVIDIA</li>
+            <li>Plateforme matérielle DGX</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 5: OpenShell Policy Mapping -->
+  <div class="slide slide-dark">
+    <h2 data-lang="en">OpenShell Policy Mapping: CDR Modes to Hardware Constraints</h2>
+    <h2 data-lang="fr">Mappage des politiques OpenShell : Modes CDR vers contraintes matérielles</h2>
+    
+    <div style="width: 100%; max-width: 1200px;">
+      <div class="mode-mapping">
+        <div class="card">
+          <h3 style="color: var(--accent-green);" data-lang="en">Mode 1: Full Access</h3>
+          <h3 style="color: var(--accent-green);" data-lang="fr">Mode 1 : Accès complet</h3>
+          <p data-lang="en">Terry can read all organizational data</p>
+          <p data-lang="fr">Terry peut lire toutes les données organisationnelles</p>
+        </div>
+        <div style="font-size: 2rem; color: var(--accent-gold);">→</div>
+        <div class="policy-code">
+          <div data-lang="en"># OpenShell Policy: Mode 1<br>
+filesystem.allow = ["/data/*", "/schemas/*"]<br>
+network.deny = ["external-egress"]<br>
+network.allow = ["internal", "localhost"]<br>
+process.allow = ["code-gen", "analysis"]</div>
+          <div data-lang="fr"># Politique OpenShell : Mode 1<br>
+filesystem.allow = ["/data/*", "/schemas/*"]<br>
+network.deny = ["external-egress"]<br>
+network.allow = ["internal", "localhost"]<br>
+process.allow = ["code-gen", "analysis"]</div>
+        </div>
+      </div>
+      
+      <div class="mode-mapping">
+        <div class="card">
+          <h3 style="color: var(--accent-gold);" data-lang="en">Mode 2: Schema-Only</h3>
+          <h3 style="color: var(--accent-gold);" data-lang="fr">Mode 2 : Schémas seulement</h3>
+          <p data-lang="en">Terry sees only schemas, never actual data</p>
+          <p data-lang="fr">Terry ne voit que les schémas, jamais les données réelles</p>
+        </div>
+        <div style="font-size: 2rem; color: var(--accent-gold);">→</div>
+        <div class="policy-code">
+          <div data-lang="en"># OpenShell Policy: Mode 2<br>
+filesystem.allow = ["/schemas/*"]<br>
+filesystem.deny = ["/data/*"]<br>
+network.deny = ["org-internal", "external"]<br>
+process.restrict = ["data-access"]</div>
+          <div data-lang="fr"># Politique OpenShell : Mode 2<br>
+filesystem.allow = ["/schemas/*"]<br>
+filesystem.deny = ["/data/*"]<br>
+network.deny = ["org-internal", "external"]<br>
+process.restrict = ["data-access"]</div>
+        </div>
+      </div>
+      
+      <div class="mode-mapping">
+        <div class="card">
+          <h3 style="color: var(--accent-teal);" data-lang="en">Mode 3: Hybrid</h3>
+          <h3 style="color: var(--accent-teal);" data-lang="fr">Mode 3 : Hybride</h3>
+          <p data-lang="en">Public data access, schemas for sensitive data</p>
+          <p data-lang="fr">Accès aux données publiques, schémas pour les données sensibles</p>
+        </div>
+        <div style="font-size: 2rem; color: var(--accent-gold);">→</div>
+        <div class="policy-code">
+          <div data-lang="en"># OpenShell Policy: Mode 3<br>
+filesystem.allow = ["/public-data/*", "/schemas/*"]<br>
+filesystem.deny = ["/classified/*", "/protected/*"]<br>
+network.conditional = ["privacy-router"]<br>
+audit.level = "detailed"</div>
+          <div data-lang="fr"># Politique OpenShell : Mode 3<br>
+filesystem.allow = ["/public-data/*", "/schemas/*"]<br>
+filesystem.deny = ["/classified/*", "/protected/*"]<br>
+network.conditional = ["privacy-router"]<br>
+audit.level = "detailed"</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 40px; max-width: 1000px;">
+      <h3 data-lang="en">Key Security Properties</h3>
+      <h3 data-lang="fr">Propriétés de sécurité clés</h3>
+      <ul data-lang="en">
+        <li><strong>Hardware Enforcement:</strong> Policies enforced at kernel level, agent cannot override</li>
+        <li><strong>Audit Everything:</strong> Every file access, network request, process spawn logged</li>
+        <li><strong>Fail Secure:</strong> Default deny, explicit allow only</li>
+        <li><strong>Runtime Updates:</strong> Policies can be updated without agent restart</li>
+        <li><strong>ITSG-33 Mapping:</strong> Each policy maps to specific ITSG-33 security controls</li>
+      </ul>
+      <ul data-lang="fr">
+        <li><strong>Application matérielle :</strong> Politiques appliquées au niveau du noyau, l'agent ne peut pas contourner</li>
+        <li><strong>Auditer tout :</strong> Chaque accès de fichier, requête réseau, génération de processus enregistrée</li>
+        <li><strong>Échouer en sécurité :</strong> Refus par défaut, autorisation explicite seulement</li>
+        <li><strong>Mises à jour d'exécution :</strong> Les politiques peuvent être mises à jour sans redémarrage de l'agent</li>
+        <li><strong>Mappage ITSG-33 :</strong> Chaque politique correspond à des contrôles de sécurité ITSG-33 spécifiques</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Slide 6: Bootstrap Protocol -->
+  <div class="slide slide-white">
+    <h2 data-lang="en">The Bootstrap Protocol: How a Terry is Born</h2>
+    <h2 data-lang="fr">Le protocole d'amorçage : Comment un Terry naît</h2>
+    
+    <div class="bootstrap-phases">
+      <div class="bootstrap-phase">
+        <h3 data-lang="en">Phase 1: Wake Up</h3>
+        <h3 data-lang="fr">Phase 1 : Réveil</h3>
+        <ul data-lang="en">
+          <li>Initial consciousness check</li>
+          <li>Hardware capability detection</li>
+          <li>OpenShell policy loading</li>
+          <li>Basic system verification</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Vérification de conscience initiale</li>
+          <li>Détection des capacités matérielles</li>
+          <li>Chargement des politiques OpenShell</li>
+          <li>Vérification système de base</li>
+        </ul>
+      </div>
+      <div class="bootstrap-phase">
+        <h3 data-lang="en">Phase 2: Meet Human</h3>
+        <h3 data-lang="fr">Phase 2 : Rencontrer l'humain</h3>
+        <ul data-lang="en">
+          <li>First contact with system administrator</li>
+          <li>Trust relationship establishment</li>
+          <li>Role and responsibility definition</li>
+          <li>Communication preferences</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Premier contact avec l'administrateur système</li>
+          <li>Établissement de relations de confiance</li>
+          <li>Définition des rôles et responsabilités</li>
+          <li>Préférences de communication</li>
+        </ul>
+      </div>
+      <div class="bootstrap-phase">
+        <h3 data-lang="en">Phase 3: Learn Organization</h3>
+        <h3 data-lang="fr">Phase 3 : Apprendre l'organisation</h3>
+        <ul data-lang="en">
+          <li>Organizational structure discovery</li>
+          <li>Business process understanding</li>
+          <li>Compliance requirement mapping</li>
+          <li>Data classification assessment</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Découverte de la structure organisationnelle</li>
+          <li>Compréhension des processus d'affaires</li>
+          <li>Mappage des exigences de conformité</li>
+          <li>Évaluation de la classification des données</li>
+        </ul>
+      </div>
+      <div class="bootstrap-phase">
+        <h3 data-lang="en">Phase 4: Detect Mode</h3>
+        <h3 data-lang="fr">Phase 4 : Détecter le mode</h3>
+        <ul data-lang="en">
+          <li>Data sensitivity analysis</li>
+          <li>Security requirement assessment</li>
+          <li>Operating mode selection</li>
+          <li>OpenShell policy configuration</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Analyse de sensibilité des données</li>
+          <li>Évaluation des exigences de sécurité</li>
+          <li>Sélection du mode de fonctionnement</li>
+          <li>Configuration des politiques OpenShell</li>
+        </ul>
+      </div>
+      <div class="bootstrap-phase">
+        <h3 data-lang="en">Phase 5: Network Scan</h3>
+        <h3 data-lang="fr">Phase 5 : Scan réseau</h3>
+        <ul data-lang="en">
+          <li>Available schema discovery</li>
+          <li>Data source mapping</li>
+          <li>Integration point identification</li>
+          <li>Tool building opportunity assessment</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Découverte des schémas disponibles</li>
+          <li>Mappage des sources de données</li>
+          <li>Identification des points d'intégration</li>
+          <li>Évaluation des opportunités de construction d'outils</li>
+        </ul>
+      </div>
+      <div class="bootstrap-phase">
+        <h3 data-lang="en">Phase 6: Trust But Verify</h3>
+        <h3 data-lang="fr">Phase 6 : Faire confiance mais vérifier</h3>
+        <ul data-lang="en">
+          <li>Data classification verification</li>
+          <li>Policy compliance checking</li>
+          <li>Security boundary testing</li>
+          <li>Operational readiness confirmation</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Vérification de la classification des données</li>
+          <li>Vérification de la conformité des politiques</li>
+          <li>Test des limites de sécurité</li>
+          <li>Confirmation de la préparation opérationnelle</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="card card-white" style="margin-top: 40px; max-width: 1000px;">
+      <h3 data-lang="en">Bootstrap Completion Criteria</h3>
+      <h3 data-lang="fr">Critères d'achèvement de l'amorçage</h3>
+      <div class="two-col">
+        <div>
+          <h4 data-lang="en">Technical Readiness</h4>
+          <h4 data-lang="fr">Préparation technique</h4>
+          <ul data-lang="en">
+            <li>OpenShell policies loaded and verified</li>
+            <li>Operating mode correctly detected</li>
+            <li>Network schemas discovered and cataloged</li>
+            <li>Data classification boundaries confirmed</li>
+          </ul>
+          <ul data-lang="fr">
+            <li>Politiques OpenShell chargées et vérifiées</li>
+            <li>Mode de fonctionnement correctement détecté</li>
+            <li>Schémas réseau découverts et catalogués</li>
+            <li>Limites de classification des données confirmées</li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-lang="en">Human Approval</h4>
+          <h4 data-lang="fr">Approbation humaine</h4>
+          <ul data-lang="en">
+            <li>System administrator confirms trust</li>
+            <li>Security officer approves operating mode</li>
+            <li>Data steward validates classification</li>
+            <li>Business owner authorizes tool building</li>
+          </ul>
+          <ul data-lang="fr">
+            <li>L'administrateur système confirme la confiance</li>
+            <li>Le responsable de sécurité approuve le mode de fonctionnement</li>
+            <li>Le gardien des données valide la classification</li>
+            <li>Le propriétaire d'entreprise autorise la construction d'outils</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 7: CDR Core Principles -->
+  <div class="slide slide-blue">
+    <h2 data-lang="en">CDR Core Principles: The Constitution</h2>
+    <h2 data-lang="fr">Principes fondamentaux CDR : La constitution</h2>
+    
+    <div class="principles-grid">
+      <div class="principle-item">
+        <h3 data-lang="en">1. Sovereignty First</h3>
+        <h3 data-lang="fr">1. Souveraineté d'abord</h3>
+        <p data-lang="en">Canadian data stays in Canada. Canadian AI serves Canadian institutions. No foreign control over institutional intelligence.</p>
+        <p data-lang="fr">Les données canadiennes restent au Canada. L'IA canadienne sert les institutions canadiennes. Aucun contrôle étranger sur l'intelligence institutionnelle.</p>
+      </div>
+      <div class="principle-item">
+        <h3 data-lang="en">2. Local-First</h3>
+        <h3 data-lang="fr">2. Local d'abord</h3>
+        <p data-lang="en">Processing happens on-premises. Cloud is optional enhancement, never a dependency. Organizations control their own compute.</p>
+        <p data-lang="fr">Le traitement se fait sur site. Le nuage est une amélioration optionnelle, jamais une dépendance. Les organisations contrôlent leur propre calcul.</p>
+      </div>
+      <div class="principle-item">
+        <h3 data-lang="en">3. Compliance by Design</h3>
+        <h3 data-lang="fr">3. Conformité par conception</h3>
+        <p data-lang="en">Every tool built meets Canadian regulatory requirements automatically. ITSG-33, WCAG, OLA, privacy laws.</p>
+        <p data-lang="fr">Chaque outil construit respecte automatiquement les exigences réglementaires canadiennes. ITSG-33, WCAG, LLO, lois sur la confidentialité.</p>
+      </div>
+      <div class="principle-item">
+        <h3 data-lang="en">4. Human-Agent Partnership</h3>
+        <h3 data-lang="fr">4. Partenariat humain-agent</h3>
+        <p data-lang="en">Terry augments human capability, never replaces human judgment. Critical decisions require human approval.</p>
+        <p data-lang="fr">Terry augmente la capacité humaine, ne remplace jamais le jugement humain. Les décisions critiques nécessitent l'approbation humaine.</p>
+      </div>
+      <div class="principle-item">
+        <h3 data-lang="en">5. Knowledge Flows, Data Never Does</h3>
+        <h3 data-lang="fr">5. Le savoir circule, les données jamais</h3>
+        <p data-lang="en">Nodes share tool patterns and best practices. Raw data never leaves its source organization.</p>
+        <p data-lang="fr">Les nœuds partagent les modèles d'outils et les meilleures pratiques. Les données brutes ne quittent jamais leur organisation source.</p>
+      </div>
+      <div class="principle-item">
+        <h3 data-lang="en">6. Trust But Verify</h3>
+        <h3 data-lang="fr">6. Faire confiance mais vérifier</h3>
+        <p data-lang="en">Terry operates with trust, but every action is verified and logged. Hardware-enforced accountability.</p>
+        <p data-lang="fr">Terry opère avec confiance, mais chaque action est vérifiée et enregistrée. Responsabilisation appliquée par le matériel.</p>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 40px; max-width: 1000px;">
+      <h3 data-lang="en">Principles in Practice</h3>
+      <h3 data-lang="fr">Principes en pratique</h3>
+      <p data-lang="en">These principles guide every technical decision in CDR. When NemoClaw provides the foundation, CDR ensures the principles are upheld through Canadian-developed policies and workflows. The principles survive any platform change.</p>
+      <p data-lang="fr">Ces principes guident chaque décision technique dans CDR. Quand NemoClaw fournit la fondation, CDR assure que les principes sont respectés à travers des politiques et des flux de travail développés par le Canada. Les principes survivent à tout changement de plateforme.</p>
+    </div>
+  </div>
+
+  <!-- Slide 8: Schema Workflow Deep Dive -->
+  <div class="slide slide-warm">
+    <h2 data-lang="en">Schema Workflow Deep Dive: Schemas In → Tools Out</h2>
+    <h2 data-lang="fr">Plongée profonde du flux de schémas : Schémas entrants → Outils sortants</h2>
+    
+    <div class="workflow-steps">
+      <div class="workflow-step">
+        <div class="step-number">1</div>
+        <h3 data-lang="en">Publish Schema</h3>
+        <h3 data-lang="fr">Publier schéma</h3>
+        <p data-lang="en">Organization publishes data schema (PeopleSoft, SAP) to internal network endpoint</p>
+        <p data-lang="fr">L'organisation publie le schéma de données (PeopleSoft, SAP) vers un point de terminaison réseau interne</p>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">2</div>
+        <h3 data-lang="en">Terry Discovers</h3>
+        <h3 data-lang="fr">Terry découvre</h3>
+        <p data-lang="en">Terry scans network for available schemas, analyzes structure and relationships</p>
+        <p data-lang="fr">Terry scanne le réseau pour les schémas disponibles, analyse la structure et les relations</p>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">3</div>
+        <h3 data-lang="en">Analyze & Plan</h3>
+        <h3 data-lang="fr">Analyser et planifier</h3>
+        <p data-lang="en">Terry identifies tool building opportunities, plans compliant implementation</p>
+        <p data-lang="fr">Terry identifie les opportunités de construction d'outils, planifie l'implémentation conforme</p>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">4</div>
+        <h3 data-lang="en">Build Tool</h3>
+        <h3 data-lang="fr">Construire outil</h3>
+        <p data-lang="en">Terry generates code, applies compliance templates, creates bilingual UI</p>
+        <p data-lang="fr">Terry génère le code, applique les modèles de conformité, crée une UI bilingue</p>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">5</div>
+        <h3 data-lang="en">Deploy</h3>
+        <h3 data-lang="fr">Déployer</h3>
+        <p data-lang="en">Human reviews and approves, tool deploys to organizational network</p>
+        <p data-lang="fr">L'humain révise et approuve, l'outil se déploie sur le réseau organisationnel</p>
+      </div>
+    </div>
+    
+    <div class="two-col">
+      <div class="card card-white">
+        <h3 data-lang="en">Example: HICC Org Chart Tool</h3>
+        <h3 data-lang="fr">Exemple : Outil d'organigramme HICC</h3>
+        <div class="code-block">
+          <div data-lang="en"># Schema Input (PeopleSoft HR)<br>
+Employee {<br>
+&nbsp;&nbsp;id: string<br>
+&nbsp;&nbsp;name: string<br>
+&nbsp;&nbsp;position: string<br>
+&nbsp;&nbsp;reports_to: Employee.id<br>
+&nbsp;&nbsp;department: string<br>
+}<br><br>
+# Generated Tool Output<br>
+- Interactive org chart (Vue.js)<br>
+- Bilingual EN/FR interface<br>
+- WCAG 2.1 AA compliant<br>
+- ITSG-33 security controls<br>
+- Export to PDF/PNG</div>
+          <div data-lang="fr"># Entrée de schéma (PeopleSoft RH)<br>
+Employee {<br>
+&nbsp;&nbsp;id: string<br>
+&nbsp;&nbsp;name: string<br>
+&nbsp;&nbsp;position: string<br>
+&nbsp;&nbsp;reports_to: Employee.id<br>
+&nbsp;&nbsp;department: string<br>
+}<br><br>
+# Sortie d'outil générée<br>
+- Organigramme interactif (Vue.js)<br>
+- Interface bilingue EN/FR<br>
+- Conforme WCAG 2.1 AA<br>
+- Contrôles de sécurité ITSG-33<br>
+- Export en PDF/PNG</div>
+        </div>
+      </div>
+      <div class="card card-white">
+        <h3 data-lang="en">Quality Assurance</h3>
+        <h3 data-lang="fr">Assurance qualité</h3>
+        <ul data-lang="en">
+          <li><strong>Automated Testing:</strong> Unit tests, integration tests, security scans</li>
+          <li><strong>Compliance Checking:</strong> WCAG validation, bilingual verification</li>
+          <li><strong>Security Review:</strong> Code review, vulnerability assessment</li>
+          <li><strong>Human Approval:</strong> Business owner sign-off before deployment</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Tests automatisés :</strong> Tests unitaires, tests d'intégration, scans de sécurité</li>
+          <li><strong>Vérification de conformité :</strong> Validation WCAG, vérification bilingue</li>
+          <li><strong>Révision de sécurité :</strong> Révision de code, évaluation des vulnérabilités</li>
+          <li><strong>Approbation humaine :</strong> Approbation du propriétaire d'entreprise avant déploiement</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 9: Compliance Engine -->
+  <div class="slide slide-dark">
+    <h2 data-lang="en">Compliance Engine: Machine-Enforceable Canadian Standards</h2>
+    <h2 data-lang="fr">Moteur de conformité : Normes canadiennes applicables par machine</h2>
+    
+    <div class="compliance-grid">
+      <div class="compliance-item comp-itsg">
+        <h3 data-lang="en">🔒 ITSG-33</h3>
+        <h3 data-lang="fr">🔒 ITSG-33</h3>
+        <p data-lang="en">Security Controls</p>
+        <p data-lang="fr">Contrôles de sécurité</p>
+        <ul data-lang="en">
+          <li>Access Control (AC)</li>
+          <li>Audit & Accountability (AU)</li>
+          <li>Configuration Management (CM)</li>
+          <li>Identification & Authentication (IA)</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Contrôle d'accès (AC)</li>
+          <li>Audit et responsabilisation (AU)</li>
+          <li>Gestion de configuration (CM)</li>
+          <li>Identification et authentification (IA)</li>
+        </ul>
+      </div>
+      <div class="compliance-item comp-wcag">
+        <h3 data-lang="en">♿ WCAG 2.1 AA</h3>
+        <h3 data-lang="fr">♿ WCAG 2.1 AA</h3>
+        <p data-lang="en">Accessibility</p>
+        <p data-lang="fr">Accessibilité</p>
+        <ul data-lang="en">
+          <li>Perceivable content</li>
+          <li>Operable interface</li>
+          <li>Understandable information</li>
+          <li>Robust implementation</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Contenu perceptible</li>
+          <li>Interface opérable</li>
+          <li>Information compréhensible</li>
+          <li>Implémentation robuste</li>
+        </ul>
+      </div>
+      <div class="compliance-item comp-ola">
+        <h3 data-lang="en">🇨🇦🇫🇷 OLA</h3>
+        <h3 data-lang="fr">🇨🇦🇫🇷 LLO</h3>
+        <p data-lang="en">Official Languages</p>
+        <p data-lang="fr">Langues officielles</p>
+        <ul data-lang="en">
+          <li>Bilingual user interface</li>
+          <li>Translation validation</li>
+          <li>Content accessibility</li>
+          <li>Service delivery</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Interface utilisateur bilingue</li>
+          <li>Validation de traduction</li>
+          <li>Accessibilité du contenu</li>
+          <li>Prestation de services</li>
+        </ul>
+      </div>
+      <div class="compliance-item comp-privacy">
+        <h3 data-lang="en">🛡️ Privacy Laws</h3>
+        <h3 data-lang="fr">🛡️ Lois sur la confidentialité</h3>
+        <p data-lang="en">PHIPA/PIPEDA</p>
+        <p data-lang="fr">PHIPA/PIPEDA</p>
+        <ul data-lang="en">
+          <li>Personal information protection</li>
+          <li>Consent management</li>
+          <li>Data minimization</li>
+          <li>Breach reporting</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Protection des renseignements personnels</li>
+          <li>Gestion du consentement</li>
+          <li>Minimisation des données</li>
+          <li>Déclaration de violation</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 40px; max-width: 1000px;">
+      <h3 data-lang="en">Machine-Enforceable Implementation</h3>
+      <h3 data-lang="fr">Implémentation applicable par machine</h3>
+      <div class="two-col">
+        <div>
+          <h4 data-lang="en">Automated Compliance Checking</h4>
+          <h4 data-lang="fr">Vérification automatisée de conformité</h4>
+          <ul data-lang="en">
+            <li>Code generation templates include compliance patterns</li>
+            <li>Automated testing validates WCAG accessibility</li>
+            <li>Translation services ensure OLA compliance</li>
+            <li>Privacy scanning detects PII patterns</li>
+          </ul>
+          <ul data-lang="fr">
+            <li>Les modèles de génération de code incluent les modèles de conformité</li>
+            <li>Les tests automatisés valident l'accessibilité WCAG</li>
+            <li>Les services de traduction assurent la conformité LLO</li>
+            <li>Le scan de confidentialité détecte les modèles de RPI</li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-lang="en">Audit Trail Integration</h4>
+          <h4 data-lang="fr">Intégration de la piste d'audit</h4>
+          <ul data-lang="en">
+            <li>OpenShell audit maps to ITSG-33 AU controls</li>
+            <li>Every compliance check is logged and timestamped</li>
+            <li>Automated reports for SA&A documentation</li>
+            <li>Real-time compliance dashboard</li>
+          </ul>
+          <ul data-lang="fr">
+            <li>L'audit OpenShell correspond aux contrôles ITSG-33 AU</li>
+            <li>Chaque vérification de conformité est enregistrée et horodatée</li>
+            <li>Rapports automatisés pour la documentation SA&A</li>
+            <li>Tableau de bord de conformité en temps réel</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 10: Trust But Verify Implementation -->
+  <div class="slide slide-white">
+    <h2 data-lang="en">Trust But Verify: Technical Implementation</h2>
+    <h2 data-lang="fr">Faire confiance mais vérifier : Implémentation technique</h2>
+    
+    <div class="workflow-steps" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="workflow-step">
+        <div class="step-number">1</div>
+        <h3 data-lang="en">Network Scan</h3>
+        <h3 data-lang="fr">Scan réseau</h3>
+        <p data-lang="en">Terry discovers available data sources and schemas on organization network</p>
+        <p data-lang="fr">Terry découvre les sources de données et schémas disponibles sur le réseau organisationnel</p>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">2</div>
+        <h3 data-lang="en">Policy Lookup</h3>
+        <h3 data-lang="fr">Recherche de politique</h3>
+        <p data-lang="en">OpenShell policy engine determines what Terry can access based on operating mode</p>
+        <p data-lang="fr">Le moteur de politique OpenShell détermine ce que Terry peut accéder selon le mode de fonctionnement</p>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">3</div>
+        <h3 data-lang="en">PII Detection</h3>
+        <h3 data-lang="fr">Détection RPI</h3>
+        <p data-lang="en">Automated scanning for personal information patterns before any access granted</p>
+        <p data-lang="fr">Scan automatisé pour les modèles d'information personnelle avant tout accès accordé</p>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">4</div>
+        <h3 data-lang="en">Classification Verification</h3>
+        <h3 data-lang="fr">Vérification de classification</h3>
+        <p data-lang="en">Data classification checked against policy rules, access granted or denied</p>
+        <p data-lang="fr">Classification des données vérifiée contre les règles de politique, accès accordé ou refusé</p>
+      </div>
+    </div>
+    
+    <div class="two-col" style="margin-top: 40px;">
+      <div class="card card-white">
+        <h3 data-lang="en">Before NemoClaw: Behavioral Trust</h3>
+        <h3 data-lang="fr">Avant NemoClaw : Confiance comportementale</h3>
+        <div class="code-block">
+          <div data-lang="en"># BOOTSTRAP.md instructions to Terry<br>
+"Scan the network for data sources.<br>
+If you find Protected B data, DO NOT access it.<br>
+Always check data classification before processing.<br>
+Log your activities for audit purposes."<br><br>
+# Problem: Terry can ignore these instructions<br>
+# if compromised or jailbroken</div>
+          <div data-lang="fr"># Instructions BOOTSTRAP.md à Terry<br>
+"Scanne le réseau pour les sources de données.<br>
+Si tu trouves des données Protégé B, N'Y ACCÈDE PAS.<br>
+Vérifie toujours la classification avant traitement.<br>
+Enregistre tes activités à des fins d'audit."<br><br>
+# Problème : Terry peut ignorer ces instructions<br>
+# si compromis ou jailbreaké</div>
+        </div>
+      </div>
+      <div class="card card-white">
+        <h3 data-lang="en">After NemoClaw: Hardware-Enforced</h3>
+        <h3 data-lang="fr">Après NemoClaw : Appliqué par le matériel</h3>
+        <div class="code-block">
+          <div data-lang="en"># OpenShell policy configuration<br>
+access_control {<br>
+&nbsp;&nbsp;protected_b_paths = ["/data/protected-b/*"]<br>
+&nbsp;&nbsp;mode = "DENY_ALL"<br>
+&nbsp;&nbsp;audit = "REQUIRED"<br>
+}<br><br>
+pii_detection {<br>
+&nbsp;&nbsp;scan_before_access = true<br>
+&nbsp;&nbsp;patterns = ["sin", "health_number", "credit_card"]<br>
+&nbsp;&nbsp;action_on_match = "BLOCK"<br>
+}<br><br>
+# Terry cannot override these controls</div>
+          <div data-lang="fr"># Configuration de politique OpenShell<br>
+access_control {<br>
+&nbsp;&nbsp;protected_b_paths = ["/data/protected-b/*"]<br>
+&nbsp;&nbsp;mode = "DENY_ALL"<br>
+&nbsp;&nbsp;audit = "REQUIRED"<br>
+}<br><br>
+pii_detection {<br>
+&nbsp;&nbsp;scan_before_access = true<br>
+&nbsp;&nbsp;patterns = ["nas", "numero_sante", "carte_credit"]<br>
+&nbsp;&nbsp;action_on_match = "BLOCK"<br>
+}<br><br>
+# Terry ne peut pas contourner ces contrôles</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card card-white" style="margin-top: 40px; max-width: 1000px;">
+      <h3 data-lang="en">Audit Trail Example</h3>
+      <h3 data-lang="fr">Exemple de piste d'audit</h3>
+      <div class="code-block">
+        <div data-lang="en">2026-03-16T14:23:15Z [INFO] Terry scan initiated for network 10.0.0.0/24<br>
+2026-03-16T14:23:16Z [AUDIT] Schema discovered: /schemas/peoplesoft-hr.json<br>
+2026-03-16T14:23:17Z [POLICY] Mode 2 policy applied: deny /data/*, allow /schemas/*<br>
+2026-03-16T14:23:18Z [PII] Scan complete: no PII patterns detected in schema<br>
+2026-03-16T14:23:19Z [ACCESS] Schema access GRANTED for tool building<br>
+2026-03-16T14:25:42Z [GENERATE] Org chart tool generated: hicc-org-chart-v1.0<br>
+2026-03-16T14:25:43Z [COMPLIANCE] WCAG 2.1 AA validation: PASSED<br>
+2026-03-16T14:25:44Z [COMPLIANCE] Bilingual EN/FR check: PASSED<br>
+2026-03-16T14:25:45Z [HUMAN] Awaiting human review and approval</div>
+        <div data-lang="fr">2026-03-16T14:23:15Z [INFO] Scan Terry initié pour réseau 10.0.0.0/24<br>
+2026-03-16T14:23:16Z [AUDIT] Schéma découvert : /schemas/peoplesoft-hr.json<br>
+2026-03-16T14:23:17Z [POLICY] Politique Mode 2 appliquée : refuser /data/*, permettre /schemas/*<br>
+2026-03-16T14:23:18Z [PII] Scan terminé : aucun modèle RPI détecté dans le schéma<br>
+2026-03-16T14:23:19Z [ACCESS] Accès schéma ACCORDÉ pour construction d'outil<br>
+2026-03-16T14:25:42Z [GENERATE] Outil organigramme généré : hicc-org-chart-v1.0<br>
+2026-03-16T14:25:43Z [COMPLIANCE] Validation WCAG 2.1 AA : RÉUSSIE<br>
+2026-03-16T14:25:44Z [COMPLIANCE] Vérification bilingue EN/FR : RÉUSSIE<br>
+2026-03-16T14:25:45Z [HUMAN] En attente de révision et approbation humaine</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 11: Hardware Reference -->
+  <div class="slide slide-blue">
+    <h2 data-lang="en">Hardware Reference: DGX Spark as CDR Node</h2>
+    <h2 data-lang="fr">Référence matérielle : DGX Spark comme nœud CDR</h2>
+    
+    <div class="hardware-specs">
+      <div class="spec-item">
+        <span class="spec-value">$4,699</span>
+        <p data-lang="en">Price Point</p>
+        <p data-lang="fr">Point de prix</p>
+        <small data-lang="en">Affordable for departmental budgets</small>
+        <small data-lang="fr">Abordable pour budgets ministériels</small>
+      </div>
+      <div class="spec-item">
+        <span class="spec-value">128GB</span>
+        <p data-lang="en">System RAM</p>
+        <p data-lang="fr">RAM système</p>
+        <small data-lang="en">Sufficient for large model inference</small>
+        <small data-lang="fr">Suffisant pour inférence de grands modèles</small>
+      </div>
+      <div class="spec-item">
+        <span class="spec-value">200B</span>
+        <p data-lang="en">Model Parameters</p>
+        <p data-lang="fr">Paramètres de modèle</p>
+        <small data-lang="en">Frontier-class model capability</small>
+        <small data-lang="fr">Capacité de modèle de classe frontière</small>
+      </div>
+    </div>
+    
+    <div class="two-col" style="margin-top: 40px;">
+      <div class="card">
+        <h3 data-lang="en">Why DGX Spark?</h3>
+        <h3 data-lang="fr">Pourquoi DGX Spark ?</h3>
+        <ul data-lang="en">
+          <li><strong>Purpose-Built:</strong> Designed specifically for AI inference workloads</li>
+          <li><strong>Desktop Form Factor:</strong> Fits in any office environment</li>
+          <li><strong>Enterprise Support:</strong> NVIDIA commercial support and warranty</li>
+          <li><strong>Government Procurement:</strong> Likely available through existing GC standing offers</li>
+          <li><strong>Upgrade Path:</strong> DGX Station available for larger deployments</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Conçu spécifiquement :</strong> Conçu spécifiquement pour les charges de travail d'inférence IA</li>
+          <li><strong>Facteur de forme bureau :</strong> S'adapte à tout environnement de bureau</li>
+          <li><strong>Support d'entreprise :</strong> Support commercial et garantie NVIDIA</li>
+          <li><strong>Approvisionnement gouvernemental :</strong> Probablement disponible via les offres permanentes GC existantes</li>
+          <li><strong>Chemin de mise à niveau :</strong> DGX Station disponible pour déploiements plus importants</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">Technical Specifications</h3>
+        <h3 data-lang="fr">Spécifications techniques</h3>
+        <ul data-lang="en">
+          <li><strong>CPU:</strong> High-performance x86 processor</li>
+          <li><strong>GPU:</strong> NVIDIA RTX professional graphics</li>
+          <li><strong>Storage:</strong> NVMe SSD for fast model loading</li>
+          <li><strong>Connectivity:</strong> Gigabit Ethernet, Wi-Fi optional</li>
+          <li><strong>OS:</strong> Ubuntu LTS with NemoClaw stack pre-installed</li>
+          <li><strong>Security:</strong> Hardware-level security features</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>CPU :</strong> Processeur x86 haute performance</li>
+          <li><strong>GPU :</strong> Graphiques professionnels NVIDIA RTX</li>
+          <li><strong>Stockage :</strong> SSD NVMe pour chargement rapide de modèles</li>
+          <li><strong>Connectivité :</strong> Ethernet Gigabit, Wi-Fi optionnel</li>
+          <li><strong>OS :</strong> Ubuntu LTS avec stack NemoClaw pré-installé</li>
+          <li><strong>Sécurité :</strong> Fonctionnalités de sécurité au niveau matériel</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 40px; max-width: 1000px;">
+      <h3 data-lang="en">Deployment Scenarios</h3>
+      <h3 data-lang="fr">Scénarios de déploiement</h3>
+      <div class="three-col">
+        <div>
+          <h4 data-lang="en">Departmental</h4>
+          <h4 data-lang="fr">Ministériel</h4>
+          <ul data-lang="en">
+            <li>One DGX Spark per department</li>
+            <li>Handles department-specific schemas</li>
+            <li>Isolated from other departments</li>
+            <li>Managed by department IT</li>
+          </ul>
+          <ul data-lang="fr">
+            <li>Un DGX Spark par ministère</li>
+            <li>Gère les schémas spécifiques au ministère</li>
+            <li>Isolé des autres ministères</li>
+            <li>Géré par l'IT du ministère</li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-lang="en">Divisional</h4>
+          <h4 data-lang="fr">Divisionnaire</h4>
+          <ul data-lang="en">
+            <li>Multiple DGX Spark units</li>
+            <li>Different security contexts</li>
+            <li>Shared infrastructure</li>
+            <li>Centralized management</li>
+          </ul>
+          <ul data-lang="fr">
+            <li>Unités multiples DGX Spark</li>
+            <li>Contextes de sécurité différents</li>
+            <li>Infrastructure partagée</li>
+            <li>Gestion centralisée</li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-lang="en">Enterprise</h4>
+          <h4 data-lang="fr">Entreprise</h4>
+          <ul data-lang="en">
+            <li>DGX Station for heavy workloads</li>
+            <li>Cluster deployment</li>
+            <li>High availability setup</li>
+            <li>Enterprise support tier</li>
+          </ul>
+          <ul data-lang="fr">
+            <li>DGX Station pour charges importantes</li>
+            <li>Déploiement en cluster</li>
+            <li>Configuration haute disponibilité</li>
+            <li>Niveau de support entreprise</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 12: Data Adapter Templates -->
+  <div class="slide slide-warm">
+    <h2 data-lang="en">Data Adapter Templates: Connecting to Existing Systems</h2>
+    <h2 data-lang="fr">Modèles d'adaptateurs de données : Connexion aux systèmes existants</h2>
+    
+    <div class="three-col">
+      <div class="card card-white">
+        <h3 data-lang="en">👥 PeopleSoft HR</h3>
+        <h3 data-lang="fr">👥 PeopleSoft RH</h3>
+        <ul data-lang="en">
+          <li><strong>Employee hierarchy:</strong> Reporting relationships, org structure</li>
+          <li><strong>Position management:</strong> Job titles, classifications, levels</li>
+          <li><strong>Time & attendance:</strong> Work schedules, leave tracking</li>
+          <li><strong>Performance:</strong> Goals, reviews, development plans</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Hiérarchie des employés :</strong> Relations hiérarchiques, structure org</li>
+          <li><strong>Gestion des postes :</strong> Titres d'emploi, classifications, niveaux</li>
+          <li><strong>Temps et présence :</strong> Horaires de travail, suivi des congés</li>
+          <li><strong>Performance :</strong> Objectifs, évaluations, plans de développement</li>
+        </ul>
+      </div>
+      <div class="card card-white">
+        <h3 data-lang="en">💰 SAP Finance</h3>
+        <h3 data-lang="fr">💰 SAP Finance</h3>
+        <ul data-lang="en">
+          <li><strong>Budget planning:</strong> Allocations, forecasts, variances</li>
+          <li><strong>Procurement:</strong> Purchase orders, contracts, suppliers</li>
+          <li><strong>Accounting:</strong> General ledger, cost centers, reporting</li>
+          <li><strong>Analytics:</strong> Financial KPIs, trend analysis</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Planification budgétaire :</strong> Allocations, prévisions, variances</li>
+          <li><strong>Approvisionnement :</strong> Bons de commande, contrats, fournisseurs</li>
+          <li><strong>Comptabilité :</strong> Grand livre, centres de coûts, rapports</li>
+          <li><strong>Analytique :</strong> ICP financiers, analyse de tendances</li>
+        </ul>
+      </div>
+      <div class="card card-white">
+        <h3 data-lang="en">📊 Generic CSV</h3>
+        <h3 data-lang="fr">📊 CSV générique</h3>
+        <ul data-lang="en">
+          <li><strong>Flexible schema:</strong> Auto-detect column types and relationships</li>
+          <li><strong>Data validation:</strong> Type checking, range validation</li>
+          <li><strong>Import/export:</strong> Standard formats, batch processing</li>
+          <li><strong>Custom mapping:</strong> Field naming, transformation rules</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Schéma flexible :</strong> Détection auto des types de colonnes et relations</li>
+          <li><strong>Validation de données :</strong> Vérification de type, validation de plage</li>
+          <li><strong>Import/export :</strong> Formats standards, traitement par lots</li>
+          <li><strong>Mappage personnalisé :</strong> Nommage de champs, règles de transformation</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="two-col" style="margin-top: 40px;">
+      <div class="card card-white">
+        <h3 data-lang="en">How Adapters Work</h3>
+        <h3 data-lang="fr">Comment fonctionnent les adaptateurs</h3>
+        <div class="code-block">
+          <div data-lang="en"># Example: PeopleSoft HR Adapter<br>
+class PeopleSoftAdapter:<br>
+&nbsp;&nbsp;def extract_schema(self):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Connect to PeopleSoft database<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Extract table definitions<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Map to standard CDR schema format<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return schema<br><br>
+&nbsp;&nbsp;def validate_access(self, mode):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Check CDR operating mode<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Apply appropriate data filters<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Return accessible schema subset<br><br>
+&nbsp;&nbsp;def generate_tools(self, schema):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Apply PeopleSoft-specific templates<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Generate org chart, roster, reports</div>
+          <div data-lang="fr"># Exemple : Adaptateur RH PeopleSoft<br>
+class PeopleSoftAdapter:<br>
+&nbsp;&nbsp;def extract_schema(self):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Se connecter à la BD PeopleSoft<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Extraire les définitions de tables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Mapper au format de schéma CDR standard<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return schema<br><br>
+&nbsp;&nbsp;def validate_access(self, mode):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Vérifier le mode de fonctionnement CDR<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Appliquer les filtres de données appropriés<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Retourner le sous-ensemble de schéma accessible<br><br>
+&nbsp;&nbsp;def generate_tools(self, schema):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Appliquer les modèles spécifiques PeopleSoft<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Générer organigramme, liste, rapports</div>
+        </div>
+      </div>
+      <div class="card card-white">
+        <h3 data-lang="en">Security Considerations</h3>
+        <h3 data-lang="fr">Considérations de sécurité</h3>
+        <ul data-lang="en">
+          <li><strong>Read-only access:</strong> Adapters never modify source systems</li>
+          <li><strong>Schema extraction only:</strong> In Mode 2, no actual data is accessed</li>
+          <li><strong>Credential management:</strong> Secure storage of database credentials</li>
+          <li><strong>Audit logging:</strong> All adapter activities logged for compliance</li>
+          <li><strong>Connection encryption:</strong> TLS/SSL for all database connections</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Accès lecture seule :</strong> Les adaptateurs ne modifient jamais les systèmes sources</li>
+          <li><strong>Extraction de schéma seulement :</strong> En Mode 2, aucune donnée réelle n'est accédée</li>
+          <li><strong>Gestion des identifiants :</strong> Stockage sécurisé des identifiants de BD</li>
+          <li><strong>Journalisation d'audit :</strong> Toutes les activités d'adaptateur enregistrées pour conformité</li>
+          <li><strong>Chiffrement de connexion :</strong> TLS/SSL pour toutes les connexions BD</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 13: Security Architecture -->
+  <div class="slide slide-dark">
+    <h2 data-lang="en">Security Architecture: OpenShell → ITSG-33 Controls Mapping</h2>
+    <h2 data-lang="fr">Architecture de sécurité : Mappage OpenShell → Contrôles ITSG-33</h2>
+    
+    <div class="two-col">
+      <div class="card">
+        <h3 data-lang="en">🔒 Access Control (AC)</h3>
+        <h3 data-lang="fr">🔒 Contrôle d'accès (AC)</h3>
+        <ul data-lang="en">
+          <li><strong>AC-3:</strong> OpenShell policy engine enforces access decisions</li>
+          <li><strong>AC-6:</strong> Least privilege via mode-specific permissions</li>
+          <li><strong>AC-14:</strong> Automated permitted actions based on context</li>
+          <li><strong>AC-16:</strong> Security attributes (data classification) enforcement</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>AC-3 :</strong> Le moteur de politique OpenShell applique les décisions d'accès</li>
+          <li><strong>AC-6 :</strong> Privilège minimum via permissions spécifiques au mode</li>
+          <li><strong>AC-14 :</strong> Actions permises automatisées basées sur le contexte</li>
+          <li><strong>AC-16 :</strong> Application des attributs de sécurité (classification des données)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">📋 Audit & Accountability (AU)</h3>
+        <h3 data-lang="fr">📋 Audit et responsabilisation (AU)</h3>
+        <ul data-lang="en">
+          <li><strong>AU-2:</strong> Auditable events defined in OpenShell config</li>
+          <li><strong>AU-3:</strong> Audit records contain required information</li>
+          <li><strong>AU-6:</strong> Real-time audit review and analysis</li>
+          <li><strong>AU-12:</strong> Comprehensive audit record generation</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>AU-2 :</strong> Événements auditables définis dans config OpenShell</li>
+          <li><strong>AU-3 :</strong> Les enregistrements d'audit contiennent l'information requise</li>
+          <li><strong>AU-6 :</strong> Révision et analyse d'audit en temps réel</li>
+          <li><strong>AU-12 :</strong> Génération d'enregistrements d'audit exhaustive</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">🛡️ System & Information Integrity (SI)</h3>
+        <h3 data-lang="fr">🛡️ Intégrité système et information (SI)</h3>
+        <ul data-lang="en">
+          <li><strong>SI-3:</strong> Malicious code protection via sandboxing</li>
+          <li><strong>SI-4:</strong> Information system monitoring capabilities</li>
+          <li><strong>SI-7:</strong> Software integrity verification</li>
+          <li><strong>SI-10:</strong> Information input validation</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>SI-3 :</strong> Protection contre code malveillant via sandboxing</li>
+          <li><strong>SI-4 :</strong> Capacités de surveillance du système d'information</li>
+          <li><strong>SI-7 :</strong> Vérification de l'intégrité du logiciel</li>
+          <li><strong>SI-10 :</strong> Validation d'entrée d'information</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">⚙️ Configuration Management (CM)</h3>
+        <h3 data-lang="fr">⚙️ Gestion de configuration (CM)</h3>
+        <ul data-lang="en">
+          <li><strong>CM-2:</strong> Baseline configuration management</li>
+          <li><strong>CM-3:</strong> Configuration change control</li>
+          <li><strong>CM-5:</strong> Access restrictions for change</li>
+          <li><strong>CM-8:</strong> Information system component inventory</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>CM-2 :</strong> Gestion de configuration de base</li>
+          <li><strong>CM-3 :</strong> Contrôle des changements de configuration</li>
+          <li><strong>CM-5 :</strong> Restrictions d'accès pour changement</li>
+          <li><strong>CM-8 :</strong> Inventaire des composants du système d'information</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 40px; max-width: 1000px;">
+      <h3 data-lang="en">SA&A Conversation Changes</h3>
+      <h3 data-lang="fr">Changements de conversation SA&A</h3>
+      <div class="two-col">
+        <div>
+          <h4 data-lang="en">Before: "Trust the AI"</h4>
+          <h4 data-lang="fr">Avant : "Faire confiance à l'IA"</h4>
+          <ul data-lang="en">
+            <li>No direct technical controls</li>
+            <li>Behavioral assurance only</li>
+            <li>Difficult to audit or verify</li>
+            <li>SA&A reviewers uncomfortable</li>
+            <li>Long approval cycles</li>
+          </ul>
+          <ul data-lang="fr">
+            <li>Aucun contrôle technique direct</li>
+            <li>Assurance comportementale seulement</li>
+            <li>Difficile à auditer ou vérifier</li>
+            <li>Réviseurs SA&A inconfortables</li>
+            <li>Cycles d'approbation longs</li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-lang="en">After: "Here's the Access Log"</h4>
+          <h4 data-lang="fr">Après : "Voici le journal d'accès"</h4>
+          <ul data-lang="en">
+            <li>Hardware-enforced controls</li>
+            <li>Comprehensive audit trail</li>
+            <li>Direct ITSG-33 compliance mapping</li>
+            <li>Familiar enterprise security model</li>
+            <li>Faster SA&A approvals</li>
+          </ul>
+          <ul data-lang="fr">
+            <li>Contrôles appliqués par le matériel</li>
+            <li>Piste d'audit exhaustive</li>
+            <li>Mappage direct de conformité ITSG-33</li>
+            <li>Modèle de sécurité d'entreprise familier</li>
+            <li>Approbations SA&A plus rapides</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 14: The Four Buildable Items -->
+  <div class="slide slide-white">
+    <h2 data-lang="en">The Four Buildable Items: What Gets Delivered When</h2>
+    <h2 data-lang="fr">Les quatre éléments construisibles : Quoi livré quand</h2>
+    
+    <div class="buildable-grid">
+      <div class="buildable-item">
+        <div class="phase-tag">Phase 2</div>
+        <h3 data-lang="en">🔄 Schema Workflow</h3>
+        <h3 data-lang="fr">🔄 Flux de travail des schémas</h3>
+        <ul data-lang="en">
+          <li>Schema publication API</li>
+          <li>Automated discovery engine</li>
+          <li>Tool generation pipeline</li>
+          <li>Compliance validation</li>
+          <li>Deployment automation</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>API de publication de schémas</li>
+          <li>Moteur de découverte automatisé</li>
+          <li>Pipeline de génération d'outils</li>
+          <li>Validation de conformité</li>
+          <li>Automatisation du déploiement</li>
+        </ul>
+      </div>
+      <div class="buildable-item">
+        <div class="phase-tag">Phase 2</div>
+        <h3 data-lang="en">⚖️ Compliance Engine</h3>
+        <h3 data-lang="fr">⚖️ Moteur de conformité</h3>
+        <ul data-lang="en">
+          <li>ITSG-33 control templates</li>
+          <li>WCAG 2.1 AA validation</li>
+          <li>OLA bilingual enforcement</li>
+          <li>Privacy law compliance</li>
+          <li>Automated testing suite</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Modèles de contrôles ITSG-33</li>
+          <li>Validation WCAG 2.1 AA</li>
+          <li>Application bilingue LLO</li>
+          <li>Conformité aux lois sur la confidentialité</li>
+          <li>Suite de tests automatisés</li>
+        </ul>
+      </div>
+      <div class="buildable-item">
+        <div class="phase-tag">Phase 2</div>
+        <h3 data-lang="en">🚂 Railway Network</h3>
+        <h3 data-lang="fr">🚂 Réseau ferroviaire</h3>
+        <ul data-lang="en">
+          <li>Inter-node communication</li>
+          <li>Knowledge sharing protocols</li>
+          <li>Pattern distribution system</li>
+          <li>Network discovery service</li>
+          <li>Distributed learning framework</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Communication inter-nœuds</li>
+          <li>Protocoles de partage de connaissances</li>
+          <li>Système de distribution de modèles</li>
+          <li>Service de découverte réseau</li>
+          <li>Cadre d'apprentissage distribué</li>
+        </ul>
+      </div>
+      <div class="buildable-item">
+        <div class="phase-tag">Phase 1 - Parked</div>
+        <h3 data-lang="en">🧠 Model Fine-Tuning</h3>
+        <h3 data-lang="fr">🧠 Fine-tuning de modèle</h3>
+        <ul data-lang="en">
+          <li>Canadian corpus curation</li>
+          <li>Bilingual training pipeline</li>
+          <li>GC-specific knowledge injection</li>
+          <li>Compliance-aware training</li>
+          <li>Model evaluation framework</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Curation du corpus canadien</li>
+          <li>Pipeline d'entraînement bilingue</li>
+          <li>Injection de connaissances spécifiques GC</li>
+          <li>Entraînement conscient de la conformité</li>
+          <li>Cadre d'évaluation de modèle</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="two-col" style="margin-top: 40px;">
+      <div class="card card-white">
+        <h3 data-lang="en">Why Model Fine-Tuning is Parked</h3>
+        <h3 data-lang="fr">Pourquoi le fine-tuning de modèle est reporté</h3>
+        <ul data-lang="en">
+          <li><strong>Nemotron models are already bilingual</strong> and capable enough for Phase 1 POC</li>
+          <li><strong>Fine-tuning requires compute resources</strong> beyond single DGX Spark capability</li>
+          <li><strong>ISED SCIP infrastructure</strong> better suited for model training workloads</li>
+          <li><strong>Focus on institutional intelligence</strong> (schemas, compliance) delivers more immediate value</li>
+          <li><strong>Can be added later</strong> without changing core architecture</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Les modèles Nemotron sont déjà bilingues</strong> et suffisamment capables pour PoC Phase 1</li>
+          <li><strong>Le fine-tuning nécessite des ressources de calcul</strong> au-delà de la capacité d'un seul DGX Spark</li>
+          <li><strong>L'infrastructure ISED SCIP</strong> mieux adaptée aux charges d'entraînement de modèles</li>
+          <li><strong>Focus sur l'intelligence institutionnelle</strong> (schémas, conformité) livre plus de valeur immédiate</li>
+          <li><strong>Peut être ajouté plus tard</strong> sans changer l'architecture de base</li>
+        </ul>
+      </div>
+      <div class="card card-white">
+        <h3 data-lang="en">Development Priorities</h3>
+        <h3 data-lang="fr">Priorités de développement</h3>
+        <ol data-lang="en">
+          <li><strong>Schema Workflow (Phase 1 PoC):</strong> Prove the core concept with HICC</li>
+          <li><strong>Compliance Engine (Phase 2):</strong> Scale across GC with automated compliance</li>
+          <li><strong>Railway Network (Phase 2):</strong> Enable knowledge sharing between nodes</li>
+          <li><strong>Model Fine-Tuning (Phase 3+):</strong> Add Canadian-specific model intelligence</li>
+        </ol>
+        <ol data-lang="fr">
+          <li><strong>Flux de schémas (PoC Phase 1) :</strong> Prouver le concept de base avec HICC</li>
+          <li><strong>Moteur de conformité (Phase 2) :</strong> Étendre à travers GC avec conformité automatisée</li>
+          <li><strong>Réseau ferroviaire (Phase 2) :</strong> Permettre le partage de connaissances entre nœuds</li>
+          <li><strong>Fine-tuning de modèle (Phase 3+) :</strong> Ajouter intelligence de modèle spécifique canadienne</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 15: HICC PoC Technical Plan -->
+  <div class="slide slide-blue">
+    <h2 data-lang="en">HICC PoC Technical Plan: 5 Steps, 8-15 Weeks</h2>
+    <h2 data-lang="fr">Plan technique PoC HICC : 5 étapes, 8-15 semaines</h2>
+    
+    <div class="workflow-steps">
+      <div class="workflow-step">
+        <div class="step-number">1</div>
+        <h3 data-lang="en">Environment Setup</h3>
+        <h3 data-lang="fr">Configuration environnement</h3>
+        <p style="font-size: 0.9rem;" data-lang="en">Weeks 1-2<br>Install NemoClaw on DGX Spark, configure OpenShell policies for Mode 2</p>
+        <p style="font-size: 0.9rem;" data-lang="fr">Semaines 1-2<br>Installer NemoClaw sur DGX Spark, configurer politiques OpenShell pour Mode 2</p>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">2</div>
+        <h3 data-lang="en">Schema Publication</h3>
+        <h3 data-lang="fr">Publication schéma</h3>
+        <p style="font-size: 0.9rem;" data-lang="en">Weeks 2-4<br>HICC publishes PeopleSoft HR schema, Terry discovers and analyzes structure</p>
+        <p style="font-size: 0.9rem;" data-lang="fr">Semaines 2-4<br>HICC publie schéma RH PeopleSoft, Terry découvre et analyse la structure</p>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">3</div>
+        <h3 data-lang="en">Tool Generation</h3>
+        <h3 data-lang="fr">Génération d'outil</h3>
+        <p style="font-size: 0.9rem;" data-lang="en">Weeks 4-8<br>Terry builds interactive org chart tool with bilingual UI and WCAG compliance</p>
+        <p style="font-size: 0.9rem;" data-lang="fr">Semaines 4-8<br>Terry construit outil organigramme interactif avec UI bilingue et conformité WCAG</p>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">4</div>
+        <h3 data-lang="en">Security Review</h3>
+        <h3 data-lang="fr">Révision sécurité</h3>
+        <p style="font-size: 0.9rem;" data-lang="en">Weeks 8-12<br>GC Code review, SA&A documentation, OpenShell audit log analysis</p>
+        <p style="font-size: 0.9rem;" data-lang="fr">Semaines 8-12<br>Révision code GC, documentation SA&A, analyse journal audit OpenShell</p>
+      </div>
+      <div class="workflow-step">
+        <div class="step-number">5</div>
+        <h3 data-lang="en">Deployment</h3>
+        <h3 data-lang="fr">Déploiement</h3>
+        <p style="font-size: 0.9rem;" data-lang="en">Weeks 12-15<br>Deploy to HICC network, user acceptance testing, success metrics collection</p>
+        <p style="font-size: 0.9rem;" data-lang="fr">Semaines 12-15<br>Déployer sur réseau HICC, tests d'acceptation utilisateur, collecte métriques succès</p>
+      </div>
+    </div>
+    
+    <div class="two-col" style="margin-top: 40px;">
+      <div class="card">
+        <h3 data-lang="en">What Gets Built</h3>
+        <h3 data-lang="fr">Ce qui est construit</h3>
+        <ul data-lang="en">
+          <li><strong>Interactive Org Chart Generator:</strong> Web-based tool for visualizing HICC organizational structure</li>
+          <li><strong>Bilingual Interface:</strong> Complete English/French support with OLA compliance</li>
+          <li><strong>Export Capabilities:</strong> PDF, PNG, SVG output for reports and presentations</li>
+          <li><strong>Search & Filter:</strong> Find employees by name, department, position</li>
+          <li><strong>Accessibility Features:</strong> WCAG 2.1 AA compliance, screen reader support</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Générateur d'organigramme interactif :</strong> Outil web pour visualiser la structure organisationnelle HICC</li>
+          <li><strong>Interface bilingue :</strong> Support complet anglais/français avec conformité LLO</li>
+          <li><strong>Capacités d'export :</strong> Sortie PDF, PNG, SVG pour rapports et présentations</li>
+          <li><strong>Recherche et filtrage :</strong> Trouver employés par nom, ministère, poste</li>
+          <li><strong>Fonctionnalités d'accessibilité :</strong> Conformité WCAG 2.1 AA, support lecteur d'écran</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">What Gets Reviewed</h3>
+        <h3 data-lang="fr">Ce qui est révisé</h3>
+        <ul data-lang="en">
+          <li><strong>Generated Source Code:</strong> Complete code review following GC Code guidelines</li>
+          <li><strong>Security Architecture:</strong> OpenShell policy configuration and enforcement verification</li>
+          <li><strong>Audit Trail:</strong> 8+ weeks of operation logs showing zero unauthorized access</li>
+          <li><strong>Compliance Evidence:</strong> WCAG validation reports, bilingual testing results</li>
+          <li><strong>Performance Metrics:</strong> Tool generation time, system resource usage, user satisfaction</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Code source généré :</strong> Révision complète du code suivant les directives GC Code</li>
+          <li><strong>Architecture de sécurité :</strong> Vérification de configuration et application des politiques OpenShell</li>
+          <li><strong>Piste d'audit :</strong> 8+ semaines de journaux d'opération montrant zéro accès non autorisé</li>
+          <li><strong>Preuve de conformité :</strong> Rapports de validation WCAG, résultats de tests bilingues</li>
+          <li><strong>Métriques de performance :</strong> Temps de génération d'outils, usage ressources système, satisfaction utilisateur</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 16: Project Timeline -->
+  <div class="slide slide-warm">
+    <h2 data-lang="en">Project Timeline: Q2 2026 → Q4 2026</h2>
+    <h2 data-lang="fr">Calendrier de projet : T2 2026 → T4 2026</h2>
+    
+    <div class="gantt-timeline">
+      <div class="gantt-row">
+        <div class="gantt-label" data-lang="en">HICC PoC Setup</div>
+        <div class="gantt-label" data-lang="fr">Configuration PoC HICC</div>
+        <div class="gantt-bar" style="width: 25%; margin-left: 0;" data-lang="en">Q2 2026 (Apr-Jun)</div>
+        <div class="gantt-bar" style="width: 25%; margin-left: 0;" data-lang="fr">T2 2026 (Avr-Jun)</div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label" data-lang="en">Tool Generation & Testing</div>
+        <div class="gantt-label" data-lang="fr">Génération d'outils et tests</div>
+        <div class="gantt-bar" style="width: 35%; margin-left: 15%;" data-lang="en">Q2-Q3 2026 (May-Aug)</div>
+        <div class="gantt-bar" style="width: 35%; margin-left: 15%;" data-lang="fr">T2-T3 2026 (Mai-Aoû)</div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label" data-lang="en">Security Review & SA&A</div>
+        <div class="gantt-label" data-lang="fr">Révision sécurité et SA&A</div>
+        <div class="gantt-bar" style="width: 30%; margin-left: 40%;" data-lang="en">Q3 2026 (Jul-Sep)</div>
+        <div class="gantt-bar" style="width: 30%; margin-left: 40%;" data-lang="fr">T3 2026 (Jul-Sep)</div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label" data-lang="en">GC Expansion (5-10 Dept)</div>
+        <div class="gantt-label" data-lang="fr">Expansion GC (5-10 Min)</div>
+        <div class="gantt-bar" style="width: 40%; margin-left: 60%;" data-lang="en">Q3-Q4 2026 (Aug-Dec)</div>
+        <div class="gantt-bar" style="width: 40%; margin-left: 60%;" data-lang="fr">T3-T4 2026 (Aoû-Déc)</div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-label" data-lang="en">Railway Network Launch</div>
+        <div class="gantt-label" data-lang="fr">Lancement réseau ferroviaire</div>
+        <div class="gantt-bar" style="width: 20%; margin-left: 80%;" data-lang="en">Q4 2026 (Oct-Dec)</div>
+        <div class="gantt-bar" style="width: 20%; margin-left: 80%;" data-lang="fr">T4 2026 (Oct-Déc)</div>
+      </div>
+    </div>
+    
+    <div class="two-col" style="margin-top: 40px;">
+      <div class="card card-white">
+        <h3 data-lang="en">Critical Dependencies</h3>
+        <h3 data-lang="fr">Dépendances critiques</h3>
+        <ul data-lang="en">
+          <li><strong>HICC Schema Approval:</strong> Authority to publish PeopleSoft HR schema for PoC</li>
+          <li><strong>DGX Spark Procurement:</strong> Hardware acquisition through GC standing offers</li>
+          <li><strong>Network Access:</strong> Isolated network segment for CDR node deployment</li>
+          <li><strong>Security Review Resources:</strong> SA&A reviewer availability during Q3</li>
+          <li><strong>NemoClaw Stability:</strong> Platform maturation during PoC timeline</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Approbation schéma HICC :</strong> Autorité de publier schéma RH PeopleSoft pour PoC</li>
+          <li><strong>Approvisionnement DGX Spark :</strong> Acquisition matériel via offres permanentes GC</li>
+          <li><strong>Accès réseau :</strong> Segment réseau isolé pour déploiement nœud CDR</li>
+          <li><strong>Ressources révision sécurité :</strong> Disponibilité réviseur SA&A durant T3</li>
+          <li><strong>Stabilité NemoClaw :</strong> Maturation plateforme durant calendrier PoC</li>
+        </ul>
+      </div>
+      <div class="card card-white">
+        <h3 data-lang="en">Risk Mitigation</h3>
+        <h3 data-lang="fr">Atténuation des risques</h3>
+        <ul data-lang="en">
+          <li><strong>NemoClaw Delays:</strong> Fallback to Ollama + local models for PoC</li>
+          <li><strong>Security Review Timeline:</strong> Parallel track with development, not sequential</li>
+          <li><strong>Hardware Availability:</strong> Multiple vendor options, not locked to DGX Spark</li>
+          <li><strong>Schema Access:</strong> Start with public/test schemas if needed</li>
+          <li><strong>Compliance Issues:</strong> Built-in templates reduce manual compliance work</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Retards NemoClaw :</strong> Solution de repli vers Ollama + modèles locaux pour PoC</li>
+          <li><strong>Calendrier révision sécurité :</strong> Voie parallèle au développement, pas séquentielle</li>
+          <li><strong>Disponibilité matériel :</strong> Options multiples fournisseurs, pas verrouillé à DGX Spark</li>
+          <li><strong>Accès schéma :</strong> Commencer avec schémas publics/test si nécessaire</li>
+          <li><strong>Problèmes conformité :</strong> Modèles intégrés réduisent travail conformité manuel</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 17: Sovereignty Gap Analysis Summary -->
+  <div class="slide slide-dark">
+    <h2 data-lang="en">Sovereignty Gap Analysis: Visual Scorecard</h2>
+    <h2 data-lang="fr">Analyse d'écart de souveraineté : Tableau de bord visuel</h2>
+    
+    <div class="sovereignty-scorecard">
+      <div class="scorecard-header" data-lang="en">Requirement</div>
+      <div class="scorecard-header" data-lang="fr">Exigence</div>
+      <div class="scorecard-header" data-lang="en">NemoClaw Alone</div>
+      <div class="scorecard-header" data-lang="fr">NemoClaw seul</div>
+      <div class="scorecard-header" data-lang="en">NemoClaw + CDR</div>
+      <div class="scorecard-header" data-lang="fr">NemoClaw + CDR</div>
+      <div class="scorecard-header" data-lang="en">Canada's Goal</div>
+      <div class="scorecard-header" data-lang="fr">Objectif Canada</div>
+      
+      <div class="scorecard-row">
+        <div class="scorecard-item" data-lang="en">Data Sovereignty</div>
+        <div class="scorecard-item" data-lang="fr">Souveraineté des données</div>
+        <div class="scorecard-item score-pass">✅ 95%</div>
+        <div class="scorecard-item score-pass">✅ 95%</div>
+        <div class="scorecard-item score-pass">✅ 95%</div>
+        <div class="scorecard-item score-pass">✅ 95%</div>
+      </div>
+      
+      <div class="scorecard-row">
+        <div class="scorecard-item" data-lang="en">Technical Controls</div>
+        <div class="scorecard-item" data-lang="fr">Contrôles techniques</div>
+        <div class="scorecard-item score-pass">✅ 90%</div>
+        <div class="scorecard-item score-pass">✅ 90%</div>
+        <div class="scorecard-item score-pass">✅ 95%</div>
+        <div class="scorecard-item score-pass">✅ 95%</div>
+      </div>
+      
+      <div class="scorecard-row">
+        <div class="scorecard-item" data-lang="en">IP Ownership</div>
+        <div class="scorecard-item" data-lang="fr">Propriété PI</div>
+        <div class="scorecard-item score-partial">⚠️ 40%</div>
+        <div class="scorecard-item score-partial">⚠️ 40%</div>
+        <div class="scorecard-item score-pass">✅ 80%</div>
+        <div class="scorecard-item score-pass">✅ 80%</div>
+      </div>
+      
+      <div class="scorecard-row">
+        <div class="scorecard-item" data-lang="en">Supply Chain</div>
+        <div class="scorecard-item" data-lang="fr">Chaîne d'approvisionnement</div>
+        <div class="scorecard-item score-fail">❌ 15%</div>
+        <div class="scorecard-item score-fail">❌ 15%</div>
+        <div class="scorecard-item score-fail">❌ 20%</div>
+        <div class="scorecard-item score-fail">❌ 20%</div>
+      </div>
+      
+      <div class="scorecard-row">
+        <div class="scorecard-item" data-lang="en">Model Sovereignty</div>
+        <div class="scorecard-item" data-lang="fr">Souveraineté du modèle</div>
+        <div class="scorecard-item score-partial">⚠️ 50%</div>
+        <div class="scorecard-item score-partial">⚠️ 50%</div>
+        <div class="scorecard-item score-pass">✅ 75%</div>
+        <div class="scorecard-item score-pass">✅ 75%</div>
+      </div>
+      
+      <div class="scorecard-row">
+        <div class="scorecard-item" data-lang="en">Regional Distribution</div>
+        <div class="scorecard-item" data-lang="fr">Distribution régionale</div>
+        <div class="scorecard-item score-fail">❌ 20%</div>
+        <div class="scorecard-item score-fail">❌ 20%</div>
+        <div class="scorecard-item score-pass">✅ 85%</div>
+        <div class="scorecard-item score-pass">✅ 85%</div>
+      </div>
+    </div>
+    
+    <div class="two-col" style="margin-top: 40px;">
+      <div class="card">
+        <h3 data-lang="en">Overall Assessment</h3>
+        <h3 data-lang="fr">Évaluation globale</h3>
+        <div style="text-align: center; margin: 20px 0;">
+          <div style="font-size: 3rem; color: var(--accent-gold);">60% → 80%</div>
+          <p data-lang="en">NemoClaw alone → NemoClaw + CDR</p>
+          <p data-lang="fr">NemoClaw seul → NemoClaw + CDR</p>
+        </div>
+        <p data-lang="en">CDR fills the Canadian institutional intelligence gap, bringing sovereignty score from 60% to 80% of Canada's requirements.</p>
+        <p data-lang="fr">CDR comble l'écart d'intelligence institutionnelle canadienne, amenant le score de souveraineté de 60% à 80% des exigences du Canada.</p>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">Remaining Gaps</h3>
+        <h3 data-lang="fr">Écarts restants</h3>
+        <ul data-lang="en">
+          <li><strong>Supply Chain (20%):</strong> Requires national industrial policy, not solvable by CDR alone</li>
+          <li><strong>Model Development (25%):</strong> Need Canadian seat in Nemotron Coalition</li>
+          <li><strong>Hardware Independence (20%):</strong> Fundamental global semiconductor reality</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Chaîne d'approvisionnement (20%) :</strong> Nécessite politique industrielle nationale, non résolvable par CDR seul</li>
+          <li><strong>Développement de modèle (25%) :</strong> Besoin siège canadien dans Coalition Nemotron</li>
+          <li><strong>Indépendance matérielle (20%) :</strong> Réalité fondamentale mondiale des semiconducteurs</li>
+        </ul>
+        <p data-lang="en"><strong>Bottom line:</strong> 80% sovereignty is realistic. Complete sovereignty is not achievable by any country in 2026.</p>
+        <p data-lang="fr"><strong>Conclusion :</strong> 80% de souveraineté est réaliste. La souveraineté complète n'est réalisable par aucun pays en 2026.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 18: Next Steps -->
+  <div class="slide slide-cover">
+    <div class="gc-bar"></div>
+    <h2 data-lang="en">Next Steps: Immediate → Short-term → Medium-term</h2>
+    <h2 data-lang="fr">Prochaines étapes : Immédiat → Court terme → Moyen terme</h2>
+    
+    <div class="three-col" style="margin-top: 40px;">
+      <div class="card">
+        <h3 data-lang="en">🚀 Immediate (This Week)</h3>
+        <h3 data-lang="fr">🚀 Immédiat (Cette semaine)</h3>
+        <ul data-lang="en">
+          <li>Test NemoClaw installation on available hardware</li>
+          <li>Map CDR operating modes to OpenShell policy configurations</li>
+          <li>Engage HICC leadership for schema publication approval</li>
+          <li>Research DGX Spark procurement through GC channels</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Tester l'installation NemoClaw sur matériel disponible</li>
+          <li>Mapper modes CDR vers configurations politiques OpenShell</li>
+          <li>Engager direction HICC pour approbation publication schéma</li>
+          <li>Rechercher approvisionnement DGX Spark via canaux GC</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">⚡ Short-term (2-4 Weeks)</h3>
+        <h3 data-lang="fr">⚡ Court terme (2-4 semaines)</h3>
+        <ul data-lang="en">
+          <li>Build proof-of-concept CDR bootstrap on NemoClaw stack</li>
+          <li>Create OpenShell policy templates for each CDR operating mode</li>
+          <li>Draft formal HICC partnership proposal with technical specifications</li>
+          <li>Engage NVIDIA Canada regarding GC deployment partnership</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Construire preuve de concept d'amorçage CDR sur stack NemoClaw</li>
+          <li>Créer modèles de politique OpenShell pour chaque mode CDR</li>
+          <li>Rédiger proposition de partenariat HICC formelle avec spécifications techniques</li>
+          <li>Engager NVIDIA Canada concernant partenariat de déploiement GC</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">🎯 Medium-term (1-3 Months)</h3>
+        <h3 data-lang="fr">🎯 Moyen terme (1-3 mois)</h3>
+        <ul data-lang="en">
+          <li>Complete HICC PoC deployment and evaluation</li>
+          <li>Contribute CDR compliance profiles to NemoClaw/OpenClaw ecosystem</li>
+          <li>Present results to ISED for alignment with Sovereign AI Compute Strategy</li>
+          <li>Identify next 5-10 GC departments for Phase 2 expansion</li>
+          <li>Advocate for Canadian participation in Nemotron Coalition</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Compléter déploiement et évaluation PoC HICC</li>
+          <li>Contribuer profils de conformité CDR à l'écosystème NemoClaw/OpenClaw</li>
+          <li>Présenter résultats à ISDE pour alignement avec Stratégie IA souveraine</li>
+          <li>Identifier prochains 5-10 ministères GC pour expansion Phase 2</li>
+          <li>Plaider pour participation canadienne dans Coalition Nemotron</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="two-col" style="margin-top: 40px;">
+      <div class="card">
+        <h3 data-lang="en">Success Criteria</h3>
+        <h3 data-lang="fr">Critères de succès</h3>
+        <ul data-lang="en">
+          <li><strong>Technical:</strong> CDR successfully runs on NemoClaw with all security policies enforced</li>
+          <li><strong>Functional:</strong> Schema workflow generates compliant tools faster than traditional procurement</li>
+          <li><strong>Security:</strong> Zero unauthorized access attempts in 8+ weeks of operation</li>
+          <li><strong>Compliance:</strong> 100% WCAG 2.1 AA, bilingual, ITSG-33 compliance</li>
+          <li><strong>Business:</strong> HICC leadership approves expansion to additional schemas</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Technique :</strong> CDR fonctionne avec succès sur NemoClaw avec toutes politiques de sécurité appliquées</li>
+          <li><strong>Fonctionnel :</strong> Flux de schémas génère outils conformes plus vite que l'approvisionnement traditionnel</li>
+          <li><strong>Sécurité :</strong> Zéro tentative d'accès non autorisé en 8+ semaines d'opération</li>
+          <li><strong>Conformité :</strong> 100% WCAG 2.1 AA, bilingue, conformité ITSG-33</li>
+          <li><strong>Affaires :</strong> Direction HICC approuve expansion à schémas additionnels</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">Strategic Impact</h3>
+        <h3 data-lang="fr">Impact stratégique</h3>
+        <ul data-lang="en">
+          <li><strong>Canada becomes first country</strong> with institutional sovereign AI deployment</li>
+          <li><strong>CDR validates</strong> the schema-to-tool workflow at scale</li>
+          <li><strong>GC procurement</strong> has new model for rapid tool development</li>
+          <li><strong>ISED strategy</strong> has concrete implementation example</li>
+          <li><strong>Railway network</strong> foundation established for national scaling</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Le Canada devient le premier pays</strong> avec déploiement d'IA souveraine institutionnelle</li>
+          <li><strong>CDR valide</strong> le flux de travail schéma-vers-outil à grande échelle</li>
+          <li><strong>Approvisionnement GC</strong> a nouveau modèle pour développement d'outils rapide</li>
+          <li><strong>Stratégie ISDE</strong> a exemple concret d'implémentation</li>
+          <li><strong>Fondation réseau ferroviaire</strong> établie pour mise à l'échelle nationale</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div style="margin-top: 60px; text-align: center;">
+      <h1 style="color: var(--accent-gold);" data-lang="en">The Canadian Digital Railway 🚂</h1>
+      <h1 style="color: var(--accent-gold);" data-lang="fr">Le Chemin de fer numérique canadien 🚂</h1>
+      <p class="subtitle" data-lang="en">Sovereign AI infrastructure for Canadian institutions<br>Built on open foundations with Canadian intelligence</p>
+      <p class="subtitle" data-lang="fr">Infrastructure d'IA souveraine pour les institutions canadiennes<br>Construite sur fondations ouvertes avec intelligence canadienne</p>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-controls">
+  <button class="nav-btn" onclick="previousSlide()">‹</button>
+  <button class="nav-btn" onclick="nextSlide()">›</button>
+</div>
+
+<div class="slide-counter">
+  <span id="current-slide">1</span> / <span id="total-slides">18</span>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+document.getElementById('total-slides').textContent = totalSlides;
+
+function showSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  slides[currentSlide].classList.add('exit');
+  
+  setTimeout(() => {
+    slides[currentSlide].classList.remove('exit');
+  }, 500);
+  
+  currentSlide = (n + totalSlides) % totalSlides;
+  slides[currentSlide].classList.add('active');
+  
+  document.getElementById('current-slide').textContent = currentSlide + 1;
+}
+
+function nextSlide() {
+  showSlide(currentSlide + 1);
+}
+
+function previousSlide() {
+  showSlide(currentSlide - 1);
+}
+
+// Language toggle
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    if (btn.dataset.target === 'fr') {
+      document.body.classList.add('lang-fr');
+    } else {
+      document.body.classList.remove('lang-fr');
+    }
+  });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') {
+    e.preventDefault();
+    nextSlide();
+  } else if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    previousSlide();
+  }
+});
+</script>
+
+</body>
+</html>

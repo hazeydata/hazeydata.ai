@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Canadian Digital Railway 🚂 — Executive Pitch | hazeydata.ai</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap');
+
+  :root {
+    --rail-charcoal: #1C1C1E;
+    --rail-charcoal-mid: #2C2C2E;
+    --rail-slate: #2A3240;
+    --rail-slate-light: #3A4A5C;
+    --rail-slate-lighter: #4E6278;
+    --rail-white: #FFFFFF;
+    --rail-grey-light: #F8F8F6;
+    --rail-grey: #EEE;
+    --rail-grey-mid: #6C757D;
+    --rail-grey-dark: #333333;
+    --rail-black: #141416;
+    --maple-red: #C41E3A;
+    --maple-red-dark: #9B1B30;
+    --accent-gold: #C8973E;
+    --accent-gold-light: #E4BE6A;
+    --accent-warm: #D4A84B;
+    --accent-teal: #2A8E7F;
+    --accent-green: #2E7D32;
+    --maple: #C41E3A;
+    --bg-warm: #FAF9F6;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--rail-charcoal);
+    color: var(--rail-grey-dark);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Language toggle */
+  [data-lang="fr"] { display: none !important; }
+  body.lang-fr [data-lang="en"] { display: none !important; }
+  body.lang-fr [data-lang="fr"] { display: revert !important; }
+
+  .lang-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lang-btn {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    border: none;
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active {
+    background: var(--maple-red);
+    color: white;
+  }
+
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 100px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  .slide-cover {
+    background: linear-gradient(160deg, var(--rail-black) 0%, var(--rail-charcoal) 40%, var(--rail-slate) 100%);
+    color: var(--rail-white);
+    text-align: center;
+  }
+  .slide-white {
+    background: var(--rail-white);
+    color: var(--rail-grey-dark);
+  }
+  .slide-warm {
+    background: var(--bg-warm);
+    color: var(--rail-grey-dark);
+  }
+  .slide-blue {
+    background: linear-gradient(160deg, var(--rail-slate) 0%, var(--rail-slate-light) 100%);
+    color: var(--rail-white);
+  }
+  .slide-dark {
+    background: linear-gradient(160deg, var(--rail-black) 0%, var(--rail-charcoal) 100%);
+    color: var(--rail-white);
+  }
+  .slide-accent {
+    background: linear-gradient(160deg, var(--rail-charcoal) 0%, var(--rail-slate) 100%);
+    color: var(--rail-white);
+  }
+
+  /* Typography */
+  h1 {
+    font-family: 'Lato', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    font-family: 'Lato', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 1.35rem;
+    font-weight: 300;
+    opacity: 0.85;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  .small-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+    margin-bottom: 16px;
+  }
+
+  .gc-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--maple-red);
+  }
+
+  .logo-mark {
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    font-size: 3.6rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .logo-mark .maple {
+    color: var(--maple);
+    margin-left: 8px;
+    font-style: normal;
+  }
+
+  /* Components */
+  .stat-large {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 8px;
+    color: var(--accent-gold);
+  }
+
+  .stat-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    width: 100%;
+    max-width: 1200px;
+    align-items: start;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 32px;
+    backdrop-filter: blur(10px);
+  }
+
+  .card-white {
+    background: var(--rail-white);
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: var(--shadow);
+  }
+
+  .score-visual {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0;
+  }
+
+  .score-bar {
+    flex: 1;
+    height: 12px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.8s ease;
+  }
+
+  .score-60 { width: 60%; background: var(--accent-gold); }
+  .score-80 { width: 80%; background: var(--accent-green); }
+
+  .mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .mode-card {
+    text-align: center;
+    padding: 24px;
+    border-radius: 12px;
+    border: 2px solid;
+  }
+
+  .mode-1 { border-color: var(--accent-green); background: rgba(46,125,50,0.1); }
+  .mode-2 { border-color: var(--accent-gold); background: rgba(200,151,62,0.1); }
+  .mode-3 { border-color: var(--accent-teal); background: rgba(42,142,127,0.1); }
+
+  .timeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px 0;
+  }
+
+  .timeline-item {
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .timeline-phase {
+    font-weight: 700;
+    color: var(--accent-gold);
+    margin-bottom: 8px;
+  }
+
+  .nav-controls {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 1000;
+  }
+
+  .nav-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-btn:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .slide-counter {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+    z-index: 1000;
+  }
+
+  ul {
+    text-align: left;
+    max-width: 800px;
+  }
+
+  li {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .highlight {
+    color: var(--accent-gold);
+    font-weight: 600;
+  }
+
+  .stack-diagram {
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 2px;
+    width: 100%;
+    max-width: 600px;
+    margin: 30px 0;
+  }
+
+  .stack-layer {
+    padding: 20px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 8px;
+  }
+
+  .layer-canadian { background: var(--maple-red); color: white; }
+  .layer-runtime { background: var(--accent-teal); color: white; }
+  .layer-hardware { background: var(--accent-gold); color: white; }
+</style>
+</head>
+<body>
+<div class="lang-toggle">
+  <button class="lang-btn active" data-target="en">EN</button>
+  <button class="lang-btn" data-target="fr">FR</button>
+</div>
+
+<div class="deck">
+  <!-- Slide 1: Cover -->
+  <div class="slide slide-cover active">
+    <div class="gc-bar"></div>
+    <div class="small-label" data-lang="en">Executive Pitch — Deputy Ministers, GC Leadership, ISED Funding</div>
+    <div class="small-label" data-lang="fr">Présentation exécutive — Sous-ministres, dirigeants du GC, financement ISDE</div>
+    
+    <h1 class="logo-mark" data-lang="en">The Canadian Digital Railway</h1>
+    <h1 class="logo-mark" data-lang="fr">Le Chemin de fer numérique canadien</h1>
+    
+    <p class="subtitle" data-lang="en">Sovereign AI for Canadian Institutions 🚂</p>
+    <p class="subtitle" data-lang="fr">IA souveraine pour les institutions canadiennes 🚂</p>
+    
+    <div style="margin-top: 40px; opacity: 0.7; font-size: 1rem;" data-lang="en">
+      Built on NVIDIA NemoClaw • March 2026
+    </div>
+    <div style="margin-top: 40px; opacity: 0.7; font-size: 1rem;" data-lang="fr">
+      Basé sur NVIDIA NemoClaw • Mars 2026
+    </div>
+  </div>
+
+  <!-- Slide 2: The Problem -->
+  <div class="slide slide-white">
+    <h2 data-lang="en">The Problem: The AI Paradox</h2>
+    <h2 data-lang="fr">Le problème : Le paradoxe de l'IA</h2>
+    
+    <div class="two-col">
+      <div>
+        <h3 data-lang="en">🚫 The Tool Gap</h3>
+        <h3 data-lang="fr">🚫 L'écart des outils</h3>
+        <ul data-lang="en">
+          <li>Every department needs custom tools for their schemas</li>
+          <li>PeopleSoft HR dashboards, SAP finance reports, org chart generators</li>
+          <li>Current solution: 6-12 month procurement cycles for basic tools</li>
+          <li><span class="highlight">Result:</span> Departments reinvent the same wheels repeatedly</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Chaque ministère a besoin d'outils personnalisés pour ses schémas</li>
+          <li>Tableaux de bord RH PeopleSoft, rapports financiers SAP, générateurs d'organigrammes</li>
+          <li>Solution actuelle : cycles d'approvisionnement de 6-12 mois pour des outils de base</li>
+          <li><span class="highlight">Résultat :</span> Les ministères réinventent les mêmes roues de façon répétée</li>
+        </ul>
+      </div>
+      <div>
+        <h3 data-lang="en">⚡ The AI Paradox</h3>
+        <h3 data-lang="fr">⚡ Le paradoxe de l'IA</h3>
+        <ul data-lang="en">
+          <li>AI can build these tools in hours, not months</li>
+          <li>But: AI requires access to your data schemas</li>
+          <li>But: GC data cannot leave Canadian boundaries</li>
+          <li>But: Commercial AI services are cloud-based and US-controlled</li>
+          <li><span class="highlight">Catch-22:</span> The tool that can solve the problem can't access the data</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>L'IA peut construire ces outils en heures, pas en mois</li>
+          <li>Mais : L'IA nécessite l'accès à vos schémas de données</li>
+          <li>Mais : Les données du GC ne peuvent pas quitter les frontières canadiennes</li>
+          <li>Mais : Les services d'IA commerciaux sont basés dans le nuage et contrôlés par les États-Unis</li>
+          <li><span class="highlight">Dilemme :</span> L'outil qui peut résoudre le problème ne peut pas accéder aux données</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3: The Solution -->
+  <div class="slide slide-blue">
+    <h2 data-lang="en">The Solution: Sovereign AI Agents</h2>
+    <h2 data-lang="fr">La solution : Agents IA souverains</h2>
+    
+    <p class="subtitle" data-lang="en">The Canadian Digital Railway deploys AI agents ("terrys") that build compliant tools locally</p>
+    <p class="subtitle" data-lang="fr">Le Chemin de fer numérique canadien déploie des agents IA ("terrys") qui construisent des outils conformes localement</p>
+    
+    <div class="three-col" style="margin-top: 40px;">
+      <div class="card">
+        <h3 data-lang="en">🏠 Local & Sovereign</h3>
+        <h3 data-lang="fr">🏠 Local et souverain</h3>
+        <p data-lang="en">AI runs on your hardware, in your facility, under your control. Data never leaves Canada.</p>
+        <p data-lang="fr">L'IA fonctionne sur votre matériel, dans vos installations, sous votre contrôle. Les données ne quittent jamais le Canada.</p>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">🧠 Schema Intelligence</h3>
+        <h3 data-lang="fr">🧠 Intelligence des schémas</h3>
+        <p data-lang="en">Terry reads your PeopleSoft/SAP schemas and builds custom tools automatically. Hours, not months.</p>
+        <p data-lang="fr">Terry lit vos schémas PeopleSoft/SAP et construit des outils personnalisés automatiquement. Des heures, pas des mois.</p>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">⚖️ Compliant by Design</h3>
+        <h3 data-lang="fr">⚖️ Conforme par conception</h3>
+        <p data-lang="en">Every tool built meets ITSG-33, WCAG 2.1 AA, OLA bilingual, and privacy requirements automatically.</p>
+        <p data-lang="fr">Chaque outil construit respecte automatiquement les exigences ITSG-33, WCAG 2.1 AA, LLO bilingue et de confidentialité.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4: The Breakthrough -->
+  <div class="slide slide-warm">
+    <h2 data-lang="en">The Breakthrough: Schema Workflow</h2>
+    <h2 data-lang="fr">La percée : Flux de travail des schémas</h2>
+    
+    <div style="display: flex; align-items: center; gap: 30px; max-width: 1200px; margin: 40px 0;">
+      <div class="card card-white" style="flex: 1; text-align: center;">
+        <h3 data-lang="en">📋 Schemas In</h3>
+        <h3 data-lang="fr">📋 Schémas entrants</h3>
+        <p data-lang="en">Publish data schemas on internal network</p>
+        <p data-lang="fr">Publier les schémas de données sur le réseau interne</p>
+      </div>
+      <div style="font-size: 2rem; color: var(--accent-gold);">→</div>
+      <div class="card card-white" style="flex: 1; text-align: center;">
+        <h3 data-lang="en">🤖 AI Processing</h3>
+        <h3 data-lang="fr">🤖 Traitement IA</h3>
+        <p data-lang="en">Terry analyzes schemas and builds custom tools</p>
+        <p data-lang="fr">Terry analyse les schémas et construit des outils personnalisés</p>
+      </div>
+      <div style="font-size: 2rem; color: var(--accent-gold);">→</div>
+      <div class="card card-white" style="flex: 1; text-align: center;">
+        <h3 data-lang="en">🚀 Tools Out</h3>
+        <h3 data-lang="fr">🚀 Outils sortants</h3>
+        <p data-lang="en">Deploy compliant tools to your network</p>
+        <p data-lang="fr">Déployer des outils conformes sur votre réseau</p>
+      </div>
+    </div>
+    
+    <div class="card card-white" style="max-width: 800px;">
+      <h3 data-lang="en">Example: HICC Org Chart Tool</h3>
+      <h3 data-lang="fr">Exemple : Outil d'organigramme HICC</h3>
+      <p data-lang="en"><strong>Input:</strong> PeopleSoft HR schema (position hierarchy, reporting relationships)</p>
+      <p data-lang="fr"><strong>Entrée :</strong> Schéma RH PeopleSoft (hiérarchie des postes, relations hiérarchiques)</p>
+      <p data-lang="en"><strong>Output:</strong> Interactive bilingual org chart generator with WCAG 2.1 AA compliance</p>
+      <p data-lang="fr"><strong>Sortie :</strong> Générateur d'organigramme interactif bilingue conforme WCAG 2.1 AA</p>
+      <p data-lang="en"><strong>Timeline:</strong> 2-4 hours vs. 6-month procurement</p>
+      <p data-lang="fr"><strong>Délai :</strong> 2-4 heures vs 6 mois d'approvisionnement</p>
+    </div>
+  </div>
+
+  <!-- Slide 5: NemoClaw Foundation -->
+  <div class="slide slide-dark">
+    <h2 data-lang="en">The NemoClaw Foundation</h2>
+    <h2 data-lang="fr">La fondation NemoClaw</h2>
+    
+    <p class="subtitle" data-lang="en">NVIDIA just built the infrastructure layer (GTC 2026). CDR is the Canadian institutional layer on top.</p>
+    <p class="subtitle" data-lang="fr">NVIDIA vient de construire la couche d'infrastructure (GTC 2026). CDR est la couche institutionnelle canadienne par-dessus.</p>
+    
+    <div class="two-col" style="margin-top: 40px;">
+      <div>
+        <h3 data-lang="en">What NVIDIA Announced</h3>
+        <h3 data-lang="fr">Ce que NVIDIA a annoncé</h3>
+        <ul data-lang="en">
+          <li><strong>OpenShell:</strong> Hardware-enforced AI security (not just promises)</li>
+          <li><strong>Local models:</strong> Nemotron runs entirely on your hardware</li>
+          <li><strong>Privacy router:</strong> Sensitive data stays local, general reasoning can use cloud</li>
+          <li><strong>Enterprise stack:</strong> CrowdStrike, Cisco, Microsoft Security partnerships</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>OpenShell :</strong> Sécurité IA renforcée par le matériel (pas seulement des promesses)</li>
+          <li><strong>Modèles locaux :</strong> Nemotron fonctionne entièrement sur votre matériel</li>
+          <li><strong>Routeur de confidentialité :</strong> Les données sensibles restent locales, le raisonnement général peut utiliser le nuage</li>
+          <li><strong>Stack entreprise :</strong> Partenariats CrowdStrike, Cisco, Microsoft Security</li>
+        </ul>
+      </div>
+      <div>
+        <h3 data-lang="en">What CDR Adds</h3>
+        <h3 data-lang="fr">Ce que CDR ajoute</h3>
+        <ul data-lang="en">
+          <li><strong>Canadian compliance:</strong> ITSG-33, WCAG, OLA, PHIPA knowledge</li>
+          <li><strong>Schema workflow:</strong> The institutional intelligence layer</li>
+          <li><strong>Bootstrap protocol:</strong> How a "terry" learns your organization</li>
+          <li><strong>Railway network:</strong> Sovereign nodes sharing knowledge across Canada</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Conformité canadienne :</strong> Connaissance ITSG-33, WCAG, LLO, PHIPA</li>
+          <li><strong>Flux de travail des schémas :</strong> La couche d'intelligence institutionnelle</li>
+          <li><strong>Protocole d'amorçage :</strong> Comment un "terry" apprend votre organisation</li>
+          <li><strong>Réseau ferroviaire :</strong> Nœuds souverains partageant les connaissances à travers le Canada</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 40px; max-width: 900px;">
+      <p style="font-size: 1.2rem; font-style: italic;" data-lang="en">"Every company needs an OpenClaw strategy. Sovereign AI is the future of computing."</p>
+      <p style="font-size: 1.2rem; font-style: italic;" data-lang="fr">"Chaque entreprise a besoin d'une stratégie OpenClaw. L'IA souveraine est l'avenir de l'informatique."</p>
+      <p style="margin-top: 12px; opacity: 0.7;" data-lang="en">— Jensen Huang, NVIDIA GTC 2026 Keynote</p>
+      <p style="margin-top: 12px; opacity: 0.7;" data-lang="fr">— Jensen Huang, Conférence d'ouverture NVIDIA GTC 2026</p>
+    </div>
+  </div>
+
+  <!-- Slide 6: The Stack -->
+  <div class="slide slide-white">
+    <h2 data-lang="en">The Stack: Canadian Intelligence on Global Infrastructure</h2>
+    <h2 data-lang="fr">La pile : Intelligence canadienne sur infrastructure mondiale</h2>
+    
+    <div class="two-col">
+      <div class="stack-diagram">
+        <div class="stack-layer layer-canadian" data-lang="en">Canadian Intelligence Layer (CDR)<br><small>Compliance • Schemas • Bootstrap • Railway</small></div>
+        <div class="stack-layer layer-canadian" data-lang="fr">Couche d'intelligence canadienne (CDR)<br><small>Conformité • Schémas • Amorçage • Chemin de fer</small></div>
+        
+        <div class="stack-layer layer-runtime" data-lang="en">Runtime Layer (NemoClaw)<br><small>OpenShell • Nemotron • Privacy Router</small></div>
+        <div class="stack-layer layer-runtime" data-lang="fr">Couche d'exécution (NemoClaw)<br><small>OpenShell • Nemotron • Routeur de confidentialité</small></div>
+        
+        <div class="stack-layer layer-hardware" data-lang="en">Hardware Layer (DGX Spark)<br><small>$4,699 • 128GB RAM • 200B params • 1 PFLOP</small></div>
+        <div class="stack-layer layer-hardware" data-lang="fr">Couche matérielle (DGX Spark)<br><small>4 699 $ • 128 Go RAM • 200B paramètres • 1 PFLOP</small></div>
+      </div>
+      <div>
+        <h3 data-lang="en">Why This Matters</h3>
+        <h3 data-lang="fr">Pourquoi c'est important</h3>
+        <ul data-lang="en">
+          <li><strong>Own the intelligence:</strong> CDR layer is Canadian-developed and Canadian-owned IP</li>
+          <li><strong>Use the infrastructure:</strong> NemoClaw provides enterprise-grade security and model access</li>
+          <li><strong>Control the deployment:</strong> Hardware sits in your facility under your administrative control</li>
+          <li><strong>Meet the requirements:</strong> This stack satisfies Canada's Digital Sovereignty Framework</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Posséder l'intelligence :</strong> La couche CDR est une PI développée et détenue par le Canada</li>
+          <li><strong>Utiliser l'infrastructure :</strong> NemoClaw fournit une sécurité de niveau entreprise et un accès aux modèles</li>
+          <li><strong>Contrôler le déploiement :</strong> Le matériel se trouve dans vos installations sous votre contrôle administratif</li>
+          <li><strong>Répondre aux exigences :</strong> Cette pile satisfait le cadre de souveraineté numérique du Canada</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 7: Sovereignty Score -->
+  <div class="slide slide-blue">
+    <h2 data-lang="en">Sovereignty Score: Canada's Requirements vs. Reality</h2>
+    <h2 data-lang="fr">Score de souveraineté : Exigences du Canada vs réalité</h2>
+    
+    <div class="three-col" style="margin-top: 40px;">
+      <div class="card">
+        <h3 data-lang="en">NemoClaw Alone</h3>
+        <h3 data-lang="fr">NemoClaw seul</h3>
+        <div class="score-visual">
+          <div class="score-bar"><div class="score-fill score-60"></div></div>
+          <span class="stat-large">60%</span>
+        </div>
+        <ul style="font-size: 0.9rem;" data-lang="en">
+          <li>✅ Data sovereignty</li>
+          <li>✅ Technical controls</li>
+          <li>⚠️ Supply chain dependency</li>
+          <li>❌ No Canadian compliance intelligence</li>
+        </ul>
+        <ul style="font-size: 0.9rem;" data-lang="fr">
+          <li>✅ Souveraineté des données</li>
+          <li>✅ Contrôles techniques</li>
+          <li>⚠️ Dépendance de la chaîne d'approvisionnement</li>
+          <li>❌ Pas d'intelligence de conformité canadienne</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">NemoClaw + CDR</h3>
+        <h3 data-lang="fr">NemoClaw + CDR</h3>
+        <div class="score-visual">
+          <div class="score-bar"><div class="score-fill score-80"></div></div>
+          <span class="stat-large">80%</span>
+        </div>
+        <ul style="font-size: 0.9rem;" data-lang="en">
+          <li>✅ Data sovereignty</li>
+          <li>✅ Technical controls</li>
+          <li>✅ Canadian compliance intelligence</li>
+          <li>✅ Institutional knowledge layer</li>
+        </ul>
+        <ul style="font-size: 0.9rem;" data-lang="fr">
+          <li>✅ Souveraineté des données</li>
+          <li>✅ Contrôles techniques</li>
+          <li>✅ Intelligence de conformité canadienne</li>
+          <li>✅ Couche de connaissances institutionnelles</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">Policy Alignment</h3>
+        <h3 data-lang="fr">Alignement politique</h3>
+        <p style="font-size: 0.9rem;" data-lang="en">Maps directly to:</p>
+        <p style="font-size: 0.9rem;" data-lang="fr">Correspond directement à :</p>
+        <ul style="font-size: 0.8rem;" data-lang="en">
+          <li>TBS Digital Sovereignty Framework</li>
+          <li>ISED Sovereign AI Compute Strategy ($2B investment)</li>
+          <li>GC AI Strategy 2025-2027</li>
+        </ul>
+        <ul style="font-size: 0.8rem;" data-lang="fr">
+          <li>Cadre de souveraineté numérique SCT</li>
+          <li>Stratégie d'IA souveraine ISDE (investissement de 2G$)</li>
+          <li>Stratégie d'IA GC 2025-2027</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 8: How It Works -->
+  <div class="slide slide-warm">
+    <h2 data-lang="en">How It Works: Three Operating Modes</h2>
+    <h2 data-lang="fr">Comment ça fonctionne : Trois modes de fonctionnement</h2>
+    
+    <div class="mode-grid">
+      <div class="mode-card mode-1">
+        <h3 data-lang="en">Mode 1: Full Access</h3>
+        <h3 data-lang="fr">Mode 1 : Accès complet</h3>
+        <p data-lang="en">Terry can read all organizational data. For mature organizations with robust data governance.</p>
+        <p data-lang="fr">Terry peut lire toutes les données organisationnelles. Pour les organisations matures avec une gouvernance de données robuste.</p>
+      </div>
+      <div class="mode-card mode-2">
+        <h3 data-lang="en">Mode 2: Schema-Only</h3>
+        <h3 data-lang="fr">Mode 2 : Schémas seulement</h3>
+        <p data-lang="en">Terry sees only data schemas, never actual data. Perfect for sensitive environments like healthcare.</p>
+        <p data-lang="fr">Terry ne voit que les schémas de données, jamais les données réelles. Parfait pour les environnements sensibles comme les soins de santé.</p>
+      </div>
+      <div class="mode-card mode-3">
+        <h3 data-lang="en">Mode 3: Hybrid</h3>
+        <h3 data-lang="fr">Mode 3 : Hybride</h3>
+        <p data-lang="en">Terry accesses public data, schemas for sensitive data. Balanced approach for mixed environments.</p>
+        <p data-lang="fr">Terry accède aux données publiques, aux schémas pour les données sensibles. Approche équilibrée pour les environnements mixtes.</p>
+      </div>
+    </div>
+    
+    <div class="card card-white" style="margin-top: 40px; max-width: 900px;">
+      <h3 data-lang="en">OpenShell Hardware Enforcement</h3>
+      <h3 data-lang="fr">Application matérielle OpenShell</h3>
+      <p data-lang="en">Each mode maps to hardware-enforced policies. Terry cannot override these constraints even if compromised. The agent can't override its own guardrails.</p>
+      <p data-lang="fr">Chaque mode correspond à des politiques appliquées par le matériel. Terry ne peut pas contourner ces contraintes même si compromis. L'agent ne peut pas outrepasser ses propres garde-fous.</p>
+    </div>
+  </div>
+
+  <!-- Slide 9: Security Model -->
+  <div class="slide slide-dark">
+    <h2 data-lang="en">Security Model: Trust But Verify</h2>
+    <h2 data-lang="fr">Modèle de sécurité : Faire confiance mais vérifier</h2>
+    
+    <div class="two-col">
+      <div>
+        <h3 data-lang="en">Before: Behavioral Security</h3>
+        <h3 data-lang="fr">Avant : Sécurité comportementale</h3>
+        <ul data-lang="en">
+          <li>AI agent promises to follow rules</li>
+          <li>Security depends on instructions</li>
+          <li>Can be overridden if agent is compromised</li>
+          <li>Hard to audit, hard to verify</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>L'agent IA promet de suivre les règles</li>
+          <li>La sécurité dépend des instructions</li>
+          <li>Peut être contournée si l'agent est compromis</li>
+          <li>Difficile à auditer, difficile à vérifier</li>
+        </ul>
+        
+        <div class="card" style="margin-top: 20px; background: rgba(255,0,0,0.1);">
+          <p style="font-style: italic;" data-lang="en">"Please don't look at classified files"</p>
+          <p style="font-style: italic;" data-lang="fr">"S'il vous plaît, ne regardez pas les fichiers classifiés"</p>
+        </div>
+      </div>
+      <div>
+        <h3 data-lang="en">After: Hardware-Enforced</h3>
+        <h3 data-lang="fr">Après : Appliqué par le matériel</h3>
+        <ul data-lang="en">
+          <li>OpenShell blocks access at filesystem level</li>
+          <li>Out-of-process policy enforcement</li>
+          <li>Works even if agent is compromised</li>
+          <li>Full audit trail of all allow/deny decisions</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>OpenShell bloque l'accès au niveau du système de fichiers</li>
+          <li>Application de politique hors processus</li>
+          <li>Fonctionne même si l'agent est compromis</li>
+          <li>Piste d'audit complète de toutes les décisions autoriser/refuser</li>
+        </ul>
+        
+        <div class="card" style="margin-top: 20px; background: rgba(0,255,0,0.1);">
+          <p style="font-style: italic;" data-lang="en">🔒 Filesystem policy blocks access. No exceptions.</p>
+          <p style="font-style: italic;" data-lang="fr">🔒 La politique du système de fichiers bloque l'accès. Aucune exception.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 40px; max-width: 900px;">
+      <h3 data-lang="en">ITSG-33 AU Controls Mapping</h3>
+      <h3 data-lang="fr">Mappage des contrôles ITSG-33 AU</h3>
+      <p data-lang="en">OpenShell audit trail provides direct evidence for ITSG-33 Audit and Accountability controls. Changes the SA&A conversation from "trust the AI" to "here's the access log."</p>
+      <p data-lang="fr">La piste d'audit OpenShell fournit des preuves directes pour les contrôles d'audit et de responsabilité ITSG-33. Change la conversation SA&A de "faire confiance à l'IA" à "voici le journal d'accès."</p>
+    </div>
+  </div>
+
+  <!-- Slide 10: HICC Proof of Concept -->
+  <div class="slide slide-white">
+    <h2 data-lang="en">The HICC Proof of Concept</h2>
+    <h2 data-lang="fr">La preuve de concept HICC</h2>
+    
+    <div class="two-col">
+      <div>
+        <h3 data-lang="en">What We're Building</h3>
+        <h3 data-lang="fr">Ce que nous construisons</h3>
+        <div class="card card-white" style="border: 2px solid var(--accent-teal);">
+          <p style="font-size: 1.1rem; margin-bottom: 16px;" data-lang="en"><strong>Input:</strong> PeopleSoft HR schema from HICC</p>
+          <p style="font-size: 1.1rem; margin-bottom: 16px;" data-lang="fr"><strong>Entrée :</strong> Schéma RH PeopleSoft d'HICC</p>
+          <p style="font-size: 1.1rem; margin-bottom: 16px;" data-lang="en"><strong>Process:</strong> Terry analyzes schema and builds tool</p>
+          <p style="font-size: 1.1rem; margin-bottom: 16px;" data-lang="fr"><strong>Processus :</strong> Terry analyse le schéma et construit l'outil</p>
+          <p style="font-size: 1.1rem;" data-lang="en"><strong>Output:</strong> Interactive org chart generator in both official languages</p>
+          <p style="font-size: 1.1rem;" data-lang="fr"><strong>Sortie :</strong> Générateur d'organigramme interactif dans les deux langues officielles</p>
+        </div>
+        
+        <h3 data-lang="en" style="margin-top: 30px;">Timeline</h3>
+        <h3 data-lang="fr" style="margin-top: 30px;">Calendrier</h3>
+        <ul data-lang="en">
+          <li><strong>Weeks 1-3:</strong> Schema publication and security review</li>
+          <li><strong>Weeks 4-6:</strong> Terry builds and tests the tool</li>
+          <li><strong>Weeks 7-10:</strong> GC Code review and compliance verification</li>
+          <li><strong>Weeks 11-15:</strong> On-network deployment and user acceptance</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Semaines 1-3 :</strong> Publication du schéma et examen de sécurité</li>
+          <li><strong>Semaines 4-6 :</strong> Terry construit et teste l'outil</li>
+          <li><strong>Semaines 7-10 :</strong> Examen du code GC et vérification de conformité</li>
+          <li><strong>Semaines 11-15 :</strong> Déploiement sur réseau et acceptation utilisateur</li>
+        </ul>
+      </div>
+      <div>
+        <h3 data-lang="en">Success Metrics</h3>
+        <h3 data-lang="fr">Métriques de succès</h3>
+        <div class="card card-white" style="background: var(--bg-warm);">
+          <ul data-lang="en">
+            <li><strong>Speed:</strong> 8-15 weeks vs. 6-12 month procurement</li>
+            <li><strong>Compliance:</strong> 100% WCAG 2.1 AA, bilingual from day one</li>
+            <li><strong>Security:</strong> Zero unauthorized data access attempts (audit log evidence)</li>
+            <li><strong>Cost:</strong> <$5K hardware vs. $50K+ traditional development</li>
+            <li><strong>Reusability:</strong> Schema workflow applies to any GC department</li>
+          </ul>
+          <ul data-lang="fr">
+            <li><strong>Vitesse :</strong> 8-15 semaines vs 6-12 mois d'approvisionnement</li>
+            <li><strong>Conformité :</strong> 100% WCAG 2.1 AA, bilingue dès le premier jour</li>
+            <li><strong>Sécurité :</strong> Zéro tentative d'accès de données non autorisé (preuve du journal d'audit)</li>
+            <li><strong>Coût :</strong> <5K$ matériel vs 50K$+ développement traditionnel</li>
+            <li><strong>Réutilisabilité :</strong> Le flux de travail des schémas s'applique à tout ministère GC</li>
+          </ul>
+        </div>
+        
+        <h3 data-lang="en" style="margin-top: 30px;">What This Proves</h3>
+        <h3 data-lang="fr" style="margin-top: 30px;">Ce que cela prouve</h3>
+        <ul data-lang="en">
+          <li>The schema workflow is viable in production</li>
+          <li>Security model works for Protected B environments</li>
+          <li>CDR can scale across GC departments</li>
+          <li>ROI justifies broader deployment</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Le flux de travail des schémas est viable en production</li>
+          <li>Le modèle de sécurité fonctionne pour les environnements Protégé B</li>
+          <li>CDR peut s'étendre à travers les ministères GC</li>
+          <li>Le ROI justifie un déploiement plus large</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 11: Who It Serves -->
+  <div class="slide slide-blue">
+    <h2 data-lang="en">Who It Serves: The Canadian Institutional Ecosystem</h2>
+    <h2 data-lang="fr">Qui ça sert : L'écosystème institutionnel canadien</h2>
+    
+    <div class="three-col">
+      <div class="card">
+        <h3 data-lang="en">Government</h3>
+        <h3 data-lang="fr">Gouvernement</h3>
+        <ul data-lang="en">
+          <li><strong>Federal:</strong> All GC departments and agencies</li>
+          <li><strong>Provincial:</strong> Provincial governments and Crown corporations</li>
+          <li><strong>Municipal:</strong> Cities and regional governments</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Fédéral :</strong> Tous les ministères et agences GC</li>
+          <li><strong>Provincial :</strong> Gouvernements provinciaux et sociétés d'État</li>
+          <li><strong>Municipal :</strong> Villes et gouvernements régionaux</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">Public Sector</h3>
+        <h3 data-lang="fr">Secteur public</h3>
+        <ul data-lang="en">
+          <li><strong>Healthcare:</strong> Hospital networks, health authorities</li>
+          <li><strong>Education:</strong> Universities, colleges, school boards</li>
+          <li><strong>Crown Corporations:</strong> CBC, Canada Post, VIA Rail</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Soins de santé :</strong> Réseaux hospitaliers, autorités sanitaires</li>
+          <li><strong>Éducation :</strong> Universités, collèges, conseils scolaires</li>
+          <li><strong>Sociétés d'État :</strong> CBC, Postes Canada, VIA Rail</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">Private & Non-Profit</h3>
+        <h3 data-lang="fr">Privé et sans but lucratif</h3>
+        <ul data-lang="en">
+          <li><strong>Canadian businesses:</strong> With data sovereignty requirements</li>
+          <li><strong>Indigenous governments:</strong> First Nations, Métis, Inuit organizations</li>
+          <li><strong>Non-profits:</strong> Foundations, charities, associations</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Entreprises canadiennes :</strong> Avec exigences de souveraineté des données</li>
+          <li><strong>Gouvernements autochtones :</strong> Organisations Premières Nations, Métis, Inuit</li>
+          <li><strong>Sans but lucratif :</strong> Fondations, organismes de bienfaisance, associations</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 40px; max-width: 900px;">
+      <h3 data-lang="en">Common Requirements</h3>
+      <h3 data-lang="fr">Exigences communes</h3>
+      <p data-lang="en">All these organizations share the same needs: custom tools for their specific schemas, compliance with Canadian regulations, bilingual requirements, and data sovereignty. CDR provides a common platform that adapts to each organization's specific requirements.</p>
+      <p data-lang="fr">Toutes ces organisations partagent les mêmes besoins : des outils personnalisés pour leurs schémas spécifiques, la conformité aux réglementations canadiennes, les exigences bilingues et la souveraineté des données. CDR fournit une plateforme commune qui s'adapte aux exigences spécifiques de chaque organisation.</p>
+    </div>
+  </div>
+
+  <!-- Slide 12: Railway Network -->
+  <div class="slide slide-warm">
+    <h2 data-lang="en">The Railway Network: Knowledge Flows, Data Never Does</h2>
+    <h2 data-lang="fr">Le réseau ferroviaire : Le savoir circule, les données jamais</h2>
+    
+    <div style="text-align: center; margin: 40px 0;">
+      <div style="font-size: 8rem; margin-bottom: 20px;">🗺️</div>
+      <h3 data-lang="en">Map of Canada — Growing Network of Sovereign Nodes</h3>
+      <h3 data-lang="fr">Carte du Canada — Réseau croissant de nœuds souverains</h3>
+    </div>
+    
+    <div class="two-col">
+      <div>
+        <h3 data-lang="en">🚂 HQ: Wilma (Node 0)</h3>
+        <h3 data-lang="fr">🚂 QG : Wilma (Nœud 0)</h3>
+        <ul data-lang="en">
+          <li>Research and development hub</li>
+          <li>Compliance profile development</li>
+          <li>Bootstrap protocol maintenance</li>
+          <li>Network coordination</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Centre de recherche et développement</li>
+          <li>Développement des profils de conformité</li>
+          <li>Maintenance du protocole d'amorçage</li>
+          <li>Coordination du réseau</li>
+        </ul>
+        
+        <h3 data-lang="en" style="margin-top: 30px;">🏛️ Node 1: HICC (Proposed)</h3>
+        <h3 data-lang="fr" style="margin-top: 30px;">🏛️ Nœud 1 : HICC (Proposé)</h3>
+        <ul data-lang="en">
+          <li>First production deployment</li>
+          <li>PeopleSoft schema specialization</li>
+          <li>HR tool development focus</li>
+          <li>GC compliance validation</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Premier déploiement en production</li>
+          <li>Spécialisation du schéma PeopleSoft</li>
+          <li>Concentration sur le développement d'outils RH</li>
+          <li>Validation de conformité GC</li>
+        </ul>
+      </div>
+      <div>
+        <h3 data-lang="en">How Knowledge Sharing Works</h3>
+        <h3 data-lang="fr">Comment le partage de connaissances fonctionne</h3>
+        <div class="card card-white">
+          <ul data-lang="en">
+            <li><strong>Tool patterns</strong> are shared (how to build an org chart)</li>
+            <li><strong>Compliance templates</strong> are shared (WCAG implementation)</li>
+            <li><strong>Bootstrap improvements</strong> are shared (better security practices)</li>
+            <li><strong>Data never leaves</strong> each organization's node</li>
+          </ul>
+          <ul data-lang="fr">
+            <li><strong>Les modèles d'outils</strong> sont partagés (comment construire un organigramme)</li>
+            <li><strong>Les modèles de conformité</strong> sont partagés (implémentation WCAG)</li>
+            <li><strong>Les améliorations d'amorçage</strong> sont partagées (meilleures pratiques de sécurité)</li>
+            <li><strong>Les données ne quittent jamais</strong> le nœud de chaque organisation</li>
+          </ul>
+        </div>
+        
+        <h3 data-lang="en" style="margin-top: 30px;">Network Effects</h3>
+        <h3 data-lang="fr" style="margin-top: 30px;">Effets de réseau</h3>
+        <ul data-lang="en">
+          <li>Each new node makes all nodes smarter</li>
+          <li>Common problems solved once, applied everywhere</li>
+          <li>Canadian institutional knowledge accumulates</li>
+          <li>Network becomes more valuable over time</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>Chaque nouveau nœud rend tous les nœuds plus intelligents</li>
+          <li>Problèmes communs résolus une fois, appliqués partout</li>
+          <li>Les connaissances institutionnelles canadiennes s'accumulent</li>
+          <li>Le réseau devient plus précieux au fil du temps</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 13: ACCORD Connection -->
+  <div class="slide slide-dark">
+    <h2 data-lang="en">The ACCORD Connection</h2>
+    <h2 data-lang="fr">La connexion ACCORD</h2>
+    
+    <p class="subtitle" data-lang="en">Parallel project for collective agreements. Same pattern, different domain.</p>
+    <p class="subtitle" data-lang="fr">Projet parallèle pour les conventions collectives. Même modèle, domaine différent.</p>
+    
+    <div class="two-col" style="margin-top: 40px;">
+      <div class="card">
+        <h3 data-lang="en">🏛️ CDR (Institutional Tools)</h3>
+        <h3 data-lang="fr">🏛️ CDR (Outils institutionnels)</h3>
+        <ul data-lang="en">
+          <li><strong>Input:</strong> Organizational schemas (PeopleSoft, SAP)</li>
+          <li><strong>Output:</strong> Dashboards, org charts, finance tools</li>
+          <li><strong>Users:</strong> Department managers, executives, analysts</li>
+          <li><strong>Focus:</strong> Operational efficiency and compliance</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Entrée :</strong> Schémas organisationnels (PeopleSoft, SAP)</li>
+          <li><strong>Sortie :</strong> Tableaux de bord, organigrammes, outils financiers</li>
+          <li><strong>Utilisateurs :</strong> Gestionnaires de ministères, cadres, analystes</li>
+          <li><strong>Focus :</strong> Efficacité opérationnelle et conformité</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">🤝 ACCORD (Labour Relations)</h3>
+        <h3 data-lang="fr">🤝 ACCORD (Relations de travail)</h3>
+        <ul data-lang="en">
+          <li><strong>Input:</strong> Collective agreements, pay scales, union contracts</li>
+          <li><strong>Output:</strong> Pay calculators, grievance tools, contract analyzers</li>
+          <li><strong>Users:</strong> Union representatives, labour relations officers</li>
+          <li><strong>Focus:</strong> Worker rights and collective agreement enforcement</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Entrée :</strong> Conventions collectives, échelles salariales, contrats syndicaux</li>
+          <li><strong>Sortie :</strong> Calculateurs de paie, outils de griefs, analyseurs de contrats</li>
+          <li><strong>Utilisateurs :</strong> Représentants syndicaux, agents de relations de travail</li>
+          <li><strong>Focus :</strong> Droits des travailleurs et application des conventions collectives</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 40px; max-width: 900px;">
+      <h3 data-lang="en">Shared Technical Foundation</h3>
+      <h3 data-lang="fr">Fondation technique partagée</h3>
+      <p data-lang="en">Both projects use the same underlying technology: NemoClaw runtime, OpenShell security, sovereign AI agents, and schema-to-tool workflow. CDR focuses on institutional efficiency, ACCORD focuses on labour rights. Together, they demonstrate the versatility of the Canadian Digital Railway approach.</p>
+      <p data-lang="fr">Les deux projets utilisent la même technologie sous-jacente : exécution NemoClaw, sécurité OpenShell, agents IA souverains et flux de travail schéma-vers-outil. CDR se concentre sur l'efficacité institutionnelle, ACCORD sur les droits du travail. Ensemble, ils démontrent la polyvalence de l'approche du Chemin de fer numérique canadien.</p>
+    </div>
+  </div>
+
+  <!-- Slide 14: Roadmap -->
+  <div class="slide slide-white">
+    <h2 data-lang="en">The Roadmap: Four-Phase National Deployment</h2>
+    <h2 data-lang="fr">La feuille de route : Déploiement national en quatre phases</h2>
+    
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-phase" data-lang="en">Phase 1</div>
+        <div class="timeline-phase" data-lang="fr">Phase 1</div>
+        <h3 data-lang="en">HICC PoC</h3>
+        <h3 data-lang="fr">PoC HICC</h3>
+        <ul data-lang="en">
+          <li>Q2 2026</li>
+          <li>Single node deployment</li>
+          <li>PeopleSoft schema focus</li>
+          <li>Prove the concept</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>T2 2026</li>
+          <li>Déploiement d'un seul nœud</li>
+          <li>Focus schéma PeopleSoft</li>
+          <li>Prouver le concept</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-phase" data-lang="en">Phase 2</div>
+        <div class="timeline-phase" data-lang="fr">Phase 2</div>
+        <h3 data-lang="en">GC Expansion</h3>
+        <h3 data-lang="fr">Expansion GC</h3>
+        <ul data-lang="en">
+          <li>Q3-Q4 2026</li>
+          <li>5-10 GC departments</li>
+          <li>Multiple schema types</li>
+          <li>Network effects begin</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>T3-T4 2026</li>
+          <li>5-10 ministères GC</li>
+          <li>Types de schémas multiples</li>
+          <li>Début des effets de réseau</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-phase" data-lang="en">Phase 3</div>
+        <div class="timeline-phase" data-lang="fr">Phase 3</div>
+        <h3 data-lang="en">Provincial/Municipal</h3>
+        <h3 data-lang="fr">Provincial/Municipal</h3>
+        <ul data-lang="en">
+          <li>2027</li>
+          <li>Provincial governments</li>
+          <li>Major municipalities</li>
+          <li>Health authorities</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>2027</li>
+          <li>Gouvernements provinciaux</li>
+          <li>Municipalités majeures</li>
+          <li>Autorités sanitaires</li>
+        </ul>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-phase" data-lang="en">Phase 4</div>
+        <div class="timeline-phase" data-lang="fr">Phase 4</div>
+        <h3 data-lang="en">National Network</h3>
+        <h3 data-lang="fr">Réseau national</h3>
+        <ul data-lang="en">
+          <li>2028+</li>
+          <li>Complete ecosystem</li>
+          <li>Private sector adoption</li>
+          <li>International partnerships</li>
+        </ul>
+        <ul data-lang="fr">
+          <li>2028+</li>
+          <li>Écosystème complet</li>
+          <li>Adoption du secteur privé</li>
+          <li>Partenariats internationaux</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="two-col" style="margin-top: 40px;">
+      <div>
+        <h3 data-lang="en">Key Milestones</h3>
+        <h3 data-lang="fr">Jalons clés</h3>
+        <ul data-lang="en">
+          <li><strong>2026 Q2:</strong> HICC PoC completion and evaluation</li>
+          <li><strong>2026 Q3:</strong> First inter-departmental knowledge sharing</li>
+          <li><strong>2026 Q4:</strong> 10+ nodes operational within GC</li>
+          <li><strong>2027 Q2:</strong> First provincial government deployment</li>
+          <li><strong>2028:</strong> 100+ nodes across Canadian institutions</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>2026 T2 :</strong> Achèvement et évaluation PoC HICC</li>
+          <li><strong>2026 T3 :</strong> Premier partage de connaissances inter-ministériel</li>
+          <li><strong>2026 T4 :</strong> 10+ nœuds opérationnels au sein du GC</li>
+          <li><strong>2027 T2 :</strong> Premier déploiement gouvernement provincial</li>
+          <li><strong>2028 :</strong> 100+ nœuds à travers les institutions canadiennes</li>
+        </ul>
+      </div>
+      <div>
+        <h3 data-lang="en">Success Metrics by Phase</h3>
+        <h3 data-lang="fr">Métriques de succès par phase</h3>
+        <ul data-lang="en">
+          <li><strong>Phase 1:</strong> Technical viability demonstrated</li>
+          <li><strong>Phase 2:</strong> Cost savings quantified (vs. traditional procurement)</li>
+          <li><strong>Phase 3:</strong> Knowledge sharing creating value</li>
+          <li><strong>Phase 4:</strong> Self-sustaining network with private sector participation</li>
+        </ul>
+        <ul data-lang="fr">
+          <li><strong>Phase 1 :</strong> Viabilité technique démontrée</li>
+          <li><strong>Phase 2 :</strong> Économies de coûts quantifiées (vs approvisionnement traditionnel)</li>
+          <li><strong>Phase 3 :</strong> Partage de connaissances créant de la valeur</li>
+          <li><strong>Phase 4 :</strong> Réseau auto-suffisant avec participation du secteur privé</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 15: The Ask -->
+  <div class="slide slide-cover">
+    <div class="gc-bar"></div>
+    <h2 data-lang="en">The Ask: What We Need to Proceed</h2>
+    <h2 data-lang="fr">La demande : Ce dont nous avons besoin pour procéder</h2>
+    
+    <div class="three-col" style="margin-top: 40px;">
+      <div class="card">
+        <h3 data-lang="en">1. Schema Publication Approval</h3>
+        <h3 data-lang="fr">1. Approbation de publication de schéma</h3>
+        <p data-lang="en">HICC authorization to publish PeopleSoft HR schema (metadata only) for the proof of concept.</p>
+        <p data-lang="fr">Autorisation HICC de publier le schéma RH PeopleSoft (métadonnées seulement) pour la preuve de concept.</p>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">2. Pilot Partnership</h3>
+        <h3 data-lang="fr">2. Partenariat pilote</h3>
+        <p data-lang="en">Formal partnership agreement with HICC for the 8-15 week proof of concept deployment.</p>
+        <p data-lang="fr">Accord de partenariat formel avec HICC pour le déploiement de preuve de concept de 8-15 semaines.</p>
+      </div>
+      <div class="card">
+        <h3 data-lang="en">3. Funding Alignment</h3>
+        <h3 data-lang="fr">3. Alignement du financement</h3>
+        <p data-lang="en">Connection to ISED's $2B Sovereign AI Compute Strategy and existing GC AI initiatives.</p>
+        <p data-lang="fr">Connexion à la stratégie d'IA souveraine de 2G$ d'ISDE et aux initiatives d'IA GC existantes.</p>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 40px; max-width: 900px;">
+      <h3 data-lang="en">Why Now?</h3>
+      <h3 data-lang="fr">Pourquoi maintenant ?</h3>
+      <ul data-lang="en">
+        <li><strong>NVIDIA just validated the technical approach</strong> at GTC 2026</li>
+        <li><strong>Canada's Digital Sovereignty Framework</strong> demands exactly these capabilities</li>
+        <li><strong>GC departments have immediate needs</strong> for custom tool development</li>
+        <li><strong>The infrastructure is ready</strong> — NemoClaw eliminates the biggest technical risks</li>
+        <li><strong>First mover advantage</strong> — be the first country with institutional sovereign AI</li>
+      </ul>
+      <ul data-lang="fr">
+        <li><strong>NVIDIA vient de valider l'approche technique</strong> au GTC 2026</li>
+        <li><strong>Le cadre de souveraineté numérique du Canada</strong> demande exactement ces capacités</li>
+        <li><strong>Les ministères GC ont des besoins immédiats</strong> pour le développement d'outils personnalisés</li>
+        <li><strong>L'infrastructure est prête</strong> — NemoClaw élimine les plus gros risques techniques</li>
+        <li><strong>Avantage du premier acteur</strong> — être le premier pays avec l'IA souveraine institutionnelle</li>
+      </ul>
+    </div>
+    
+    <div style="margin-top: 40px; text-align: center;">
+      <h1 style="color: var(--accent-gold);" data-lang="en">The Canadian Digital Railway 🚂</h1>
+      <h1 style="color: var(--accent-gold);" data-lang="fr">Le Chemin de fer numérique canadien 🚂</h1>
+      <p class="subtitle" data-lang="en">Building sovereign AI for Canadian institutions — one schema at a time</p>
+      <p class="subtitle" data-lang="fr">Construire l'IA souveraine pour les institutions canadiennes — un schéma à la fois</p>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-controls">
+  <button class="nav-btn" onclick="previousSlide()">‹</button>
+  <button class="nav-btn" onclick="nextSlide()">›</button>
+</div>
+
+<div class="slide-counter">
+  <span id="current-slide">1</span> / <span id="total-slides">15</span>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+document.getElementById('total-slides').textContent = totalSlides;
+
+function showSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  slides[currentSlide].classList.add('exit');
+  
+  setTimeout(() => {
+    slides[currentSlide].classList.remove('exit');
+  }, 500);
+  
+  currentSlide = (n + totalSlides) % totalSlides;
+  slides[currentSlide].classList.add('active');
+  
+  document.getElementById('current-slide').textContent = currentSlide + 1;
+}
+
+function nextSlide() {
+  showSlide(currentSlide + 1);
+}
+
+function previousSlide() {
+  showSlide(currentSlide - 1);
+}
+
+// Language toggle
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    if (btn.dataset.target === 'fr') {
+      document.body.classList.add('lang-fr');
+    } else {
+      document.body.classList.remove('lang-fr');
+    }
+  });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') {
+    e.preventDefault();
+    nextSlide();
+  } else if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    previousSlide();
+  }
+});
+</script>
+
+</body>
+</html>
