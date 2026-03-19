@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 390px;
+    min-height: 700px;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: white;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  .bg {
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 400px 300px at 50% 30%, rgba(65, 105, 225, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse 300px 200px at 80% 70%, rgba(138, 43, 226, 0.08) 0%, transparent 50%),
+      linear-gradient(135deg, #0a1628 0%, #0d1a35 25%, #101540 50%, #13104a 75%, #0d0a28 100%);
+    z-index: 0;
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    padding: 24px 20px;
+  }
+
+  /* === CONCEPT C: "Confidence Ring" === */
+
+  .glass-card {
+    background: rgba(135, 155, 195, 0.09);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 0.8px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    overflow: visible;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(255, 255, 255, 0.05) inset;
+    position: relative;
+  }
+
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    pointer-events: none;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .card-header {
+    padding: 16px 20px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .card-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+  }
+
+  /* Ride chips - horizontal scroll feel */
+  .ride-chips {
+    padding: 14px 20px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+
+  .chip.active {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .chip .bene-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .chip .x {
+    font-size: 10px;
+    opacity: 0.4;
+    cursor: pointer;
+  }
+
+  .chip.add {
+    background: none;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* === THE CONFIDENCE RING === */
+  .ring-section {
+    padding: 20px 20px 16px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .ring-container {
+    width: 120px;
+    height: 120px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .ring-svg {
+    width: 120px;
+    height: 120px;
+    transform: rotate(-90deg);
+  }
+
+  .ring-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.06);
+    stroke-width: 6;
+  }
+
+  .ring-progress {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 62;
+    animation: ringDraw 2s ease-out;
+    filter: drop-shadow(0 0 8px rgba(74, 200, 164, 0.4));
+  }
+
+  @keyframes ringDraw {
+    0% { stroke-dashoffset: 283; }
+    100% { stroke-dashoffset: 62; }
+  }
+
+  .ring-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ring-pct {
+    font-size: 28px;
+    font-weight: 200;
+    letter-spacing: -1px;
+    color: white;
+    line-height: 1;
+  }
+
+  .ring-pct-sign {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .ring-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(74, 200, 164, 0.7);
+    margin-top: 4px;
+  }
+
+  /* Right side: recommendation */
+  .ring-rec {
+    flex: 1;
+  }
+
+  .ring-rec-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.3);
+    margin-bottom: 6px;
+  }
+
+  .ring-rec-name {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: white;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .ring-rec-stats {
+    display: flex;
+    gap: 16px;
+  }
+
+  .ring-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ring-stat-val {
+    font-size: 18px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ring-stat-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.35);
+    margin-top: 1px;
+  }
+
+  /* Gain breakdown - mini chart */
+  .gain-strip {
+    margin: 0 20px;
+    padding: 14px 0;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    gap: 4px;
+    align-items: flex-end;
+    height: 48px;
+  }
+
+  .gain-bar {
+    flex: 1;
+    border-radius: 2px 2px 0 0;
+    min-height: 2px;
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .gain-bar.positive {
+    background: rgba(74, 200, 164, 0.5);
+  }
+
+  .gain-bar.negative {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .gain-bar.optimal {
+    background: rgba(74, 200, 164, 0.9);
+    box-shadow: 0 0 8px rgba(74, 200, 164, 0.3);
+  }
+
+  .gain-bar-label {
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.3);
+    white-space: nowrap;
+  }
+
+  .gain-bar.optimal .gain-bar-label {
+    color: rgba(74, 200, 164, 0.8);
+    font-weight: 700;
+  }
+
+  /* Gain legend */
+  .gain-legend {
+    margin: 18px 20px 0;
+    padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.3px;
+  }
+
+  /* Action */
+  .action-section {
+    padding: 16px 20px 20px;
+  }
+
+  .done-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(135deg, rgba(74, 144, 164, 0.9) 0%, rgba(74, 144, 164, 1) 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(74, 144, 164, 0.3);
+    letter-spacing: 0.3px;
+    transition: all 0.3s;
+  }
+
+  .concept-label {
+    position: fixed;
+    top: 12px; left: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="concept-label">Concept C — Confidence Ring</div>
+
+<div class="content">
+  <div class="glass-card">
+    <div class="card-header">
+      <span class="card-title">🎢 My Must-Dos</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(74,200,164,0.6);">● LIVE</span>
+    </div>
+
+    <!-- Ride Chips -->
+    <div class="ride-chips">
+      <div class="chip active">
+        <span class="bene-dot" style="background:#5A96EA;"></span>
+        Space Mountain
+        <span class="x">×</span>
+      </div>
+      <div class="chip active">
+        <span class="bene-dot" style="background:#C1DDFC;"></span>
+        Seven Dwarfs
+        <span class="x">×</span>
+      </div>
+      <div class="chip active">
+        <span class="bene-dot" style="background:#FFB1C9;"></span>
+        Big Thunder
+        <span class="x">×</span>
+      </div>
+      <div class="chip add">+ Add</div>
+    </div>
+
+    <!-- Confidence Ring + Recommendation -->
+    <div class="ring-section">
+      <div class="ring-container">
+        <svg class="ring-svg" viewBox="0 0 100 100">
+          <circle class="ring-bg" cx="50" cy="50" r="45"/>
+          <circle class="ring-progress" cx="50" cy="50" r="45" 
+            stroke="url(#ringGrad)"/>
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:rgba(74,144,164,0.8)"/>
+              <stop offset="100%" style="stop-color:rgba(74,200,164,1)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-pct">78<span class="ring-pct-sign">%</span></div>
+          <div class="ring-label">Confidence</div>
+        </div>
+      </div>
+
+      <div class="ring-rec">
+        <div class="ring-rec-eyebrow">Ride now</div>
+        <div class="ring-rec-name">Seven Dwarfs Mine Train</div>
+        <div class="ring-rec-stats">
+          <div class="ring-stat">
+            <div class="ring-stat-val" style="color:#9BC4F2;">25</div>
+            <div class="ring-stat-label">Min wait</div>
+          </div>
+          <div class="ring-stat">
+            <div class="ring-stat-val" style="color:rgba(74,200,164,0.9);">+18</div>
+            <div class="ring-stat-label">Min saved</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gain breakdown bars -->
+    <div class="gain-strip">
+      <div class="gain-bar optimal" style="height: 85%;">
+        <div class="gain-bar-label">7 Dwarfs</div>
+      </div>
+      <div class="gain-bar positive" style="height: 35%;">
+        <div class="gain-bar-label">Space</div>
+      </div>
+      <div class="gain-bar negative" style="height: 15%;">
+        <div class="gain-bar-label">Thunder</div>
+      </div>
+    </div>
+    <div class="gain-legend">
+      <span>gain function output</span>
+      <span>↑ ride now · ↓ wait</span>
+    </div>
+
+    <!-- Action -->
+    <div class="action-section">
+      <button class="done-btn">Rode it ✓</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Animate the ring progress slightly
+  const ring = document.querySelector('.ring-progress');
+  let offset = 283;
+  const target = 62; // 78% = (283 - 62) / 283
+  
+  // Already handled by CSS animation, but add a subtle pulse
+  setInterval(() => {
+    const currentOffset = parseFloat(ring.style.strokeDashoffset || 62);
+    const jitter = Math.sin(Date.now() * 0.002) * 2;
+    ring.style.strokeDashoffset = (62 + jitter) + '';
+  }, 50);
+</script>
+</body>
+</html>
