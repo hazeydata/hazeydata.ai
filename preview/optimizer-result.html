@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Must-Dos — The Optimizer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a1628;
+    color: #e2e8f0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+
+  .phone-frame {
+    width: 390px;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #0a1628;
+    padding-bottom: 40px;
+  }
+
+  /* Section header */
+  .section-header {
+    padding: 24px 20px 0;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(74, 144, 164, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .section-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(226, 232, 240, 0.35);
+  }
+
+  /* Optimization summary card */
+  .opt-summary {
+    margin: 16px 20px 0;
+    background: rgba(74, 144, 164, 0.06);
+    border: 1px solid rgba(74, 144, 164, 0.12);
+    border-radius: 14px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .opt-summary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(74, 144, 164, 0.3), transparent);
+  }
+
+  .opt-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .opt-metric {
+    text-align: center;
+    flex: 1;
+  }
+
+  .opt-metric-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: #4a90a4;
+    line-height: 1;
+  }
+
+  .opt-metric-value .unit {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(74, 144, 164, 0.6);
+  }
+
+  .opt-metric-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(226, 232, 240, 0.35);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .opt-divider {
+    width: 1px;
+    height: 32px;
+    background: rgba(74, 144, 164, 0.12);
+  }
+
+  /* Optimization progress bar */
+  .opt-bar-wrap {
+    position: relative;
+  }
+
+  .opt-bar-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .opt-bar-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(226, 232, 240, 0.3);
+  }
+
+  .opt-bar-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4a90a4;
+  }
+
+  .opt-bar {
+    height: 4px;
+    background: rgba(74, 144, 164, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .opt-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #4a90a4, #6bb8cc);
+    border-radius: 2px;
+    transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 0 8px rgba(74, 144, 164, 0.3);
+  }
+
+  /* Ride cards */
+  .ride-cards {
+    padding: 16px 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ride-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(74, 144, 164, 0.08);
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: grab;
+    touch-action: pan-y;
+  }
+
+  .ride-card:active {
+    cursor: grabbing;
+  }
+
+  /* Swipe reveal layers */
+  .swipe-reveal {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .swipe-reveal.left {
+    left: 0;
+    background: linear-gradient(90deg, rgba(166, 0, 56, 0.15), transparent);
+    border-radius: 16px 0 0 16px;
+  }
+
+  .swipe-reveal.right {
+    right: 0;
+    background: linear-gradient(-90deg, rgba(74, 144, 164, 0.15), transparent);
+    border-radius: 0 16px 16px 0;
+  }
+
+  .ride-card:hover .swipe-reveal { opacity: 0.6; }
+
+  /* Card content */
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .card-rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(74, 144, 164, 0.1);
+    border: 1px solid rgba(74, 144, 164, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #4a90a4;
+    flex-shrink: 0;
+  }
+
+  .card-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-ride-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  .card-ride-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(226, 232, 240, 0.3);
+    margin-top: 2px;
+  }
+
+  .card-timing {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .card-best-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: #e2e8f0;
+    line-height: 1;
+  }
+
+  .card-best-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: rgba(226, 232, 240, 0.3);
+    margin-top: 3px;
+    text-transform: uppercase;
+  }
+
+  /* Wait comparison row */
+  .card-stats {
+    display: flex;
+    gap: 0;
+    background: rgba(10, 22, 40, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(74, 144, 164, 0.06);
+  }
+
+  .card-stat {
+    flex: 1;
+    padding: 8px 12px;
+    text-align: center;
+    position: relative;
+  }
+
+  .card-stat + .card-stat {
+    border-left: 1px solid rgba(74, 144, 164, 0.06);
+  }
+
+  .card-stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .card-stat-value .unit {
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .stat-expected .card-stat-value { color: #4a90a4; }
+  .stat-average .card-stat-value { color: rgba(226, 232, 240, 0.4); }
+  .stat-saved .card-stat-value { color: #4ade80; }
+
+  .card-stat-label {
+    font-size: 9px;
+    font-weight: 500;
+    color: rgba(226, 232, 240, 0.25);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  /* Swipe hint */
+  .swipe-hint {
+    margin: 20px 20px 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .swipe-hint-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: rgba(226, 232, 240, 0.2);
+  }
+
+  .swipe-hint-arrow {
+    font-size: 13px;
+  }
+
+  .hint-remove { color: rgba(166, 0, 56, 0.4); }
+  .hint-done { color: rgba(74, 144, 164, 0.4); }
+
+  .swipe-hint-divider {
+    width: 1px;
+    height: 12px;
+    background: rgba(226, 232, 240, 0.08);
+  }
+
+  /* Add more button */
+  .add-more {
+    margin: 16px 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+    border: 1px dashed rgba(74, 144, 164, 0.15);
+    border-radius: 14px;
+    color: rgba(74, 144, 164, 0.4);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .add-more:hover {
+    border-color: rgba(74, 144, 164, 0.3);
+    color: rgba(74, 144, 164, 0.6);
+    background: rgba(74, 144, 164, 0.04);
+  }
+
+  .add-more-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(74, 144, 164, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  /* Entry animations */
+  @keyframes cardSlideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .ride-card:nth-child(1) { animation: cardSlideIn 0.4s ease 0.1s backwards; }
+  .ride-card:nth-child(2) { animation: cardSlideIn 0.4s ease 0.2s backwards; }
+  .ride-card:nth-child(3) { animation: cardSlideIn 0.4s ease 0.3s backwards; }
+  .ride-card:nth-child(4) { animation: cardSlideIn 0.4s ease 0.4s backwards; }
+
+  @keyframes barFill {
+    from { width: 0%; }
+  }
+
+  /* Computing overlay */
+  .computing-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10, 22, 40, 0.95);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .computing-overlay.hide {
+    animation: fadeOut 0.5s ease forwards;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+  .computing-spinner {
+    width: 48px;
+    height: 48px;
+    position: relative;
+  }
+
+  .spinner-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: #4a90a4;
+    animation: spin 1s linear infinite;
+  }
+
+  .spinner-ring:nth-child(2) {
+    inset: 6px;
+    border-top-color: rgba(74, 144, 164, 0.4);
+    animation-duration: 0.8s;
+    animation-direction: reverse;
+  }
+
+  .spinner-ring:nth-child(3) {
+    inset: 12px;
+    border-top-color: rgba(74, 144, 164, 0.2);
+    animation-duration: 1.2s;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .computing-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #4a90a4;
+    font-weight: 500;
+  }
+
+  .computing-detail {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(226, 232, 240, 0.25);
+    text-align: center;
+    line-height: 1.6;
+    max-width: 260px;
+  }
+
+  .computing-step {
+    opacity: 0;
+    animation: stepFadeIn 0.4s ease forwards;
+  }
+
+  @keyframes stepFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Computing overlay - shows briefly before results -->
+<div class="computing-overlay" id="computingOverlay">
+  <div class="computing-spinner">
+    <div class="spinner-ring"></div>
+    <div class="spinner-ring"></div>
+    <div class="spinner-ring"></div>
+  </div>
+  <div class="computing-text" id="computingText">Optimizing...</div>
+  <div class="computing-detail" id="computingSteps">
+    <div class="computing-step" id="step1" style="animation-delay: 0.3s;">Analyzing crowd patterns</div>
+    <div class="computing-step" id="step2" style="animation-delay: 1.0s;">Calculating optimal windows</div>
+    <div class="computing-step" id="step3" style="animation-delay: 1.7s;">Minimizing total wait time</div>
+  </div>
+</div>
+
+<div class="phone-frame" id="mainContent" style="opacity: 0;">
+
+  <!-- Header -->
+  <div class="section-header">
+    <div class="section-label">✦ Merlin</div>
+    <div class="section-title">My Must-Dos</div>
+    <div class="section-subtitle">Optimized plan · Magic Kingdom</div>
+  </div>
+
+  <!-- Optimization Summary -->
+  <div class="opt-summary">
+    <div class="opt-row">
+      <div class="opt-metric">
+        <div class="opt-metric-value">47 <span class="unit">min</span></div>
+        <div class="opt-metric-label">Time Saved</div>
+      </div>
+      <div class="opt-divider"></div>
+      <div class="opt-metric">
+        <div class="opt-metric-value">4</div>
+        <div class="opt-metric-label">Rides Planned</div>
+      </div>
+      <div class="opt-divider"></div>
+      <div class="opt-metric">
+        <div class="opt-metric-value">2:10</div>
+        <div class="opt-metric-label">Est. Total</div>
+      </div>
+    </div>
+    <div class="opt-bar-wrap">
+      <div class="opt-bar-label">
+        <span class="opt-bar-text">Plan efficiency</span>
+        <span class="opt-bar-pct">87%</span>
+      </div>
+      <div class="opt-bar">
+        <div class="opt-bar-fill" id="optBarFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ride Cards -->
+  <div class="ride-cards">
+
+    <!-- Card 1 -->
+    <div class="ride-card">
+      <div class="swipe-reveal left">✕</div>
+      <div class="swipe-reveal right">✓</div>
+      <div class="card-top">
+        <div class="card-rank">1</div>
+        <div class="card-info">
+          <div class="card-ride-name">Seven Dwarfs Mine Train</div>
+          <div class="card-ride-meta">Roller coaster · Fantasyland</div>
+        </div>
+        <div class="card-timing">
+          <div class="card-best-time">9:15a</div>
+          <div class="card-best-label">Best time</div>
+        </div>
+      </div>
+      <div class="card-stats">
+        <div class="card-stat stat-expected">
+          <div class="card-stat-value">18 <span class="unit">min</span></div>
+          <div class="card-stat-label">Expected Wait</div>
+        </div>
+        <div class="card-stat stat-average">
+          <div class="card-stat-value">55 <span class="unit">min</span></div>
+          <div class="card-stat-label">Park Average</div>
+        </div>
+        <div class="card-stat stat-saved">
+          <div class="card-stat-value">−37 <span class="unit">min</span></div>
+          <div class="card-stat-label">You Save</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="ride-card">
+      <div class="swipe-reveal left">✕</div>
+      <div class="swipe-reveal right">✓</div>
+      <div class="card-top">
+        <div class="card-rank">2</div>
+        <div class="card-info">
+          <div class="card-ride-name">Space Mountain</div>
+          <div class="card-ride-meta">Roller coaster · Tomorrowland</div>
+        </div>
+        <div class="card-timing">
+          <div class="card-best-time">10:40a</div>
+          <div class="card-best-label">Best time</div>
+        </div>
+      </div>
+      <div class="card-stats">
+        <div class="card-stat stat-expected">
+          <div class="card-stat-value">25 <span class="unit">min</span></div>
+          <div class="card-stat-label">Expected Wait</div>
+        </div>
+        <div class="card-stat stat-average">
+          <div class="card-stat-value">40 <span class="unit">min</span></div>
+          <div class="card-stat-label">Park Average</div>
+        </div>
+        <div class="card-stat stat-saved">
+          <div class="card-stat-value">−15 <span class="unit">min</span></div>
+          <div class="card-stat-label">You Save</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="ride-card">
+      <div class="swipe-reveal left">✕</div>
+      <div class="swipe-reveal right">✓</div>
+      <div class="card-top">
+        <div class="card-rank">3</div>
+        <div class="card-info">
+          <div class="card-ride-name">Pirates of the Caribbean</div>
+          <div class="card-ride-meta">Boat ride · Adventureland</div>
+        </div>
+        <div class="card-timing">
+          <div class="card-best-time">12:05p</div>
+          <div class="card-best-label">Best time</div>
+        </div>
+      </div>
+      <div class="card-stats">
+        <div class="card-stat stat-expected">
+          <div class="card-stat-value">12 <span class="unit">min</span></div>
+          <div class="card-stat-label">Expected Wait</div>
+        </div>
+        <div class="card-stat stat-average">
+          <div class="card-stat-value">25 <span class="unit">min</span></div>
+          <div class="card-stat-label">Park Average</div>
+        </div>
+        <div class="card-stat stat-saved">
+          <div class="card-stat-value">−13 <span class="unit">min</span></div>
+          <div class="card-stat-label">You Save</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="ride-card">
+      <div class="swipe-reveal left">✕</div>
+      <div class="swipe-reveal right">✓</div>
+      <div class="card-top">
+        <div class="card-rank">4</div>
+        <div class="card-info">
+          <div class="card-ride-name">Haunted Mansion</div>
+          <div class="card-ride-meta">Dark ride · Liberty Square</div>
+        </div>
+        <div class="card-timing">
+          <div class="card-best-time">2:30p</div>
+          <div class="card-best-label">Best time</div>
+        </div>
+      </div>
+      <div class="card-stats">
+        <div class="card-stat stat-expected">
+          <div class="card-stat-value">15 <span class="unit">min</span></div>
+          <div class="card-stat-label">Expected Wait</div>
+        </div>
+        <div class="card-stat stat-average">
+          <div class="card-stat-value">30 <span class="unit">min</span></div>
+          <div class="card-stat-label">Park Average</div>
+        </div>
+        <div class="card-stat stat-saved">
+          <div class="card-stat-value">−15 <span class="unit">min</span></div>
+          <div class="card-stat-label">You Save</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Swipe hint -->
+  <div class="swipe-hint">
+    <div class="swipe-hint-item hint-remove">
+      <span class="swipe-hint-arrow">←</span>
+      <span>Remove</span>
+    </div>
+    <div class="swipe-hint-divider"></div>
+    <div class="swipe-hint-item hint-done">
+      <span>Rode it</span>
+      <span class="swipe-hint-arrow">→</span>
+    </div>
+  </div>
+
+  <!-- Add more slot -->
+  <div class="add-more" onclick="">
+    <div class="add-more-icon">+</div>
+    <span>Add another ride</span>
+  </div>
+
+</div>
+
+<script>
+  // Simulate computing then reveal
+  setTimeout(() => {
+    document.getElementById('computingOverlay').classList.add('hide');
+    document.getElementById('mainContent').style.opacity = '1';
+
+    // Animate the optimization bar
+    setTimeout(() => {
+      document.getElementById('optBarFill').style.width = '87%';
+    }, 200);
+  }, 2600);
+
+  // Swipe functionality
+  const cards = document.querySelectorAll('.ride-card');
+  cards.forEach(card => {
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+
+    card.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+      card.style.transition = 'none';
+    });
+
+    card.addEventListener('mousedown', (e) => {
+      startX = e.clientX;
+      isDragging = true;
+      card.style.transition = 'none';
+    });
+
+    const onMove = (x) => {
+      if (!isDragging) return;
+      currentX = x - startX;
+      const clamp = Math.max(-120, Math.min(120, currentX));
+      card.style.transform = `translateX(${clamp}px)`;
+
+      const leftReveal = card.querySelector('.swipe-reveal.left');
+      const rightReveal = card.querySelector('.swipe-reveal.right');
+      leftReveal.style.opacity = clamp < -20 ? Math.min(1, Math.abs(clamp) / 80) : 0;
+      rightReveal.style.opacity = clamp > 20 ? Math.min(1, clamp / 80) : 0;
+    };
+
+    card.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX));
+    card.addEventListener('mousemove', (e) => onMove(e.clientX));
+
+    const onEnd = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      card.style.transition = 'transform 0.3s ease';
+
+      if (Math.abs(currentX) > 100) {
+        const direction = currentX > 0 ? 1 : -1;
+        card.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        card.style.transform = `translateX(${direction * 400}px)`;
+        card.style.opacity = '0';
+        setTimeout(() => {
+          card.style.display = 'none';
+        }, 300);
+      } else {
+        card.style.transform = 'translateX(0)';
+        card.querySelector('.swipe-reveal.left').style.opacity = 0;
+        card.querySelector('.swipe-reveal.right').style.opacity = 0;
+      }
+      currentX = 0;
+    };
+
+    card.addEventListener('touchend', onEnd);
+    card.addEventListener('mouseup', onEnd);
+    card.addEventListener('mouseleave', onEnd);
+  });
+</script>
+
+</body>
+</html>
