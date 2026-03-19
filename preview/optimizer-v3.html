@@ -164,57 +164,49 @@
     background: rgba(74, 144, 164, 0.04);
   }
 
-  /* Swipe action panels (iOS-style) */
+  /* Swipe action pills (compact iOS-style) */
   .swipe-action {
     position: absolute;
-    top: 0; bottom: 0;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex; align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 600;
+    gap: 5px;
     opacity: 0;
     transition: opacity 0.1s;
     pointer-events: none;
-    padding: 0 20px;
-    border-radius: 16px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    color: #fff;
   }
 
   .swipe-action .action-icon {
-    font-size: 18px;
+    font-size: 14px;
     flex-shrink: 0;
   }
 
   .swipe-action .action-label {
     font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
     opacity: 0;
-    transform: translateX(-8px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.15s ease;
   }
 
   .swipe-action.revealed .action-label {
     opacity: 1;
-    transform: translateX(0);
   }
 
-  /* Done action — revealed on LEFT when swiping RIGHT */
+  /* Done pill — left side */
   .swipe-action.action-done {
-    left: 0; right: 50%;
+    left: 6px;
     background: #4a90a4;
-    color: #fff;
-    justify-content: flex-start;
-    border-radius: 16px 0 0 16px;
   }
 
-  /* Remove action — revealed on RIGHT when swiping LEFT */
+  /* Remove pill — right side */
   .swipe-action.action-remove {
-    right: 0; left: 50%;
+    right: 6px;
     background: #A60038;
-    color: #fff;
-    justify-content: flex-end;
-    border-radius: 0 16px 16px 0;
   }
 
   /* Card layout */
