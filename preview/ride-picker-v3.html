@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ride Picker v3 — List + Map</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a1628;
+    color: #e2e8f0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(4, 10, 20, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 900;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    animation: fadeIn 0.25s ease;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  .picker-modal {
+    width: 390px;
+    max-height: 90vh;
+    background: #0d1f35;
+    border: 1px solid rgba(74, 144, 164, 0.15);
+    border-bottom: none;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease;
+    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .drag-handle {
+    width: 36px; height: 4px;
+    background: rgba(226, 232, 240, 0.15);
+    border-radius: 2px;
+    margin: 10px auto 0;
+  }
+
+  /* Header */
+  .picker-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid rgba(74, 144, 164, 0.1);
+    flex-shrink: 0;
+  }
+
+  .picker-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .picker-title { font-size: 18px; font-weight: 700; color: #fff; }
+  .picker-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4a90a4; font-weight: 500; margin-top: 2px; }
+
+  .btn-done {
+    background: rgba(74, 144, 164, 0.12);
+    border: 1px solid rgba(74, 144, 164, 0.3);
+    color: rgba(74, 144, 164, 0.6);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 600;
+    padding: 8px 22px; border-radius: 20px;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .btn-done.active { background: #4a90a4; color: #0a1628; border-color: #4a90a4; box-shadow: 0 0 16px rgba(74, 144, 164, 0.3); }
+
+  .slot-indicator { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+  .slot { flex: 1; height: 3px; border-radius: 2px; background: rgba(74, 144, 164, 0.1); transition: all 0.3s ease; }
+  .slot.filled { background: #4a90a4; box-shadow: 0 0 8px rgba(74, 144, 164, 0.35); }
+  .slot-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(226, 232, 240, 0.35); margin-left: 6px; white-space: nowrap; }
+
+  /* View toggle */
+  .view-toggle {
+    display: flex;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 3px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(74, 144, 164, 0.08);
+  }
+
+  .view-btn {
+    flex: 1;
+    padding: 7px 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(226, 232, 240, 0.4);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    background: none;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .view-btn.active {
+    background: rgba(74, 144, 164, 0.15);
+    color: #4a90a4;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .view-btn:hover:not(.active) { color: rgba(226, 232, 240, 0.6); }
+
+  /* Search */
+  .search-wrap { position: relative; }
+  .search-input {
+    width: 100%; padding: 10px 14px 10px 38px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(74, 144, 164, 0.15);
+    border-radius: 12px; color: #e2e8f0;
+    font-family: 'Inter', sans-serif; font-size: 15px;
+    outline: none; transition: all 0.2s;
+  }
+  .search-input::placeholder { color: rgba(226, 232, 240, 0.25); }
+  .search-input:focus { border-color: rgba(74, 144, 164, 0.4); background: rgba(255, 255, 255, 0.06); }
+  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 15px; opacity: 0.3; }
+
+  /* Content area */
+  .picker-content { flex: 1; overflow: hidden; position: relative; }
+
+  /* ============ LIST VIEW ============ */
+  .list-view {
+    overflow-y: auto;
+    height: 100%;
+    padding: 12px 16px 40px;
+  }
+
+  .list-view::-webkit-scrollbar { width: 4px; }
+  .list-view::-webkit-scrollbar-track { background: transparent; }
+  .list-view::-webkit-scrollbar-thumb { background: rgba(74, 144, 164, 0.2); border-radius: 2px; }
+
+  .land-card {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(74, 144, 164, 0.08);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .land-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px 8px; }
+  .land-color-bar { width: 3px; height: 14px; border-radius: 2px; flex-shrink: 0; }
+  .land-name { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; flex: 1; }
+  .land-count { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(226, 232, 240, 0.2); }
+
+  .land-card[data-land="fantasyland"] { border-top: 1px solid rgba(167, 139, 250, 0.15); }
+  .land-card[data-land="fantasyland"] .land-color-bar { background: #a78bfa; }
+  .land-card[data-land="fantasyland"] .land-name { color: rgba(167, 139, 250, 0.7); }
+
+  .land-card[data-land="tomorrowland"] { border-top: 1px solid rgba(74, 144, 164, 0.2); }
+  .land-card[data-land="tomorrowland"] .land-color-bar { background: #4a90a4; }
+  .land-card[data-land="tomorrowland"] .land-name { color: rgba(74, 144, 164, 0.7); }
+
+  .land-card[data-land="adventureland"] { border-top: 1px solid rgba(251, 191, 36, 0.15); }
+  .land-card[data-land="adventureland"] .land-color-bar { background: #fbbf24; }
+  .land-card[data-land="adventureland"] .land-name { color: rgba(251, 191, 36, 0.7); }
+
+  .land-card[data-land="frontierland"] { border-top: 1px solid rgba(166, 0, 56, 0.2); }
+  .land-card[data-land="frontierland"] .land-color-bar { background: #A60038; }
+  .land-card[data-land="frontierland"] .land-name { color: rgba(166, 0, 56, 0.7); }
+
+  .land-card[data-land="liberty-square"] { border-top: 1px solid rgba(74, 222, 128, 0.12); }
+  .land-card[data-land="liberty-square"] .land-color-bar { background: #4ade80; }
+  .land-card[data-land="liberty-square"] .land-name { color: rgba(74, 222, 128, 0.6); }
+
+  .ride-row {
+    display: flex; align-items: center;
+    padding: 10px 16px; cursor: pointer;
+    transition: all 0.15s ease; gap: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+  }
+  .ride-row:first-of-type { border-top: none; }
+  .ride-row:hover { background: rgba(74, 144, 164, 0.04); }
+  .ride-row.selected { background: rgba(74, 144, 164, 0.07); }
+
+  .ride-info { flex: 1; min-width: 0; }
+  .ride-name { font-size: 15px; font-weight: 500; color: #e2e8f0; line-height: 1.3; }
+  .ride-meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(226, 232, 240, 0.3); margin-top: 2px; }
+
+  .rec-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600;
+    color: #4a90a4; background: rgba(74, 144, 164, 0.1);
+    padding: 2px 6px; border-radius: 4px; margin-left: 8px;
+  }
+  .rec-badge::before { content: '✦'; font-size: 8px; }
+
+  .check-circle {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 2px solid rgba(74, 144, 164, 0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.2s ease;
+  }
+  .check-circle svg { width: 14px; height: 14px; opacity: 0; transform: scale(0.5); transition: all 0.2s ease; }
+  .ride-row.selected .check-circle { background: #4a90a4; border-color: #4a90a4; box-shadow: 0 0 10px rgba(74, 144, 164, 0.3); }
+  .ride-row.selected .check-circle svg { opacity: 1; transform: scale(1); }
+  .ride-row.selected .ride-name { color: #fff; }
+
+  /* ============ MAP VIEW ============ */
+  .map-view {
+    display: none;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .map-view.active { display: block; }
+  .list-view.hidden { display: none; }
+
+  .map-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: 16px;
+  }
+
+  /* Stylized park map */
+  .park-map {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  /* Land zones */
+  .land-zone {
+    position: absolute;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+
+  .land-zone-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    position: absolute;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* Castle hub */
+  .castle-hub {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .castle-icon {
+    font-size: 22px;
+    filter: drop-shadow(0 0 8px rgba(74, 144, 164, 0.4));
+  }
+
+  .castle-ring {
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    border: 1px solid rgba(74, 144, 164, 0.15);
+    border-radius: 50%;
+    animation: castlePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes castlePulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.15); opacity: 0.2; }
+  }
+
+  /* Hub paths */
+  .hub-path {
+    position: absolute;
+    background: rgba(74, 144, 164, 0.06);
+    z-index: 1;
+  }
+
+  /* Ride pins */
+  .ride-pin {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.2s ease;
+    transform: translate(-50%, -50%);
+  }
+
+  .ride-pin .pin-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(226, 232, 240, 0.3);
+    border: 2px solid rgba(226, 232, 240, 0.15);
+    transition: all 0.2s ease;
+  }
+
+  .ride-pin:hover .pin-dot {
+    transform: scale(1.3);
+    background: rgba(226, 232, 240, 0.5);
+  }
+
+  .ride-pin.selected .pin-dot {
+    width: 14px;
+    height: 14px;
+    background: #4a90a4;
+    border-color: #4a90a4;
+    box-shadow: 0 0 12px rgba(74, 144, 164, 0.5);
+  }
+
+  .ride-pin.selected::after {
+    content: '✓';
+    position: absolute;
+    font-size: 8px;
+    font-weight: 800;
+    color: #0a1628;
+    z-index: 2;
+  }
+
+  .ride-pin .pin-label {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 8px;
+    font-weight: 600;
+    color: rgba(226, 232, 240, 0.5);
+    margin-top: 2px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+  }
+
+  .ride-pin:hover .pin-label,
+  .ride-pin.selected .pin-label {
+    opacity: 1;
+  }
+
+  .ride-pin .rec-dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4a90a4;
+    border: 1px solid #0d1f35;
+  }
+
+  /* Tooltip on tap */
+  .pin-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(13, 31, 53, 0.95);
+    border: 1px solid rgba(74, 144, 164, 0.25);
+    border-radius: 10px;
+    padding: 8px 12px;
+    white-space: nowrap;
+    z-index: 50;
+    display: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+  }
+
+  .pin-tooltip.show { display: block; animation: fadeIn 0.15s ease; }
+
+  .pin-tooltip-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .pin-tooltip-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(226, 232, 240, 0.4);
+    margin-top: 2px;
+  }
+
+  .pin-tooltip-arrow {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    background: rgba(13, 31, 53, 0.95);
+    border-right: 1px solid rgba(74, 144, 164, 0.25);
+    border-bottom: 1px solid rgba(74, 144, 164, 0.25);
+  }
+
+  /* Land zone backgrounds */
+  .zone-fantasyland {
+    left: 26%; top: 10%; width: 52%; height: 32%;
+    background: radial-gradient(ellipse, rgba(167, 139, 250, 0.06) 0%, transparent 70%);
+    border-radius: 45%;
+  }
+  .zone-fantasyland .land-zone-label { bottom: 2px; left: 50%; transform: translateX(-50%); color: rgba(167, 139, 250, 0.4); }
+
+  .zone-tomorrowland {
+    right: 2%; top: 38%; width: 38%; height: 34%;
+    background: radial-gradient(ellipse, rgba(74, 144, 164, 0.06) 0%, transparent 70%);
+    border-radius: 40%;
+  }
+  .zone-tomorrowland .land-zone-label { top: 4px; right: 12px; color: rgba(74, 144, 164, 0.4); }
+
+  .zone-adventureland {
+    left: 2%; top: 50%; width: 34%; height: 30%;
+    background: radial-gradient(ellipse, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
+    border-radius: 40%;
+  }
+  .zone-adventureland .land-zone-label { bottom: 8px; left: 12px; color: rgba(251, 191, 36, 0.4); }
+
+  .zone-frontierland {
+    left: 4%; top: 16%; width: 34%; height: 34%;
+    background: radial-gradient(ellipse, rgba(166, 0, 56, 0.05) 0%, transparent 70%);
+    border-radius: 40%;
+  }
+  .zone-frontierland .land-zone-label { top: 8px; left: 12px; color: rgba(166, 0, 56, 0.4); }
+
+  .zone-liberty-square {
+    left: 18%; top: 34%; width: 22%; height: 18%;
+    background: radial-gradient(ellipse, rgba(74, 222, 128, 0.04) 0%, transparent 70%);
+    border-radius: 40%;
+  }
+  .zone-liberty-square .land-zone-label { top: 2px; left: 50%; transform: translateX(-50%); color: rgba(74, 222, 128, 0.35); font-size: 8px; }
+
+  /* Main Street */
+  .main-street {
+    position: absolute;
+    left: 50%;
+    bottom: 4%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+  .main-street-label {
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(226, 232, 240, 0.2);
+  }
+  .main-street-line {
+    width: 2px;
+    height: 50px;
+    background: linear-gradient(to top, rgba(74, 144, 164, 0.1), rgba(74, 144, 164, 0.04));
+    margin: 4px auto 0;
+  }
+
+  /* Entrance */
+  .park-entrance {
+    position: absolute;
+    bottom: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: rgba(226, 232, 240, 0.15);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .no-results { text-align: center; padding: 50px 20px; display: none; }
+  .no-results-text { font-size: 14px; color: rgba(226, 232, 240, 0.3); }
+</style>
+</head>
+<body>
+
+<div class="modal-backdrop">
+  <div class="picker-modal">
+    <div class="drag-handle"></div>
+
+    <div class="picker-header">
+      <div class="picker-header-top">
+        <div>
+          <div class="picker-title">Add Rides</div>
+          <div class="picker-subtitle">Magic Kingdom</div>
+        </div>
+        <button class="btn-done" id="doneBtn">Done</button>
+      </div>
+
+      <div class="slot-indicator">
+        <div class="slot" id="slot1"></div>
+        <div class="slot" id="slot2"></div>
+        <div class="slot" id="slot3"></div>
+        <div class="slot" id="slot4"></div>
+        <span class="slot-label" id="slotLabel">0 / 4</span>
+      </div>
+
+      <!-- View Toggle -->
+      <div class="view-toggle">
+        <button class="view-btn active" id="listBtn" onclick="switchView('list')">List</button>
+        <button class="view-btn" id="mapBtn" onclick="switchView('map')">Map</button>
+      </div>
+
+      <div class="search-wrap" id="searchWrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" placeholder="Search rides..." id="searchInput" oninput="filterRides()">
+      </div>
+    </div>
+
+    <div class="picker-content">
+
+      <!-- ========== LIST VIEW ========== -->
+      <div class="list-view" id="listView">
+        <!-- Fantasyland -->
+        <div class="land-card" data-land="fantasyland">
+          <div class="land-header">
+            <div class="land-color-bar"></div>
+            <span class="land-name">Fantasyland</span>
+            <span class="land-count">6</span>
+          </div>
+          <div class="ride-row" data-ride="seven-dwarfs" onclick="toggleRide('seven-dwarfs')">
+            <div class="ride-info">
+              <div class="ride-name">Seven Dwarfs Mine Train<span class="rec-badge">REC</span></div>
+              <div class="ride-meta">Roller coaster · 2 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="peter-pan" onclick="toggleRide('peter-pan')">
+            <div class="ride-info">
+              <div class="ride-name">Peter Pan's Flight</div>
+              <div class="ride-meta">Dark ride · 3 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="haunted-mansion" onclick="toggleRide('haunted-mansion')">
+            <div class="ride-info">
+              <div class="ride-name">Haunted Mansion</div>
+              <div class="ride-meta">Dark ride · 8 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="its-a-small-world" onclick="toggleRide('its-a-small-world')">
+            <div class="ride-info">
+              <div class="ride-name">it's a small world</div>
+              <div class="ride-meta">Boat ride · 11 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="under-the-sea" onclick="toggleRide('under-the-sea')">
+            <div class="ride-info">
+              <div class="ride-name">Under the Sea</div>
+              <div class="ride-meta">Dark ride · 7 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="carousel" onclick="toggleRide('carousel')">
+            <div class="ride-info">
+              <div class="ride-name">Prince Charming Carousel</div>
+              <div class="ride-meta">Carousel · 2 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+        </div>
+
+        <!-- Tomorrowland -->
+        <div class="land-card" data-land="tomorrowland">
+          <div class="land-header">
+            <div class="land-color-bar"></div>
+            <span class="land-name">Tomorrowland</span>
+            <span class="land-count">4</span>
+          </div>
+          <div class="ride-row" data-ride="space-mountain" onclick="toggleRide('space-mountain')">
+            <div class="ride-info">
+              <div class="ride-name">Space Mountain<span class="rec-badge">REC</span></div>
+              <div class="ride-meta">Roller coaster · 3 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="buzz" onclick="toggleRide('buzz')">
+            <div class="ride-info">
+              <div class="ride-name">Buzz Lightyear</div>
+              <div class="ride-meta">Interactive · 5 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="tomorrowland-speedway" onclick="toggleRide('tomorrowland-speedway')">
+            <div class="ride-info">
+              <div class="ride-name">Tomorrowland Speedway</div>
+              <div class="ride-meta">Go-karts · 5 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="peoplemover" onclick="toggleRide('peoplemover')">
+            <div class="ride-info">
+              <div class="ride-name">PeopleMover</div>
+              <div class="ride-meta">Tour · 10 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+        </div>
+
+        <!-- Adventureland -->
+        <div class="land-card" data-land="adventureland">
+          <div class="land-header">
+            <div class="land-color-bar"></div>
+            <span class="land-name">Adventureland</span>
+            <span class="land-count">3</span>
+          </div>
+          <div class="ride-row" data-ride="pirates" onclick="toggleRide('pirates')">
+            <div class="ride-info">
+              <div class="ride-name">Pirates of the Caribbean<span class="rec-badge">REC</span></div>
+              <div class="ride-meta">Boat ride · 12 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="jungle-cruise" onclick="toggleRide('jungle-cruise')">
+            <div class="ride-info">
+              <div class="ride-name">Jungle Cruise</div>
+              <div class="ride-meta">Boat ride · 10 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="magic-carpets" onclick="toggleRide('magic-carpets')">
+            <div class="ride-info">
+              <div class="ride-name">Magic Carpets of Aladdin</div>
+              <div class="ride-meta">Spinner · 2 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+        </div>
+
+        <!-- Frontierland -->
+        <div class="land-card" data-land="frontierland">
+          <div class="land-header">
+            <div class="land-color-bar"></div>
+            <span class="land-name">Frontierland</span>
+            <span class="land-count">3</span>
+          </div>
+          <div class="ride-row" data-ride="big-thunder" onclick="toggleRide('big-thunder')">
+            <div class="ride-info">
+              <div class="ride-name">Big Thunder Mountain</div>
+              <div class="ride-meta">Roller coaster · 4 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="tianas" onclick="toggleRide('tianas')">
+            <div class="ride-info">
+              <div class="ride-name">Tiana's Bayou Adventure</div>
+              <div class="ride-meta">Log flume · 11 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="ride-row" data-ride="country-bears" onclick="toggleRide('country-bears')">
+            <div class="ride-info">
+              <div class="ride-name">Country Bear Jamboree</div>
+              <div class="ride-meta">Show · 16 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+        </div>
+
+        <!-- Liberty Square -->
+        <div class="land-card" data-land="liberty-square">
+          <div class="land-header">
+            <div class="land-color-bar"></div>
+            <span class="land-name">Liberty Square</span>
+            <span class="land-count">1</span>
+          </div>
+          <div class="ride-row" data-ride="hall-of-presidents" onclick="toggleRide('hall-of-presidents')">
+            <div class="ride-info">
+              <div class="ride-name">Hall of Presidents</div>
+              <div class="ride-meta">Show · 22 min</div>
+            </div>
+            <div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#0a1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== MAP VIEW ========== -->
+      <div class="map-view" id="mapView">
+        <div class="map-container">
+          <div class="park-map">
+
+            <!-- Land zone backgrounds -->
+            <div class="land-zone zone-fantasyland"><span class="land-zone-label">Fantasyland</span></div>
+            <div class="land-zone zone-tomorrowland"><span class="land-zone-label">Tomorrowland</span></div>
+            <div class="land-zone zone-adventureland"><span class="land-zone-label">Adventureland</span></div>
+            <div class="land-zone zone-frontierland"><span class="land-zone-label">Frontierland</span></div>
+            <div class="land-zone zone-liberty-square"><span class="land-zone-label">Liberty Sq.</span></div>
+
+            <!-- Castle -->
+            <div class="castle-hub">
+              <div class="castle-ring"></div>
+              <span class="castle-icon">🏰</span>
+            </div>
+
+            <!-- Main Street -->
+            <div class="main-street">
+              <div class="main-street-label">Main Street U.S.A.</div>
+            </div>
+            <div class="park-entrance">▽ Entrance</div>
+
+            <!-- ===== RIDE PINS ===== -->
+
+            <!-- Fantasyland pins -->
+            <div class="ride-pin" data-ride="seven-dwarfs" style="left: 58%; top: 14%;" onclick="toggleRide('seven-dwarfs')">
+              <div class="pin-dot"></div>
+              <div class="rec-dot"></div>
+              <span class="pin-label">Seven Dwarfs</span>
+              <div class="pin-tooltip" id="tip-seven-dwarfs">
+                <div class="pin-tooltip-name">Seven Dwarfs Mine Train</div>
+                <div class="pin-tooltip-meta">Roller coaster · 2 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="peter-pan" style="left: 36%; top: 18%;" onclick="toggleRide('peter-pan')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Peter Pan</span>
+              <div class="pin-tooltip" id="tip-peter-pan">
+                <div class="pin-tooltip-name">Peter Pan's Flight</div>
+                <div class="pin-tooltip-meta">Dark ride · 3 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="its-a-small-world" style="left: 32%; top: 10%;" onclick="toggleRide('its-a-small-world')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Small World</span>
+              <div class="pin-tooltip" id="tip-its-a-small-world">
+                <div class="pin-tooltip-name">it's a small world</div>
+                <div class="pin-tooltip-meta">Boat ride · 11 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="haunted-mansion" style="left: 24%; top: 26%;" onclick="toggleRide('haunted-mansion')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Haunted Mansion</span>
+              <div class="pin-tooltip" id="tip-haunted-mansion">
+                <div class="pin-tooltip-name">Haunted Mansion</div>
+                <div class="pin-tooltip-meta">Dark ride · 8 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="under-the-sea" style="left: 68%; top: 18%;" onclick="toggleRide('under-the-sea')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Under the Sea</span>
+              <div class="pin-tooltip" id="tip-under-the-sea">
+                <div class="pin-tooltip-name">Under the Sea</div>
+                <div class="pin-tooltip-meta">Dark ride · 7 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="carousel" style="left: 48%; top: 28%;" onclick="toggleRide('carousel')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Carousel</span>
+              <div class="pin-tooltip" id="tip-carousel">
+                <div class="pin-tooltip-name">Prince Charming Carousel</div>
+                <div class="pin-tooltip-meta">Carousel · 2 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <!-- Tomorrowland pins -->
+            <div class="ride-pin" data-ride="space-mountain" style="left: 80%; top: 34%;" onclick="toggleRide('space-mountain')">
+              <div class="pin-dot"></div>
+              <div class="rec-dot"></div>
+              <span class="pin-label">Space Mtn</span>
+              <div class="pin-tooltip" id="tip-space-mountain">
+                <div class="pin-tooltip-name">Space Mountain</div>
+                <div class="pin-tooltip-meta">Roller coaster · 3 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="buzz" style="left: 74%; top: 48%;" onclick="toggleRide('buzz')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Buzz</span>
+              <div class="pin-tooltip" id="tip-buzz">
+                <div class="pin-tooltip-name">Buzz Lightyear</div>
+                <div class="pin-tooltip-meta">Interactive · 5 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="tomorrowland-speedway" style="left: 88%; top: 50%;" onclick="toggleRide('tomorrowland-speedway')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Speedway</span>
+              <div class="pin-tooltip" id="tip-tomorrowland-speedway">
+                <div class="pin-tooltip-name">Tomorrowland Speedway</div>
+                <div class="pin-tooltip-meta">Go-karts · 5 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="peoplemover" style="left: 68%; top: 40%;" onclick="toggleRide('peoplemover')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">PeopleMover</span>
+              <div class="pin-tooltip" id="tip-peoplemover">
+                <div class="pin-tooltip-name">PeopleMover</div>
+                <div class="pin-tooltip-meta">Tour · 10 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <!-- Adventureland pins -->
+            <div class="ride-pin" data-ride="pirates" style="left: 16%; top: 58%;" onclick="toggleRide('pirates')">
+              <div class="pin-dot"></div>
+              <div class="rec-dot"></div>
+              <span class="pin-label">Pirates</span>
+              <div class="pin-tooltip" id="tip-pirates">
+                <div class="pin-tooltip-name">Pirates of the Caribbean</div>
+                <div class="pin-tooltip-meta">Boat ride · 12 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="jungle-cruise" style="left: 10%; top: 50%;" onclick="toggleRide('jungle-cruise')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Jungle Cruise</span>
+              <div class="pin-tooltip" id="tip-jungle-cruise">
+                <div class="pin-tooltip-name">Jungle Cruise</div>
+                <div class="pin-tooltip-meta">Boat ride · 10 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="magic-carpets" style="left: 24%; top: 62%;" onclick="toggleRide('magic-carpets')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Magic Carpets</span>
+              <div class="pin-tooltip" id="tip-magic-carpets">
+                <div class="pin-tooltip-name">Magic Carpets of Aladdin</div>
+                <div class="pin-tooltip-meta">Spinner · 2 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <!-- Frontierland pins -->
+            <div class="ride-pin" data-ride="big-thunder" style="left: 12%; top: 26%;" onclick="toggleRide('big-thunder')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Big Thunder</span>
+              <div class="pin-tooltip" id="tip-big-thunder">
+                <div class="pin-tooltip-name">Big Thunder Mountain</div>
+                <div class="pin-tooltip-meta">Roller coaster · 4 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="tianas" style="left: 14%; top: 18%;" onclick="toggleRide('tianas')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Tiana's</span>
+              <div class="pin-tooltip" id="tip-tianas">
+                <div class="pin-tooltip-name">Tiana's Bayou Adventure</div>
+                <div class="pin-tooltip-meta">Log flume · 11 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <div class="ride-pin" data-ride="country-bears" style="left: 22%; top: 38%;" onclick="toggleRide('country-bears')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Country Bears</span>
+              <div class="pin-tooltip" id="tip-country-bears">
+                <div class="pin-tooltip-name">Country Bear Jamboree</div>
+                <div class="pin-tooltip-meta">Show · 16 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+            <!-- Liberty Square pins -->
+            <div class="ride-pin" data-ride="hall-of-presidents" style="left: 28%; top: 36%;" onclick="toggleRide('hall-of-presidents')">
+              <div class="pin-dot"></div>
+              <span class="pin-label">Hall of Presidents</span>
+              <div class="pin-tooltip" id="tip-hall-of-presidents">
+                <div class="pin-tooltip-name">Hall of Presidents</div>
+                <div class="pin-tooltip-meta">Show · 22 min</div>
+                <div class="pin-tooltip-arrow"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const selectedRides = new Set();
+  const MAX = 4;
+
+  function toggleRide(rideId) {
+    if (selectedRides.has(rideId)) {
+      selectedRides.delete(rideId);
+    } else {
+      if (selectedRides.size >= MAX) return;
+      selectedRides.add(rideId);
+    }
+    syncUI();
+  }
+
+  function syncUI() {
+    // Sync all elements with data-ride attribute
+    document.querySelectorAll('[data-ride]').forEach(el => {
+      const rid = el.dataset.ride;
+      const isSelected = selectedRides.has(rid);
+      el.classList.toggle('selected', isSelected);
+    });
+
+    // Slots
+    for (let i = 1; i <= 4; i++) {
+      document.getElementById('slot' + i).classList.toggle('filled', i <= selectedRides.size);
+    }
+    document.getElementById('slotLabel').textContent = selectedRides.size + ' / ' + MAX;
+    document.getElementById('doneBtn').classList.toggle('active', selectedRides.size > 0);
+  }
+
+  function switchView(view) {
+    const listView = document.getElementById('listView');
+    const mapView = document.getElementById('mapView');
+    const listBtn = document.getElementById('listBtn');
+    const mapBtn = document.getElementById('mapBtn');
+    const searchWrap = document.getElementById('searchWrap');
+
+    if (view === 'map') {
+      listView.classList.add('hidden');
+      mapView.classList.add('active');
+      listBtn.classList.remove('active');
+      mapBtn.classList.add('active');
+      searchWrap.style.display = 'none';
+    } else {
+      listView.classList.remove('hidden');
+      mapView.classList.remove('active');
+      listBtn.classList.add('active');
+      mapBtn.classList.remove('active');
+      searchWrap.style.display = 'block';
+    }
+  }
+
+  function filterRides() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.land-card');
+    let anyVisible = false;
+
+    cards.forEach(card => {
+      const rows = card.querySelectorAll('.ride-row');
+      let cardVisible = false;
+      rows.forEach(row => {
+        const name = row.querySelector('.ride-name').textContent.toLowerCase();
+        const match = name.includes(q);
+        row.style.display = match ? 'flex' : 'none';
+        if (match) cardVisible = true;
+      });
+      card.style.display = cardVisible ? 'block' : 'none';
+      if (cardVisible) anyVisible = true;
+    });
+
+    document.getElementById('noResults').style.display = anyVisible ? 'none' : 'block';
+  }
+</script>
+
+</body>
+</html>
