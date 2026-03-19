@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Must-Dos — v3</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a1628;
+    color: #e2e8f0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+
+  .phone-frame {
+    width: 390px;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #0a1628;
+    padding-bottom: 40px;
+  }
+
+  /* Header */
+  .section-header {
+    padding: 24px 20px 0;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(74, 144, 164, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .section-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(226, 232, 240, 0.35);
+  }
+
+  /* ============ INSIGHT CARD ============ */
+  .insight-card {
+    margin: 16px 20px 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+  }
+
+  .insight-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .insight-inner {
+    background: rgba(74, 144, 164, 0.06);
+    border: 1px solid rgba(74, 144, 164, 0.15);
+    border-radius: 14px;
+    padding: 14px 16px;
+    position: relative;
+  }
+
+  .insight-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: #4a90a4;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .insight-tag::before {
+    content: '✦';
+    font-size: 9px;
+  }
+
+  .insight-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .insight-text {
+    font-size: 13px;
+    color: rgba(226, 232, 240, 0.5);
+    line-height: 1.5;
+  }
+
+  .insight-text strong {
+    color: #4a90a4;
+    font-weight: 600;
+  }
+
+  /* Leader line */
+  .leader-line {
+    display: flex;
+    justify-content: center;
+    height: 28px;
+    opacity: 0;
+    transition: opacity 0.4s ease 0.2s;
+  }
+
+  .leader-line.visible { opacity: 1; }
+
+  .leader-line-svg {
+    overflow: visible;
+  }
+
+  /* ============ RIDE CARDS ============ */
+  .ride-cards {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ride-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(74, 144, 164, 0.08);
+    border-radius: 16px;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                border-color 0.5s ease,
+                box-shadow 0.5s ease;
+    will-change: transform;
+  }
+
+  .ride-card:active { cursor: grabbing; }
+  .ride-card.shuffling { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); z-index: 10; }
+
+  /* Highlighted #1 card */
+  .ride-card.highlighted {
+    border-color: rgba(74, 144, 164, 0.35);
+    box-shadow: 0 0 0 1px rgba(74, 144, 164, 0.1),
+                0 0 20px rgba(74, 144, 164, 0.08);
+    background: rgba(74, 144, 164, 0.04);
+  }
+
+  /* Swipe layers */
+  .swipe-reveal {
+    position: absolute;
+    top: 0; bottom: 0; width: 70px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; opacity: 0; transition: opacity 0.15s;
+    pointer-events: none;
+  }
+  .swipe-reveal.left {
+    left: 0;
+    background: linear-gradient(90deg, rgba(166, 0, 56, 0.15), transparent);
+    border-radius: 16px 0 0 16px; color: #A60038;
+  }
+  .swipe-reveal.right {
+    right: 0;
+    background: linear-gradient(-90deg, rgba(74, 144, 164, 0.15), transparent);
+    border-radius: 0 16px 16px 0; color: #4a90a4;
+  }
+
+  /* Card layout */
+  .card-content { display: flex; align-items: center; gap: 12px; }
+
+  .card-rank {
+    width: 30px; height: 30px; border-radius: 9px;
+    background: rgba(74, 144, 164, 0.06);
+    border: 1px solid rgba(74, 144, 164, 0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; font-weight: 700;
+    color: rgba(74, 144, 164, 0.25);
+    flex-shrink: 0; transition: all 0.4s ease;
+  }
+
+  .card-rank.pending { color: rgba(74, 144, 164, 0.15); }
+  .card-rank.pending::after {
+    content: ''; width: 8px; height: 2px;
+    background: rgba(74, 144, 164, 0.2); border-radius: 1px;
+  }
+
+  .card-rank.revealed {
+    background: rgba(74, 144, 164, 0.12);
+    border-color: rgba(74, 144, 164, 0.25);
+    color: #4a90a4;
+    animation: rankPop 0.4s ease;
+  }
+
+  /* #1 rank gets special treatment */
+  .card-rank.top-pick {
+    background: #4a90a4;
+    border-color: #4a90a4;
+    color: #0a1628;
+    box-shadow: 0 0 10px rgba(74, 144, 164, 0.3);
+    animation: rankPop 0.5s ease;
+  }
+
+  @keyframes rankPop {
+    0% { transform: scale(0.6); opacity: 0; }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .card-info { flex: 1; min-width: 0; }
+  .card-ride-name { font-size: 16px; font-weight: 600; color: #fff; line-height: 1.3; }
+  .card-ride-desc { font-size: 12px; color: rgba(226, 232, 240, 0.35); margin-top: 2px; line-height: 1.3; }
+
+  .card-wait { text-align: right; flex-shrink: 0; }
+  .card-wait-value { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: #e2e8f0; line-height: 1; }
+  .card-wait-unit { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; color: rgba(226, 232, 240, 0.3); margin-top: 2px; }
+
+  /* Swipe hint */
+  .swipe-hint {
+    margin: 24px 20px 0;
+    text-align: center;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    opacity: 0; transition: opacity 0.5s;
+  }
+  .swipe-hint-item { display: flex; align-items: center; gap: 5px; font-size: 11px; }
+  .swipe-hint-arrow { font-size: 13px; }
+  .hint-remove { color: rgba(166, 0, 56, 0.35); }
+  .hint-done { color: rgba(74, 144, 164, 0.35); }
+  .swipe-hint-divider { width: 1px; height: 12px; background: rgba(226, 232, 240, 0.08); }
+
+  /* Add more */
+  .add-more {
+    margin: 16px 20px 0;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 12px; border: 1px dashed rgba(74, 144, 164, 0.12);
+    border-radius: 14px; color: rgba(74, 144, 164, 0.35);
+    font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+    opacity: 0;
+  }
+  .add-more:hover {
+    border-color: rgba(74, 144, 164, 0.25);
+    color: rgba(74, 144, 164, 0.55);
+    background: rgba(74, 144, 164, 0.04);
+  }
+  .add-more-icon {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 1.5px solid rgba(74, 144, 164, 0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; line-height: 1;
+  }
+
+  /* Entry */
+  @keyframes cardFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ride-card { animation: cardFadeIn 0.35s ease backwards; }
+  .ride-card:nth-child(1) { animation-delay: 0.05s; }
+  .ride-card:nth-child(2) { animation-delay: 0.1s; }
+  .ride-card:nth-child(3) { animation-delay: 0.15s; }
+  .ride-card:nth-child(4) { animation-delay: 0.2s; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+
+  <div class="section-header">
+    <div class="section-label">✦ Merlin</div>
+    <div class="section-title">My Must-Dos</div>
+    <div class="section-subtitle">Magic Kingdom</div>
+  </div>
+
+  <!-- Insight card (hidden initially) -->
+  <div class="insight-card" id="insightCard">
+    <div class="insight-inner">
+      <div class="insight-tag">Merlin's Pick</div>
+      <div class="insight-heading">Ride this first ↓</div>
+      <div class="insight-text">
+        Wait times for Mine Train are <strong>at their lowest right now</strong>. 
+        Heading here first saves you up to <strong>37 minutes</strong> compared to this afternoon.
+      </div>
+    </div>
+  </div>
+
+  <!-- Leader line connecting insight to card #1 -->
+  <div class="leader-line" id="leaderLine">
+    <svg width="2" height="28" class="leader-line-svg">
+      <line x1="1" y1="0" x2="1" y2="28"
+            stroke="#4a90a4" stroke-width="1.5"
+            stroke-dasharray="4 3" opacity="0.35">
+        <animate attributeName="stroke-dashoffset"
+                 from="0" to="-14" dur="1.5s"
+                 repeatCount="indefinite"/>
+      </line>
+      <circle cx="1" cy="26" r="2.5" fill="#4a90a4" opacity="0.5"/>
+    </svg>
+  </div>
+
+  <div class="ride-cards" id="rideCards">
+
+    <!-- User selection order: Haunted Mansion first, etc. -->
+    <div class="ride-card" data-ride="haunted-mansion" data-optimized-order="3">
+      <div class="swipe-reveal left">✕</div>
+      <div class="swipe-reveal right">✓</div>
+      <div class="card-content">
+        <div class="card-rank pending" id="rank-haunted-mansion"></div>
+        <div class="card-info">
+          <div class="card-ride-name">Haunted Mansion</div>
+          <div class="card-ride-desc">Dark ride · Liberty Square · 8 min</div>
+        </div>
+        <div class="card-wait">
+          <div class="card-wait-value">30</div>
+          <div class="card-wait-unit">min wait</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ride-card" data-ride="space-mountain" data-optimized-order="2">
+      <div class="swipe-reveal left">✕</div>
+      <div class="swipe-reveal right">✓</div>
+      <div class="card-content">
+        <div class="card-rank pending" id="rank-space-mountain"></div>
+        <div class="card-info">
+          <div class="card-ride-name">Space Mountain</div>
+          <div class="card-ride-desc">Roller coaster · Tomorrowland · 3 min</div>
+        </div>
+        <div class="card-wait">
+          <div class="card-wait-value">40</div>
+          <div class="card-wait-unit">min wait</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ride-card" data-ride="seven-dwarfs" data-optimized-order="1">
+      <div class="swipe-reveal left">✕</div>
+      <div class="swipe-reveal right">✓</div>
+      <div class="card-content">
+        <div class="card-rank pending" id="rank-seven-dwarfs"></div>
+        <div class="card-info">
+          <div class="card-ride-name">Seven Dwarfs Mine Train</div>
+          <div class="card-ride-desc">Roller coaster · Fantasyland · 2 min</div>
+        </div>
+        <div class="card-wait">
+          <div class="card-wait-value">55</div>
+          <div class="card-wait-unit">min wait</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ride-card" data-ride="pirates" data-optimized-order="4">
+      <div class="swipe-reveal left">✕</div>
+      <div class="swipe-reveal right">✓</div>
+      <div class="card-content">
+        <div class="card-rank pending" id="rank-pirates"></div>
+        <div class="card-info">
+          <div class="card-ride-name">Pirates of the Caribbean</div>
+          <div class="card-ride-desc">Boat ride · Adventureland · 12 min</div>
+        </div>
+        <div class="card-wait">
+          <div class="card-wait-value">25</div>
+          <div class="card-wait-unit">min wait</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="swipe-hint" id="swipeHint">
+    <div class="swipe-hint-item hint-remove">
+      <span class="swipe-hint-arrow">←</span><span>Remove</span>
+    </div>
+    <div class="swipe-hint-divider"></div>
+    <div class="swipe-hint-item hint-done">
+      <span>Rode it</span><span class="swipe-hint-arrow">→</span>
+    </div>
+  </div>
+
+  <div class="add-more" id="addMore">
+    <div class="add-more-icon">+</div>
+    <span>Add another ride</span>
+  </div>
+
+</div>
+
+<script>
+  const container = document.getElementById('rideCards');
+  const cards = Array.from(container.querySelectorAll('.ride-card'));
+
+  // PHASE 1: Cards visible in user order, blank ranks (already rendered)
+
+  // PHASE 2: Shuffle to optimized order
+  setTimeout(() => {
+    const firstPositions = {};
+    cards.forEach(card => {
+      firstPositions[card.dataset.ride] = card.getBoundingClientRect().top;
+    });
+
+    const sorted = [...cards].sort((a, b) =>
+      parseInt(a.dataset.optimizedOrder) - parseInt(b.dataset.optimizedOrder)
+    );
+    sorted.forEach(card => container.appendChild(card));
+
+    cards.forEach(card => {
+      const lastRect = card.getBoundingClientRect();
+      const deltaY = firstPositions[card.dataset.ride] - lastRect.top;
+      card.style.transition = 'none';
+      card.style.transform = `translateY(${deltaY}px)`;
+      card.classList.add('shuffling');
+    });
+
+    container.offsetHeight;
+
+    cards.forEach((card, i) => {
+      card.style.transition = `transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${i * 0.05}s`;
+      card.style.transform = 'translateY(0)';
+    });
+
+    setTimeout(() => {
+      cards.forEach(card => {
+        card.classList.remove('shuffling');
+        card.style.transition = '';
+      });
+    }, 1000);
+  }, 1200);
+
+  // PHASE 3: Reveal rank numbers
+  setTimeout(() => {
+    const sortedCards = Array.from(container.querySelectorAll('.ride-card'));
+    sortedCards.forEach((card, i) => {
+      setTimeout(() => {
+        const rank = card.querySelector('.card-rank');
+        rank.classList.remove('pending');
+
+        if (i === 0) {
+          // #1 gets special styling
+          rank.classList.add('top-pick');
+        } else {
+          rank.classList.add('revealed');
+        }
+        rank.textContent = i + 1;
+      }, i * 200);
+    });
+  }, 2200);
+
+  // PHASE 4: Highlight #1 card + show insight card + leader line
+  setTimeout(() => {
+    // Highlight the first card
+    const firstCard = container.querySelector('.ride-card:first-child');
+    firstCard.classList.add('highlighted');
+
+    // Show insight card
+    document.getElementById('insightCard').classList.add('visible');
+
+    // Show leader line
+    document.getElementById('leaderLine').classList.add('visible');
+
+    // Show swipe hint & add button
+    setTimeout(() => {
+      document.getElementById('swipeHint').style.opacity = '1';
+      document.getElementById('addMore').style.opacity = '1';
+    }, 500);
+  }, 3200);
+
+  // Swipe functionality
+  setTimeout(() => {
+    document.querySelectorAll('.ride-card').forEach(card => {
+      let startX = 0, currentX = 0, isDragging = false;
+
+      const onStart = (x) => { startX = x; isDragging = true; card.style.transition = 'none'; };
+
+      const onMove = (x) => {
+        if (!isDragging) return;
+        currentX = x - startX;
+        const clamp = Math.max(-120, Math.min(120, currentX));
+        card.style.transform = `translateX(${clamp}px)`;
+        card.querySelector('.swipe-reveal.left').style.opacity = clamp < -20 ? Math.min(1, Math.abs(clamp) / 80) : 0;
+        card.querySelector('.swipe-reveal.right').style.opacity = clamp > 20 ? Math.min(1, clamp / 80) : 0;
+      };
+
+      const onEnd = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        card.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        if (Math.abs(currentX) > 100) {
+          const dir = currentX > 0 ? 1 : -1;
+          card.style.transform = `translateX(${dir * 400}px)`;
+          card.style.opacity = '0';
+          setTimeout(() => {
+            card.style.height = card.offsetHeight + 'px';
+            card.style.overflow = 'hidden';
+            card.style.transition = 'height 0.3s ease, margin 0.3s ease, padding 0.3s ease';
+            card.style.height = '0'; card.style.marginBottom = '0';
+            card.style.padding = '0 16px'; card.style.borderWidth = '0';
+          }, 250);
+        } else {
+          card.style.transform = 'translateX(0)';
+          card.querySelector('.swipe-reveal.left').style.opacity = 0;
+          card.querySelector('.swipe-reveal.right').style.opacity = 0;
+        }
+        currentX = 0;
+      };
+
+      card.addEventListener('touchstart', e => onStart(e.touches[0].clientX));
+      card.addEventListener('mousedown', e => onStart(e.clientX));
+      card.addEventListener('touchmove', e => onMove(e.touches[0].clientX));
+      card.addEventListener('mousemove', e => onMove(e.clientX));
+      card.addEventListener('touchend', onEnd);
+      card.addEventListener('mouseup', onEnd);
+      card.addEventListener('mouseleave', () => { if (isDragging) onEnd(); });
+    });
+  }, 3500);
+</script>
+
+</body>
+</html>
