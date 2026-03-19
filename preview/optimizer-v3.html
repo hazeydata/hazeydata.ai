@@ -478,6 +478,44 @@
       document.getElementById('swipeHint').style.opacity = '1';
       document.getElementById('addMore').style.opacity = '1';
     }, 500);
+
+    // PHASE 5: Auto-peek nudge on #1 card
+    setTimeout(() => {
+      const reveal = firstCard.querySelector('.swipe-reveal.right');
+
+      // Slide card right to peek the ✓
+      firstCard.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      firstCard.style.transform = 'translateX(40px)';
+      reveal.style.transition = 'opacity 0.3s ease';
+      reveal.style.opacity = '0.7';
+
+      // Hold briefly, then snap back
+      setTimeout(() => {
+        firstCard.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        firstCard.style.transform = 'translateX(0)';
+        reveal.style.opacity = '0';
+
+        // Now peek left to show ✕
+        setTimeout(() => {
+          const revealLeft = firstCard.querySelector('.swipe-reveal.left');
+          firstCard.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          firstCard.style.transform = 'translateX(-30px)';
+          revealLeft.style.transition = 'opacity 0.3s ease';
+          revealLeft.style.opacity = '0.6';
+
+          setTimeout(() => {
+            firstCard.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            firstCard.style.transform = 'translateX(0)';
+            revealLeft.style.opacity = '0';
+
+            // Clean up
+            setTimeout(() => {
+              firstCard.style.transition = '';
+            }, 350);
+          }, 500);
+        }, 400);
+      }, 700);
+    }, 1200);
   }, 3200);
 
   // Swipe functionality
