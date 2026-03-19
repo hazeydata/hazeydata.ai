@@ -164,23 +164,57 @@
     background: rgba(74, 144, 164, 0.04);
   }
 
-  /* Swipe layers */
-  .swipe-reveal {
+  /* Swipe action panels (iOS-style) */
+  .swipe-action {
     position: absolute;
-    top: 0; bottom: 0; width: 70px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; opacity: 0; transition: opacity 0.15s;
+    top: 0; bottom: 0;
+    display: flex; align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.1s;
     pointer-events: none;
+    padding: 0 20px;
+    border-radius: 16px;
   }
-  .swipe-reveal.left {
-    left: 0;
-    background: linear-gradient(90deg, rgba(166, 0, 56, 0.15), transparent);
-    border-radius: 16px 0 0 16px; color: #A60038;
+
+  .swipe-action .action-icon {
+    font-size: 18px;
+    flex-shrink: 0;
   }
-  .swipe-reveal.right {
-    right: 0;
-    background: linear-gradient(-90deg, rgba(74, 144, 164, 0.15), transparent);
-    border-radius: 0 16px 16px 0; color: #4a90a4;
+
+  .swipe-action .action-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .swipe-action.revealed .action-label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Done action — revealed on LEFT when swiping RIGHT */
+  .swipe-action.action-done {
+    left: 0; right: 50%;
+    background: #4a90a4;
+    color: #fff;
+    justify-content: flex-start;
+    border-radius: 16px 0 0 16px;
+  }
+
+  /* Remove action — revealed on RIGHT when swiping LEFT */
+  .swipe-action.action-remove {
+    right: 0; left: 50%;
+    background: #A60038;
+    color: #fff;
+    justify-content: flex-end;
+    border-radius: 0 16px 16px 0;
   }
 
   /* Card layout */
@@ -319,8 +353,8 @@
 
     <!-- User selection order: Haunted Mansion first, etc. -->
     <div class="ride-card" data-ride="haunted-mansion" data-optimized-order="3">
-      <div class="swipe-reveal left">✕</div>
-      <div class="swipe-reveal right">✓</div>
+      <div class="swipe-action action-done"><span class="action-icon">✓</span><span class="action-label">Done</span></div>
+      <div class="swipe-action action-remove"><span class="action-label">Remove</span><span class="action-icon">✕</span></div>
       <div class="card-content">
         <div class="card-rank pending" id="rank-haunted-mansion"></div>
         <div class="card-info">
@@ -335,8 +369,8 @@
     </div>
 
     <div class="ride-card" data-ride="space-mountain" data-optimized-order="2">
-      <div class="swipe-reveal left">✕</div>
-      <div class="swipe-reveal right">✓</div>
+      <div class="swipe-action action-done"><span class="action-icon">✓</span><span class="action-label">Done</span></div>
+      <div class="swipe-action action-remove"><span class="action-label">Remove</span><span class="action-icon">✕</span></div>
       <div class="card-content">
         <div class="card-rank pending" id="rank-space-mountain"></div>
         <div class="card-info">
@@ -351,8 +385,8 @@
     </div>
 
     <div class="ride-card" data-ride="seven-dwarfs" data-optimized-order="1">
-      <div class="swipe-reveal left">✕</div>
-      <div class="swipe-reveal right">✓</div>
+      <div class="swipe-action action-done"><span class="action-icon">✓</span><span class="action-label">Done</span></div>
+      <div class="swipe-action action-remove"><span class="action-label">Remove</span><span class="action-icon">✕</span></div>
       <div class="card-content">
         <div class="card-rank pending" id="rank-seven-dwarfs"></div>
         <div class="card-info">
@@ -367,8 +401,8 @@
     </div>
 
     <div class="ride-card" data-ride="pirates" data-optimized-order="4">
-      <div class="swipe-reveal left">✕</div>
-      <div class="swipe-reveal right">✓</div>
+      <div class="swipe-action action-done"><span class="action-icon">✓</span><span class="action-label">Done</span></div>
+      <div class="swipe-action action-remove"><span class="action-label">Remove</span><span class="action-icon">✕</span></div>
       <div class="card-content">
         <div class="card-rank pending" id="rank-pirates"></div>
         <div class="card-info">
@@ -385,12 +419,12 @@
   </div>
 
   <div class="swipe-hint" id="swipeHint">
-    <div class="swipe-hint-item hint-remove">
-      <span class="swipe-hint-arrow">←</span><span>Remove</span>
+    <div class="swipe-hint-item hint-done">
+      <span class="swipe-hint-arrow">→</span><span>Done</span>
     </div>
     <div class="swipe-hint-divider"></div>
-    <div class="swipe-hint-item hint-done">
-      <span>Rode it</span><span class="swipe-hint-arrow">→</span>
+    <div class="swipe-hint-item hint-remove">
+      <span>Remove</span><span class="swipe-hint-arrow">←</span>
     </div>
   </div>
 
@@ -479,42 +513,43 @@
       document.getElementById('addMore').style.opacity = '1';
     }, 500);
 
-    // PHASE 5: Auto-peek nudge on #1 card
+    // PHASE 5: Auto-peek nudge on #1 card (iOS-style reveal)
     setTimeout(() => {
-      const reveal = firstCard.querySelector('.swipe-reveal.right');
+      const donePanel = firstCard.querySelector('.action-done');
+      const removePanel = firstCard.querySelector('.action-remove');
 
-      // Slide card right to peek the ✓
-      firstCard.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-      firstCard.style.transform = 'translateX(40px)';
-      reveal.style.transition = 'opacity 0.3s ease';
-      reveal.style.opacity = '0.7';
+      // Peek RIGHT to show Done ✓ panel
+      firstCard.style.transition = 'transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      firstCard.style.transform = 'translateX(70px)';
+      donePanel.style.transition = 'opacity 0.3s ease';
+      donePanel.style.opacity = '1';
+      donePanel.classList.add('revealed');
 
-      // Hold briefly, then snap back
+      // Hold, then snap back
       setTimeout(() => {
         firstCard.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
         firstCard.style.transform = 'translateX(0)';
-        reveal.style.opacity = '0';
+        donePanel.style.opacity = '0';
+        donePanel.classList.remove('revealed');
 
-        // Now peek left to show ✕
+        // Peek LEFT to show Remove ✕ panel
         setTimeout(() => {
-          const revealLeft = firstCard.querySelector('.swipe-reveal.left');
-          firstCard.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-          firstCard.style.transform = 'translateX(-30px)';
-          revealLeft.style.transition = 'opacity 0.3s ease';
-          revealLeft.style.opacity = '0.6';
+          firstCard.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          firstCard.style.transform = 'translateX(-60px)';
+          removePanel.style.transition = 'opacity 0.3s ease';
+          removePanel.style.opacity = '1';
+          removePanel.classList.add('revealed');
 
           setTimeout(() => {
             firstCard.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
             firstCard.style.transform = 'translateX(0)';
-            revealLeft.style.opacity = '0';
+            removePanel.style.opacity = '0';
+            removePanel.classList.remove('revealed');
 
-            // Clean up
-            setTimeout(() => {
-              firstCard.style.transition = '';
-            }, 350);
-          }, 500);
-        }, 400);
-      }, 700);
+            setTimeout(() => { firstCard.style.transition = ''; }, 350);
+          }, 600);
+        }, 450);
+      }, 800);
     }, 1200);
   }, 3200);
 
@@ -528,31 +563,62 @@
       const onMove = (x) => {
         if (!isDragging) return;
         currentX = x - startX;
-        const clamp = Math.max(-120, Math.min(120, currentX));
+        const clamp = Math.max(-150, Math.min(150, currentX));
         card.style.transform = `translateX(${clamp}px)`;
-        card.querySelector('.swipe-reveal.left').style.opacity = clamp < -20 ? Math.min(1, Math.abs(clamp) / 80) : 0;
-        card.querySelector('.swipe-reveal.right').style.opacity = clamp > 20 ? Math.min(1, clamp / 80) : 0;
+
+        const doneAction = card.querySelector('.action-done');
+        const removeAction = card.querySelector('.action-remove');
+
+        // Swipe RIGHT → show Done (cyan) on left
+        if (clamp > 10) {
+          doneAction.style.opacity = Math.min(1, clamp / 50);
+          removeAction.style.opacity = 0;
+          if (clamp > 60) doneAction.classList.add('revealed');
+          else doneAction.classList.remove('revealed');
+        }
+        // Swipe LEFT → show Remove (red) on right
+        else if (clamp < -10) {
+          removeAction.style.opacity = Math.min(1, Math.abs(clamp) / 50);
+          doneAction.style.opacity = 0;
+          if (clamp < -60) removeAction.classList.add('revealed');
+          else removeAction.classList.remove('revealed');
+        }
+        else {
+          doneAction.style.opacity = 0;
+          removeAction.style.opacity = 0;
+          doneAction.classList.remove('revealed');
+          removeAction.classList.remove('revealed');
+        }
       };
 
       const onEnd = () => {
         if (!isDragging) return;
         isDragging = false;
+
+        const doneAction = card.querySelector('.action-done');
+        const removeAction = card.querySelector('.action-remove');
+
         card.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-        if (Math.abs(currentX) > 100) {
+
+        if (Math.abs(currentX) > 120) {
+          // Full swipe — trigger action
           const dir = currentX > 0 ? 1 : -1;
           card.style.transform = `translateX(${dir * 400}px)`;
           card.style.opacity = '0';
           setTimeout(() => {
             card.style.height = card.offsetHeight + 'px';
             card.style.overflow = 'hidden';
-            card.style.transition = 'height 0.3s ease, margin 0.3s ease, padding 0.3s ease';
+            card.style.transition = 'height 0.3s ease, margin 0.3s ease, padding 0.3s ease, gap 0.3s ease';
             card.style.height = '0'; card.style.marginBottom = '0';
             card.style.padding = '0 16px'; card.style.borderWidth = '0';
           }, 250);
         } else {
+          // Snap back
           card.style.transform = 'translateX(0)';
-          card.querySelector('.swipe-reveal.left').style.opacity = 0;
-          card.querySelector('.swipe-reveal.right').style.opacity = 0;
+          doneAction.style.opacity = 0;
+          removeAction.style.opacity = 0;
+          doneAction.classList.remove('revealed');
+          removeAction.classList.remove('revealed');
         }
         currentX = 0;
       };
