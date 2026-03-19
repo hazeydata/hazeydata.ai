@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merlin UX Demo - My Must-Dos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            background: #0a1628;
+            border-radius: 40px;
+            border: 3px solid #1a2332;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a1628 0%, #0f1f3a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .merlin-section {
+            padding: 60px 24px 24px 24px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .merlin-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .merlin-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #4a90a4;
+            font-weight: 500;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 32px;
+        }
+        
+        .empty-state {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .add-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(74, 144, 164, 0.1);
+            border: 2px solid #4a90a4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .add-button:before {
+            content: '+';
+            font-size: 32px;
+            color: #4a90a4;
+            font-weight: 300;
+        }
+        
+        .add-button.pressed {
+            transform: scale(0.9);
+        }
+        
+        .add-subtitle {
+            color: #8ba3b8;
+            font-size: 16px;
+        }
+        
+        .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-backdrop.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .bottom-sheet {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0a1628;
+            border-radius: 24px 24px 0 0;
+            border: 1px solid #1a2332;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 80%;
+            overflow: hidden;
+        }
+        
+        .bottom-sheet.active {
+            transform: translateY(0);
+        }
+        
+        .sheet-header {
+            padding: 24px;
+            border-bottom: 1px solid #1a2332;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .sheet-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .map-toggle {
+            width: 24px;
+            height: 24px;
+            background: rgba(74, 144, 164, 0.2);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .map-toggle:before {
+            content: '🗺️';
+            font-size: 12px;
+        }
+        
+        .map-toggle.active {
+            background: #4a90a4;
+        }
+        
+        .slot-indicator {
+            display: flex;
+            gap: 4px;
+            margin: 16px 24px;
+        }
+        
+        .slot {
+            height: 4px;
+            flex: 1;
+            background: #1a2332;
+            border-radius: 2px;
+            transition: background 0.3s ease;
+        }
+        
+        .slot.filled {
+            background: #4a90a4;
+        }
+        
+        .search-bar {
+            margin: 0 24px 16px 24px;
+            padding: 12px 16px;
+            background: #1a2332;
+            border-radius: 12px;
+            color: #8ba3b8;
+            font-size: 16px;
+            border: none;
+            outline: none;
+        }
+        
+        .mini-map {
+            margin: 0 24px 16px 24px;
+            height: 150px;
+            background: #1a2332;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: all 0.3s ease;
+        }
+        
+        .mini-map.active {
+            opacity: 1;
+            transform: scaleY(1);
+        }
+        
+        .map-background {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #0f1f3a 0%, #1a2332 100%);
+            position: relative;
+        }
+        
+        .map-pin {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #4a90a4;
+            border-radius: 50%;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+        
+        .map-pin.active {
+            opacity: 1;
+            box-shadow: 0 0 12px #4a90a4;
+            transform: scale(1.5);
+        }
+        
+        .pin-space-mountain { top: 20%; left: 70%; }
+        .pin-haunted-mansion { top: 60%; left: 30%; }
+        .pin-pirates { top: 70%; left: 80%; }
+        .pin-seven-dwarfs { top: 40%; left: 50%; }
+        
+        .lands-section {
+            padding: 0 24px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .land-card {
+            background: #1a2332;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid;
+        }
+        
+        .land-fantasyland { border-left-color: #ff6b9d; }
+        .land-tomorrowland { border-left-color: #4a90a4; }
+        .land-adventureland { border-left-color: #ffa500; }
+        .land-frontierland { border-left-color: #8b4513; }
+        
+        .land-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        
+        .ride-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .ride-row:last-child {
+            border-bottom: none;
+        }
+        
+        .ride-row.selected {
+            background: rgba(74, 144, 164, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .ride-info {
+            flex: 1;
+        }
+        
+        .ride-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+        
+        .ride-description {
+            font-size: 12px;
+            color: #8ba3b8;
+        }
+        
+        .ride-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #4a90a4;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        
+        .ride-checkbox.checked {
+            background: #4a90a4;
+        }
+        
+        .ride-checkbox.checked:after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .done-button {
+            margin: 24px;
+            padding: 16px;
+            background: #1a2332;
+            color: #8ba3b8;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .done-button.active {
+            background: #4a90a4;
+            color: #fff;
+        }
+        
+        .cards-container {
+            flex: 1;
+            padding: 0 24px;
+            display: none;
+        }
+        
+        .cards-container.active {
+            display: block;
+        }
+        
+        .ride-card {
+            background: rgba(26, 35, 50, 0.8);
+            border: 1px solid #1a2332;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .ride-card.highlighted {
+            border-color: #4a90a4;
+            box-shadow: 0 0 20px rgba(74, 144, 164, 0.3);
+        }
+        
+        .rank-badge {
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 32px;
+            height: 32px;
+            background: #4a90a4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            font-size: 14px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+        
+        .rank-badge.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .rank-badge.blank {
+            background: #1a2332;
+            color: #8ba3b8;
+        }
+        
+        .card-content {
+            padding-left: 12px;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        
+        .card-description {
+            font-size: 14px;
+            color: #8ba3b8;
+        }
+        
+        .swipe-pill {
+            position: absolute;
+            right: -100px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .swipe-pill.done {
+            background: #4a90a4;
+            color: #fff;
+        }
+        
+        .swipe-pill.remove {
+            background: #A60038;
+            color: #fff;
+            right: 100px;
+        }
+        
+        .insight-card {
+            background: rgba(74, 144, 164, 0.1);
+            border: 1px solid #4a90a4;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .insight-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .insight-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #4a90a4;
+            font-weight: 500;
+        }
+        
+        .insight-subtitle {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        
+        .insight-description {
+            font-size: 13px;
+            color: #8ba3b8;
+            line-height: 1.4;
+        }
+        
+        .leader-line {
+            position: absolute;
+            left: 50%;
+            bottom: -20px;
+            width: 2px;
+            height: 20px;
+            background: repeating-linear-gradient(
+                to bottom,
+                #4a90a4 0px,
+                #4a90a4 4px,
+                transparent 4px,
+                transparent 8px
+            );
+            opacity: 0;
+            animation: leaderLine 0.5s ease-in-out 0.5s forwards;
+        }
+        
+        @keyframes leaderLine {
+            to { opacity: 1; }
+        }
+        
+        .celebration-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: #4a90a4;
+            opacity: 0;
+            animation: celebrate 1s ease-in-out forwards;
+        }
+        
+        @keyframes celebrate {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .replay-button {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: #4a90a4;
+            color: #fff;
+            border: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .replay-button.visible {
+            opacity: 1;
+        }
+        
+        .replay-button:hover {
+            background: #5ba0b4;
+            transform: translateX(-50%) scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="screen">
+            <div class="merlin-section">
+                <div class="merlin-header">
+                    <span class="merlin-label">✦ Merlin</span>
+                </div>
+                <h2 class="section-title">My Must-Dos</h2>
+                
+                <div class="empty-state" id="emptyState">
+                    <div class="add-button" id="addButton">
+                    </div>
+                    <div class="add-subtitle">Add rides to your plan</div>
+                </div>
+                
+                <div class="cards-container" id="cardsContainer">
+                    <div class="insight-card" id="insightCard">
+                        <div class="insight-header">
+                            <span class="insight-title">✦ Merlin's Pick</span>
+                        </div>
+                        <div class="insight-subtitle">Ride this first ↓</div>
+                        <div class="insight-description">
+                            Wait times for Mine Train are at their lowest right now. Heading here first saves you up to 37 minutes compared to this afternoon.
+                        </div>
+                        <div class="leader-line"></div>
+                    </div>
+                    
+                    <div class="ride-card" id="card1" data-ride="seven-dwarfs">
+                        <div class="rank-badge blank" id="badge1">—</div>
+                        <div class="card-content">
+                            <div class="card-title">Seven Dwarfs Mine Train</div>
+                            <div class="card-description">Family coaster through the diamond mine</div>
+                        </div>
+                        <div class="swipe-pill done">✓ Done</div>
+                        <div class="swipe-pill remove">Remove ✕</div>
+                    </div>
+                    
+                    <div class="ride-card" id="card2" data-ride="space-mountain">
+                        <div class="rank-badge blank" id="badge2">—</div>
+                        <div class="card-content">
+                            <div class="card-title">Space Mountain</div>
+                            <div class="card-description">Indoor roller coaster in the dark</div>
+                        </div>
+                    </div>
+                    
+                    <div class="ride-card" id="card3" data-ride="haunted-mansion">
+                        <div class="rank-badge blank" id="badge3">—</div>
+                        <div class="card-content">
+                            <div class="card-title">Haunted Mansion</div>
+                            <div class="card-description">Spooky boat ride with 999 ghosts</div>
+                        </div>
+                    </div>
+                    
+                    <div class="ride-card" id="card4" data-ride="pirates">
+                        <div class="rank-badge blank" id="badge4">—</div>
+                        <div class="card-content">
+                            <div class="card-title">Pirates of the Caribbean</div>
+                            <div class="card-description">Classic boat ride through pirate scenes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-backdrop" id="modalBackdrop">
+                <div class="bottom-sheet" id="bottomSheet">
+                    <div class="sheet-header">
+                        <div class="sheet-title">
+                            Add Rides / Magic Kingdom
+                            <div class="map-toggle" id="mapToggle"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="slot-indicator">
+                        <div class="slot" id="slot1"></div>
+                        <div class="slot" id="slot2"></div>
+                        <div class="slot" id="slot3"></div>
+                        <div class="slot" id="slot4"></div>
+                    </div>
+                    
+                    <input class="search-bar" placeholder="Search rides..." readonly>
+                    
+                    <div class="mini-map" id="miniMap">
+                        <div class="map-background">
+                            <div class="map-pin pin-space-mountain" id="pinSpace"></div>
+                            <div class="map-pin pin-haunted-mansion" id="pinHaunted"></div>
+                            <div class="map-pin pin-pirates" id="pinPirates"></div>
+                            <div class="map-pin pin-seven-dwarfs" id="pinSeven"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="lands-section">
+                        <div class="land-card land-fantasyland">
+                            <div class="land-title">Fantasyland</div>
+                            <div class="ride-row" data-ride="seven-dwarfs">
+                                <div class="ride-info">
+                                    <div class="ride-name">Seven Dwarfs Mine Train</div>
+                                    <div class="ride-description">Family coaster through the diamond mine</div>
+                                </div>
+                                <div class="ride-checkbox"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="land-card land-tomorrowland">
+                            <div class="land-title">Tomorrowland</div>
+                            <div class="ride-row" data-ride="space-mountain">
+                                <div class="ride-info">
+                                    <div class="ride-name">Space Mountain</div>
+                                    <div class="ride-description">Indoor roller coaster in the dark</div>
+                                </div>
+                                <div class="ride-checkbox"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="land-card land-adventureland">
+                            <div class="land-title">Adventureland</div>
+                            <div class="ride-row" data-ride="pirates">
+                                <div class="ride-info">
+                                    <div class="ride-name">Pirates of the Caribbean</div>
+                                    <div class="ride-description">Classic boat ride through pirate scenes</div>
+                                </div>
+                                <div class="ride-checkbox"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="land-card land-frontierland">
+                            <div class="land-title">Frontierland</div>
+                            <div class="ride-row" data-ride="haunted-mansion">
+                                <div class="ride-info">
+                                    <div class="ride-name">Haunted Mansion</div>
+                                    <div class="ride-description">Spooky boat ride with 999 ghosts</div>
+                                </div>
+                                <div class="ride-checkbox"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="done-button" id="doneButton">Done</button>
+                </div>
+            </div>
+            
+            <div class="celebration-text" id="celebrationText">Rode it! 🎉</div>
+            <button class="replay-button" id="replayButton">↻ Replay Demo</button>
+        </div>
+    </div>
+    
+    <script>
+        let animationTimeouts = [];
+        
+        function clearAllTimeouts() {
+            animationTimeouts.forEach(timeout => clearTimeout(timeout));
+            animationTimeouts = [];
+        }
+        
+        function addTimeout(callback, delay) {
+            const timeout = setTimeout(callback, delay);
+            animationTimeouts.push(timeout);
+        }
+        
+        function resetDemo() {
+            clearAllTimeouts();
+            
+            // Reset all elements to initial state
+            document.getElementById('emptyState').style.display = 'flex';
+            document.getElementById('cardsContainer').classList.remove('active');
+            document.getElementById('modalBackdrop').classList.remove('active');
+            document.getElementById('bottomSheet').classList.remove('active');
+            document.getElementById('addButton').classList.remove('pressed');
+            document.getElementById('mapToggle').classList.remove('active');
+            document.getElementById('miniMap').classList.remove('active');
+            document.getElementById('doneButton').classList.remove('active');
+            document.getElementById('insightCard').classList.remove('visible');
+            document.getElementById('replayButton').classList.remove('visible');
+            document.getElementById('celebrationText').style.display = 'none';
+            
+            // Reset slots
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`slot${i}`).classList.remove('filled');
+            }
+            
+            // Reset checkboxes
+            document.querySelectorAll('.ride-checkbox').forEach(checkbox => {
+                checkbox.classList.remove('checked');
+            });
+            
+            // Reset ride rows
+            document.querySelectorAll('.ride-row').forEach(row => {
+                row.classList.remove('selected');
+            });
+            
+            // Reset map pins
+            document.querySelectorAll('.map-pin').forEach(pin => {
+                pin.classList.remove('active');
+            });
+            
+            // Reset cards to original order and state
+            const container = document.getElementById('cardsContainer');
+            const cards = [
+                document.getElementById('card1'),
+                document.getElementById('card2'),
+                document.getElementById('card3'),
+                document.getElementById('card4')
+            ];
+            
+            // Reset card positions and styles
+            cards.forEach((card, index) => {
+                card.style.transform = '';
+                card.style.opacity = '1';
+                card.classList.remove('highlighted');
+                const badge = document.getElementById(`badge${index + 1}`);
+                badge.classList.remove('visible');
+                badge.classList.add('blank');
+                badge.textContent = '—';
+            });
+            
+            // Reset card order to original user selection order
+            cards.forEach(card => container.appendChild(card));
+        }
+        
+        function startDemo() {
+            resetDemo();
+            
+            // Phase 1: Empty State (0-3s)
+            addTimeout(() => {
+                // Phase 2: Picker Opens (3-5s)
+                document.getElementById('addButton').classList.add('pressed');
+                
+                addTimeout(() => {
+                    document.getElementById('modalBackdrop').classList.add('active');
+                    document.getElementById('bottomSheet').classList.add('active');
+                }, 200);
+            }, 3000);
+            
+            // Phase 3: Map Toggle (5-7s)
+            addTimeout(() => {
+                document.getElementById('mapToggle').classList.add('active');
+                document.getElementById('miniMap').classList.add('active');
+            }, 5000);
+            
+            // Phase 4: Select 4 Rides (7-13s)
+            const rides = ['seven-dwarfs', 'space-mountain', 'haunted-mansion', 'pirates'];
+            const pins = ['pinSeven', 'pinSpace', 'pinHaunted', 'pinPirates'];
+            
+            rides.forEach((ride, index) => {
+                addTimeout(() => {
+                    // Select ride
+                    const rideRow = document.querySelector(`[data-ride="${ride}"]`);
+                    const checkbox = rideRow.querySelector('.ride-checkbox');
+                    const slot = document.getElementById(`slot${index + 1}`);
+                    const pin = document.getElementById(pins[index]);
+                    
+                    rideRow.classList.add('selected');
+                    checkbox.classList.add('checked');
+                    slot.classList.add('filled');
+                    pin.classList.add('active');
+                    
+                    // Activate done button after first selection
+                    if (index === 0) {
+                        document.getElementById('doneButton').classList.add('active');
+                    }
+                }, 7000 + (index * 1500));
+            });
+            
+            // Phase 5: Done → Optimizer (13-16s)
+            addTimeout(() => {
+                document.getElementById('modalBackdrop').classList.remove('active');
+                document.getElementById('bottomSheet').classList.remove('active');
+                
+                addTimeout(() => {
+                    document.getElementById('emptyState').style.display = 'none';
+                    document.getElementById('cardsContainer').classList.add('active');
+                    
+                    // Show cards in user selection order with blank badges
+                    const badges = ['badge1', 'badge2', 'badge3', 'badge4'];
+                    badges.forEach(badgeId => {
+                        const badge = document.getElementById(badgeId);
+                        badge.classList.add('visible');
+                    });
+                }, 500);
+            }, 13000);
+            
+            // Phase 6: Animated Reorder (16-18s)
+            addTimeout(() => {
+                // Get current positions
+                const container = document.getElementById('cardsContainer');
+                const cards = [
+                    document.getElementById('card1'),
+                    document.getElementById('card2'),
+                    document.getElementById('card3'),
+                    document.getElementById('card4')
+                ];
+                
+                // Calculate positions before reorder
+                const originalPositions = cards.map(card => ({
+                    top: card.offsetTop,
+                    height: card.offsetHeight
+                }));
+                
+                // Reorder to optimized order (Seven Dwarfs, Space Mountain, Haunted, Pirates)
+                const optimizedOrder = [
+                    document.getElementById('card1'), // Seven Dwarfs
+                    document.getElementById('card2'), // Space Mountain  
+                    document.getElementById('card3'), // Haunted Mansion
+                    document.getElementById('card4')  // Pirates
+                ];
+                
+                // Apply FLIP animation
+                optimizedOrder.forEach((card, newIndex) => {
+                    const oldIndex = cards.indexOf(card);
+                    const deltaY = originalPositions[oldIndex].top - (newIndex * (originalPositions[0].height + 12));
+                    
+                    if (deltaY !== 0) {
+                        card.style.transform = `translateY(${deltaY}px)`;
+                        card.style.transition = 'none';
+                        
+                        // Animate to new position
+                        requestAnimationFrame(() => {
+                            card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+                            card.style.transform = 'translateY(0)';
+                        });
+                    }
+                });
+                
+                // Reorder in DOM
+                addTimeout(() => {
+                    optimizedOrder.forEach(card => container.appendChild(card));
+                }, 300);
+            }, 16000);
+            
+            // Phase 7: Rank Reveal (18-20s)
+            addTimeout(() => {
+                const badges = [
+                    { id: 'badge1', rank: '1' },
+                    { id: 'badge2', rank: '2' },
+                    { id: 'badge3', rank: '3' },
+                    { id: 'badge4', rank: '4' }
+                ];
+                
+                badges.forEach(({ id, rank }, index) => {
+                    addTimeout(() => {
+                        const badge = document.getElementById(id);
+                        badge.classList.remove('blank');
+                        badge.textContent = rank;
+                        
+                        if (rank === '1') {
+                            document.getElementById('card1').classList.add('highlighted');
+                        }
+                    }, index * 300);
+                });
+            }, 18000);
+            
+            // Phase 8: Insight Card (20-22s)
+            addTimeout(() => {
+                document.getElementById('insightCard').classList.add('visible');
+            }, 20000);
+            
+            // Phase 9: Swipe Nudge (22-24s)
+            addTimeout(() => {
+                const card1 = document.getElementById('card1');
+                
+                // Peek right
+                card1.style.transform = 'translateX(50px)';
+                card1.style.transition = 'transform 0.3s ease';
+                
+                addTimeout(() => {
+                    card1.style.transform = 'translateX(0)';
+                    
+                    addTimeout(() => {
+                        // Peek left
+                        card1.style.transform = 'translateX(-50px)';
+                        
+                        addTimeout(() => {
+                            card1.style.transform = 'translateX(0)';
+                        }, 300);
+                    }, 400);
+                }, 300);
+            }, 22000);
+            
+            // Phase 10: Swipe Demo (24-27s)
+            addTimeout(() => {
+                const card1 = document.getElementById('card1');
+                
+                // Swipe right
+                card1.style.transform = 'translateX(400px) rotate(15deg)';
+                card1.style.opacity = '0';
+                card1.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+                
+                addTimeout(() => {
+                    // Remove card and update remaining ranks
+                    card1.style.display = 'none';
+                    
+                    // Update ranks for remaining cards
+                    document.getElementById('badge2').textContent = '1';
+                    document.getElementById('badge3').textContent = '2';
+                    document.getElementById('badge4').textContent = '3';
+                    
+                    // Highlight new #1
+                    document.getElementById('card2').classList.add('highlighted');
+                }, 500);
+            }, 24000);
+            
+            // Phase 11: End State (27-30s)
+            addTimeout(() => {
+                // Show celebration
+                const celebrationText = document.getElementById('celebrationText');
+                celebrationText.style.display = 'block';
+                celebrationText.style.animation = 'celebrate 1s ease-in-out forwards';
+                
+                addTimeout(() => {
+                    celebrationText.style.display = 'none';
+                    document.getElementById('replayButton').classList.add('visible');
+                }, 1000);
+            }, 27000);
+        }
+        
+        // Start demo on load
+        document.addEventListener('DOMContentLoaded', () => {
+            startDemo();
+        });
+        
+        // Replay button
+        document.getElementById('replayButton').addEventListener('click', () => {
+            startDemo();
+        });
+    </script>
+</body>
+</html>
