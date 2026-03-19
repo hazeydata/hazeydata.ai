@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 390px;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: white;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Dynamic background */
+  .bg {
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 400px 300px at 50% 15%, rgba(65, 105, 225, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse 350px 200px at 70% 60%, rgba(166, 0, 56, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 300px 200px at 20% 80%, rgba(74, 144, 164, 0.10) 0%, transparent 60%),
+      linear-gradient(135deg, 
+        #0a1628 0%, 
+        #0d1a35 20%, 
+        #101540 40%, 
+        #13104a 60%, 
+        #150b45 80%, 
+        #0d0a28 100%);
+    z-index: 0;
+  }
+
+  .stars { 
+    position: fixed; 
+    inset: 0; 
+    z-index: 1; 
+    overflow: hidden; 
+  }
+  
+  .star { 
+    position: absolute; 
+    background: white; 
+    border-radius: 50%;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.1); }
+  }
+
+  /* ─── TOP: CROWD CARD ─── */
+  .crowd-card-section {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+  }
+
+  .watermark {
+    margin-top: 28px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-align: center;
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .park-name {
+    margin-top: 12px;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.85) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .wti-value {
+    font-size: 84px;
+    font-weight: 200;
+    letter-spacing: -4px;
+    line-height: 0.95;
+    margin-top: 4px;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 4px 12px rgba(255,255,255,0.1));
+    animation: valueGlow 4s ease-in-out infinite;
+  }
+
+  @keyframes valueGlow {
+    0%, 100% { filter: drop-shadow(0 4px 12px rgba(255,255,255,0.1)); }
+    50% { filter: drop-shadow(0 6px 20px rgba(255,255,255,0.2)); }
+  }
+
+  .crowd-level {
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 6px;
+    letter-spacing: -0.2px;
+  }
+
+  .hi-lo {
+    font-size: 17px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Glass cards shared */
+  .glass-card {
+    width: 100%;
+    background: rgba(135, 155, 195, 0.09);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 0.8px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 2px 8px rgba(255, 255, 255, 0.05) inset;
+    position: relative;
+  }
+
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+    pointer-events: none;
+  }
+
+  /* ─── SPECTRUM CARD ─── */
+  .spectrum-card {
+    margin-top: 16px;
+  }
+
+  .card-desc {
+    padding: 14px 18px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: -0.1px;
+  }
+
+  .card-divider {
+    height: 0.8px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.08) 80%, transparent 100%);
+    margin: 0 18px;
+  }
+
+  .spectrum-section {
+    padding: 14px 18px 14px;
+  }
+
+  .spectrum-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .spectrum-pill {
+    width: 26px; height: 26px;
+    border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    background: rgba(50, 75, 140, 0.5);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  .spectrum-bar-container {
+    flex: 1;
+    position: relative;
+    height: 18px;
+  }
+
+  .spectrum-bar {
+    width: 100%;
+    height: 100%;
+    border-radius: 9px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) inset, 0 1px 3px rgba(255,255,255,0.1);
+    border: 0.5px solid rgba(255,255,255,0.05);
+  }
+
+  .now-triangle {
+    position: absolute;
+    top: -12px;
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid rgba(255,255,255,0.9);
+    transform: translateX(-6px);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+
+  .time-labels-row {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 8px;
+    gap: 8px;
+  }
+
+  .time-labels-spacer { width: 26px; flex-shrink: 0; }
+
+  .time-labels {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.25);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .time-labels .time-bold {
+    font-weight: 800;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* ─── 7-DAY FORECAST ─── */
+  .forecast-card {
+    width: 100%;
+    margin-top: 12px;
+    background: rgba(135, 155, 195, 0.09);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 0.8px solid rgba(255,255,255,0.12);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 2px 8px rgba(255,255,255,0.05) inset;
+  }
+
+  .forecast-header {
+    padding: 12px 18px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    border-bottom: 0.8px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .forecast-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 18px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.05);
+  }
+
+  .forecast-row:last-child { border-bottom: none; }
+
+  .forecast-day {
+    width: 48px;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .forecast-dot {
+    width: 10px; height: 10px;
+    border-radius: 5px;
+    margin-left: 6px; margin-right: 12px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+  }
+
+  .forecast-lo, .forecast-hi {
+    width: 28px;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .forecast-lo { text-align: right; margin-right: 8px; }
+  .forecast-hi { text-align: left; margin-left: 8px; }
+
+  .forecast-bar-container {
+    flex: 1;
+    height: 5px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    position: relative;
+    overflow: visible;
+  }
+
+  .forecast-bar {
+    position: absolute;
+    height: 100%;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(255,255,255,0.1);
+  }
+
+  .forecast-now-dot {
+    position: absolute;
+    width: 7px; height: 7px;
+    border-radius: 4px;
+    background: white;
+    top: -1px;
+    box-shadow: 0 0 6px rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.4);
+    transform: translateX(-3.5px);
+  }
+
+  /* ─── SECTION DIVIDER ─── */
+  .section-divider {
+    margin: 20px 20px 16px;
+    position: relative;
+    z-index: 2;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 30%, rgba(255,255,255,0.12) 70%, transparent 100%);
+  }
+
+  /* ─── BOTTOM: DENSITY + INFO CARDS ─── */
+  .density-section {
+    position: relative;
+    z-index: 2;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card-header {
+    padding: 14px 18px 0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Crowd Density */
+  .density-card { padding: 0 18px 18px; }
+
+  .density-value {
+    font-size: 56px;
+    font-weight: 200;
+    letter-spacing: -3px;
+    margin-top: 4px;
+    line-height: 1;
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 8px rgba(255,255,255,0.1));
+  }
+
+  .density-label {
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+    margin-top: 2px;
+    letter-spacing: -0.3px;
+  }
+
+  .density-scale {
+    margin-top: 14px;
+    position: relative;
+    height: 8px;
+    border-radius: 4px;
+    overflow: visible;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) inset;
+    border: 0.5px solid rgba(255,255,255,0.05);
+  }
+
+  .density-scale-bar {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+  }
+
+  .density-indicator {
+    position: absolute;
+    top: -6px;
+    width: 20px; height: 20px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 100%);
+    border: 2.5px solid rgba(0,0,0,0.15);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.35), 0 1px 3px rgba(255,255,255,0.3) inset;
+    transform: translateX(-10px);
+  }
+
+  .density-desc {
+    margin-top: 14px;
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .density-compare {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* Events card */
+  .events-card { padding: 0 18px 16px; }
+
+  .event-row {
+    display: flex;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  }
+
+  .event-row:last-child { border-bottom: none; }
+
+  .event-time {
+    width: 70px;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .event-icon { font-size: 18px; margin-right: 10px; flex-shrink: 0; }
+
+  .event-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    flex: 1;
+  }
+
+  .event-badge {
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .event-badge.ended {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.4);
+  }
+
+  .event-badge.tonight {
+    background: linear-gradient(135deg, rgba(255,165,0,0.8) 0%, rgba(255,140,0,1) 100%);
+    color: white;
+    box-shadow: 0 2px 6px rgba(255,165,0,0.3);
+  }
+
+  /* 2-column mini cards */
+  .two-col {
+    display: flex;
+    gap: 12px;
+  }
+
+  .two-col .glass-card { flex: 1; }
+
+  .mini-card { padding: 0 16px 14px; }
+
+  .mini-value {
+    font-size: 36px;
+    font-weight: 200;
+    letter-spacing: -1.5px;
+    margin-top: 4px;
+    line-height: 1;
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .mini-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.8);
+    margin-top: 2px;
+  }
+
+  .mini-desc {
+    margin-top: 8px;
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* Footer */
+  .footer-text {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 20px 0 24px;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(90deg, rgba(75,175,175,0.5) 0%, rgba(75,175,175,0.8) 50%, rgba(75,175,175,0.5) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.5px;
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .wti-value, .star, .density-indicator { animation: none !important; }
+  }
+
+  @media (prefers-contrast: high) {
+    .glass-card {
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(0,0,0,0.7);
+    }
+  }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="stars" id="stars"></div>
+
+<!-- ═══════ TOP: CROWD CARD ═══════ -->
+<div class="crowd-card-section">
+  <div class="watermark">WAIT TIME INDEX</div>
+  <div class="park-name">Magic Kingdom</div>
+  <div class="wti-value">15</div>
+  <div class="crowd-level">Low Crowds</div>
+  <div class="hi-lo">L:7 &nbsp; H:16</div>
+
+  <div class="glass-card spectrum-card">
+    <div class="card-desc">
+      Moderate crowds expected today. Peak around 2PM. Early Entry ☀️ available for resort guests.
+    </div>
+    <div class="card-divider"></div>
+    <div class="spectrum-section">
+      <div class="spectrum-row">
+        <div class="spectrum-pill">☀️</div>
+        <div class="spectrum-bar-container">
+          <div class="spectrum-bar" id="spectrumBar"></div>
+          <div class="now-triangle" id="nowTriangle"></div>
+        </div>
+      </div>
+      <div class="time-labels-row">
+        <div class="time-labels-spacer"></div>
+        <div class="time-labels" id="timeLabels"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="forecast-card">
+    <div class="forecast-header">📅 7-Day Crowd Forecast</div>
+    <div id="forecastRows"></div>
+  </div>
+</div>
+
+<!-- ═══════ DIVIDER ═══════ -->
+<div class="section-divider"></div>
+
+<!-- ═══════ BOTTOM: DENSITY + INFO ═══════ -->
+<div class="density-section">
+
+  <!-- Crowd Density -->
+  <div class="glass-card">
+    <div class="card-header">🏰 Crowd Density</div>
+    <div class="density-card">
+      <div class="density-value">7</div>
+      <div class="density-label">Feels Crowded</div>
+      <div class="density-scale">
+        <div class="density-scale-bar" id="densityBar"></div>
+        <div class="density-indicator" id="densityDot"></div>
+      </div>
+      <div class="density-desc">
+        Magic Kingdom feels busy even on lighter wait days. Main Street and Fantasyland walkways typically congested by midday.
+      </div>
+      <div class="density-compare">Based on 142 visitor reports today</div>
+    </div>
+  </div>
+
+  <!-- Tonight's Events -->
+  <div class="glass-card">
+    <div class="card-header">🎆 Today's Events</div>
+    <div class="events-card">
+      <div class="event-row">
+        <div class="event-time">8:30 AM</div>
+        <div class="event-icon">☀️</div>
+        <div class="event-name">Early Entry</div>
+        <div class="event-badge ended">Ended</div>
+      </div>
+      <div class="event-row">
+        <div class="event-time">2:00 PM</div>
+        <div class="event-icon">🎭</div>
+        <div class="event-name">Festival of Fantasy Parade</div>
+      </div>
+      <div class="event-row">
+        <div class="event-time">5:30 PM</div>
+        <div class="event-icon">🏰</div>
+        <div class="event-name">Mickey's Celebration Cavalcade</div>
+      </div>
+      <div class="event-row">
+        <div class="event-time">9:15 PM</div>
+        <div class="event-icon">🎆</div>
+        <div class="event-name">Happily Ever After</div>
+        <div class="event-badge tonight">Tonight</div>
+      </div>
+      <div class="event-row">
+        <div class="event-time">11:00 PM</div>
+        <div class="event-icon">🌙</div>
+        <div class="event-name">Park Close</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2-Column: Park Hours + Rides -->
+  <div class="two-col">
+    <div class="glass-card">
+      <div class="card-header">🌅 Park Hours</div>
+      <div class="mini-card">
+        <div class="mini-value">9–11</div>
+        <div class="mini-label">AM — PM</div>
+        <div class="mini-desc">Early Entry from 8:30 AM. No extended evening hours today.</div>
+      </div>
+    </div>
+    <div class="glass-card">
+      <div class="card-header">🎢 Rides Operating</div>
+      <div class="mini-card">
+        <div class="mini-value">32<span style="font-size:18px;font-weight:500;color:rgba(255,255,255,0.5)"> / 35</span></div>
+        <div class="mini-label">Open Now</div>
+        <div class="mini-desc">Tron, Splash Mountain closed for maintenance.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2-Column: Weather + vs Average -->
+  <div class="two-col">
+    <div class="glass-card">
+      <div class="card-header">🌡️ Weather</div>
+      <div class="mini-card">
+        <div class="mini-value">84°</div>
+        <div class="mini-label">Partly Sunny</div>
+        <div class="mini-desc">20% chance of rain after 4PM.</div>
+      </div>
+    </div>
+    <div class="glass-card">
+      <div class="card-header">📉 vs Average</div>
+      <div class="mini-card">
+        <div class="mini-value" style="background: linear-gradient(135deg, rgba(120,200,255,1) 0%, rgba(120,200,255,0.8) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">−3</div>
+        <div class="mini-label">Below Average</div>
+        <div class="mini-desc">Lighter than a typical March Tuesday.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-text">hazeydata.ai • Theme Park Crowd Report</div>
+
+<script>
+  // ─── Benedictus color scale ───
+  const BENEDICTUS = [
+    [10,47,143],[48,95,209],[90,150,234],[155,196,242],[193,221,252],
+    [233,244,255],[255,224,233],[255,177,201],[235,66,123],[166,0,56]
+  ];
+
+  function benedictus(t) {
+    t = Math.max(0, Math.min(1, t));
+    const idx = t * (BENEDICTUS.length - 1);
+    const i = Math.min(Math.floor(idx), BENEDICTUS.length - 2);
+    const f = idx - i;
+    return BENEDICTUS[i].map((v,j) => Math.round(v + (BENEDICTUS[i+1][j] - v) * f));
+  }
+
+  const wtiMax = 45;
+
+  // ─── Stars ───
+  const starsEl = document.getElementById('stars');
+  const rng = (function(s){return function(){s=s*16807%2147483647;return(s-1)/2147483646;}})(42);
+  for (let i = 0; i < 80; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = rng() < 0.8 ? (1.2 + rng() * 0.8) : (2.2 + rng() * 1.3);
+    star.style.cssText = `width:${size}px;height:${size}px;left:${rng()*100}%;top:${rng()*30}%;opacity:${0.1+rng()*0.5};animation-delay:${rng()*3}s;`;
+    starsEl.appendChild(star);
+  }
+
+  // ─── Spectrum bar (today's WTI curve) ───
+  const todayCurve = [
+    {"t":"08:30","w":7.4},{"t":"09:00","w":8.7},{"t":"09:30","w":10.5},
+    {"t":"10:00","w":12.0},{"t":"10:30","w":13.2},{"t":"11:00","w":14.2},
+    {"t":"11:30","w":14.5},{"t":"12:00","w":14.6},{"t":"12:30","w":14.2},
+    {"t":"13:00","w":14.4},{"t":"13:30","w":15.3},{"t":"14:00","w":15.5},
+    {"t":"14:30","w":15.7},{"t":"15:00","w":14.8},{"t":"15:30","w":14.1},
+    {"t":"16:00","w":15.0},{"t":"16:30","w":15.0},{"t":"17:00","w":15.1},
+    {"t":"17:30","w":15.3},{"t":"18:00","w":15.2},{"t":"18:30","w":14.7},
+    {"t":"19:00","w":13.8},{"t":"19:30","w":12.9},{"t":"20:00","w":11.0},
+    {"t":"20:30","w":9.7},{"t":"21:00","w":9.2},{"t":"21:30","w":9.1},
+    {"t":"22:00","w":9.0},{"t":"22:30","w":7.9},{"t":"23:00","w":7.2}
+  ];
+
+  const bar = document.getElementById('spectrumBar');
+  const stops = todayCurve.map((d, i) => {
+    const pct = (i / (todayCurve.length - 1)) * 100;
+    const c = benedictus(Math.min(d.w / wtiMax, 1.0));
+    return `rgb(${c[0]},${c[1]},${c[2]}) ${pct.toFixed(1)}%`;
+  });
+  bar.style.background = `linear-gradient(to right, ${stops.join(', ')})`;
+
+  const nowPct = ((18*60 - 8*60-30) / (23*60 - 8*60-30)) * 100;
+  document.getElementById('nowTriangle').style.left = nowPct + '%';
+
+  const labelSlots = ['9AM','11AM','1PM','3PM','5PM','7PM','9PM','11PM'];
+  const labelsEl = document.getElementById('timeLabels');
+  labelSlots.forEach((l, i) => {
+    const span = document.createElement('span');
+    span.textContent = l;
+    if (i === 0 || i === labelSlots.length - 1) span.className = 'time-bold';
+    labelsEl.appendChild(span);
+  });
+
+  // ─── 7-day forecast ───
+  const forecast = [
+    { day:'Today', lo:7.2, hi:15.8, wti:20.4, now:15.2 },
+    { day:'Wed',   lo:6.2, hi:15.6, wti:17.8, now:null },
+    { day:'Thu',   lo:7.5, hi:15.4, wti:19.7, now:null },
+    { day:'Fri',   lo:7.5, hi:16.2, wti:22.5, now:null },
+    { day:'Sat',   lo:7.1, hi:14.5, wti:15.1, now:null },
+    { day:'Sun',   lo:7.4, hi:15.5, wti:20.4, now:null },
+    { day:'Mon',   lo:7.5, hi:16.6, wti:22.8, now:null },
+    { day:'Tue',   lo:7.6, hi:16.3, wti:23.6, now:null },
+  ];
+
+  const gMin = Math.min(...forecast.map(f => f.lo));
+  const gMax = Math.max(...forecast.map(f => f.hi));
+  const gRange = gMax - gMin || 1;
+
+  const container = document.getElementById('forecastRows');
+  forecast.forEach(f => {
+    const row = document.createElement('div');
+    row.className = 'forecast-row';
+    const loFrac = (f.lo - gMin) / gRange;
+    const hiFrac = (f.hi - gMin) / gRange;
+    const avgT = Math.min(((f.lo + f.hi) / 2) / wtiMax, 1.0);
+    const dotColor = benedictus(avgT);
+
+    const barSteps = 20;
+    let barGrad = [];
+    for (let i = 0; i <= barSteps; i++) {
+      const frac = loFrac + (hiFrac - loFrac) * (i / barSteps);
+      const wtiAtPoint = gMin + frac * gRange;
+      const c = benedictus(Math.min(wtiAtPoint / wtiMax, 1.0));
+      barGrad.push(`rgb(${c[0]},${c[1]},${c[2]}) ${(i/barSteps*100).toFixed(0)}%`);
+    }
+
+    let nowDot = '';
+    if (f.now !== null) {
+      const nowFrac = (f.now - gMin) / gRange;
+      const dotPct = Math.max(0, Math.min(100, ((nowFrac - loFrac) / (hiFrac - loFrac)) * 100));
+      nowDot = `<div class="forecast-now-dot" style="left:${dotPct}%"></div>`;
+    }
+
+    row.innerHTML = `
+      <div class="forecast-day">${f.day}</div>
+      <div class="forecast-dot" style="background:rgb(${dotColor})"></div>
+      <div class="forecast-lo">${Math.round(f.lo)}</div>
+      <div class="forecast-bar-container">
+        <div class="forecast-bar" style="left:${(loFrac*100).toFixed(1)}%;width:${((hiFrac-loFrac)*100).toFixed(1)}%;background:linear-gradient(to right,${barGrad.join(',')})">
+          ${nowDot}
+        </div>
+      </div>
+      <div class="forecast-hi">${Math.round(f.hi)}</div>
+    `;
+    container.appendChild(row);
+  });
+
+  // ─── Density bar ───
+  const densityBar = document.getElementById('densityBar');
+  let dStops = [];
+  for (let i = 0; i <= 30; i++) {
+    const t = i / 30;
+    const c = benedictus(t);
+    dStops.push(`rgb(${c[0]},${c[1]},${c[2]}) ${(t*100).toFixed(1)}%`);
+  }
+  densityBar.style.background = `linear-gradient(to right, ${dStops.join(', ')})`;
+  document.getElementById('densityDot').style.left = ((7 - 1) / 9 * 100) + '%';
+</script>
+</body>
+</html>
