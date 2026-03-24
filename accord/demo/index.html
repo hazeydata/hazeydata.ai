@@ -54,6 +54,8 @@
         .rc-rate.green { color: var(--green); }
         .rc-unit { font-size: 0.8rem; color: var(--gc-grey-mid); margin-bottom: 0.5rem; }
         .rc-clause { display: inline-block; font-size: 0.75rem; color: var(--gc-blue); background: rgba(38,55,74,0.06); padding: 0.2rem 0.5rem; border-radius: 3px; font-weight: 500; }
+        .rc-clause a { color: var(--gc-blue); text-decoration: none; border-bottom: 1px solid rgba(38,55,74,0.25); transition: border-color 0.2s; }
+        .rc-clause a:hover { border-color: var(--gc-blue); }
         .explain-box { background: var(--gc-grey-light); border: 1px solid var(--gc-grey); border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.85rem; line-height: 1.6; white-space: pre-line; color: var(--gc-grey-dark); }
         .match-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 4px; margin-top: 1rem; }
         .match-badge.pass { background: rgba(26,122,76,0.08); color: var(--green); border: 1px solid rgba(26,122,76,0.2); }
@@ -191,6 +193,18 @@
 var currentLang = localStorage.getItem('accord-lang') || 'en';
 var isDefaultScenario = true;
 
+// Collective agreement URLs on canada.ca
+var CA_URLS = {
+  PA: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/programme-and-administrative-services.html',
+  TC: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/technical-services.html',
+  IT: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/computer-systems.html',
+  EC: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/economics-and-social-science-services.html',
+  FB: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/border-services.html',
+  SV: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/operational-services.html',
+  CX: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/correctional-services.html',
+  SP: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/applied-science-and-patent-examination.html'
+};
+
 function applyLang() {
     document.documentElement.lang = currentLang;
     document.querySelector('.lang-btn').textContent = currentLang === 'en' ? 'FR' : 'EN';
@@ -226,6 +240,12 @@ var CA = {
 function findBP(ca,yos){var d=CA[ca];for(var i=0;i<d.bp.length;i++){var b=d.bp[i];if(yos>=b.mn&&yos<=b.mx)return b;}return d.bp[d.bp.length-1];}
 function simLLM(ca,yos){var d=CA[ca];if(yos===8)return{r:d.bp[0].r,c:d.bp[0].c};return findBP(ca,yos);}
 
+function makeClauseLink(ca, clauseText) {
+    var url = CA_URLS[ca];
+    if (url) return '<a href="'+url+'" target="_blank" rel="noopener">Art. '+clauseText+'</a>';
+    return 'Art. '+clauseText;
+}
+
 function runCalc(){
   var ca=document.getElementById('ca-select').value;
   var yos=parseInt(document.getElementById('yos-input').value)||0;
@@ -234,9 +254,9 @@ function runCalc(){
   var llm=simLLM(ca,yos),match=Math.abs(bp.r-llm.r)<0.01;
 
   document.getElementById('accord-rate').textContent=bp.r.toFixed(3);
-  document.getElementById('accord-clause').textContent='Art. '+bp.c;
+  document.getElementById('accord-clause').innerHTML=makeClauseLink(ca, bp.c);
   document.getElementById('llm-rate').textContent=llm.r.toFixed(3);
-  document.getElementById('llm-clause').textContent='Art. '+llm.c;
+  document.getElementById('llm-clause').innerHTML=makeClauseLink(ca, llm.c);
 
   var eb = document.getElementById('explain-box');
   if (currentLang === 'fr') {

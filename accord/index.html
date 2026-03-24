@@ -57,13 +57,22 @@
         .cta-btn-outline:hover { border-color: white; color: white; }
         .ag-callout { max-width: 780px; margin: -2rem auto 0; background: #0d1b2a; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 2rem 2.5rem; position: relative; z-index: 2; }
         .ag-callout .ag-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #ff8a8a; margin-bottom: 0.75rem; }
+        .ag-callout .ag-label a { color: #ff8a8a; text-decoration: none; border-bottom: 1px solid rgba(255,138,138,0.3); transition: border-color 0.2s; }
+        .ag-callout .ag-label a:hover { border-color: #ff8a8a; }
         .ag-callout blockquote { font-size: 1rem; font-style: italic; line-height: 1.6; color: rgba(255,255,255,0.75); margin: 0; }
         .ag-callout .ag-cost { margin-top: 0.75rem; font-size: 0.85rem; color: #ff8a8a; font-weight: 600; }
+        .ag-callout .ag-cost a { color: #ff8a8a; text-decoration: none; border-bottom: 1px solid rgba(255,138,138,0.3); transition: border-color 0.2s; }
+        .ag-callout .ag-cost a:hover { border-color: #ff8a8a; }
+        .source-link { color: var(--gc-blue-lighter); text-decoration: none; border-bottom: 1px solid rgba(74,111,165,0.3); transition: border-color 0.2s; }
+        .source-link:hover { border-color: var(--gc-blue-lighter); }
+        .source-link-light { color: rgba(255,255,255,0.6); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2); transition: border-color 0.2s; }
+        .source-link-light:hover { border-color: rgba(255,255,255,0.5); }
         section { padding: 4rem 2rem; }
         section:nth-child(even) { background: var(--gc-grey-light); }
         .section-inner { max-width: 860px; margin: 0 auto; }
         .section-inner h2 { font-size: 1.75rem; font-weight: 800; color: var(--gc-blue); margin-bottom: 1rem; letter-spacing: -0.01em; }
         .section-inner p { color: var(--gc-grey-dark); margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.7; }
+        .section-inner p a { color: var(--gc-blue); }
         .features { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
         .feature-card { background: var(--gc-white); border: 1px solid var(--gc-grey); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow); }
         .feature-card .icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
@@ -87,7 +96,7 @@
         .footer { background: var(--gc-blue); color: rgba(255,255,255,0.5); text-align: center; padding: 2rem; font-size: 0.8rem; }
         .footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
         .footer a:hover { color: white; }
-        .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.75rem; }
+        .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
         @media (max-width: 768px) {
             .features { grid-template-columns: 1fr; }
             .coverage-grid { grid-template-columns: 1fr 1fr; }
@@ -133,9 +142,9 @@
 
     <section style="padding: 4rem 2rem 2rem;">
         <div class="ag-callout">
-            <div class="ag-label" data-en="AUDITOR GENERAL OF CANADA &mdash; MARCH 23, 2026" data-fr="V&Eacute;RIFICATRICE G&Eacute;N&Eacute;RALE DU CANADA &mdash; 23 MARS 2026">AUDITOR GENERAL OF CANADA &mdash; MARCH 23, 2026</div>
+            <div class="ag-label" data-en="<a href='https://www.canada.ca/en/auditor-general/our-work/audit-reports/auditor-general-report-2026-modernizing-pay-system.html' target='_blank' rel='noopener'>AUDITOR GENERAL OF CANADA</a> &mdash; MARCH 23, 2026" data-fr="<a href='https://www.canada.ca/en/auditor-general/our-work/audit-reports/auditor-general-report-2026-modernizing-pay-system.html' target='_blank' rel='noopener'>V&Eacute;RIFICATRICE G&Eacute;N&Eacute;RALE DU CANADA</a> &mdash; 23 MARS 2026"><a href="https://www.canada.ca/en/auditor-general/our-work/audit-reports/auditor-general-report-2026-modernizing-pay-system.html" target="_blank" rel="noopener">AUDITOR GENERAL OF CANADA</a> &mdash; MARCH 23, 2026</div>
             <blockquote data-en="&ldquo;Public Services and Procurement Canada was customizing Dayforce to work without simplified pay rules&hellip; PSPC requested that Dayforce develop 3 custom applications, called &lsquo;cloud extensions,&rsquo; to ensure that the system could process government pay rules that may remain in effect without being simplified.&rdquo;" data-fr="&laquo;&nbsp;Services publics et Approvisionnement Canada personnalisait Dayforce pour fonctionner sans r&egrave;gles de r&eacute;mun&eacute;ration simplifi&eacute;es&hellip; SPAC a demand&eacute; &agrave; Dayforce de d&eacute;velopper 3 applications sur mesure, appel&eacute;es &laquo;&nbsp;extensions infonuagiques&nbsp;&raquo;, pour s'assurer que le syst&egrave;me puisse traiter les r&egrave;gles de r&eacute;mun&eacute;ration gouvernementales qui pourraient demeurer en vigueur sans &ecirc;tre simplifi&eacute;es.&nbsp;&raquo;">&ldquo;Public Services and Procurement Canada was customizing Dayforce to work without simplified pay rules&hellip; PSPC requested that Dayforce develop 3 custom applications, called &lsquo;cloud extensions,&rsquo; to ensure that the system could process government pay rules that may remain in effect without being simplified.&rdquo;</blockquote>
-            <div class="ag-cost" data-en="Estimated cost: almost $4 million annually &mdash; Paragraph 15" data-fr="Co&ucirc;t estim&eacute; : pr&egrave;s de 4 millions de dollars par ann&eacute;e &mdash; Paragraphe 15">Estimated cost: almost $4 million annually &mdash; Paragraph 15</div>
+            <div class="ag-cost" data-en="Estimated cost: almost $4 million annually &mdash; <a href='https://www.canada.ca/content/dam/oag-bvg/audit-reports/documents/ag-202603-modernizing-pay-system.pdf' target='_blank' rel='noopener'>Paragraph 15</a>" data-fr="Co&ucirc;t estim&eacute; : pr&egrave;s de 4 millions de dollars par ann&eacute;e &mdash; <a href='https://www.canada.ca/content/dam/oag-bvg/audit-reports/documents/ag-202603-modernizing-pay-system.pdf' target='_blank' rel='noopener'>Paragraphe 15</a>">Estimated cost: almost $4 million annually &mdash; <a href="https://www.canada.ca/content/dam/oag-bvg/audit-reports/documents/ag-202603-modernizing-pay-system.pdf" target="_blank" rel="noopener">Paragraph 15</a></div>
         </div>
     </section>
 
@@ -199,7 +208,7 @@
     <section>
         <div class="section-inner">
             <h2 data-en="Why now" data-fr="Pourquoi maintenant">Why now</h2>
-            <p data-en="In sampled cases, 29% showed pay errors (AG Report, 2024-25). The Dayforce timeline was compressed by 3 years. The Goss Gilroy report calls for &ldquo;independent validation.&rdquo; ACCORD is that validation." data-fr="Dans les cas &eacute;chantillonn&eacute;s, 29&nbsp;% pr&eacute;sentaient des erreurs de paie (rapport de la VG, 2024-2025). Le calendrier de Dayforce a &eacute;t&eacute; compress&eacute; de 3 ans. Le rapport Goss Gilroy exige une &laquo;&nbsp;validation ind&eacute;pendante&nbsp;&raquo;. ACCORD est cette validation.">In sampled cases, 29% showed pay errors (AG Report, 2024-25). The Dayforce timeline was compressed by 3 years. The Goss Gilroy report calls for &ldquo;independent validation.&rdquo; ACCORD is that validation.</p>
+            <p data-en="The Auditor General found that <a href='https://www.canada.ca/content/dam/oag-bvg/audit-reports/documents/ag-202603-modernizing-pay-system.pdf' target='_blank' rel='noopener' class='source-link'>29% of employees had an error in their basic or acting pay</a> (2024&ndash;25). The Dayforce timeline was compressed by 3 years. The <a href='https://www.canada.ca/en/public-services-procurement/services/pay-pension/pay-administration/integrated-strategy-human-resources-pay/transformation/lessons-learned.html' target='_blank' rel='noopener' class='source-link'>Goss Gilroy report</a> calls for &ldquo;independent validation.&rdquo; ACCORD is that validation." data-fr="La v&eacute;rificatrice g&eacute;n&eacute;rale a constat&eacute; que <a href='https://www.canada.ca/content/dam/oag-bvg/audit-reports/documents/ag-202603-modernizing-pay-system.pdf' target='_blank' rel='noopener' class='source-link'>29&nbsp;% des employ&eacute;s avaient une erreur dans leur r&eacute;mun&eacute;ration de base ou d'int&eacute;rim</a> (2024-2025). Le calendrier de Dayforce a &eacute;t&eacute; compress&eacute; de 3 ans. Le <a href='https://www.canada.ca/fr/services-publics-approvisionnement/services/paye-pension/administration-paye/strategie-integree-ressources-humaines-paye/transformation/lecons-apprises.html' target='_blank' rel='noopener' class='source-link'>rapport Goss Gilroy</a> exige une &laquo;&nbsp;validation ind&eacute;pendante&nbsp;&raquo;. ACCORD est cette validation.">The Auditor General found that <a href="https://www.canada.ca/content/dam/oag-bvg/audit-reports/documents/ag-202603-modernizing-pay-system.pdf" target="_blank" rel="noopener" class="source-link">29% of employees had an error in their basic or acting pay</a> (2024&ndash;25). The Dayforce timeline was compressed by 3 years. The <a href="https://www.canada.ca/en/public-services-procurement/services/pay-pension/pay-administration/integrated-strategy-human-resources-pay/transformation/lessons-learned.html" target="_blank" rel="noopener" class="source-link">Goss Gilroy report</a> calls for &ldquo;independent validation.&rdquo; ACCORD is that validation.</p>
             <div class="features" style="grid-template-columns: 1fr 1fr;">
                 <div class="feature-card">
                     <div class="icon">&#x1F6E1;&#xFE0F;</div>
@@ -239,6 +248,9 @@
         <div class="footer-links">
             <a href="/">hazeydata.ai</a>
             <a href="/accord/">ACCORD</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
+            <a href="https://www.canada.ca/en/auditor-general/our-work/audit-reports/auditor-general-report-2026-modernizing-pay-system.html" target="_blank" rel="noopener" data-en="AG Report" data-fr="Rapport de la VG">AG Report</a>
+            <a href="https://www.canada.ca/en/public-services-procurement/services/pay-pension/pay-administration/integrated-strategy-human-resources-pay/transformation/lessons-learned.html" target="_blank" rel="noopener">Goss Gilroy</a>
             <a href="mailto:fred@hazeydata.ai">Contact</a>
         </div>
         <p data-en="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,000,000 scenarios validated &middot; 31,505 calculations/second &middot; zero crashes" data-fr="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1&nbsp;000&nbsp;000 sc&eacute;narios valid&eacute;s &middot; 31&nbsp;505 calculs/seconde &middot; z&eacute;ro plantage">&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,000,000 scenarios validated &middot; 31,505 calculations/second &middot; zero crashes</p>
