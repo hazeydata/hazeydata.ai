@@ -1,47 +1,33 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACCORD — Validation indépendante de la rémunération | hazeydata.ai</title>
-    <meta name="description" content="ACCORD est un moteur de règles canadien et souverain qui vérifie les calculs de rémunération de Dayforce par rapport au texte officiel des conventions collectives.">
+    <title>ACCORD — Independent Pay Validation | hazeydata.ai</title>
+    <meta name="description" content="ACCORD is a Canadian-sovereign rules engine that checks Dayforce pay calculations against the authoritative collective agreement text.">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/icon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icon-180.png">
     <meta name="theme-color" content="#26374A">
     <link rel="canonical" href="https://hazeydata.ai/accord/">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hazeydata.ai/accord/">
-    <meta property="og:title" content="ACCORD — Validation indépendante de la rémunération">
-    <meta property="og:description" content="Un moteur de règles canadien qui vérifie les calculs de rémunération de Dayforce par rapport aux conventions collectives.">
+    <meta property="og:title" content="ACCORD — Independent Pay Validation">
+    <meta property="og:description" content="A Canadian-sovereign rules engine that checks Dayforce pay calculations against collective agreements.">
     <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gc-blue: #26374A;
-            --gc-blue-light: #335075;
-            --gc-blue-lighter: #4a6fa5;
-            --gc-red: #AF3C43;
-            --gc-red-dark: #8B1E2F;
-            --gc-white: #FFFFFF;
-            --gc-grey-light: #F8F9FA;
-            --gc-grey: #E5E5E5;
-            --gc-grey-mid: #6C757D;
-            --gc-grey-dark: #333333;
-            --accent-gold: #C8A951;
-            --accent-teal: #2A7F8E;
+            --gc-blue: #26374A; --gc-blue-light: #335075; --gc-blue-lighter: #4a6fa5;
+            --gc-red: #AF3C43; --gc-red-dark: #8B1E2F; --gc-white: #FFFFFF;
+            --gc-grey-light: #F8F9FA; --gc-grey: #E5E5E5; --gc-grey-mid: #6C757D;
+            --gc-grey-dark: #333333; --accent-gold: #C8A951; --accent-teal: #2A7F8E;
             --shadow: 0 4px 24px rgba(0,0,0,0.08);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--gc-grey-dark);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            background: var(--gc-white);
-        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--gc-grey-dark); line-height: 1.6; -webkit-font-smoothing: antialiased; background: var(--gc-white); }
         .nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; max-width: 1100px; margin: 0 auto; }
         .nav-brand { font-weight: 800; font-size: 1rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
         .nav-brand .logo-mark { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.12em; background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: logo-shimmer 6s linear infinite; }
@@ -70,23 +56,21 @@
         .cta-btn-outline { display: inline-block; color: rgba(255,255,255,0.8); padding: 0.85rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem; border: 1.5px solid rgba(255,255,255,0.3); transition: all 0.2s; }
         .cta-btn-outline:hover { border-color: white; color: white; }
         .ag-callout { max-width: 780px; margin: -2rem auto 0; background: #0d1b2a; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 2rem 2.5rem; position: relative; z-index: 2; }
-        .ag-callout .ag-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gc-red); margin-bottom: 0.75rem; }
+        .ag-callout .ag-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #ff8a8a; margin-bottom: 0.75rem; }
         .ag-callout blockquote { font-size: 1rem; font-style: italic; line-height: 1.6; color: rgba(255,255,255,0.75); margin: 0; }
-        .ag-callout .ag-cost { margin-top: 0.75rem; font-size: 0.85rem; color: var(--gc-red); font-weight: 600; }
+        .ag-callout .ag-cost { margin-top: 0.75rem; font-size: 0.85rem; color: #ff8a8a; font-weight: 600; }
         section { padding: 4rem 2rem; }
         section:nth-child(even) { background: var(--gc-grey-light); }
         .section-inner { max-width: 860px; margin: 0 auto; }
         .section-inner h2 { font-size: 1.75rem; font-weight: 800; color: var(--gc-blue); margin-bottom: 1rem; letter-spacing: -0.01em; }
         .section-inner p { color: var(--gc-grey-dark); margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.7; }
-        .section-inner p.muted { color: var(--gc-grey-mid); font-size: 0.9rem; }
         .features { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
         .feature-card { background: var(--gc-white); border: 1px solid var(--gc-grey); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow); }
         .feature-card .icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
         .feature-card h3 { font-size: 1rem; font-weight: 700; color: var(--gc-blue); margin-bottom: 0.4rem; }
         .feature-card p { font-size: 0.9rem; margin-bottom: 0; color: var(--gc-grey-mid); line-height: 1.55; }
-        .feature-card .status { font-size: 0.75rem; font-weight: 600; margin-top: 0.75rem; }
-        .status-live { color: #1a7a4c; }
-        .status-soon { color: var(--accent-gold); }
+        .status-live { font-size: 0.75rem; font-weight: 600; margin-top: 0.75rem; color: #1a7a4c; }
+        .status-soon { font-size: 0.75rem; font-weight: 600; margin-top: 0.75rem; color: var(--accent-gold); }
         .coverage-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; }
         .cov-card { text-align: center; background: var(--gc-white); border: 1px solid var(--gc-grey); border-radius: 10px; padding: 1.25rem 0.75rem; box-shadow: var(--shadow); }
         .cov-card .cov-icon { font-size: 1.3rem; margin-bottom: 0.3rem; }
@@ -112,179 +96,169 @@
             .hero { padding: 4rem 1.5rem 3rem; }
             section { padding: 3rem 1.5rem; }
         }
-        .hidden { display: none; }
     </style>
 </head>
 <body>
     <div class="gc-bar"></div>
     <nav class="nav">
-        <a href="/" class="nav-brand">
-            <span class="logo-mark">HAZEYDATA</span><span class="logo-dot"></span>
-        </a>
+        <a href="/" class="nav-brand"><span class="logo-mark">HAZEYDATA</span><span class="logo-dot"></span></a>
         <div class="nav-links">
-            <a href="/">Accueil</a>
+            <a href="/" data-en="Home" data-fr="Accueil">Home</a>
             <a href="/accord/" style="color: var(--gc-blue); font-weight: 600;">ACCORD</a>
             <a href="mailto:fred@hazeydata.ai">Contact</a>
-            <button class="lang-btn" onclick="toggleLang()">EN</button>
+            <button class="lang-btn" onclick="toggleLang()">FR</button>
         </div>
     </nav>
 
-    <!-- Hero -->
     <header class="hero">
         <div class="hero-inner">
-            <div class="hero-flag" data-fr="Un projet hazeydata.ai" data-en="A hazeydata.ai project">Un projet hazeydata.ai</div>
+            <div class="hero-flag" data-en="A hazeydata.ai project" data-fr="Un projet hazeydata.ai">A hazeydata.ai project</div>
             <h1>
-                <span data-fr="Le GC dépense 4&nbsp;M$/an en extensions infonuagiques." data-en="The GC is spending $4M/year on cloud extensions.">Le GC dépense 4&nbsp;M$/an en extensions infonuagiques.</span><br>
-                <span class="maple" data-fr="ACCORD les valide." data-en="ACCORD validates them.">ACCORD les valide.</span>
+                <span data-en="The GC is spending $4M/year on cloud extensions." data-fr="Le GC d&eacute;pense 4&nbsp;M$/an en extensions infonuagiques.">The GC is spending $4M/year on cloud extensions.</span><br>
+                <span class="maple" data-en="ACCORD validates them." data-fr="ACCORD les valide.">ACCORD validates them.</span>
             </h1>
-            <p class="subtitle" data-fr="Un moteur de règles canadien et souverain qui vérifie les calculs de rémunération de Dayforce par rapport au texte officiel des conventions collectives &mdash; conçu pour les quelque 150 conventions collectives du GC, avec citations d'articles, dans les deux langues officielles." data-en="A Canadian-sovereign rules engine that checks Dayforce pay calculations against the authoritative collective agreement text &mdash; built for all ~150 GC collective agreements, with article citations, in both official languages.">Un moteur de règles canadien et souverain qui vérifie les calculs de rémunération de Dayforce par rapport au texte officiel des conventions collectives &mdash; conçu pour les quelque 150 conventions collectives du GC, avec citations d'articles, dans les deux langues officielles.</p>
+            <p class="subtitle" data-en="A Canadian-sovereign rules engine that checks Dayforce pay calculations against the authoritative collective agreement text &mdash; built for all ~150 GC collective agreements, with article citations, in both official languages." data-fr="Un moteur de r&egrave;gles canadien et souverain qui v&eacute;rifie les calculs de r&eacute;mun&eacute;ration de Dayforce par rapport au texte officiel des conventions collectives &mdash; con&ccedil;u pour les quelque 150 conventions collectives du GC, avec citations d'articles, dans les deux langues officielles.">A Canadian-sovereign rules engine that checks Dayforce pay calculations against the authoritative collective agreement text &mdash; built for all ~150 GC collective agreements, with article citations, in both official languages.</p>
             <div class="hero-stats">
-                <div class="hero-stat"><span class="num">~150</span><span class="label" data-fr="Conventions collectives<br>couvertes" data-en="Collective agreements<br>covered">Conventions collectives<br>couvertes</span></div>
-                <div class="hero-stat"><span class="num">8</span><span class="label" data-fr="Domaines de<br>rémunération" data-en="Pay domains<br>covered">Domaines de<br>rémunération</span></div>
-                <div class="hero-stat"><span class="num">1M+</span><span class="label" data-fr="Scénarios validés<br>Zéro bogues" data-en="Scenarios validated<br>Zero bugs">Scénarios validés<br>Zéro bogues</span></div>
-                <div class="hero-stat"><span class="num">963</span><span class="label" data-fr="Tests unitaires<br>100% réussis" data-en="Unit tests<br>100% passing">Tests unitaires<br>100% réussis</span></div>
+                <div class="hero-stat"><span class="num">~150</span><span class="label" data-en="Collective agreements<br>covered" data-fr="Conventions collectives<br>couvertes">Collective agreements<br>covered</span></div>
+                <div class="hero-stat"><span class="num">8</span><span class="label" data-en="Pay domains<br>covered" data-fr="Domaines de<br>r&eacute;mun&eacute;ration">Pay domains<br>covered</span></div>
+                <div class="hero-stat"><span class="num">1M+</span><span class="label" data-en="Scenarios validated<br>Zero bugs" data-fr="Sc&eacute;narios valid&eacute;s<br>Z&eacute;ro bogues">Scenarios validated<br>Zero bugs</span></div>
+                <div class="hero-stat"><span class="num">963</span><span class="label" data-en="Unit tests<br>100% passing" data-fr="Tests unitaires<br>100% r&eacute;ussis">Unit tests<br>100% passing</span></div>
             </div>
             <div class="hero-cta">
-                <a href="/accord/demo/" class="cta-btn" data-fr="Voir la démo &rarr;" data-en="See the demo &rarr;">Voir la démo &rarr;</a>
-                <a href="#produits" class="cta-btn-outline" data-fr="En savoir plus" data-en="Learn more">En savoir plus</a>
+                <a href="/accord/demo/" class="cta-btn" data-en="See the demo &rarr;" data-fr="Voir la d&eacute;mo &rarr;">See the demo &rarr;</a>
+                <a href="#produits" class="cta-btn-outline" data-en="Learn more" data-fr="En savoir plus">Learn more</a>
             </div>
         </div>
     </header>
 
-    <!-- AG Quote -->
     <section style="padding: 4rem 2rem 2rem;">
         <div class="ag-callout">
-            <div class="ag-label" data-fr="VÉRIFICATRICE GÉNÉRALE DU CANADA &mdash; 23 MARS 2026" data-en="AUDITOR GENERAL OF CANADA &mdash; MARCH 23, 2026">VÉRIFICATRICE GÉNÉRALE DU CANADA &mdash; 23 MARS 2026</div>
-            <blockquote data-fr="&laquo;&nbsp;Services publics et Approvisionnement Canada personnalisait Dayforce pour fonctionner sans règles de rémunération simplifiées&hellip; SPAC a demandé à Dayforce de développer 3 applications sur mesure, appelées &laquo;&nbsp;extensions infonuagiques&nbsp;&raquo;, pour s'assurer que le système puisse traiter les règles de rémunération gouvernementales qui pourraient demeurer en vigueur sans être simplifiées.&nbsp;&raquo;" data-en="&ldquo;Public Services and Procurement Canada was customizing Dayforce to work without simplified pay rules&hellip; PSPC requested that Dayforce develop 3 custom applications, called &lsquo;cloud extensions,&rsquo; to ensure that the system could process government pay rules that may remain in effect without being simplified.&rdquo;">&laquo;&nbsp;Services publics et Approvisionnement Canada personnalisait Dayforce pour fonctionner sans règles de rémunération simplifiées&hellip; SPAC a demandé à Dayforce de développer 3 applications sur mesure, appelées &laquo;&nbsp;extensions infonuagiques&nbsp;&raquo;, pour s'assurer que le système puisse traiter les règles de rémunération gouvernementales qui pourraient demeurer en vigueur sans être simplifiées.&nbsp;&raquo;</blockquote>
-            <div class="ag-cost" data-fr="Coût estimé : près de 4 millions de dollars par année &mdash; Paragraphe 15" data-en="Estimated cost: almost $4 million annually &mdash; Paragraph 15">Coût estimé : près de 4 millions de dollars par année &mdash; Paragraphe 15</div>
+            <div class="ag-label" data-en="AUDITOR GENERAL OF CANADA &mdash; MARCH 23, 2026" data-fr="V&Eacute;RIFICATRICE G&Eacute;N&Eacute;RALE DU CANADA &mdash; 23 MARS 2026">AUDITOR GENERAL OF CANADA &mdash; MARCH 23, 2026</div>
+            <blockquote data-en="&ldquo;Public Services and Procurement Canada was customizing Dayforce to work without simplified pay rules&hellip; PSPC requested that Dayforce develop 3 custom applications, called &lsquo;cloud extensions,&rsquo; to ensure that the system could process government pay rules that may remain in effect without being simplified.&rdquo;" data-fr="&laquo;&nbsp;Services publics et Approvisionnement Canada personnalisait Dayforce pour fonctionner sans r&egrave;gles de r&eacute;mun&eacute;ration simplifi&eacute;es&hellip; SPAC a demand&eacute; &agrave; Dayforce de d&eacute;velopper 3 applications sur mesure, appel&eacute;es &laquo;&nbsp;extensions infonuagiques&nbsp;&raquo;, pour s'assurer que le syst&egrave;me puisse traiter les r&egrave;gles de r&eacute;mun&eacute;ration gouvernementales qui pourraient demeurer en vigueur sans &ecirc;tre simplifi&eacute;es.&nbsp;&raquo;">&ldquo;Public Services and Procurement Canada was customizing Dayforce to work without simplified pay rules&hellip; PSPC requested that Dayforce develop 3 custom applications, called &lsquo;cloud extensions,&rsquo; to ensure that the system could process government pay rules that may remain in effect without being simplified.&rdquo;</blockquote>
+            <div class="ag-cost" data-en="Estimated cost: almost $4 million annually &mdash; Paragraph 15" data-fr="Co&ucirc;t estim&eacute; : pr&egrave;s de 4 millions de dollars par ann&eacute;e &mdash; Paragraphe 15">Estimated cost: almost $4 million annually &mdash; Paragraph 15</div>
         </div>
     </section>
 
-    <!-- Three Products -->
     <section id="produits">
         <div class="section-inner">
-            <h2 data-fr="Trois produits, une mission" data-en="Three products, one mission">Trois produits, une mission</h2>
-            <p data-fr="Validation indépendante des calculs de rémunération du gouvernement du Canada." data-en="Independent validation of Government of Canada pay calculations.">Validation indépendante des calculs de rémunération du gouvernement du Canada.</p>
+            <h2 data-en="Three products, one mission" data-fr="Trois produits, une mission">Three products, one mission</h2>
+            <p data-en="Independent validation of Government of Canada pay calculations." data-fr="Validation ind&eacute;pendante des calculs de r&eacute;mun&eacute;ration du gouvernement du Canada.">Independent validation of Government of Canada pay calculations.</p>
             <div class="features">
                 <div class="feature-card">
-                    <div class="icon">🔍</div>
-                    <h3 data-fr="Outil de validation" data-en="Validation Tool">Outil de validation</h3>
-                    <p data-fr="Interface pour les conseillers en rémunération. Entrez un scénario, obtenez la réponse validée avec la citation d'article, en français et en anglais." data-en="Interface for compensation advisors. Enter a scenario, get the validated answer with article citation, in English and French.">Interface pour les conseillers en rémunération. Entrez un scénario, obtenez la réponse validée avec la citation d'article, en français et en anglais.</p>
-                    <div class="status status-live" data-fr="&#x25cf; Opérationnel" data-en="&#x25cf; Operational">&#x25cf; Opérationnel</div>
+                    <div class="icon">&#x1F50D;</div>
+                    <h3 data-en="Validation Tool" data-fr="Outil de validation">Validation Tool</h3>
+                    <p data-en="Interface for compensation advisors. Enter a scenario, get the validated answer with article citation, in English and French." data-fr="Interface pour les conseillers en r&eacute;mun&eacute;ration. Entrez un sc&eacute;nario, obtenez la r&eacute;ponse valid&eacute;e avec la citation d'article.">Interface for compensation advisors. Enter a scenario, get the validated answer with article citation, in English and French.</p>
+                    <div class="status-live" data-en="&#x25cf; Operational" data-fr="&#x25cf; Op&eacute;rationnel">&#x25cf; Operational</div>
                 </div>
                 <div class="feature-card">
-                    <div class="icon">⚡</div>
-                    <h3 data-fr="API REST" data-en="REST API">API REST</h3>
-                    <p data-fr="Points d'accès pour intégration système. Hébergé au Canada, authentifié, bilingue. Chaque réponse inclut la citation de la convention collective." data-en="Endpoints for system integration. Canadian-hosted, authenticated, bilingual. Every response includes the collective agreement article citation.">Points d'accès pour intégration système. Hébergé au Canada, authentifié, bilingue. Chaque réponse inclut la citation de la convention collective.</p>
-                    <div class="status status-live" data-fr="&#x25cf; Opérationnel" data-en="&#x25cf; Operational">&#x25cf; Opérationnel</div>
+                    <div class="icon">&#x26A1;</div>
+                    <h3 data-en="REST API" data-fr="API REST">REST API</h3>
+                    <p data-en="Endpoints for system integration. Canadian-hosted, authenticated, bilingual. Every response includes the collective agreement article citation." data-fr="Points d'acc&egrave;s pour int&eacute;gration syst&egrave;me. H&eacute;berg&eacute; au Canada, authentifi&eacute;, bilingue.">Endpoints for system integration. Canadian-hosted, authenticated, bilingual. Every response includes the collective agreement article citation.</p>
+                    <div class="status-live" data-en="&#x25cf; Operational" data-fr="&#x25cf; Op&eacute;rationnel">&#x25cf; Operational</div>
                 </div>
                 <div class="feature-card">
-                    <div class="icon">📊</div>
-                    <h3 data-fr="Validateur par lots" data-en="Batch Validator">Validateur par lots</h3>
-                    <p data-fr="Téléversez les résultats de tests de Dayforce &mdash; ACCORD valide chaque ligne et produit un rapport bilingue d'écarts avec citations." data-en="Upload Dayforce test results &mdash; ACCORD validates every row and produces a bilingual discrepancy report with citations.">Téléversez les résultats de tests de Dayforce &mdash; ACCORD valide chaque ligne et produit un rapport bilingue d'écarts avec citations.</p>
-                    <div class="status status-soon" data-fr="&#x25d0; Prêt pour juin 2026" data-en="&#x25d0; Ready for June 2026">&#x25d0; Prêt pour juin 2026</div>
+                    <div class="icon">&#x1F4CA;</div>
+                    <h3 data-en="Batch Validator" data-fr="Validateur par lots">Batch Validator</h3>
+                    <p data-en="Upload Dayforce test results &mdash; ACCORD validates every row and produces a bilingual discrepancy report with citations." data-fr="T&eacute;l&eacute;versez les r&eacute;sultats de tests de Dayforce &mdash; ACCORD valide chaque ligne et produit un rapport bilingue d'&eacute;carts.">Upload Dayforce test results &mdash; ACCORD validates every row and produces a bilingual discrepancy report with citations.</p>
+                    <div class="status-soon" data-en="&#x25d0; Ready for June 2026" data-fr="&#x25d0; Pr&ecirc;t pour juin 2026">&#x25d0; Ready for June 2026</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 8 Domains -->
     <section>
         <div class="section-inner">
-            <h2 data-fr="8 domaines de rémunération couverts" data-en="8 pay domains covered">8 domaines de rémunération couverts</h2>
+            <h2 data-en="8 pay domains covered" data-fr="8 domaines de r&eacute;mun&eacute;ration couverts">8 pay domains covered</h2>
             <div class="coverage-grid">
-                <div class="cov-card"><div class="cov-icon">☀️</div><div class="label" data-fr="Congés annuels" data-en="Vacation Accrual">Congés annuels</div></div>
-                <div class="cov-card"><div class="cov-icon">⬆️</div><div class="label" data-fr="Rémunération d'intérim" data-en="Acting Pay">Rémunération d'intérim</div></div>
-                <div class="cov-card"><div class="cov-icon">🗓️</div><div class="label" data-fr="Jours fériés désignés" data-en="Designated Holidays">Jours fériés désignés</div></div>
-                <div class="cov-card"><div class="cov-icon">⏰</div><div class="label" data-fr="Heures supplémentaires" data-en="Overtime">Heures supplémentaires</div></div>
-                <div class="cov-card"><div class="cov-icon">½</div><div class="label" data-fr="Temps partiel" data-en="Part-Time">Temps partiel</div></div>
-                <div class="cov-card"><div class="cov-icon">🌙</div><div class="label" data-fr="Primes de quart" data-en="Shift Premiums">Primes de quart</div></div>
-                <div class="cov-card"><div class="cov-icon">⚖️</div><div class="label" data-fr="Anti-cumul" data-en="Anti-Pyramiding">Anti-cumul</div></div>
-                <div class="cov-card"><div class="cov-icon">🔒</div><div class="label" data-fr="Maintien ICSS" data-en="CSSDA Retention">Maintien ICSS</div></div>
+                <div class="cov-card"><div class="cov-icon">&#x2600;&#xFE0F;</div><div class="label" data-en="Vacation Accrual" data-fr="Cong&eacute;s annuels">Vacation Accrual</div></div>
+                <div class="cov-card"><div class="cov-icon">&#x2B06;&#xFE0F;</div><div class="label" data-en="Acting Pay" data-fr="R&eacute;mun&eacute;ration d'int&eacute;rim">Acting Pay</div></div>
+                <div class="cov-card"><div class="cov-icon">&#x1F5D3;&#xFE0F;</div><div class="label" data-en="Designated Holidays" data-fr="Jours f&eacute;ri&eacute;s d&eacute;sign&eacute;s">Designated Holidays</div></div>
+                <div class="cov-card"><div class="cov-icon">&#x23F0;</div><div class="label" data-en="Overtime" data-fr="Heures suppl&eacute;mentaires">Overtime</div></div>
+                <div class="cov-card"><div class="cov-icon">&frac12;</div><div class="label" data-en="Part-Time" data-fr="Temps partiel">Part-Time</div></div>
+                <div class="cov-card"><div class="cov-icon">&#x1F319;</div><div class="label" data-en="Shift Premiums" data-fr="Primes de quart">Shift Premiums</div></div>
+                <div class="cov-card"><div class="cov-icon">&#x2696;&#xFE0F;</div><div class="label" data-en="Anti-Pyramiding" data-fr="Anti-cumul">Anti-Pyramiding</div></div>
+                <div class="cov-card"><div class="cov-icon">&#x1F512;</div><div class="label" data-en="CSSDA Retention" data-fr="Maintien ICSS">CSSDA Retention</div></div>
             </div>
         </div>
     </section>
 
-    <!-- Validation Stats -->
     <section>
         <div class="section-inner">
-            <h2 data-fr="Validé à l'échelle" data-en="Validated at scale">Validé à l'échelle</h2>
-            <p data-fr="ACCORD a été soumis à des tests adversariaux structurés et à un million de scénarios aléatoires. Zéro bogue de calcul. Zéro plantage." data-en="ACCORD has been subjected to structured adversarial testing and one million randomized scenarios. Zero calculation bugs. Zero crashes.">ACCORD a été soumis à des tests adversariaux structurés et à un million de scénarios aléatoires. Zéro bogue de calcul. Zéro plantage.</p>
+            <h2 data-en="Validated at scale" data-fr="Valid&eacute; &agrave; l'&eacute;chelle">Validated at scale</h2>
+            <p data-en="ACCORD has been subjected to structured adversarial testing and one million randomized scenarios. Zero calculation bugs. Zero crashes." data-fr="ACCORD a &eacute;t&eacute; soumis &agrave; des tests adversariaux structur&eacute;s et &agrave; un million de sc&eacute;narios al&eacute;atoires. Z&eacute;ro bogue de calcul. Z&eacute;ro plantage.">ACCORD has been subjected to structured adversarial testing and one million randomized scenarios. Zero calculation bugs. Zero crashes.</p>
             <div class="stats-grid">
-                <div class="stat-card"><span class="num">963</span><span class="label" data-fr="Tests unitaires" data-en="Unit tests">Tests unitaires</span></div>
-                <div class="stat-card"><span class="num">973</span><span class="label" data-fr="Scénarios adversariaux" data-en="Adversarial scenarios">Scénarios adversariaux</span></div>
-                <div class="stat-card"><span class="num green">1M</span><span class="label" data-fr="Scénarios aléatoires" data-en="Fuzz scenarios">Scénarios aléatoires</span></div>
-                <div class="stat-card"><span class="num red">0</span><span class="label" data-fr="Bogues du moteur" data-en="Engine bugs">Bogues du moteur</span></div>
-                <div class="stat-card"><span class="num">31 505</span><span class="label" data-fr="Calculs/seconde" data-en="Calculations/sec">Calculs/seconde</span></div>
+                <div class="stat-card"><span class="num">963</span><span class="label" data-en="Unit tests" data-fr="Tests unitaires">Unit tests</span></div>
+                <div class="stat-card"><span class="num">973</span><span class="label" data-en="Adversarial scenarios" data-fr="Sc&eacute;narios adversariaux">Adversarial scenarios</span></div>
+                <div class="stat-card"><span class="num green">1M</span><span class="label" data-en="Fuzz scenarios" data-fr="Sc&eacute;narios al&eacute;atoires">Fuzz scenarios</span></div>
+                <div class="stat-card"><span class="num red">0</span><span class="label" data-en="Engine bugs" data-fr="Bogues du moteur">Engine bugs</span></div>
+                <div class="stat-card"><span class="num">31 505</span><span class="label" data-en="Calculations/sec" data-fr="Calculs/seconde">Calculations/sec</span></div>
             </div>
         </div>
     </section>
 
-    <!-- Why Now -->
     <section>
         <div class="section-inner">
-            <h2 data-fr="Pourquoi maintenant" data-en="Why now">Pourquoi maintenant</h2>
-            <p data-fr="La vérificatrice générale a constaté que 29&nbsp;% des employés ont eu une erreur de paie en 2024-2025. Le calendrier de Dayforce a été compressé de 3 ans. Le rapport Goss Gilroy exige une &laquo;&nbsp;validation indépendante&nbsp;&raquo;. ACCORD est cette validation." data-en="The Auditor General found 29% of employees had a pay error in 2024-25. The Dayforce timeline was compressed by 3 years. The Goss Gilroy report calls for &ldquo;independent validation.&rdquo; ACCORD is that validation.">La vérificatrice générale a constaté que 29&nbsp;% des employés ont eu une erreur de paie en 2024-2025. Le calendrier de Dayforce a été compressé de 3 ans. Le rapport Goss Gilroy exige une &laquo;&nbsp;validation indépendante&nbsp;&raquo;. ACCORD est cette validation.</p>
+            <h2 data-en="Why now" data-fr="Pourquoi maintenant">Why now</h2>
+            <p data-en="In sampled cases, 29% showed pay errors (AG Report, 2024-25). The Dayforce timeline was compressed by 3 years. The Goss Gilroy report calls for &ldquo;independent validation.&rdquo; ACCORD is that validation." data-fr="Dans les cas &eacute;chantillonn&eacute;s, 29&nbsp;% pr&eacute;sentaient des erreurs de paie (rapport de la VG, 2024-2025). Le calendrier de Dayforce a &eacute;t&eacute; compress&eacute; de 3 ans. Le rapport Goss Gilroy exige une &laquo;&nbsp;validation ind&eacute;pendante&nbsp;&raquo;. ACCORD est cette validation.">In sampled cases, 29% showed pay errors (AG Report, 2024-25). The Dayforce timeline was compressed by 3 years. The Goss Gilroy report calls for &ldquo;independent validation.&rdquo; ACCORD is that validation.</p>
             <div class="features" style="grid-template-columns: 1fr 1fr;">
                 <div class="feature-card">
-                    <div class="icon">🛡️</div>
-                    <h3 data-fr="Assurance post-Phoenix" data-en="Post-Phoenix Assurance">Assurance post-Phoenix</h3>
-                    <p data-fr="Une source unique de vérité pour les règles de rémunération &mdash; la gouvernance que l'après-Phoenix exige." data-en="A single source of truth for compensation rules &mdash; the governance that post-Phoenix accountability demands.">Une source unique de vérité pour les règles de rémunération &mdash; la gouvernance que l'après-Phoenix exige.</p>
+                    <div class="icon">&#x1F6E1;&#xFE0F;</div>
+                    <h3 data-en="Post-Phoenix Assurance" data-fr="Assurance post-Phoenix">Post-Phoenix Assurance</h3>
+                    <p data-en="A single source of truth for compensation rules &mdash; the governance that post-Phoenix accountability demands." data-fr="Une source unique de v&eacute;rit&eacute; pour les r&egrave;gles de r&eacute;mun&eacute;ration &mdash; la gouvernance que l'apr&egrave;s-Phoenix exige.">A single source of truth for compensation rules &mdash; the governance that post-Phoenix accountability demands.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="icon">🔓</div>
-                    <h3 data-fr="Indépendant du fournisseur" data-en="Vendor Agnostic">Indépendant du fournisseur</h3>
-                    <p data-fr="Si le GC quitte Dayforce, l'API fonctionne toujours. Les règles ne sont pas emprisonnées chez un fournisseur." data-en="If the GC moves off Dayforce, the API still works. Rules aren't trapped in one vendor's platform.">Si le GC quitte Dayforce, l'API fonctionne toujours. Les règles ne sont pas emprisonnées chez un fournisseur.</p>
+                    <div class="icon">&#x1F513;</div>
+                    <h3 data-en="Vendor Agnostic" data-fr="Ind&eacute;pendant du fournisseur">Vendor Agnostic</h3>
+                    <p data-en="If the GC moves off Dayforce, the API still works. Rules aren't trapped in one vendor's platform." data-fr="Si le GC quitte Dayforce, l'API fonctionne toujours. Les r&egrave;gles ne sont pas emprisonn&eacute;es chez un fournisseur.">If the GC moves off Dayforce, the API still works. Rules aren't trapped in one vendor's platform.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="icon">⏱️</div>
-                    <h3 data-fr="Réduit les risques" data-en="De-risks the Transition">Réduit les risques</h3>
-                    <p data-fr="Valide les calculs pendant les exécutions parallèles &mdash; quand le coût des erreurs est le plus élevé." data-en="Validates calculations during parallel runs &mdash; when the cost of errors is highest.">Valide les calculs pendant les exécutions parallèles &mdash; quand le coût des erreurs est le plus élevé.</p>
+                    <div class="icon">&#x23F1;&#xFE0F;</div>
+                    <h3 data-en="De-risks the Transition" data-fr="R&eacute;duit les risques">De-risks the Transition</h3>
+                    <p data-en="Validates calculations during parallel runs &mdash; when the cost of errors is highest." data-fr="Valide les calculs pendant les ex&eacute;cutions parall&egrave;les &mdash; quand le co&ucirc;t des erreurs est le plus &eacute;lev&eacute;.">Validates calculations during parallel runs &mdash; when the cost of errors is highest.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="icon">🇨🇦</div>
-                    <h3 data-fr="Souveraineté canadienne" data-en="Canadian Sovereignty">Souveraineté canadienne</h3>
-                    <p data-fr="Entreprise canadienne. Hébergement canadien. Aucune dépendance étrangère pour l'interprétation des conventions collectives." data-en="Canadian company. Canadian hosting. No foreign dependency for collective agreement interpretation.">Entreprise canadienne. Hébergement canadien. Aucune dépendance étrangère pour l'interprétation des conventions collectives.</p>
+                    <div class="icon">&#x1F1E8;&#x1F1E6;</div>
+                    <h3 data-en="Canadian Sovereignty" data-fr="Souverainet&eacute; canadienne">Canadian Sovereignty</h3>
+                    <p data-en="Canadian company. Canadian hosting. No foreign dependency for collective agreement interpretation." data-fr="Entreprise canadienne. H&eacute;bergement canadien. Aucune d&eacute;pendance &eacute;trang&egrave;re pour l'interpr&eacute;tation des conventions collectives.">Canadian company. Canadian hosting. No foreign dependency for collective agreement interpretation.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
     <section class="cta-section">
         <div class="section-inner">
-            <h2 data-fr="Prêt pour une démonstration" data-en="Ready for a demonstration">Prêt pour une démonstration</h2>
-            <p data-fr="ACCORD est opérationnel aujourd'hui. Déploiement bilingue prêt pour l'audit d'ici juin 2026. Nous accueillons les conversations avec les ministères, le SCT et les intervenants en rémunération." data-en="ACCORD is operational today. Audit-ready bilingual deployment by June 2026. We welcome conversations with departments, TBS, and compensation stakeholders.">ACCORD est opérationnel aujourd'hui. Déploiement bilingue prêt pour l'audit d'ici juin 2026. Nous accueillons les conversations avec les ministères, le SCT et les intervenants en rémunération.</p>
-            <a href="/accord/demo/" class="cta-btn" data-fr="Voir la démo &rarr;" data-en="See the demo &rarr;">Voir la démo &rarr;</a>
+            <h2 data-en="Ready for a demonstration" data-fr="Pr&ecirc;t pour une d&eacute;monstration">Ready for a demonstration</h2>
+            <p data-en="ACCORD is operational today. Audit-ready bilingual deployment by June 2026. We welcome conversations with departments, TBS, and compensation stakeholders." data-fr="ACCORD est op&eacute;rationnel aujourd'hui. D&eacute;ploiement bilingue pr&ecirc;t pour l'audit d'ici juin 2026.">ACCORD is operational today. Audit-ready bilingual deployment by June 2026. We welcome conversations with departments, TBS, and compensation stakeholders.</p>
+            <a href="/accord/demo/" class="cta-btn" data-en="See the demo &rarr;" data-fr="Voir la d&eacute;mo &rarr;">See the demo &rarr;</a>
             &nbsp;&nbsp;
-            <a href="mailto:fred@hazeydata.ai" class="cta-btn" style="background: rgba(255,255,255,0.15);" data-fr="Nous contacter" data-en="Get in touch">Nous contacter</a>
+            <a href="mailto:fred@hazeydata.ai" class="cta-btn" style="background: rgba(255,255,255,0.15);" data-en="Get in touch" data-fr="Nous contacter">Get in touch</a>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-links">
             <a href="/">hazeydata.ai</a>
             <a href="/accord/">ACCORD</a>
             <a href="mailto:fred@hazeydata.ai">Contact</a>
         </div>
-        <p data-fr="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1&nbsp;000&nbsp;000 scénarios validés &middot; 31&nbsp;505 calculs/seconde &middot; zéro plantage" data-en="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,000,000 scenarios validated &middot; 31,505 calculations/second &middot; zero crashes">&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1&nbsp;000&nbsp;000 scénarios validés &middot; 31&nbsp;505 calculs/seconde &middot; zéro plantage</p>
+        <p data-en="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,000,000 scenarios validated &middot; 31,505 calculations/second &middot; zero crashes" data-fr="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1&nbsp;000&nbsp;000 sc&eacute;narios valid&eacute;s &middot; 31&nbsp;505 calculs/seconde &middot; z&eacute;ro plantage">&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,000,000 scenarios validated &middot; 31,505 calculations/second &middot; zero crashes</p>
     </footer>
 
     <script>
-    let currentLang = 'fr';
-    function toggleLang() {
-        currentLang = currentLang === 'fr' ? 'en' : 'fr';
+    var currentLang = localStorage.getItem('accord-lang') || 'en';
+    function applyLang() {
         document.documentElement.lang = currentLang;
-        document.querySelector('.lang-btn').textContent = currentLang === 'fr' ? 'EN' : 'FR';
-        // Update nav links
-        const navHome = document.querySelector('.nav-links a:first-child');
-        navHome.textContent = currentLang === 'fr' ? 'Accueil' : 'Home';
-        // Update all bilingual elements
-        document.querySelectorAll('[data-fr][data-en]').forEach(el => {
+        document.querySelector('.lang-btn').textContent = currentLang === 'en' ? 'FR' : 'EN';
+        document.querySelectorAll('[data-en][data-fr]').forEach(function(el) {
             el.innerHTML = el.getAttribute('data-' + currentLang);
         });
     }
+    function toggleLang() {
+        currentLang = currentLang === 'en' ? 'fr' : 'en';
+        localStorage.setItem('accord-lang', currentLang);
+        applyLang();
+    }
+    applyLang();
     </script>
 </body>
 </html>
