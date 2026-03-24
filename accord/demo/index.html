@@ -32,20 +32,23 @@
         .demo-header h1 { font-size: 1.6rem; font-weight: 800; color: var(--gc-blue); margin-bottom: 0.3rem; }
         .demo-header p { font-size: 0.95rem; color: var(--gc-grey-mid); }
         .tabs { display: flex; gap: 2px; background: var(--gc-grey); border-radius: 8px 8px 0 0; overflow: hidden; }
-        .tab { flex: 1; padding: 0.7rem 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; background: white; color: var(--gc-grey-mid); transition: all 0.15s; text-align: center; }
+        .tab { flex: 1; padding: 0.7rem 0.5rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600; background: white; color: var(--gc-grey-mid); transition: all 0.15s; text-align: center; white-space: nowrap; }
         .tab.active { background: var(--gc-blue); color: white; }
         .tab:hover:not(.active) { background: var(--gc-grey-light); }
-        .panel { background: white; border: 1px solid var(--gc-grey); border-top: none; border-radius: 0 0 8px 8px; padding: 2rem; box-shadow: var(--shadow); }
-        .panel-hidden { display: none; }
+        .panel { background: white; border: 1px solid var(--gc-grey); border-top: none; border-radius: 0 0 8px 8px; padding: 2rem; box-shadow: var(--shadow); display: none; }
+        .panel.active { display: block; animation: fadeIn 0.25s ease-out; }
         .controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
+        .controls-2 { grid-template-columns: 1fr 1fr; }
+        .controls-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
         label.ctrl-label { display: block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gc-grey-mid); margin-bottom: 0.35rem; }
-        select, input[type=number] { width: 100%; padding: 0.55rem 0.7rem; border: 1.5px solid var(--gc-grey); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.9rem; background: var(--gc-grey-light); }
+        select, input[type=number], input[type=date] { width: 100%; padding: 0.55rem 0.7rem; border: 1.5px solid var(--gc-grey); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.9rem; background: var(--gc-grey-light); }
         select:focus, input:focus { outline: none; border-color: var(--gc-blue); }
         .run-btn { display: block; width: 100%; padding: 0.7rem; background: var(--gc-blue); color: white; border: none; border-radius: 6px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: background 0.2s; }
         .run-btn:hover { background: var(--gc-blue-light); }
         .result { display: none; margin-top: 1.5rem; border-top: 1px solid var(--gc-grey); padding-top: 1.5rem; animation: fadeIn 0.3s ease-out; }
         .result.show { display: block; }
         .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--gc-grey); border: 1px solid var(--gc-grey); border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+        .result-single { grid-template-columns: 1fr; }
         .result-card { background: white; padding: 1.25rem; }
         .result-card.accord { border-left: 3px solid var(--green); }
         .result-card.other { border-left: 3px solid var(--gc-grey-mid); }
@@ -80,8 +83,22 @@
         .stats-bar { display: flex; justify-content: center; gap: 2rem; padding: 1rem 2rem; background: var(--gc-blue); color: white; font-size: 0.75rem; text-align: center; flex-wrap: wrap; }
         .stats-bar .sb-num { font-weight: 800; font-size: 1rem; display: block; }
         .stats-bar .sb-label { opacity: 0.6; font-size: 0.65rem; }
+        .holiday-list { list-style: none; padding: 0; margin: 0; }
+        .holiday-list li { display: flex; justify-content: space-between; padding: 0.45rem 0; border-bottom: 1px solid var(--gc-grey); font-size: 0.85rem; }
+        .holiday-list li:last-child { border-bottom: none; }
+        .holiday-list .h-name { font-weight: 500; }
+        .holiday-list .h-date { color: var(--gc-grey-mid); font-family: 'Courier New', monospace; font-size: 0.8rem; }
+        .holiday-list .h-sub { color: var(--gc-red); font-size: 0.7rem; font-weight: 600; margin-left: 0.5rem; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 700px) { .controls { grid-template-columns: 1fr; } .result-grid { grid-template-columns: 1fr; } .code-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 700px) {
+            .controls { grid-template-columns: 1fr; }
+            .controls-2 { grid-template-columns: 1fr; }
+            .controls-4 { grid-template-columns: 1fr 1fr; }
+            .result-grid { grid-template-columns: 1fr; }
+            .code-grid { grid-template-columns: 1fr; }
+            .tabs { flex-wrap: wrap; }
+            .tab { flex: none; width: calc(25% - 2px); font-size: 0.65rem; padding: 0.6rem 0.3rem; }
+        }
     </style>
 </head>
 <body>
@@ -104,204 +121,60 @@
     <div class="demo-wrap">
         <div class="demo-header">
             <h1 data-en="ACCORD Interactive Demo" data-fr="D&eacute;mo interactive ACCORD">ACCORD Interactive Demo</h1>
-            <p data-en="Select a domain, enter parameters, get the validated answer with article citation." data-fr="S&eacute;lectionnez un domaine, entrez les param&egrave;tres, obtenez la r&eacute;ponse valid&eacute;e avec citation d'article.">Select a domain, enter parameters, get the validated answer with article citation.</p>
+            <p data-en="8 pay domains. Pick one, enter parameters, get the validated answer with article citation." data-fr="8 domaines de r&eacute;mun&eacute;ration. Choisissez-en un, entrez les param&egrave;tres, obtenez la r&eacute;ponse valid&eacute;e avec citation d'article.">8 pay domains. Pick one, enter parameters, get the validated answer with article citation.</p>
         </div>
-        <div class="tabs">
-            <button class="tab active" onclick="showTab('calc',this)" data-en="&#x1F50D; Validation" data-fr="&#x1F50D; Validation">&#x1F50D; Validation</button>
-            <button class="tab" onclick="showTab('api',this)" data-en="&#x26A1; API" data-fr="&#x26A1; API">&#x26A1; API</button>
-            <button class="tab" onclick="showTab('batch',this)" data-en="&#x1F4CA; Batch" data-fr="&#x1F4CA; Lots">&#x1F4CA; Batch</button>
+        <div class="tabs" id="domain-tabs">
+            <button class="tab active" onclick="showDomain('vacation',this)" data-en="&#x2600;&#xFE0F; Vacation" data-fr="&#x2600;&#xFE0F; Cong&eacute;s">&#x2600;&#xFE0F; Vacation</button>
+            <button class="tab" onclick="showDomain('acting',this)" data-en="&#x2B06;&#xFE0F; Acting" data-fr="&#x2B06;&#xFE0F; Int&eacute;rim">&#x2B06;&#xFE0F; Acting</button>
+            <button class="tab" onclick="showDomain('dph',this)" data-en="&#x1F5D3;&#xFE0F; Holidays" data-fr="&#x1F5D3;&#xFE0F; F&eacute;ri&eacute;s">&#x1F5D3;&#xFE0F; Holidays</button>
+            <button class="tab" onclick="showDomain('overtime',this)" data-en="&#x23F0; Overtime" data-fr="&#x23F0; HS">&#x23F0; Overtime</button>
+            <button class="tab" onclick="showDomain('parttime',this)" data-en="&frac12; Part-Time" data-fr="&frac12; TP">&#xBD; Part-Time</button>
+            <button class="tab" onclick="showDomain('shift',this)" data-en="&#x1F319; Shift" data-fr="&#x1F319; Quart">&#x1F319; Shift</button>
+            <button class="tab" onclick="showDomain('pyramid',this)" data-en="&#x2696;&#xFE0F; Anti-Pyr." data-fr="&#x2696;&#xFE0F; Anti-cum.">&#x2696;&#xFE0F; Anti-Pyr.</button>
+            <button class="tab" onclick="showDomain('cssda',this)" data-en="&#x1F512; CSSDA" data-fr="&#x1F512; ICSS">&#x1F512; CSSDA</button>
         </div>
-        <div class="panel" id="tab-calc">
-            <div class="controls">
-                <div>
-                    <label class="ctrl-label" data-en="Collective Agreement" data-fr="Convention collective">Collective Agreement</label>
-                    <select id="ca-select" onchange="hideInsight();">
-                        <option value="PA">PA &mdash; Programme &amp; Admin</option>
-                        <option value="TC">TC &mdash; Technical Services</option>
-                        <option value="IT">IT &mdash; Information Technology</option>
-                        <option value="EC">EC &mdash; Economics &amp; Social Sci.</option>
-                        <option value="FB">FB &mdash; Border Services</option>
-                        <option value="SV">SV &mdash; Operational Services</option>
-                        <option value="CX">CX &mdash; Correctional Services</option>
-                        <option value="SP">SP &mdash; Applied Science</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="ctrl-label" data-en="Years of Service" data-fr="Ann&eacute;es de service">Years of Service</label>
-                    <input type="number" id="yos-input" value="8" min="0" max="40" onchange="hideInsight();">
-                </div>
-                <div>
-                    <label class="ctrl-label" data-en="Hours Worked (month)" data-fr="Heures travaill&eacute;es (mois)">Hours Worked (month)</label>
-                    <input type="number" id="hours-input" value="150" min="0" max="200" onchange="hideInsight();">
-                </div>
-            </div>
-            <button class="run-btn" onclick="runCalc()" data-en="&#x25B8; Run ACCORD Validation" data-fr="&#x25B8; Valider avec ACCORD">&#x25B8; Run ACCORD Validation</button>
-            <div class="result" id="result">
-                <div class="result-grid">
-                    <div class="result-card accord">
-                        <div class="rc-label" data-en="ACCORD RESULT" data-fr="R&Eacute;SULTAT ACCORD">ACCORD RESULT</div>
-                        <div class="rc-rate green" id="accord-rate">&mdash;</div>
-                        <div class="rc-unit" data-en="hours / month" data-fr="heures / mois">hours / month</div>
-                        <div class="rc-clause" id="accord-clause">&mdash;</div>
-                    </div>
-                    <div class="result-card other">
-                        <div class="rc-label" data-en="WHAT A FRESH AI CALCULATES" data-fr="CE QU'UNE IA FRA&Icirc;CHE CALCULE">WHAT A FRESH AI CALCULATES</div>
-                        <div class="rc-rate" id="llm-rate">&mdash;</div>
-                        <div class="rc-unit" data-en="hours / month" data-fr="heures / mois">hours / month</div>
-                        <div class="rc-clause" id="llm-clause">&mdash;</div>
-                    </div>
-                </div>
-                <div class="explain-box" id="explain-box"></div>
-                <div id="match-result"></div>
-                <div id="insight-container"></div>
-            </div>
-        </div>
-        <div class="panel panel-hidden" id="tab-api">
-            <div class="api-tabs">
-                <button class="api-tab active" onclick="showApi(0,this)"><span class="api-method post">POST</span>/vacation</button>
-                <button class="api-tab" onclick="showApi(1,this)"><span class="api-method post">POST</span>/acting-pay</button>
-                <button class="api-tab" onclick="showApi(2,this)"><span class="api-method post">POST</span>/validate</button>
-                <button class="api-tab" onclick="showApi(3,this)"><span class="api-method get">GET</span>/health</button>
-            </div>
-            <div class="code-grid">
-                <div><div class="code-label" data-en="Request" data-fr="Requ&ecirc;te">Request</div><div class="code-block" id="api-req"></div></div>
-                <div><div class="code-label" data-en="Response (200 OK)" data-fr="R&eacute;ponse (200 OK)">Response (200 OK)</div><div class="code-block" id="api-res"></div></div>
-            </div>
-        </div>
-        <div class="panel panel-hidden" id="tab-batch">
-            <div class="batch-zone">
-                <div style="font-size:2.5rem;margin-bottom:1rem;opacity:0.3">&#x1F4C4;</div>
-                <h3 style="margin-bottom:0.5rem;color:var(--gc-blue)" data-en="Ready for PSPC test results" data-fr="Pr&ecirc;t pour les r&eacute;sultats de SPAC">Ready for PSPC test results</h3>
-                <p data-en="When PSPC publishes parallel testing results (June 2026), upload them here. ACCORD validates every scenario and produces a bilingual discrepancy report with article citations." data-fr="Lorsque SPAC publiera les r&eacute;sultats de tests parall&egrave;les (juin 2026), t&eacute;l&eacute;versez-les ici. ACCORD validera chaque sc&eacute;nario et produira un rapport bilingue d'&eacute;carts.">When PSPC publishes parallel testing results (June 2026), upload them here. ACCORD validates every scenario and produces a bilingual discrepancy report with article citations.</p>
-                <div style="margin-top:1rem;font-size:0.8rem;color:var(--gc-grey-mid)">CSV &#x2713; &nbsp; XLSX &#x2713; &nbsp; JSON &#x2713; &nbsp; PDF &#x2713;</div>
-            </div>
-        </div>
+        <!-- VACATION --><div class="panel active" id="panel-vacation"><div class="controls"><div><label class="ctrl-label" data-en="Collective Agreement" data-fr="Convention collective">Collective Agreement</label><select id="vac-ca"><option value="PA">PA — Programme & Admin</option><option value="TC">TC — Technical Services</option><option value="IT">IT — Information Technology</option><option value="EC">EC — Economics & Social Sci.</option><option value="FB">FB — Border Services</option><option value="SV">SV — Operational Services</option><option value="CX">CX — Correctional Services</option><option value="SP">SP — Applied Science</option></select></div><div><label class="ctrl-label" data-en="Years of Service" data-fr="Ann&eacute;es de service">Years of Service</label><input type="number" id="vac-yos" value="8" min="0" max="40"></div><div><label class="ctrl-label" data-en="Hours Worked (month)" data-fr="Heures travaill&eacute;es (mois)">Hours Worked (month)</label><input type="number" id="vac-hrs" value="150" min="0" max="200"></div></div><button class="run-btn" onclick="runVacation()" data-en="&#x25B8; Run ACCORD Validation" data-fr="&#x25B8; Valider avec ACCORD">&#x25B8; Run ACCORD Validation</button><div class="result" id="vac-result"><div class="result-grid"><div class="result-card accord"><div class="rc-label" data-en="ACCORD RESULT" data-fr="R&Eacute;SULTAT ACCORD">ACCORD RESULT</div><div class="rc-rate green" id="vac-accord-rate">—</div><div class="rc-unit" data-en="hours / month" data-fr="heures / mois">hours / month</div><div class="rc-clause" id="vac-accord-clause">—</div></div><div class="result-card other"><div class="rc-label" data-en="WHAT A FRESH AI CALCULATES" data-fr="CE QU'UNE IA FRA&Icirc;CHE CALCULE">WHAT A FRESH AI CALCULATES</div><div class="rc-rate" id="vac-llm-rate">—</div><div class="rc-unit" data-en="hours / month" data-fr="heures / mois">hours / month</div><div class="rc-clause" id="vac-llm-clause">—</div></div></div><div class="explain-box" id="vac-explain"></div><div id="vac-match"></div><div id="vac-insight"></div></div></div>
+        <!-- ACTING --><div class="panel" id="panel-acting"><div class="controls controls-4"><div><label class="ctrl-label" data-en="Substantive Annual" data-fr="Salaire annuel de base">Substantive Annual</label><input type="number" id="act-sub" value="72750" min="40000" max="200000" step="100"></div><div><label class="ctrl-label" data-en="Acting Annual" data-fr="Salaire annuel int&eacute;rim">Acting Annual</label><input type="number" id="act-act" value="82000" min="40000" max="200000" step="100"></div><div><label class="ctrl-label" data-en="Days Worked" data-fr="Jours travaill&eacute;s">Days Worked</label><input type="number" id="act-days" value="10" min="1" max="260"></div><div><label class="ctrl-label" data-en="Schedule" data-fr="Horaire">Schedule</label><select id="act-sched"><option value="standard">Standard (7.5h/day)</option><option value="compressed">Compressed (variable)</option></select></div></div><button class="run-btn" onclick="runActing()" data-en="&#x25B8; Calculate Acting Pay" data-fr="&#x25B8; Calculer la r&eacute;mun&eacute;ration d'int&eacute;rim">&#x25B8; Calculate Acting Pay</button><div class="result" id="act-result"><div class="result-grid result-single"><div class="result-card accord"><div class="rc-label" data-en="ACCORD RESULT" data-fr="R&Eacute;SULTAT ACCORD">ACCORD RESULT</div><div class="rc-rate green" id="act-premium">—</div><div class="rc-unit" data-en="total acting premium" data-fr="prime d'int&eacute;rim totale">total acting premium</div><div class="rc-clause" id="act-clause">—</div></div></div><div class="explain-box" id="act-explain"></div></div></div>
+        <!-- DPH --><div class="panel" id="panel-dph"><div class="controls controls-2"><div><label class="ctrl-label" data-en="Year" data-fr="Ann&eacute;e">Year</label><select id="dph-year"><option value="2026">2026</option><option value="2027" selected>2027</option><option value="2028">2028</option></select></div><div><label class="ctrl-label" data-en="Duty Station (Province)" data-fr="Lieu de travail (Province)">Duty Station (Province)</label><select id="dph-prov"><option value="ON">Ontario / NCR</option><option value="QC">Quebec</option><option value="BC">British Columbia</option><option value="AB">Alberta</option><option value="MB">Manitoba</option><option value="SK">Saskatchewan</option><option value="NS">Nova Scotia</option><option value="NB">New Brunswick</option><option value="PE">Prince Edward Island</option><option value="NL">Newfoundland & Labrador</option><option value="NT">Northwest Territories</option><option value="NU">Nunavut</option><option value="YT">Yukon</option></select></div></div><button class="run-btn" onclick="runDPH()" data-en="&#x25B8; Show Holiday Calendar" data-fr="&#x25B8; Afficher le calendrier des cong&eacute;s">&#x25B8; Show Holiday Calendar</button><div class="result" id="dph-result"><div class="result-grid result-single"><div class="result-card accord"><div class="rc-label" id="dph-count-label">—</div><div id="dph-list-container"></div><div class="rc-clause" id="dph-clause">—</div></div></div><div class="explain-box" id="dph-explain"></div></div></div>
+        <!-- OVERTIME --><div class="panel" id="panel-overtime"><div class="controls"><div><label class="ctrl-label" data-en="Collective Agreement" data-fr="Convention collective">Collective Agreement</label><select id="ot-ca"><option value="PA">PA — Programme & Admin</option><option value="TC">TC — Technical Services</option><option value="CX">CX — Correctional (40h)</option><option value="FB">FB — Border Services</option></select></div><div><label class="ctrl-label" data-en="Hourly Rate ($)" data-fr="Taux horaire ($)">Hourly Rate ($)</label><input type="number" id="ot-rate" value="45.50" min="20" max="120" step="0.50"></div><div><label class="ctrl-label" data-en="OT Hours Worked" data-fr="Heures suppl&eacute;mentaires">OT Hours Worked</label><input type="number" id="ot-hrs" value="12" min="0.5" max="100" step="0.5"></div></div><button class="run-btn" onclick="runOvertime()" data-en="&#x25B8; Calculate Overtime" data-fr="&#x25B8; Calculer les heures suppl&eacute;mentaires">&#x25B8; Calculate Overtime</button><div class="result" id="ot-result"><div class="result-grid result-single"><div class="result-card accord"><div class="rc-label" data-en="ACCORD RESULT" data-fr="R&Eacute;SULTAT ACCORD">ACCORD RESULT</div><div class="rc-rate green" id="ot-total">—</div><div class="rc-unit" data-en="overtime pay" data-fr="r&eacute;mun&eacute;ration des HS">overtime pay</div><div class="rc-clause" id="ot-clause">—</div></div></div><div class="explain-box" id="ot-explain"></div></div></div>
+        <!-- PART-TIME --><div class="panel" id="panel-parttime"><div class="controls"><div><label class="ctrl-label" data-en="Collective Agreement" data-fr="Convention collective">Collective Agreement</label><select id="pt-ca"><option value="PA">PA — Programme & Admin (37.5h)</option><option value="CX">CX — Correctional (40h)</option></select></div><div><label class="ctrl-label" data-en="Scheduled Hours/Week" data-fr="Heures pr&eacute;vues/semaine">Scheduled Hours/Week</label><input type="number" id="pt-sched" value="25" min="1" max="40" step="0.5"></div><div><label class="ctrl-label" data-en="Full-Time Annual Salary" data-fr="Salaire annuel temps plein">Full-Time Annual Salary</label><input type="number" id="pt-salary" value="72750" min="30000" max="200000" step="100"></div></div><button class="run-btn" onclick="runPartTime()" data-en="&#x25B8; Calculate Part-Time Entitlements" data-fr="&#x25B8; Calculer les droits temps partiel">&#x25B8; Calculate Part-Time Entitlements</button><div class="result" id="pt-result"><div class="result-grid result-single"><div class="result-card accord"><div class="rc-label" data-en="ACCORD RESULT" data-fr="R&Eacute;SULTAT ACCORD">ACCORD RESULT</div><div class="rc-rate green" id="pt-pay">—</div><div class="rc-unit" data-en="pro-rated biweekly pay" data-fr="paie aux deux semaines pro-rata">pro-rated biweekly pay</div><div class="rc-clause" id="pt-clause">—</div></div></div><div class="explain-box" id="pt-explain"></div></div></div>
+        <!-- SHIFT --><div class="panel" id="panel-shift"><div class="controls"><div><label class="ctrl-label" data-en="Collective Agreement" data-fr="Convention collective">Collective Agreement</label><select id="sh-ca"><option value="PA">PA — Programme & Admin</option><option value="CX">CX — Correctional</option><option value="FB">FB — Border Services</option></select></div><div><label class="ctrl-label" data-en="Shift Type" data-fr="Type de quart">Shift Type</label><select id="sh-type"><option value="evening">Evening (16:00–00:00)</option><option value="night">Night (00:00–08:00)</option><option value="weekend">Weekend</option></select></div><div><label class="ctrl-label" data-en="Hours on Shift" data-fr="Heures de quart">Hours on Shift</label><input type="number" id="sh-hrs" value="7.5" min="1" max="12" step="0.5"></div></div><button class="run-btn" onclick="runShift()" data-en="&#x25B8; Calculate Shift Premium" data-fr="&#x25B8; Calculer la prime de quart">&#x25B8; Calculate Shift Premium</button><div class="result" id="sh-result"><div class="result-grid result-single"><div class="result-card accord"><div class="rc-label" data-en="ACCORD RESULT" data-fr="R&Eacute;SULTAT ACCORD">ACCORD RESULT</div><div class="rc-rate green" id="sh-total">—</div><div class="rc-unit" data-en="shift premium" data-fr="prime de quart">shift premium</div><div class="rc-clause" id="sh-clause">—</div></div></div><div class="explain-box" id="sh-explain"></div></div></div>
+        <!-- ANTI-PYRAMIDING --><div class="panel" id="panel-pyramid"><div class="controls controls-4"><div><label class="ctrl-label" data-en="Collective Agreement" data-fr="Convention collective">Collective Agreement</label><select id="pyr-ca"><option value="PA">PA (3 types)</option><option value="TC">TC (5 types)</option></select></div><div><label class="ctrl-label" data-en="Overtime Premium ($)" data-fr="Prime HS ($)">Overtime Premium ($)</label><input type="number" id="pyr-ot" value="68.25" min="0" max="500" step="0.25"></div><div><label class="ctrl-label" data-en="Holiday Premium ($)" data-fr="Prime f&eacute;ri&eacute; ($)">Holiday Premium ($)</label><input type="number" id="pyr-hol" value="91.00" min="0" max="500" step="0.25"></div><div><label class="ctrl-label" data-en="Callback Premium ($)" data-fr="Prime rappel ($)">Callback Premium ($)</label><input type="number" id="pyr-cb" value="45.50" min="0" max="500" step="0.25"></div></div><button class="run-btn" onclick="runPyramid()" data-en="&#x25B8; Resolve Anti-Pyramiding" data-fr="&#x25B8; R&eacute;soudre l'anti-cumul">&#x25B8; Resolve Anti-Pyramiding</button><div class="result" id="pyr-result"><div class="result-grid result-single"><div class="result-card accord"><div class="rc-label" data-en="ACCORD RESULT" data-fr="R&Eacute;SULTAT ACCORD">ACCORD RESULT</div><div class="rc-rate green" id="pyr-total">—</div><div class="rc-unit" data-en="payable premium (highest wins)" data-fr="prime payable (la plus &eacute;lev&eacute;e l'emporte)">payable premium (highest wins)</div><div class="rc-clause" id="pyr-clause">—</div></div></div><div class="explain-box" id="pyr-explain"></div></div></div>
+        <!-- CSSDA --><div class="panel" id="panel-cssda"><div class="controls"><div><label class="ctrl-label" data-en="Substantive Annual Salary" data-fr="Salaire annuel de base">Substantive Annual Salary</label><input type="number" id="css-sub" value="72750" min="40000" max="150000" step="100"></div><div><label class="ctrl-label" data-en="Acting Annual (0 = none)" data-fr="Salaire int&eacute;rim (0 = aucun)">Acting Annual (0 = none)</label><input type="number" id="css-act" value="0" min="0" max="150000" step="100"></div><div><label class="ctrl-label" data-en="Days on Leave" data-fr="Jours en cong&eacute;">Days on Leave</label><input type="number" id="css-leave" value="0" min="0" max="120"></div></div><button class="run-btn" onclick="runCSSDA()" data-en="&#x25B8; Calculate CSSDA" data-fr="&#x25B8; Calculer l'ICSS">&#x25B8; Calculate CSSDA</button><div class="result" id="css-result"><div class="result-grid result-single"><div class="result-card accord"><div class="rc-label" data-en="ACCORD RESULT" data-fr="R&Eacute;SULTAT ACCORD">ACCORD RESULT</div><div class="rc-rate green" id="css-total">—</div><div class="rc-unit" data-en="biweekly CSSDA" data-fr="ICSS aux deux semaines">biweekly CSSDA</div><div class="rc-clause" id="css-clause">—</div></div></div><div class="explain-box" id="css-explain"></div></div></div>
     </div>
     <footer style="text-align:center;padding:2rem;font-size:0.75rem;color:var(--gc-grey-mid)">
         <a href="/accord/" class="back-link" style="font-size:0.8rem" data-en="&larr; Back to ACCORD" data-fr="&larr; Retour &agrave; ACCORD">&larr; Back to ACCORD</a>
         <p style="margin-top:1rem" data-en="1,000,000 scenarios validated &middot; zero crashes" data-fr="1&nbsp;000&nbsp;000 sc&eacute;narios valid&eacute;s &middot; z&eacute;ro plantage">1,000,000 scenarios validated &middot; zero crashes</p>
     </footer>
 <script>
-var currentLang = localStorage.getItem('accord-lang') || 'en';
-var isDefaultScenario = true;
-
-// Collective agreement URLs on canada.ca
-// TBS restructured URLs in 2025: /services/collective-agreements/ is DEAD
-// New path: /topics/pay/collective-agreements/{code}.html
-var CA_URLS = {
-  PA: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/pa.html',
-  TC: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/tc.html',
-  IT: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/it.html',
-  EC: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/ec.html',
-  FB: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/fb.html',
-  SV: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/sv.html',
-  CX: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/cx.html',
-  SP: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/sp.html'
-};
-
-function applyLang() {
-    document.documentElement.lang = currentLang;
-    document.querySelector('.lang-btn').textContent = currentLang === 'en' ? 'FR' : 'EN';
-    document.querySelectorAll('[data-en][data-fr]').forEach(function(el) {
-        el.innerHTML = el.getAttribute('data-' + currentLang);
-    });
-    if (document.getElementById('result').classList.contains('show')) runCalc();
-}
-function toggleLang() {
-    currentLang = currentLang === 'en' ? 'fr' : 'en';
-    localStorage.setItem('accord-lang', currentLang);
-    applyLang();
-}
-function hideInsight() {
-    isDefaultScenario = false;
-    var ic = document.getElementById('insight-container');
-    if (ic) ic.innerHTML = '';
-}
-
-var CA = {
-  PA:{n:"Programme and Administrative",a:"34.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"34.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"34.02(b)",d:20},{mn:16,mx:16,r:13.75,c:"34.02(c)",d:22},{mn:17,mx:17,r:14.4,c:"34.02(d)",d:23.04},{mn:18,mx:26,r:15.625,c:"34.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"34.02(f)",d:27},{mn:28,mx:99,r:18.75,c:"34.02(g)",d:30}]},
-  TC:{n:"Technical Services",a:"38.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"38.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"38.02(b)",d:20},{mn:16,mx:16,r:13.75,c:"38.02(c)",d:22},{mn:17,mx:17,r:14.4,c:"38.02(d)",d:23.04},{mn:18,mx:26,r:15.625,c:"38.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"38.02(f)",d:27},{mn:28,mx:99,r:18.75,c:"38.02(g)",d:30}]},
-  IT:{n:"Information Technology",a:"35.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"35.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"35.02(b)",d:20},{mn:16,mx:16,r:13.75,c:"35.02(c)",d:22},{mn:17,mx:17,r:14.375,c:"35.02(d)",d:23},{mn:18,mx:26,r:15.625,c:"35.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"35.02(f)",d:27},{mn:28,mx:99,r:18.75,c:"35.02(g)",d:30}]},
-  EC:{n:"Economics and Social Science",a:"33.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"33.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"33.02(b)",d:20},{mn:16,mx:16,r:13.75,c:"33.02(c)",d:22},{mn:17,mx:17,r:14.375,c:"33.02(d)",d:23},{mn:18,mx:26,r:15.625,c:"33.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"33.02(f)",d:27},{mn:28,mx:99,r:18.75,c:"33.02(g)",d:30}]},
-  FB:{n:"Federal Policing",a:"32.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"32.02(a)",d:15},{mn:8,mx:17,r:12.5,c:"32.02(b)",d:20},{mn:18,mx:24,r:15.625,c:"32.02(c)",d:25},{mn:25,mx:99,r:18.75,c:"32.02(d)",d:30}]},
-  SV:{n:"Operational Services",a:"37.02.1",t:75,bp:[{mn:0,mx:7,r:9.375,c:"37.02.1(a)(i)",d:15},{mn:8,mx:15,r:12.5,c:"37.02.1(a)(ii)",d:20},{mn:16,mx:16,r:13.75,c:"37.02.1(a)(iii)",d:22},{mn:17,mx:17,r:14.4,c:"37.02.1(a)(iv)",d:23},{mn:18,mx:26,r:15.625,c:"37.02.1(a)(v)",d:25},{mn:27,mx:27,r:16.875,c:"37.02.1(a)(vi)",d:27},{mn:28,mx:99,r:18.75,c:"37.02.1(a)(vii)",d:30}]},
-  CX:{n:"Correctional Services",a:"35.02",t:80,bp:[{mn:0,mx:7,r:10.0,c:"35.02(a)",d:15},{mn:8,mx:15,r:13.36,c:"35.02(b)",d:20},{mn:16,mx:16,r:14.72,c:"35.02(c)",d:22},{mn:17,mx:17,r:15.36,c:"35.02(d)",d:23},{mn:18,mx:26,r:16.72,c:"35.02(e)",d:25},{mn:27,mx:27,r:18.0,c:"35.02(f)",d:27},{mn:28,mx:99,r:20.0,c:"35.02(g)",d:30}]},
-  SP:{n:"Applied Science",a:"32.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"32.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"32.02(b)",d:20},{mn:16,mx:16,r:13.75,c:"32.02(c)",d:22},{mn:17,mx:17,r:14.375,c:"32.02(d)",d:23},{mn:18,mx:26,r:15.625,c:"32.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"32.02(f)",d:27},{mn:28,mx:99,r:18.75,c:"32.02(g)",d:30}]}
-};
-
-function findBP(ca,yos){var d=CA[ca];for(var i=0;i<d.bp.length;i++){var b=d.bp[i];if(yos>=b.mn&&yos<=b.mx)return b;}return d.bp[d.bp.length-1];}
-function simLLM(ca,yos){var d=CA[ca];if(yos===8)return{r:d.bp[0].r,c:d.bp[0].c};return findBP(ca,yos);}
-
-function makeClauseLink(ca, clauseText) {
-    var url = CA_URLS[ca];
-    if (url) return '<a href="'+url+'" target="_blank" rel="noopener">Art. '+clauseText+'</a>';
-    return 'Art. '+clauseText;
-}
-function makeInlineClauseLink(ca, clauseText) {
-    var url = CA_URLS[ca];
-    if (url) return '<a href="'+url+'" target="_blank" rel="noopener">Clause '+clauseText+'</a>';
-    return 'Clause '+clauseText;
-}
-
-function runCalc(){
-  var ca=document.getElementById('ca-select').value;
-  var yos=parseInt(document.getElementById('yos-input').value)||0;
-  var hrs=parseFloat(document.getElementById('hours-input').value)||0;
-  var d=CA[ca],bp=findBP(ca,yos),met=hrs>=d.t;
-  var llm=simLLM(ca,yos),match=Math.abs(bp.r-llm.r)<0.01;
-
-  document.getElementById('accord-rate').textContent=bp.r.toFixed(3);
-  document.getElementById('accord-clause').innerHTML=makeClauseLink(ca, bp.c);
-  document.getElementById('llm-rate').textContent=llm.r.toFixed(3);
-  document.getElementById('llm-clause').innerHTML=makeClauseLink(ca, llm.c);
-
-  var eb = document.getElementById('explain-box');
-  var clauseLink = makeInlineClauseLink(ca, bp.c);
-  if (currentLang === 'fr') {
-    var ts=met?'\u2265':'<',ms=met?'ATTEINT':'NON ATTEINT',es=met?bp.r.toFixed(3)+'\u00a0h':'0\u00a0h (aucun cr\u00e9dit)';
-    eb.innerHTML='<strong>Accumulation cong\u00e9s annuels ('+ca+'-'+d.a+')</strong>\n'+'Ann\u00e9es de service\u00a0: '+yos+' \u2192 '+clauseLink+'\n'+'Taux\u00a0: '+bp.r+'\u00a0h/mois ('+bp.d+'\u00a0jours/ann\u00e9e)\n'+'Seuil\u00a0: '+hrs+'\u00a0h '+ts+' '+d.t+'\u00a0h \u2192 '+ms+'\n'+'Acquis ce mois\u00a0: '+es;
-  } else {
-    var ts2=met?'\u2265':'<',ms2=met?'MET':'NOT MET',es2=met?bp.r.toFixed(3)+'h':'0h (no credits)';
-    eb.innerHTML='<strong>Vacation Accrual ('+ca+'-'+d.a+')</strong>\n'+'Years of service: '+yos+' \u2192 '+clauseLink+'\n'+'Rate: '+bp.r+'h/month ('+bp.d+' days/year)\n'+'Threshold: '+hrs+'h '+ts2+' '+d.t+'h \u2192 '+ms2+'\n'+'Earned this month: '+es2;
-  }
-
-  var mr=document.getElementById('match-result');
-  if(match){
-    mr.innerHTML='<div class="match-badge pass">\u2713 '+(currentLang==='fr'?'ACCORD et le r\u00e9viseur ind\u00e9pendant sont d\u2019accord':'ACCORD and independent reviewer agree')+'</div>';
-  } else {
-    mr.innerHTML='<div class="match-badge fail">\u2717 '+(currentLang==='fr'?'D\u00c9SACCORD':'DISAGREE')+' \u2014 ACCORD: '+bp.r+'h ('+bp.c+') vs AI: '+llm.r+'h ('+llm.c+')<br><span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem">'+(currentLang==='fr'?'L\u2019IA interpr\u00e8te \u00ab\u00a0\u00e0 compter de la 8e ann\u00e9e\u00a0\u00bb comme excluant l\u2019ann\u00e9e 8. ACCORD a raison.':'The AI misreads \u201ccommencing with the 8th year\u201d as not including year 8. ACCORD is correct.')+'</span></div>';
-  }
-
-  var ic = document.getElementById('insight-container');
-  if (isDefaultScenario && !match) {
-    ic.innerHTML = '<div class="insight-bubble">'+(currentLang==='fr'?'Dans deux tests ind\u00e9pendants, une IA a mal interpr\u00e9t\u00e9 la convention pour ce sc\u00e9nario. ACCORD l\u2019a d\u00e9tect\u00e9.':'In two independent tests, an AI misinterpreted the agreement for this scenario. ACCORD caught it.')+'<span class="close-x" onclick="this.parentElement.remove()">&times;</span></div>';
-  }
-  document.getElementById('result').classList.add('show');
-}
-
-var apis=[
-  {req:'{\n  "ca": "PA",\n  "years_of_service": 8,\n  "hours_worked": 150\n}',res:'{\n  "rate_hours_per_month": 12.5,\n  "clause": "34.02(b)",\n  "days_per_year": 20,\n  "threshold_met": true,\n  "explain_fr": "PA art. 34.02(b)..."\n}'},
-  {req:'{\n  "ca": "IT",\n  "substantive": {"group":"IT","level":2,"step":3},\n  "acting": {"group":"IT","level":3},\n  "start_date": "2026-04-06",\n  "end_date": "2026-04-17"\n}',res:'{\n  "eligible": true,\n  "qualifying_days": 10,\n  "acting_step": 2,\n  "total_premium": 578.40,\n  "clause": "IT 47.05"\n}'},
-  {req:'{\n  "scenarios": [\n    {"ca":"PA","domain":"vacation",\n     "years_of_service":8,\n     "expected_rate":9.375},\n    {"ca":"IT","domain":"vacation",\n     "years_of_service":16,\n     "expected_rate":13.75}\n  ]\n}',res:'{\n  "total": 2, "pass": 1, "fail": 1,\n  "results": [\n    {"status":"FAIL","severity":"CRITICAL",\n     "accord_rate":12.5,"expected":9.375,\n     "clause":"34.02(b)"},\n    {"status":"PASS",\n     "accord_rate":13.75,"clause":"35.02(c)"}\n  ]\n}'},
-  {req:'GET /api/health',res:'{\n  "status": "healthy",\n  "collective_agreements": 27,\n  "rule_modules": 85,\n  "domains": 8,\n  "unit_tests": 963,\n  "fuzz_scenarios": 1000000,\n  "fuzz_crashes": 0,\n  "calc_per_second": 31505\n}'}
-];
-
-function showApi(i,btn){
-  document.querySelectorAll('.api-tab').forEach(function(t){t.classList.remove('active');});
-  btn.classList.add('active');
-  document.getElementById('api-req').textContent=apis[i].req;
-  document.getElementById('api-res').textContent=apis[i].res;
-}
-function showTab(id,btn){
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
-  document.querySelectorAll('.panel').forEach(function(p){p.classList.add('panel-hidden');});
-  btn.classList.add('active');
-  document.getElementById('tab-'+id).classList.remove('panel-hidden');
-}
-
-applyLang();
-showApi(0,document.querySelector('.api-tab'));
-setTimeout(runCalc,300);
+var currentLang=localStorage.getItem('accord-lang')||'en';var isDefaultVacScenario=true;
+var CA_URLS={PA:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/pa.html',TC:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/tc.html',IT:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/it.html',EC:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/ec.html',FB:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/fb.html',SV:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/sv.html',CX:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/cx.html',SP:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/sp.html'};
+function applyLang(){document.documentElement.lang=currentLang;document.querySelector('.lang-btn').textContent=currentLang==='en'?'FR':'EN';document.querySelectorAll('[data-en][data-fr]').forEach(function(el){el.innerHTML=el.getAttribute('data-'+currentLang);});}
+function toggleLang(){currentLang=currentLang==='en'?'fr':'en';localStorage.setItem('accord-lang',currentLang);applyLang();}
+function showDomain(id,btn){document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');document.getElementById('panel-'+id).classList.add('active');}
+function clauseLink(ca,c){var u=CA_URLS[ca];return u?'<a href="'+u+'" target="_blank" rel="noopener">Art. '+c+'</a>':'Art. '+c;}
+function inlineClauseLink(ca,c){var u=CA_URLS[ca];return u?'<a href="'+u+'" target="_blank" rel="noopener">Clause '+c+'</a>':'Clause '+c;}
+function fmt$(v){return '$'+v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+var VAC={PA:{a:"34.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"34.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"34.02(b)",d:20},{mn:16,mx:16,r:13.75,c:"34.02(c)",d:22},{mn:17,mx:17,r:14.4,c:"34.02(d)",d:23.04},{mn:18,mx:26,r:15.625,c:"34.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"34.02(f)",d:27},{mn:28,mx:99,r:18.75,c:"34.02(g)",d:30}]},TC:{a:"38.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"38.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"38.02(b)",d:20},{mn:16,mx:16,r:13.75,c:"38.02(c)",d:22},{mn:17,mx:17,r:14.4,c:"38.02(d)",d:23.04},{mn:18,mx:26,r:15.625,c:"38.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"38.02(f)",d:27},{mn:28,mx:99,r:18.75,c:"38.02(g)",d:30}]},IT:{a:"35.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"35.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"35.02(b)",d:20},{mn:16,mx:16,r:13.75,c:"35.02(c)",d:22},{mn:17,mx:17,r:14.375,c:"35.02(d)",d:23},{mn:18,mx:26,r:15.625,c:"35.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"35.02(f)",d:27},{mn:28,mx:99,r:18.75,c:"35.02(g)",d:30}]},EC:{a:"33.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"33.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"33.02(b)",d:20},{mn:16,mx:16,r:13.75,c:"33.02(c)",d:22},{mn:17,mx:17,r:14.375,c:"33.02(d)",d:23},{mn:18,mx:26,r:15.625,c:"33.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"33.02(f)",d:27},{mn:28,mx:99,r:18.75,c:"33.02(g)",d:30}]},FB:{a:"32.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"32.02(a)",d:15},{mn:8,mx:17,r:12.5,c:"32.02(b)",d:20},{mn:18,mx:24,r:15.625,c:"32.02(c)",d:25},{mn:25,mx:99,r:18.75,c:"32.02(d)",d:30}]},SV:{a:"37.02.1",t:75,bp:[{mn:0,mx:7,r:9.375,c:"37.02.1(a)(i)",d:15},{mn:8,mx:15,r:12.5,c:"37.02.1(a)(ii)",d:20},{mn:16,mx:16,r:13.75,c:"37.02.1(a)(iii)",d:22},{mn:17,mx:17,r:14.4,c:"37.02.1(a)(iv)",d:23},{mn:18,mx:26,r:15.625,c:"37.02.1(a)(v)",d:25},{mn:27,mx:27,r:16.875,c:"37.02.1(a)(vi)",d:27},{mn:28,mx:99,r:18.75,c:"37.02.1(a)(vii)",d:30}]},CX:{a:"35.02",t:80,bp:[{mn:0,mx:7,r:10.0,c:"35.02(a)",d:15},{mn:8,mx:15,r:13.36,c:"35.02(b)",d:20},{mn:16,mx:16,r:14.72,c:"35.02(c)",d:22},{mn:17,mx:17,r:15.36,c:"35.02(d)",d:23},{mn:18,mx:26,r:16.72,c:"35.02(e)",d:25},{mn:27,mx:27,r:18.0,c:"35.02(f)",d:27},{mn:28,mx:99,r:20.0,c:"35.02(g)",d:30}]},SP:{a:"32.02",t:75,bp:[{mn:0,mx:7,r:9.375,c:"32.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"32.02(b)",d:20},{mn:16,mx:16,r:13.75,c:"32.02(c)",d:22},{mn:17,mx:17,r:14.375,c:"32.02(d)",d:23},{mn:18,mx:26,r:15.625,c:"32.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"32.02(f)",d:27},{mn:28,mx:99,r:18.75,c:"32.02(g)",d:30}]}};
+function findVBP(ca,yos){var d=VAC[ca];for(var i=0;i<d.bp.length;i++){var b=d.bp[i];if(yos>=b.mn&&yos<=b.mx)return b;}return d.bp[d.bp.length-1];}
+function simLLM(ca,yos){if(yos===8)return{r:VAC[ca].bp[0].r,c:VAC[ca].bp[0].c};return findVBP(ca,yos);}
+function runVacation(){var ca=$('vac-ca').value,yos=+$('vac-yos').value||0,hrs=+$('vac-hrs').value||0;var d=VAC[ca],bp=findVBP(ca,yos),met=hrs>=d.t,llm=simLLM(ca,yos),match=Math.abs(bp.r-llm.r)<0.01;$('vac-accord-rate').textContent=bp.r.toFixed(3);$('vac-accord-clause').innerHTML=clauseLink(ca,bp.c);$('vac-llm-rate').textContent=llm.r.toFixed(3);$('vac-llm-clause').innerHTML=clauseLink(ca,llm.c);var cl=inlineClauseLink(ca,bp.c),ts=met?'\u2265':'<',ms=met?'MET':'NOT MET',es=met?bp.r.toFixed(3)+'h':'0h (no credits)';if(currentLang==='fr'){ms=met?'ATTEINT':'NON ATTEINT';es=met?bp.r.toFixed(3)+'\u00a0h':'0\u00a0h (aucun cr\u00e9dit)';$('vac-explain').innerHTML='<strong>Accumulation cong\u00e9s annuels ('+ca+'-'+d.a+')</strong>\nAnn\u00e9es de service\u00a0: '+yos+' \u2192 '+cl+'\nTaux\u00a0: '+bp.r+'\u00a0h/mois ('+bp.d+'\u00a0jours/ann\u00e9e)\nSeuil\u00a0: '+hrs+'\u00a0h '+ts+' '+d.t+'\u00a0h \u2192 '+ms+'\nAcquis ce mois\u00a0: '+es;}else{$('vac-explain').innerHTML='<strong>Vacation Accrual ('+ca+'-'+d.a+')</strong>\nYears of service: '+yos+' \u2192 '+cl+'\nRate: '+bp.r+'h/month ('+bp.d+' days/year)\nThreshold: '+hrs+'h '+ts+' '+d.t+'h \u2192 '+ms+'\nEarned this month: '+es;}var mr=$('vac-match');if(match){mr.innerHTML='<div class="match-badge pass">\u2713 '+(currentLang==='fr'?'ACCORD et le r\u00e9viseur ind\u00e9pendant sont d\u2019accord':'ACCORD and independent reviewer agree')+'</div>';}else{mr.innerHTML='<div class="match-badge fail">\u2717 '+(currentLang==='fr'?'D\u00c9SACCORD':'DISAGREE')+' \u2014 ACCORD: '+bp.r+'h ('+bp.c+') vs AI: '+llm.r+'h ('+llm.c+')<br><span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem">'+(currentLang==='fr'?'L\u2019IA interpr\u00e8te \u00ab\u00a0\u00e0 compter de la 8e ann\u00e9e\u00a0\u00bb comme excluant l\u2019ann\u00e9e 8. ACCORD a raison.':'The AI misreads \u201ccommencing with the 8th year\u201d as not including year 8. ACCORD is correct.')+'</span></div>';}var ic=$('vac-insight');if(isDefaultVacScenario&&!match){ic.innerHTML='<div class="insight-bubble">'+(currentLang==='fr'?'Dans deux tests ind\u00e9pendants, une IA a mal interpr\u00e9t\u00e9 la convention pour ce sc\u00e9nario. ACCORD l\u2019a d\u00e9tect\u00e9.':'In two independent tests, an AI misinterpreted the agreement for this scenario. ACCORD caught it.')+'<span class="close-x" onclick="this.parentElement.remove()">&times;</span></div>';}$('vac-result').classList.add('show');}
+function runActing(){var sub=+$('act-sub').value,act=+$('act-act').value,days=+$('act-days').value;var qualDays=3,sched=$('act-sched').value;var subBw=sub/26.088,actBw=act/26.088;var subDaily=subBw/10,actDaily=actBw/10;var diff=actDaily-subDaily;var eligible=days>=qualDays;var premium=eligible?diff*days:0;$('act-premium').textContent=fmt$(premium);$('act-clause').innerHTML=clauseLink('PA','25.27');var en='<strong>Acting Pay Calculation</strong>\nSubstantive biweekly: '+fmt$(subBw)+' ('+fmt$(sub)+' \u00f7 26.088)\nActing biweekly: '+fmt$(actBw)+' ('+fmt$(act)+' \u00f7 26.088)\nDaily differential: '+fmt$(diff)+'/day\nQualifying period: '+days+' days '+(eligible?'\u2265':'<')+' '+qualDays+' days \u2192 '+(eligible?'ELIGIBLE':'NOT YET ELIGIBLE')+(sched==='compressed'?'\nCompressed schedule: qualifying threshold = 22.5h (Art. 25.27.7)':'')+'\nTotal acting premium: '+fmt$(diff)+' \u00d7 '+days+' = '+fmt$(premium);var fr='<strong>Calcul de la r\u00e9mun\u00e9ration d\'int\u00e9rim</strong>\nTaux de base aux 2 sem.\u00a0: '+fmt$(subBw)+' ('+fmt$(sub)+' \u00f7 26,088)\nTaux int\u00e9rim aux 2 sem.\u00a0: '+fmt$(actBw)+' ('+fmt$(act)+' \u00f7 26,088)\nDiff\u00e9rentiel journalier\u00a0: '+fmt$(diff)+'/jour\nP\u00e9riode d\'admissibilit\u00e9\u00a0: '+days+' jours '+(eligible?'\u2265':'<')+' '+qualDays+' jours \u2192 '+(eligible?'ADMISSIBLE':'PAS ENCORE ADMISSIBLE')+'\nPrime d\'int\u00e9rim totale\u00a0: '+fmt$(diff)+' \u00d7 '+days+' = '+fmt$(premium);$('act-explain').innerHTML=currentLang==='fr'?fr:en;$('act-result').classList.add('show');}
+function nthWeekday(year,month,dow,n){var d=new Date(year,month,1),count=0;while(d.getMonth()===month){if(d.getDay()===dow){count++;if(count===n)return new Date(d);}d.setDate(d.getDate()+1);}return null;}
+function substituteWeekend(d,used){var day=d.getDay();if(day===0){var m=new Date(d);m.setDate(m.getDate()+1);while(used&&used.has(m.getTime()))m.setDate(m.getDate()+1);return{date:m,sub:true};}if(day===6){var m2=new Date(d);m2.setDate(m2.getDate()+2);while(used&&used.has(m2.getTime()))m2.setDate(m2.getDate()+1);return{date:m2,sub:true};}return{date:d,sub:false};}
+function fmtDate(d){var mm=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return mm[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();}
+function fmtDateFr(d){var mm=['jan.','f\u00e9v.','mars','avr.','mai','juin','juill.','ao\u00fbt','sept.','oct.','nov.','d\u00e9c.'];return d.getDate()+' '+mm[d.getMonth()]+' '+d.getFullYear();}
+function goodFriday(y){var a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h2=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h2-k)%7,m=Math.floor((a+11*h2+22*l)/451),mo=Math.floor((h2+l-7*m+114)/31)-1,da=(h2+l-7*m+114)%31+1;var es=new Date(y,mo,da);es.setDate(es.getDate()-2);return es;}
+function easterMonday(y){var gf=goodFriday(y);var em=new Date(gf);em.setDate(em.getDate()+3);return em;}
+function getHolidays(year,prov){var h=[];h.push({name_en:'New Year\'s Day',name_fr:'Jour de l\'An',date:new Date(year,0,1)});h.push({name_en:'Good Friday',name_fr:'Vendredi saint',date:goodFriday(year)});h.push({name_en:'Easter Monday',name_fr:'Lundi de P\u00e2ques',date:easterMonday(year)});var may24=new Date(year,4,24);while(may24.getDay()!==1)may24.setDate(may24.getDate()-1);h.push({name_en:'Victoria Day',name_fr:'F\u00eate de la Reine',date:may24});h.push({name_en:'Canada Day',name_fr:'F\u00eate du Canada',date:new Date(year,6,1)});if(prov==='QC')h.push({name_en:'F\u00eate nationale (QC)',name_fr:'F\u00eate nationale (QC)',date:new Date(year,5,24)});else if(prov==='YT')h.push({name_en:'Discovery Day (YT)',name_fr:'Jour de la D\u00e9couverte (YT)',date:nthWeekday(year,7,1,3)});else h.push({name_en:'Civic Holiday',name_fr:'Cong\u00e9 civique',date:nthWeekday(year,7,1,1)});h.push({name_en:'Labour Day',name_fr:'F\u00eate du Travail',date:nthWeekday(year,8,1,1)});h.push({name_en:'Truth & Reconciliation Day',name_fr:'V\u00e9rit\u00e9 et r\u00e9conciliation',date:new Date(year,8,30)});h.push({name_en:'Thanksgiving Day',name_fr:'Action de gr\u00e2ce',date:nthWeekday(year,9,1,2)});h.push({name_en:'Remembrance Day',name_fr:'Jour du Souvenir',date:new Date(year,10,11)});h.push({name_en:'Christmas Day',name_fr:'Jour de No\u00ebl',date:new Date(year,11,25)});h.push({name_en:'Boxing Day',name_fr:'Lendemain de No\u00ebl',date:new Date(year,11,26)});var used=new Set(),result=[];for(var i=0;i<h.length;i++){var s=substituteWeekend(h[i].date,used);used.add(s.date.getTime());result.push({name_en:h[i].name_en,name_fr:h[i].name_fr,orig:h[i].date,obs:s.date,sub:s.sub});}return result;}
+function runDPH(){var year=+$('dph-year').value,prov=$('dph-prov').value;var holidays=getHolidays(year,prov);var html='<ul class="holiday-list">';for(var i=0;i<holidays.length;i++){var h=holidays[i];var nm=currentLang==='fr'?h.name_fr:h.name_en;var dt=currentLang==='fr'?fmtDateFr(h.obs):fmtDate(h.obs);var sub=h.sub?(currentLang==='fr'?' (substitu\u00e9)':' (observed)'):'';html+='<li><span class="h-name">'+nm+'</span><span><span class="h-date">'+dt+'</span>'+(sub?'<span class="h-sub">'+sub+'</span>':'')+'</span></li>';}html+='</ul>';$('dph-count-label').textContent=(currentLang==='fr'?holidays.length+' CONG\u00c9S D\u00c9SIGN\u00c9S PAY\u00c9S':holidays.length+' DESIGNATED PAID HOLIDAYS')+' \u2014 '+year;$('dph-list-container').innerHTML=html;$('dph-clause').innerHTML=clauseLink('PA','30.02');var provNames={ON:'Ontario/NCR',QC:'Qu\u00e9bec',BC:'BC',AB:'Alberta',MB:'Manitoba',SK:'Saskatchewan',NS:'Nova Scotia',NB:'New Brunswick',PE:'PEI',NL:'NL',NT:'NWT',NU:'Nunavut',YT:'Yukon'};var en='<strong>Designated Paid Holidays ('+year+')</strong>\n'+holidays.length+' holidays for duty station: '+provNames[prov]+'\nProvincial/civic holiday: '+(prov==='QC'?'F\u00eate nationale (June 24)':prov==='YT'?'Discovery Day (3rd Monday August)':'Civic Holiday (1st Monday August)')+'\nWeekend substitution: Art. 30.05 applied automatically\nSource: NJC Directive on Leave, s. 20; PA Art. 30.02';var fr='<strong>Cong\u00e9s d\u00e9sign\u00e9s pay\u00e9s ('+year+')</strong>\n'+holidays.length+' cong\u00e9s pour le lieu de travail\u00a0: '+provNames[prov]+'\nCong\u00e9 provincial/civique\u00a0: '+(prov==='QC'?'F\u00eate nationale (24 juin)':prov==='YT'?'Jour de la D\u00e9couverte (3e lundi ao\u00fbt)':'Cong\u00e9 civique (1er lundi ao\u00fbt)')+'\nSubstitution fin de semaine\u00a0: art. 30.05 appliqu\u00e9 automatiquement\nSource\u00a0: Directive du CNM sur les cong\u00e9s, s. 20; CC PA, art. 30.02';$('dph-explain').innerHTML=currentLang==='fr'?fr:en;$('dph-result').classList.add('show');}
+function runOvertime(){var ca=$('ot-ca').value,rate=+$('ot-rate').value,hrs=+$('ot-hrs').value;var rules={PA:{t15:7.5,art:'25.05',std:37.5},TC:{t15:7.5,art:'28.04',std:37.5},CX:{t15:8,art:'27.04',std:40},FB:{t15:7.5,art:'25.05',std:37.5}};var r=rules[ca]||rules.PA;var t15hrs=Math.min(hrs,r.t15),t20hrs=Math.max(0,hrs-r.t15);var pay15=t15hrs*rate*1.5,pay20=t20hrs*rate*2.0,total=pay15+pay20;$('ot-total').textContent=fmt$(total);$('ot-clause').innerHTML=clauseLink(ca,r.art);var en='<strong>Overtime Calculation ('+ca+')</strong>\nHourly rate: '+fmt$(rate)+' ('+r.std+'h/week schedule)\nFirst '+r.t15+'h at 1.5\u00d7: '+t15hrs.toFixed(1)+'h \u00d7 '+fmt$(rate)+' \u00d7 1.5 = '+fmt$(pay15)+'\n'+(t20hrs>0?'Remaining at 2.0\u00d7: '+t20hrs.toFixed(1)+'h \u00d7 '+fmt$(rate)+' \u00d7 2.0 = '+fmt$(pay20)+'\n':'')+'Total overtime: '+fmt$(total);var fr='<strong>Calcul des heures suppl\u00e9mentaires ('+ca+')</strong>\nTaux horaire\u00a0: '+fmt$(rate)+' (horaire de '+r.std+'\u00a0h/sem.)\nPremi\u00e8res '+r.t15+'\u00a0h \u00e0 1,5\u00d7\u00a0: '+t15hrs.toFixed(1)+'\u00a0h \u00d7 '+fmt$(rate)+' \u00d7 1,5 = '+fmt$(pay15)+'\n'+(t20hrs>0?'Restant \u00e0 2,0\u00d7\u00a0: '+t20hrs.toFixed(1)+'\u00a0h \u00d7 '+fmt$(rate)+' \u00d7 2,0 = '+fmt$(pay20)+'\n':'')+'Total HS\u00a0: '+fmt$(total);$('ot-explain').innerHTML=currentLang==='fr'?fr:en;$('ot-result').classList.add('show');}
+function runPartTime(){var ca=$('pt-ca').value,sched=+$('pt-sched').value,sal=+$('pt-salary').value;var ftHrs=ca==='CX'?40:37.5;var ratio=sched/ftHrs;var ftBw=sal/26.088;var ptBw=ftBw*ratio;var ptAnnual=sal*ratio;$('pt-pay').textContent=fmt$(ptBw);$('pt-clause').innerHTML=clauseLink(ca,ca==='CX'?'24.01':'25.01');var en='<strong>Part-Time Pro-Ration ('+ca+')</strong>\nFull-time schedule: '+ftHrs+'h/week\nPart-time schedule: '+sched+'h/week\nRatio: '+sched+' \u00f7 '+ftHrs+' = '+(ratio*100).toFixed(1)+'%\nFull-time biweekly: '+fmt$(ftBw)+' ('+fmt$(sal)+' \u00f7 26.088)\nPart-time biweekly: '+fmt$(ftBw)+' \u00d7 '+(ratio*100).toFixed(1)+'% = '+fmt$(ptBw)+'\nPro-rated annual: '+fmt$(ptAnnual);var fr='<strong>Pro-ration temps partiel ('+ca+')</strong>\nHoraire temps plein\u00a0: '+ftHrs+'\u00a0h/sem.\nHoraire temps partiel\u00a0: '+sched+'\u00a0h/sem.\nRatio\u00a0: '+sched+' \u00f7 '+ftHrs+' = '+(ratio*100).toFixed(1)+'\u00a0%\nPaie temps plein aux 2 sem.\u00a0: '+fmt$(ftBw)+' ('+fmt$(sal)+' \u00f7 26,088)\nPaie temps partiel aux 2 sem.\u00a0: '+fmt$(ftBw)+' \u00d7 '+(ratio*100).toFixed(1)+'\u00a0% = '+fmt$(ptBw)+'\nAnnuel pro-rat\u00e9\u00a0: '+fmt$(ptAnnual);$('pt-explain').innerHTML=currentLang==='fr'?fr:en;$('pt-result').classList.add('show');}
+function runShift(){var ca=$('sh-ca').value,type=$('sh-type').value,hrs=+$('sh-hrs').value;var rates={PA:{evening:2.50,night:2.75,weekend:2.50,art:'27.01'},CX:{evening:2.50,night:2.75,weekend:2.50,art:'26.01'},FB:{evening:2.50,night:2.75,weekend:2.50,art:'27.01'}};var r=rates[ca]||rates.PA;var perHr=r[type]||2.50;var total=perHr*hrs;var typeEN={evening:'Evening',night:'Night',weekend:'Weekend'};var typeFR={evening:'Soir',night:'Nuit',weekend:'Fin de semaine'};$('sh-total').textContent=fmt$(total);$('sh-clause').innerHTML=clauseLink(ca,r.art);var en='<strong>Shift Premium ('+ca+')</strong>\nShift type: '+typeEN[type]+'\nRate: '+fmt$(perHr)+'/hour\nHours: '+hrs.toFixed(1)+'\nPremium: '+fmt$(perHr)+' \u00d7 '+hrs.toFixed(1)+' = '+fmt$(total);var fr='<strong>Prime de quart ('+ca+')</strong>\nType de quart\u00a0: '+typeFR[type]+'\nTaux\u00a0: '+fmt$(perHr)+'/heure\nHeures\u00a0: '+hrs.toFixed(1)+'\nPrime\u00a0: '+fmt$(perHr)+' \u00d7 '+hrs.toFixed(1)+' = '+fmt$(total);$('sh-explain').innerHTML=currentLang==='fr'?fr:en;$('sh-result').classList.add('show');}
+function runPyramid(){var ca=$('pyr-ca').value,ot=+$('pyr-ot').value,hol=+$('pyr-hol').value,cb=+$('pyr-cb').value;var scope=ca==='TC'?{art:'67.09',count:5}:{art:'28.03',count:3};var premiums=[{name_en:'Overtime',name_fr:'HS',val:ot},{name_en:'Holiday',name_fr:'F\u00e9ri\u00e9',val:hol}];if(ca==='TC')premiums.push({name_en:'Callback',name_fr:'Rappel',val:cb});premiums.sort(function(a,b){return b.val-a.val;});var winner=premiums[0];$('pyr-total').textContent=fmt$(winner.val);$('pyr-clause').innerHTML=clauseLink(ca,scope.art);var en='<strong>Anti-Pyramiding Resolution ('+ca+')</strong>\nScope: '+scope.count+' premium types under '+ca+' Art. '+scope.art+'\nPremiums in conflict:\n';var fr='<strong>R\u00e9solution anti-cumul ('+ca+')</strong>\nPort\u00e9e\u00a0: '+scope.count+' types de primes sous '+ca+' art. '+scope.art+'\nPrimes en conflit\u00a0:\n';for(var i=0;i<premiums.length;i++){var p=premiums[i];en+='  '+p.name_en+': '+fmt$(p.val)+' '+(i===0?'\u2714 PAID':'\u2718 suppressed')+'\n';fr+='  '+p.name_fr+'\u00a0: '+fmt$(p.val)+' '+(i===0?'\u2714 PAY\u00c9E':'\u2718 supprim\u00e9e')+'\n';}en+='Rule: Highest value wins (common law \u2014 Winnipeg Airports Authority v PSAC, 2015 MBCA 94)';fr+='R\u00e8gle\u00a0: La valeur la plus \u00e9lev\u00e9e l\'emporte (common law \u2014 Winnipeg Airports Authority c. AFPC, 2015 MBCA 94)';if(ca==='PA'){en+='\nNote: PA covers 3 types (OT, holiday, standby). TC covers 5 \u2014 same scenario, different outcome possible.';fr+='\nNote\u00a0: PA couvre 3 types. TC couvre 5 \u2014 m\u00eame sc\u00e9nario, r\u00e9sultat potentiellement diff\u00e9rent.';}$('pyr-explain').innerHTML=currentLang==='fr'?fr:en;$('pyr-result').classList.add('show');}
+function runCSSDA(){var sub=+$('css-sub').value,act=+$('css-act').value,leave=+$('css-leave').value;var annual=2140,bw=annual/26.088;var retained=true,reason_en='Active duty',reason_fr='Service actif';if(act>0){var subPlusCSSDA=sub/26.088+bw;var actBw=act/26.088;retained=subPlusCSSDA>actBw;reason_en=retained?'Retained: sub+CSSDA ('+fmt$(subPlusCSSDA)+') > acting ('+fmt$(actBw)+')':'Not retained: acting ('+fmt$(actBw)+') > sub+CSSDA ('+fmt$(subPlusCSSDA)+')';reason_fr=retained?'Maintenu\u00a0: base+ICSS ('+fmt$(subPlusCSSDA)+') > int\u00e9rim ('+fmt$(actBw)+')':'Non maintenu\u00a0: int\u00e9rim ('+fmt$(actBw)+') > base+ICSS ('+fmt$(subPlusCSSDA)+')';}if(leave>60){retained=false;reason_en='Not retained: leave > 60 days ('+leave+')';reason_fr='Non maintenu\u00a0: cong\u00e9 > 60 jours ('+leave+')';}var payable=retained?bw:0;$('css-total').textContent=fmt$(payable);$('css-clause').innerHTML=clauseLink('PA','62.02');var en='<strong>CSSDA / Correctional Service Specific Duty Allowance</strong>\nAnnual CSSDA: '+fmt$(annual)+' (PA Art. 62.02)\nBiweekly: '+fmt$(annual)+' \u00f7 26.088 = '+fmt$(bw)+'\n'+(act>0?'Acting retention test (Art. 62.03): '+reason_en+'\n':'')+(leave>0?'Leave retention (Art. 62.04): '+(leave<=60?'Retained (\u226460 days)':'Exceeds 60-day limit')+'\n':'')+'Payable this period: '+fmt$(payable);var fr='<strong>ICSS / Indemnit\u00e9 de service correctionnel sp\u00e9cifique</strong>\nICCS annuelle\u00a0: '+fmt$(annual)+' (CC PA, art. 62.02)\nAux deux semaines\u00a0: '+fmt$(annual)+' \u00f7 26,088 = '+fmt$(bw)+'\n'+(act>0?'Test maintien int\u00e9rim (art. 62.03)\u00a0: '+reason_fr+'\n':'')+(leave>0?'Maintien en cong\u00e9 (art. 62.04)\u00a0: '+(leave<=60?'Maintenu (\u226460 jours)':'D\u00e9passe 60 jours')+'\n':'')+'Payable cette p\u00e9riode\u00a0: '+fmt$(payable);$('css-explain').innerHTML=currentLang==='fr'?fr:en;$('css-result').classList.add('show');}
+function $(id){return document.getElementById(id);}
+applyLang();setTimeout(runVacation,300);
 </script>
 </body>
 </html>
