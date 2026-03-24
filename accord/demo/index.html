@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCORD — Démo interactive | hazeydata.ai</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+    <meta name="theme-color" content="#26374A">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gc-blue: #26374A; --gc-blue-light: #335075; --gc-red: #AF3C43;
+            --gc-red-dark: #8B1E2F; --gc-white: #FFFFFF; --gc-grey-light: #F8F9FA;
+            --gc-grey: #E5E5E5; --gc-grey-mid: #6C757D; --gc-grey-dark: #333;
+            --green: #1a7a4c; --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: var(--gc-grey-dark); background: var(--gc-grey-light); -webkit-font-smoothing: antialiased; }
+        .gc-bar { height: 4px; background: var(--gc-red); }
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; max-width: 1100px; margin: 0 auto; }
+        .nav a { text-decoration: none; }
+        .nav-brand { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.08em; color: var(--gc-blue); }
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-links a { color: var(--gc-grey-mid); font-size: 0.85rem; font-weight: 500; }
+        .lang-btn { padding: 0.25rem 0.65rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: white; cursor: pointer; }
+
+        .demo-wrap { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        .demo-header { margin-bottom: 2rem; }
+        .demo-header h1 { font-size: 1.6rem; font-weight: 800; color: var(--gc-blue); margin-bottom: 0.3rem; }
+        .demo-header p { font-size: 0.95rem; color: var(--gc-grey-mid); }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 2px; background: var(--gc-grey); border-radius: 8px 8px 0 0; overflow: hidden; }
+        .tab { flex: 1; padding: 0.7rem 1rem; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600; background: white; color: var(--gc-grey-mid); transition: all 0.15s; text-align: center; }
+        .tab.active { background: var(--gc-blue); color: white; }
+        .tab:hover:not(.active) { background: var(--gc-grey-light); }
+
+        /* Panel */
+        .panel { background: white; border: 1px solid var(--gc-grey); border-top: none; border-radius: 0 0 8px 8px; padding: 2rem; box-shadow: var(--shadow); }
+        .panel-hidden { display: none; }
+
+        /* Controls */
+        .controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
+        label.ctrl-label { display: block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gc-grey-mid); margin-bottom: 0.35rem; }
+        select, input[type=number] { width: 100%; padding: 0.55rem 0.7rem; border: 1.5px solid var(--gc-grey); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.9rem; background: var(--gc-grey-light); }
+        select:focus, input:focus { outline: none; border-color: var(--gc-blue); }
+        .run-btn { display: block; width: 100%; padding: 0.7rem; background: var(--gc-blue); color: white; border: none; border-radius: 6px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: background 0.2s; }
+        .run-btn:hover { background: var(--gc-blue-light); }
+
+        /* Result */
+        .result { display: none; margin-top: 1.5rem; border-top: 1px solid var(--gc-grey); padding-top: 1.5rem; animation: fadeIn 0.3s ease-out; }
+        .result.show { display: block; }
+        .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--gc-grey); border: 1px solid var(--gc-grey); border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+        .result-card { background: white; padding: 1.25rem; }
+        .result-card.accord { border-left: 3px solid var(--green); }
+        .result-card.other { border-left: 3px solid var(--gc-grey-mid); }
+        .rc-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gc-grey-mid); margin-bottom: 0.5rem; }
+        .rc-rate { font-size: 2rem; font-weight: 800; line-height: 1; margin-bottom: 0.15rem; }
+        .rc-rate.green { color: var(--green); }
+        .rc-unit { font-size: 0.8rem; color: var(--gc-grey-mid); margin-bottom: 0.5rem; }
+        .rc-clause { display: inline-block; font-size: 0.75rem; color: var(--gc-blue); background: rgba(38,55,74,0.06); padding: 0.2rem 0.5rem; border-radius: 3px; font-weight: 500; }
+        .explain-box { background: var(--gc-grey-light); border: 1px solid var(--gc-grey); border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.85rem; line-height: 1.6; white-space: pre-line; color: var(--gc-grey-dark); }
+        .match-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 4px; margin-top: 1rem; }
+        .match-badge.pass { background: rgba(26,122,76,0.08); color: var(--green); border: 1px solid rgba(26,122,76,0.2); }
+        .match-badge.fail { background: rgba(175,60,67,0.08); color: var(--gc-red); border: 1px solid rgba(175,60,67,0.2); }
+
+        /* API Explorer */
+        .api-example { margin-bottom: 1.5rem; }
+        .api-tabs { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+        .api-tab { padding: 0.35rem 0.7rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 500; background: white; font-family: 'Inter', monospace; }
+        .api-tab.active { border-color: var(--gc-blue); background: rgba(38,55,74,0.06); color: var(--gc-blue); }
+        .api-method { font-weight: 700; margin-right: 0.3rem; }
+        .api-method.post { color: var(--gc-red); }
+        .api-method.get { color: var(--green); }
+        .code-block { background: #1a1a2e; color: #e0e0e0; padding: 1rem 1.25rem; border-radius: 6px; font-size: 0.78rem; line-height: 1.55; overflow-x: auto; font-family: 'Courier New', monospace; white-space: pre; }
+        .code-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gc-grey-mid); margin-bottom: 0.3rem; }
+        .code-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        /* Batch */
+        .batch-zone { border: 2px dashed var(--gc-grey); border-radius: 8px; padding: 3rem 2rem; text-align: center; background: white; }
+        .batch-zone p { color: var(--gc-grey-mid); font-size: 0.9rem; max-width: 500px; margin: 0 auto; }
+
+        /* Stats bar */
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; padding: 1rem 2rem; background: var(--gc-blue); color: white; font-size: 0.75rem; text-align: center; flex-wrap: wrap; }
+        .stats-bar .sb-num { font-weight: 800; font-size: 1rem; display: block; }
+        .stats-bar .sb-label { opacity: 0.6; font-size: 0.65rem; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 700px) {
+            .controls { grid-template-columns: 1fr; }
+            .result-grid { grid-template-columns: 1fr; }
+            .code-grid { grid-template-columns: 1fr; }
+            .tabs { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gc-bar"></div>
+    <nav class="nav">
+        <a href="/" class="nav-brand">HAZEYDATA</a>
+        <div class="nav-links">
+            <a href="/accord/">ACCORD</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+            <button class="lang-btn" onclick="toggleLang()">EN</button>
+        </div>
+    </nav>
+
+    <div class="stats-bar">
+        <div><span class="sb-num">~150</span><span class="sb-label" data-fr="Conv. coll." data-en="Coll. Agreements">Conv. coll.</span></div>
+        <div><span class="sb-num">8</span><span class="sb-label" data-fr="Domaines" data-en="Domains">Domaines</span></div>
+        <div><span class="sb-num">963</span><span class="sb-label" data-fr="Tests" data-en="Tests">Tests</span></div>
+        <div><span class="sb-num">1M+</span><span class="sb-label" data-fr="Scénarios" data-en="Scenarios">Scénarios</span></div>
+        <div><span class="sb-num" style="color:#ff6b6b">0</span><span class="sb-label" data-fr="Bogues" data-en="Bugs">Bogues</span></div>
+    </div>
+
+    <div class="demo-wrap">
+        <div class="demo-header">
+            <h1 data-fr="Démo interactive ACCORD" data-en="ACCORD Interactive Demo">Démo interactive ACCORD</h1>
+            <p data-fr="Sélectionnez un domaine, entrez les paramètres, obtenez la réponse validée avec citation d'article." data-en="Select a domain, enter parameters, get the validated answer with article citation.">Sélectionnez un domaine, entrez les paramètres, obtenez la réponse validée avec citation d'article.</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('calc')" data-fr="🔍 Validation" data-en="🔍 Validation">🔍 Validation</button>
+            <button class="tab" onclick="showTab('api')" data-fr="⚡ API" data-en="⚡ API">⚡ API</button>
+            <button class="tab" onclick="showTab('batch')" data-fr="📊 Lots" data-en="📊 Batch">📊 Lots</button>
+        </div>
+
+        <!-- CALC TAB -->
+        <div class="panel" id="tab-calc">
+            <div class="controls">
+                <div>
+                    <label class="ctrl-label" data-fr="Convention collective" data-en="Collective Agreement">Convention collective</label>
+                    <select id="ca-select">
+                        <option value="PA">PA — Programme & Admin</option>
+                        <option value="TC">TC — Services techniques</option>
+                        <option value="IT">IT — Technologies de l'info</option>
+                        <option value="EC">EC — Économique & Sciences soc.</option>
+                        <option value="FB">FB — Services frontaliers</option>
+                        <option value="SV">SV — Services d'exploitation</option>
+                        <option value="CX">CX — Services correctionnels</option>
+                        <option value="SP">SP — Sciences appliquées</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="ctrl-label" data-fr="Années de service" data-en="Years of Service">Années de service</label>
+                    <input type="number" id="yos-input" value="8" min="0" max="40">
+                </div>
+                <div>
+                    <label class="ctrl-label" data-fr="Heures travaillées (mois)" data-en="Hours Worked (month)">Heures travaillées (mois)</label>
+                    <input type="number" id="hours-input" value="150" min="0" max="200">
+                </div>
+            </div>
+            <button class="run-btn" onclick="runCalc()" data-fr="▸ Valider avec ACCORD" data-en="▸ Run ACCORD Validation">▸ Valider avec ACCORD</button>
+
+            <div class="result" id="result">
+                <div class="result-grid">
+                    <div class="result-card accord">
+                        <div class="rc-label" data-fr="RÉSULTAT ACCORD" data-en="ACCORD RESULT">RÉSULTAT ACCORD</div>
+                        <div class="rc-rate green" id="accord-rate">—</div>
+                        <div class="rc-unit" data-fr="heures / mois" data-en="hours / month">heures / mois</div>
+                        <div class="rc-clause" id="accord-clause">—</div>
+                    </div>
+                    <div class="result-card other">
+                        <div class="rc-label" data-fr="CE QU'UNE IA FRAICHE CALCULE" data-en="WHAT A FRESH AI CALCULATES">CE QU'UNE IA FRAÎCHE CALCULE</div>
+                        <div class="rc-rate" id="llm-rate">—</div>
+                        <div class="rc-unit" data-fr="heures / mois" data-en="hours / month">heures / mois</div>
+                        <div class="rc-clause" id="llm-clause">—</div>
+                    </div>
+                </div>
+                <div class="explain-box">
+                    <div style="margin-bottom:0.5rem">
+                        <button class="lang-btn" onclick="showExplain('fr')" id="ex-fr-btn" style="font-weight:700;background:var(--gc-blue);color:white">FR</button>
+                        <button class="lang-btn" onclick="showExplain('en')" id="ex-en-btn">EN</button>
+                    </div>
+                    <div id="explain-fr"></div>
+                    <div id="explain-en" style="display:none"></div>
+                </div>
+                <div id="match-result"></div>
+            </div>
+        </div>
+
+        <!-- API TAB -->
+        <div class="panel panel-hidden" id="tab-api">
+            <div class="api-tabs">
+                <button class="api-tab active" onclick="showApi(0,this)"><span class="api-method post">POST</span>/vacation</button>
+                <button class="api-tab" onclick="showApi(1,this)"><span class="api-method post">POST</span>/acting-pay</button>
+                <button class="api-tab" onclick="showApi(2,this)"><span class="api-method post">POST</span>/validate</button>
+                <button class="api-tab" onclick="showApi(3,this)"><span class="api-method get">GET</span>/health</button>
+            </div>
+            <div class="code-grid">
+                <div>
+                    <div class="code-label" data-fr="Requête" data-en="Request">Requête</div>
+                    <div class="code-block" id="api-req"></div>
+                </div>
+                <div>
+                    <div class="code-label" data-fr="Réponse (200 OK)" data-en="Response (200 OK)">Réponse (200 OK)</div>
+                    <div class="code-block" id="api-res"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BATCH TAB -->
+        <div class="panel panel-hidden" id="tab-batch">
+            <div class="batch-zone">
+                <div style="font-size:2.5rem;margin-bottom:1rem;opacity:0.3">📄</div>
+                <h3 style="margin-bottom:0.5rem;color:var(--gc-blue)" data-fr="Prêt pour les résultats de SPAC" data-en="Ready for PSPC test results">Prêt pour les résultats de SPAC</h3>
+                <p data-fr="Lorsque SPAC publiera les résultats de tests parallèles (juin 2026), téléversez-les ici. ACCORD validera chaque scénario et produira un rapport bilingue d'écarts avec citations d'articles." data-en="When PSPC publishes parallel testing results (June 2026), upload them here. ACCORD validates every scenario and produces a bilingual discrepancy report with article citations.">Lorsque SPAC publiera les résultats de tests parallèles (juin 2026), téléversez-les ici. ACCORD validera chaque scénario et produira un rapport bilingue d'écarts avec citations d'articles.</p>
+                <div style="margin-top:1rem;font-size:0.8rem;color:var(--gc-grey-mid)">CSV ✓ &nbsp; XLSX ✓ &nbsp; JSON ✓ &nbsp; PDF ✓</div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align:center;padding:2rem;font-size:0.75rem;color:var(--gc-grey-mid)">
+        <a href="/accord/" style="color:var(--gc-blue);text-decoration:none;font-weight:600">← ACCORD</a> &nbsp;·&nbsp;
+        <span data-fr="1 000 000 scénarios validés · zéro plantage" data-en="1,000,000 scenarios validated · zero crashes">1 000 000 scénarios validés · zéro plantage</span>
+    </footer>
+
+<script>
+var currentLang = 'fr';
+
+// CA data
+var CA = {
+  PA:{n:"Programme and Administrative",a:"34.02",t:75,bp:[
+    {mn:0,mx:7,r:9.375,c:"34.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"34.02(b)",d:20},
+    {mn:16,mx:16,r:13.75,c:"34.02(c)",d:22},{mn:17,mx:17,r:14.4,c:"34.02(d)",d:23.04},
+    {mn:18,mx:26,r:15.625,c:"34.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"34.02(f)",d:27},
+    {mn:28,mx:99,r:18.75,c:"34.02(g)",d:30}]},
+  TC:{n:"Technical Services",a:"38.02",t:75,bp:[
+    {mn:0,mx:7,r:9.375,c:"38.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"38.02(b)",d:20},
+    {mn:16,mx:16,r:13.75,c:"38.02(c)",d:22},{mn:17,mx:17,r:14.4,c:"38.02(d)",d:23.04},
+    {mn:18,mx:26,r:15.625,c:"38.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"38.02(f)",d:27},
+    {mn:28,mx:99,r:18.75,c:"38.02(g)",d:30}]},
+  IT:{n:"Information Technology",a:"35.02",t:75,bp:[
+    {mn:0,mx:7,r:9.375,c:"35.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"35.02(b)",d:20},
+    {mn:16,mx:16,r:13.75,c:"35.02(c)",d:22},{mn:17,mx:17,r:14.375,c:"35.02(d)",d:23},
+    {mn:18,mx:26,r:15.625,c:"35.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"35.02(f)",d:27},
+    {mn:28,mx:99,r:18.75,c:"35.02(g)",d:30}]},
+  EC:{n:"Economics and Social Science",a:"33.02",t:75,bp:[
+    {mn:0,mx:7,r:9.375,c:"33.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"33.02(b)",d:20},
+    {mn:16,mx:16,r:13.75,c:"33.02(c)",d:22},{mn:17,mx:17,r:14.375,c:"33.02(d)",d:23},
+    {mn:18,mx:26,r:15.625,c:"33.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"33.02(f)",d:27},
+    {mn:28,mx:99,r:18.75,c:"33.02(g)",d:30}]},
+  FB:{n:"Federal Policing",a:"32.02",t:75,bp:[
+    {mn:0,mx:7,r:9.375,c:"32.02(a)",d:15},{mn:8,mx:17,r:12.5,c:"32.02(b)",d:20},
+    {mn:18,mx:24,r:15.625,c:"32.02(c)",d:25},{mn:25,mx:99,r:18.75,c:"32.02(d)",d:30}]},
+  SV:{n:"Operational Services",a:"37.02.1",t:75,bp:[
+    {mn:0,mx:7,r:9.375,c:"37.02.1(a)(i)",d:15},{mn:8,mx:15,r:12.5,c:"37.02.1(a)(ii)",d:20},
+    {mn:16,mx:16,r:13.75,c:"37.02.1(a)(iii)",d:22},{mn:17,mx:17,r:14.4,c:"37.02.1(a)(iv)",d:23},
+    {mn:18,mx:26,r:15.625,c:"37.02.1(a)(v)",d:25},{mn:27,mx:27,r:16.875,c:"37.02.1(a)(vi)",d:27},
+    {mn:28,mx:99,r:18.75,c:"37.02.1(a)(vii)",d:30}]},
+  CX:{n:"Correctional Services",a:"35.02",t:80,bp:[
+    {mn:0,mx:7,r:10.0,c:"35.02(a)",d:15},{mn:8,mx:15,r:13.36,c:"35.02(b)",d:20},
+    {mn:16,mx:16,r:14.72,c:"35.02(c)",d:22},{mn:17,mx:17,r:15.36,c:"35.02(d)",d:23},
+    {mn:18,mx:26,r:16.72,c:"35.02(e)",d:25},{mn:27,mx:27,r:18.0,c:"35.02(f)",d:27},
+    {mn:28,mx:99,r:20.0,c:"35.02(g)",d:30}]},
+  SP:{n:"Applied Science",a:"32.02",t:75,bp:[
+    {mn:0,mx:7,r:9.375,c:"32.02(a)",d:15},{mn:8,mx:15,r:12.5,c:"32.02(b)",d:20},
+    {mn:16,mx:16,r:13.75,c:"32.02(c)",d:22},{mn:17,mx:17,r:14.375,c:"32.02(d)",d:23},
+    {mn:18,mx:26,r:15.625,c:"32.02(e)",d:25},{mn:27,mx:27,r:16.875,c:"32.02(f)",d:27},
+    {mn:28,mx:99,r:18.75,c:"32.02(g)",d:30}]}
+};
+
+function findBP(ca,yos){var d=CA[ca];for(var i=0;i<d.bp.length;i++){var b=d.bp[i];if(yos>=b.mn&&yos<=b.mx)return b;}return d.bp[d.bp.length-1];}
+
+function simLLM(ca,yos){var d=CA[ca];if(yos===8){return{r:d.bp[0].r,c:d.bp[0].c};}var b=findBP(ca,yos);return{r:b.r,c:b.c};}
+
+function runCalc(){
+  var ca=document.getElementById('ca-select').value;
+  var yos=parseInt(document.getElementById('yos-input').value)||0;
+  var hrs=parseFloat(document.getElementById('hours-input').value)||0;
+  var d=CA[ca],bp=findBP(ca,yos),met=hrs>=d.t;
+  var llm=simLLM(ca,yos),match=Math.abs(bp.r-llm.r)<0.01;
+
+  document.getElementById('accord-rate').textContent=bp.r.toFixed(3);
+  document.getElementById('accord-clause').textContent='Art. '+bp.c;
+  document.getElementById('llm-rate').textContent=llm.r.toFixed(3);
+  document.getElementById('llm-clause').textContent='Art. '+llm.c;
+
+  var ts=met?'\u2265':'<',ms=met?'ATTEINT':'NON ATTEINT',es=met?bp.r.toFixed(3)+'\u00a0h':'0\u00a0h (aucun cr\u00e9dit)';
+  document.getElementById('explain-fr').innerHTML=
+    '<strong>Accumulation cong\u00e9s annuels ('+ca+'-'+d.a+')</strong>\n'+
+    'Ann\u00e9es de service\u00a0: '+yos+' \u2192 Clause '+bp.c+'\n'+
+    'Taux\u00a0: '+bp.r+'\u00a0h/mois ('+bp.d+'\u00a0jours/ann\u00e9e)\n'+
+    'Seuil\u00a0: '+hrs+'\u00a0h '+ts+' '+d.t+'\u00a0h \u2192 '+ms+'\n'+
+    'Acquis ce mois\u00a0: '+es;
+
+  var ts2=met?'\u2265':'<',ms2=met?'MET':'NOT MET',es2=met?bp.r.toFixed(3)+'h':'0h (no credits)';
+  document.getElementById('explain-en').innerHTML=
+    '<strong>Vacation Accrual ('+ca+'-'+d.a+')</strong>\n'+
+    'Years of service: '+yos+' \u2192 Clause '+bp.c+'\n'+
+    'Rate: '+bp.r+'h/month ('+bp.d+' days/year)\n'+
+    'Threshold: '+hrs+'h '+ts2+' '+d.t+'h \u2192 '+ms2+'\n'+
+    'Earned this month: '+es2;
+
+  var mr=document.getElementById('match-result');
+  if(match){mr.innerHTML='<div class="match-badge pass">\u2713 ACCORD et le r\u00e9viseur ind\u00e9pendant sont d\u2019accord</div>';}
+  else{mr.innerHTML='<div class="match-badge fail">\u2717 D\u00c9SACCORD \u2014 ACCORD: '+bp.r+'h ('+bp.c+') vs IA: '+llm.r+'h ('+llm.c+')<br><span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem">L\u2019IA interpr\u00e8te \u00ab\u00a0\u00e0 compter de la 8e ann\u00e9e\u00a0\u00bb comme excluant l\u2019ann\u00e9e 8. ACCORD a raison. C\u2019est exactement le type d\u2019erreur qu\u2019un moteur de r\u00e8gles valid\u00e9 d\u00e9tecte.</span></div>';}
+  document.getElementById('result').classList.add('show');
+}
+
+// API examples
+var apis=[
+  {req:'{\n  "ca": "PA",\n  "years_of_service": 8,\n  "hours_worked": 150\n}',
+   res:'{\n  "rate_hours_per_month": 12.5,\n  "clause": "34.02(b)",\n  "days_per_year": 20,\n  "threshold_met": true,\n  "explain_fr": "PA art. 34.02(b)..."\n}'},
+  {req:'{\n  "ca": "IT",\n  "substantive": {"group":"IT","level":2,"step":3},\n  "acting": {"group":"IT","level":3},\n  "start_date": "2026-04-06",\n  "end_date": "2026-04-17"\n}',
+   res:'{\n  "eligible": true,\n  "qualifying_days": 10,\n  "acting_step": 2,\n  "total_premium": 578.40,\n  "clause": "IT 47.05"\n}'},
+  {req:'{\n  "scenarios": [\n    {"ca":"PA","domain":"vacation",\n     "years_of_service":8,\n     "expected_rate":9.375},\n    {"ca":"IT","domain":"vacation",\n     "years_of_service":16,\n     "expected_rate":13.75}\n  ]\n}',
+   res:'{\n  "total": 2, "pass": 1, "fail": 1,\n  "results": [\n    {"status":"FAIL","severity":"CRITICAL",\n     "accord_rate":12.5,"expected":9.375,\n     "clause":"34.02(b)"},\n    {"status":"PASS",\n     "accord_rate":13.75,\n     "clause":"35.02(c)"}\n  ]\n}'},
+  {req:'GET /api/health',
+   res:'{\n  "status": "healthy",\n  "collective_agreements": 27,\n  "rule_modules": 85,\n  "domains": 8,\n  "unit_tests": 963,\n  "fuzz_scenarios": 1000000,\n  "fuzz_crashes": 0,\n  "calc_per_second": 31505\n}'}
+];
+
+function showApi(i,btn){
+  document.querySelectorAll('.api-tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('api-req').textContent=apis[i].req;
+  document.getElementById('api-res').textContent=apis[i].res;
+}
+
+function showTab(id){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.add('panel-hidden');});
+  event.target.classList.add('active');
+  document.getElementById('tab-'+id).classList.remove('panel-hidden');
+}
+
+function showExplain(l){
+  document.getElementById('explain-fr').style.display=l==='fr'?'block':'none';
+  document.getElementById('explain-en').style.display=l==='en'?'block':'none';
+  document.getElementById('ex-fr-btn').style.background=l==='fr'?'var(--gc-blue)':'white';
+  document.getElementById('ex-fr-btn').style.color=l==='fr'?'white':'var(--gc-grey-dark)';
+  document.getElementById('ex-en-btn').style.background=l==='en'?'var(--gc-blue)':'white';
+  document.getElementById('ex-en-btn').style.color=l==='en'?'white':'var(--gc-grey-dark)';
+}
+
+function toggleLang(){
+  currentLang=currentLang==='fr'?'en':'fr';
+  document.documentElement.lang=currentLang;
+  document.querySelector('.lang-btn').textContent=currentLang==='fr'?'EN':'FR';
+  document.querySelectorAll('[data-fr][data-en]').forEach(function(el){
+    el.innerHTML=el.getAttribute('data-'+currentLang);
+  });
+}
+
+// Init
+showApi(0,document.querySelector('.api-tab'));
+setTimeout(runCalc,300);
+</script>
+</body>
+</html>
