@@ -57,6 +57,8 @@
         .rc-clause a { color: var(--gc-blue); text-decoration: none; border-bottom: 1px solid rgba(38,55,74,0.25); transition: border-color 0.2s; }
         .rc-clause a:hover { border-color: var(--gc-blue); }
         .explain-box { background: var(--gc-grey-light); border: 1px solid var(--gc-grey); border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.85rem; line-height: 1.6; white-space: pre-line; color: var(--gc-grey-dark); }
+        .explain-box a { color: var(--gc-blue); text-decoration: none; border-bottom: 1px solid rgba(38,55,74,0.3); transition: border-color 0.2s; }
+        .explain-box a:hover { border-color: var(--gc-blue); }
         .match-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 4px; margin-top: 1rem; }
         .match-badge.pass { background: rgba(26,122,76,0.08); color: var(--green); border: 1px solid rgba(26,122,76,0.2); }
         .match-badge.fail { background: rgba(175,60,67,0.08); color: var(--gc-red); border: 1px solid rgba(175,60,67,0.2); }
@@ -246,6 +248,12 @@ function makeClauseLink(ca, clauseText) {
     return 'Art. '+clauseText;
 }
 
+function makeInlineClauseLink(ca, clauseText) {
+    var url = CA_URLS[ca];
+    if (url) return '<a href="'+url+'" target="_blank" rel="noopener">Clause '+clauseText+'</a>';
+    return 'Clause '+clauseText;
+}
+
 function runCalc(){
   var ca=document.getElementById('ca-select').value;
   var yos=parseInt(document.getElementById('yos-input').value)||0;
@@ -259,12 +267,13 @@ function runCalc(){
   document.getElementById('llm-clause').innerHTML=makeClauseLink(ca, llm.c);
 
   var eb = document.getElementById('explain-box');
+  var clauseLink = makeInlineClauseLink(ca, bp.c);
   if (currentLang === 'fr') {
     var ts=met?'\u2265':'<',ms=met?'ATTEINT':'NON ATTEINT',es=met?bp.r.toFixed(3)+'\u00a0h':'0\u00a0h (aucun cr\u00e9dit)';
-    eb.innerHTML='<strong>Accumulation cong\u00e9s annuels ('+ca+'-'+d.a+')</strong>\n'+'Ann\u00e9es de service\u00a0: '+yos+' \u2192 Clause '+bp.c+'\n'+'Taux\u00a0: '+bp.r+'\u00a0h/mois ('+bp.d+'\u00a0jours/ann\u00e9e)\n'+'Seuil\u00a0: '+hrs+'\u00a0h '+ts+' '+d.t+'\u00a0h \u2192 '+ms+'\n'+'Acquis ce mois\u00a0: '+es;
+    eb.innerHTML='<strong>Accumulation cong\u00e9s annuels ('+ca+'-'+d.a+')</strong>\n'+'Ann\u00e9es de service\u00a0: '+yos+' \u2192 '+clauseLink+'\n'+'Taux\u00a0: '+bp.r+'\u00a0h/mois ('+bp.d+'\u00a0jours/ann\u00e9e)\n'+'Seuil\u00a0: '+hrs+'\u00a0h '+ts+' '+d.t+'\u00a0h \u2192 '+ms+'\n'+'Acquis ce mois\u00a0: '+es;
   } else {
     var ts2=met?'\u2265':'<',ms2=met?'MET':'NOT MET',es2=met?bp.r.toFixed(3)+'h':'0h (no credits)';
-    eb.innerHTML='<strong>Vacation Accrual ('+ca+'-'+d.a+')</strong>\n'+'Years of service: '+yos+' \u2192 Clause '+bp.c+'\n'+'Rate: '+bp.r+'h/month ('+bp.d+' days/year)\n'+'Threshold: '+hrs+'h '+ts2+' '+d.t+'h \u2192 '+ms2+'\n'+'Earned this month: '+es2;
+    eb.innerHTML='<strong>Vacation Accrual ('+ca+'-'+d.a+')</strong>\n'+'Years of service: '+yos+' \u2192 '+clauseLink+'\n'+'Rate: '+bp.r+'h/month ('+bp.d+' days/year)\n'+'Threshold: '+hrs+'h '+ts2+' '+d.t+'h \u2192 '+ms2+'\n'+'Earned this month: '+es2;
   }
 
   var mr=document.getElementById('match-result');
