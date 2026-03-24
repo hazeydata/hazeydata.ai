@@ -722,6 +722,70 @@
             font-size: 0.78rem;
         }
 
+        /* --- CBC Media Highlight --- */
+        .media-highlight {
+            background: linear-gradient(135deg, rgba(74,144,164,0.08) 0%, rgba(99,102,241,0.05) 100%);
+            border: 1px solid rgba(74,144,164,0.15);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0 1.5rem;
+            position: relative;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+        .media-highlight:hover {
+            border-color: rgba(74,144,164,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(74,144,164,0.08);
+        }
+        .media-highlight-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .cbc-logo {
+            background: #C41E3A;
+            color: white;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .media-type {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+        .media-highlight h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        .media-highlight h4 a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .media-highlight h4 a:hover {
+            color: var(--accent-light);
+        }
+        .media-meta {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+            letter-spacing: 0.02em;
+        }
+
         /* --- Divider --- */
         .hub-divider {
             max-width: 1100px;
@@ -993,6 +1057,17 @@
             <div class="about-body">
                 <p><strong>Fred Hazelton</strong> is an independent data scientist and former statistician at <a href="https://touringplans.com" target="_blank">TouringPlans.com</a> — where he spent years building the crowd prediction and wait time models that millions of Disney visitors rely on.</p>
                 <p>Now he's building a portfolio of data products under the <strong>HazeyData</strong> brand — from theme park crowd forecasting to sovereign AI infrastructure to national-scale data collection. Each project applies machine learning and data engineering to solve a specific, underserved problem.</p>
+                
+                <!-- CBC Video Highlight -->
+                <div class="media-highlight">
+                    <div class="media-highlight-badge">
+                        <span class="cbc-logo">CBC</span>
+                        <span class="media-type">Video Feature</span>
+                    </div>
+                    <h4><a href="https://www.cbc.ca/player/play/video/1.6678795" target="_blank">"Why this statistician quit his government job to help you have more fun at Disney"</a></h4>
+                    <p class="media-meta">CBC News · December 2022 · 2:19</p>
+                </div>
+                
                 <p>Based in Canada. Independently operated. Data-driven everything.</p>
             </div>
         </div>
