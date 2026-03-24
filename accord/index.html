@@ -1,28 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACCORD — Collective Agreement Rules API | hazeydata.ai</title>
-    <meta name="description" content="ACCORD is a machine-readable API that encodes Canada's federal collective agreement rules — rates of pay, leave entitlements, acting pay, and more — into a single, auditable source of truth.">
+    <title>ACCORD — Validation indépendante de la rémunération | hazeydata.ai</title>
+    <meta name="description" content="ACCORD est un moteur de règles canadien et souverain qui vérifie les calculs de rémunération de Dayforce par rapport au texte officiel des conventions collectives.">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/icon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icon-180.png">
     <meta name="theme-color" content="#26374A">
     <link rel="canonical" href="https://hazeydata.ai/accord/">
-
-    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hazeydata.ai/accord/">
-    <meta property="og:title" content="ACCORD — Collective Agreement Rules API">
-    <meta property="og:description" content="A machine-readable API that encodes Canada's federal collective agreement rules into a single, auditable source of truth.">
+    <meta property="og:title" content="ACCORD — Validation indépendante de la rémunération">
+    <meta property="og:description" content="Un moteur de règles canadien qui vérifie les calculs de rémunération de Dayforce par rapport aux conventions collectives.">
     <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ACCORD — Collective Agreement Rules API">
-    <meta name="twitter:description" content="A machine-readable API that encodes Canada's federal collective agreement rules into a single, auditable source of truth.">
-    <meta name="twitter:image" content="https://hazeydata.ai/assets/banner.jpg">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -42,11 +33,8 @@
             --accent-teal: #2A7F8E;
             --shadow: 0 4px 24px rgba(0,0,0,0.08);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         html { scroll-behavior: smooth; }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--gc-grey-dark);
@@ -54,290 +42,77 @@
             -webkit-font-smoothing: antialiased;
             background: var(--gc-white);
         }
-
-        /* ── Nav ── */
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.25rem 2rem;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .nav-brand {
-            font-weight: 800;
-            font-size: 1rem;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .nav-brand .logo-mark {
-            font-family: var(--font-mono, 'JetBrains Mono', monospace);
-            font-weight: 800;
-            font-size: 1.2rem;
-            letter-spacing: 0.12em;
-            background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: logo-shimmer 6s linear infinite;
-        }
-        .nav-brand .logo-dot {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4a90a4;
-            margin-left: 2px;
-            animation: pulse 2s ease-in-out infinite;
-            vertical-align: middle;
-        }
-        @keyframes logo-shimmer {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; max-width: 1100px; margin: 0 auto; }
+        .nav-brand { font-weight: 800; font-size: 1rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-brand .logo-mark { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.12em; background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: logo-shimmer 6s linear infinite; }
+        .nav-brand .logo-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4a90a4; margin-left: 2px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; }
+        @keyframes logo-shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
         @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
         .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-        .nav-links a {
-            color: var(--gc-grey-mid);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
+        .nav-links a { color: var(--gc-grey-mid); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
         .nav-links a:hover { color: var(--gc-blue); }
-
-        /* ── GC-style red bar ── */
+        .lang-btn { padding: 0.3rem 0.75rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: white; color: var(--gc-grey-dark); cursor: pointer; transition: all 0.2s; }
+        .lang-btn:hover { border-color: var(--gc-blue); color: var(--gc-blue); }
         .gc-bar { height: 4px; background: var(--gc-red); }
-
-        /* ── Hero ── */
-        .hero {
-            background: linear-gradient(165deg, var(--gc-blue) 0%, #1a2e45 60%, var(--gc-blue-light) 100%);
-            color: var(--gc-white);
-            padding: 5rem 2rem 4rem;
-            text-align: center;
-        }
-        .hero-inner {
-            max-width: 780px;
-            margin: 0 auto;
-        }
-        .hero-flag {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 1.5rem;
-        }
-        .hero h1 {
-            font-size: clamp(2.2rem, 5vw, 3rem);
-            font-weight: 800;
-            line-height: 1.15;
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.02em;
-        }
+        .hero { background: linear-gradient(165deg, var(--gc-blue) 0%, #1a2e45 60%, var(--gc-blue-light) 100%); color: var(--gc-white); padding: 5rem 2rem 4rem; text-align: center; }
+        .hero-inner { max-width: 780px; margin: 0 auto; }
+        .hero-flag { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+        .hero h1 { font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 800; line-height: 1.15; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
         .hero h1 .maple { color: var(--gc-red); }
-        .hero .subtitle {
-            font-size: 1.15rem;
-            font-weight: 400;
-            opacity: 0.8;
-            line-height: 1.65;
-            max-width: 640px;
-            margin: 0 auto 2rem;
-        }
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-top: 2.5rem;
-            flex-wrap: wrap;
-        }
-        .hero-stat {
-            text-align: center;
-        }
-        .hero-stat .num {
-            font-size: 2rem;
-            font-weight: 800;
-            display: block;
-        }
-        .hero-stat .label {
-            font-size: 0.8rem;
-            opacity: 0.6;
-            line-height: 1.4;
-        }
-
-        /* ── Sections ── */
+        .hero .subtitle { font-size: 1.15rem; font-weight: 400; opacity: 0.8; line-height: 1.65; max-width: 640px; margin: 0 auto 2rem; }
+        .hero-stats { display: flex; justify-content: center; gap: 3rem; margin-top: 2.5rem; flex-wrap: wrap; }
+        .hero-stat { text-align: center; }
+        .hero-stat .num { font-size: 2rem; font-weight: 800; display: block; }
+        .hero-stat .label { font-size: 0.8rem; opacity: 0.6; line-height: 1.4; }
+        .hero-cta { margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .cta-btn { display: inline-block; background: var(--gc-red); color: white; padding: 0.85rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: background 0.2s; }
+        .cta-btn:hover { background: var(--gc-red-dark); }
+        .cta-btn-outline { display: inline-block; color: rgba(255,255,255,0.8); padding: 0.85rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem; border: 1.5px solid rgba(255,255,255,0.3); transition: all 0.2s; }
+        .cta-btn-outline:hover { border-color: white; color: white; }
+        .ag-callout { max-width: 780px; margin: -2rem auto 0; background: #0d1b2a; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 2rem 2.5rem; position: relative; z-index: 2; }
+        .ag-callout .ag-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gc-red); margin-bottom: 0.75rem; }
+        .ag-callout blockquote { font-size: 1rem; font-style: italic; line-height: 1.6; color: rgba(255,255,255,0.75); margin: 0; }
+        .ag-callout .ag-cost { margin-top: 0.75rem; font-size: 0.85rem; color: var(--gc-red); font-weight: 600; }
         section { padding: 4rem 2rem; }
         section:nth-child(even) { background: var(--gc-grey-light); }
-        .section-inner {
-            max-width: 860px;
-            margin: 0 auto;
-        }
-        .section-inner h2 {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--gc-blue);
-            margin-bottom: 1rem;
-            letter-spacing: -0.01em;
-        }
-        .section-inner h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--gc-blue);
-            margin-bottom: 0.5rem;
-        }
-        .section-inner p {
-            color: var(--gc-grey-dark);
-            margin-bottom: 1.25rem;
-            font-size: 1rem;
-            line-height: 1.7;
-        }
-        .section-inner p.muted {
-            color: var(--gc-grey-mid);
-            font-size: 0.9rem;
-        }
-
-        /* ── Feature cards ── */
-        .features {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .feature-card {
-            background: var(--gc-white);
-            border: 1px solid var(--gc-grey);
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-        }
-        section:nth-child(even) .feature-card {
-            background: var(--gc-white);
-        }
-        .feature-card .icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-        .feature-card h3 {
-            margin-bottom: 0.4rem;
-            font-size: 1rem;
-        }
-        .feature-card p {
-            font-size: 0.9rem;
-            margin-bottom: 0;
-            color: var(--gc-grey-mid);
-            line-height: 1.55;
-        }
-
-        /* ── Gaps list ── */
-        .gap-list {
-            list-style: none;
-            padding: 0;
-            margin: 1.5rem 0 0;
-        }
-        .gap-list li {
-            padding: 1rem 1.25rem;
-            margin-bottom: 0.75rem;
-            background: var(--gc-white);
-            border-left: 4px solid var(--gc-red);
-            border-radius: 0 8px 8px 0;
-            box-shadow: var(--shadow);
-        }
-        section:nth-child(even) .gap-list li {
-            background: var(--gc-white);
-        }
-        .gap-list li strong {
-            color: var(--gc-blue);
-            display: block;
-            margin-bottom: 0.25rem;
-        }
-        .gap-list li span {
-            color: var(--gc-grey-mid);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        /* ── Coverage stats ── */
-        .coverage-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
-            margin-top: 1.5rem;
-        }
-        .cov-card {
-            text-align: center;
-            background: var(--gc-white);
-            border: 1px solid var(--gc-grey);
-            border-radius: 10px;
-            padding: 1.5rem 1rem;
-            box-shadow: var(--shadow);
-        }
-        .cov-card .num {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--gc-blue);
-            display: block;
-        }
-        .cov-card .label {
-            font-size: 0.85rem;
-            color: var(--gc-grey-mid);
-            line-height: 1.4;
-            margin-top: 0.3rem;
-        }
-
-        /* ── CTA ── */
-        .cta-section {
-            background: linear-gradient(165deg, var(--gc-blue) 0%, #1a2e45 100%);
-            color: var(--gc-white);
-            text-align: center;
-            padding: 4rem 2rem;
-        }
-        .cta-section h2 {
-            color: var(--gc-white);
-            margin-bottom: 1rem;
-        }
-        .cta-section p {
-            color: rgba(255,255,255,0.7);
-            max-width: 580px;
-            margin: 0 auto 2rem;
-        }
-        .cta-btn {
-            display: inline-block;
-            background: var(--gc-red);
-            color: white;
-            padding: 0.85rem 2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: background 0.2s;
-        }
-        .cta-btn:hover { background: var(--gc-red-dark); }
-
-        /* ── Footer ── */
-        .footer {
-            background: var(--gc-blue);
-            color: rgba(255,255,255,0.5);
-            text-align: center;
-            padding: 2rem;
-            font-size: 0.8rem;
-        }
+        .section-inner { max-width: 860px; margin: 0 auto; }
+        .section-inner h2 { font-size: 1.75rem; font-weight: 800; color: var(--gc-blue); margin-bottom: 1rem; letter-spacing: -0.01em; }
+        .section-inner p { color: var(--gc-grey-dark); margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.7; }
+        .section-inner p.muted { color: var(--gc-grey-mid); font-size: 0.9rem; }
+        .features { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+        .feature-card { background: var(--gc-white); border: 1px solid var(--gc-grey); border-radius: 10px; padding: 1.5rem; box-shadow: var(--shadow); }
+        .feature-card .icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+        .feature-card h3 { font-size: 1rem; font-weight: 700; color: var(--gc-blue); margin-bottom: 0.4rem; }
+        .feature-card p { font-size: 0.9rem; margin-bottom: 0; color: var(--gc-grey-mid); line-height: 1.55; }
+        .feature-card .status { font-size: 0.75rem; font-weight: 600; margin-top: 0.75rem; }
+        .status-live { color: #1a7a4c; }
+        .status-soon { color: var(--accent-gold); }
+        .coverage-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; }
+        .cov-card { text-align: center; background: var(--gc-white); border: 1px solid var(--gc-grey); border-radius: 10px; padding: 1.25rem 0.75rem; box-shadow: var(--shadow); }
+        .cov-card .cov-icon { font-size: 1.3rem; margin-bottom: 0.3rem; }
+        .cov-card .label { font-size: 0.82rem; color: var(--gc-grey-dark); font-weight: 500; }
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-top: 1.5rem; }
+        .stat-card { text-align: center; background: var(--gc-white); border: 1px solid var(--gc-grey); border-radius: 10px; padding: 1.25rem 0.5rem; box-shadow: var(--shadow); }
+        .stat-card .num { font-size: 1.6rem; font-weight: 800; color: var(--gc-blue); display: block; }
+        .stat-card .num.red { color: var(--gc-red); }
+        .stat-card .num.green { color: #1a7a4c; }
+        .stat-card .label { font-size: 0.75rem; color: var(--gc-grey-mid); line-height: 1.4; margin-top: 0.2rem; }
+        .cta-section { background: linear-gradient(165deg, var(--gc-blue) 0%, #1a2e45 100%); color: var(--gc-white); text-align: center; padding: 4rem 2rem; }
+        .cta-section h2 { color: var(--gc-white); margin-bottom: 1rem; }
+        .cta-section p { color: rgba(255,255,255,0.7); max-width: 580px; margin: 0 auto 2rem; }
+        .footer { background: var(--gc-blue); color: rgba(255,255,255,0.5); text-align: center; padding: 2rem; font-size: 0.8rem; }
         .footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
         .footer a:hover { color: white; }
         .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.75rem; }
-
-        /* ── Responsive ── */
         @media (max-width: 768px) {
             .features { grid-template-columns: 1fr; }
-            .coverage-grid { grid-template-columns: 1fr; }
+            .coverage-grid { grid-template-columns: 1fr 1fr; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
             .hero-stats { gap: 2rem; }
             .hero { padding: 4rem 1.5rem 3rem; }
             section { padding: 3rem 1.5rem; }
-            .nav { padding: 1rem 1.5rem; }
-            .nav-links { gap: 1rem; }
         }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -347,149 +122,129 @@
             <span class="logo-mark">HAZEYDATA</span><span class="logo-dot"></span>
         </a>
         <div class="nav-links">
-            <a href="/">Home</a>
+            <a href="/">Accueil</a>
             <a href="/accord/" style="color: var(--gc-blue); font-weight: 600;">ACCORD</a>
             <a href="mailto:fred@hazeydata.ai">Contact</a>
+            <button class="lang-btn" onclick="toggleLang()">EN</button>
         </div>
     </nav>
 
     <!-- Hero -->
     <header class="hero">
         <div class="hero-inner">
-            <div class="hero-flag">A hazeydata.ai project</div>
-            <h1>ACCORD <span class="maple">🍁</span></h1>
-            <p class="subtitle">A machine-readable API that encodes Canada's federal collective agreement rules — rates of pay, leave entitlements, acting pay, salary protection — into a single, auditable source of truth.</p>
+            <div class="hero-flag" data-fr="Un projet hazeydata.ai" data-en="A hazeydata.ai project">Un projet hazeydata.ai</div>
+            <h1>
+                <span data-fr="Le GC dépense 4&nbsp;M$/an en extensions infonuagiques." data-en="The GC is spending $4M/year on cloud extensions.">Le GC dépense 4&nbsp;M$/an en extensions infonuagiques.</span><br>
+                <span class="maple" data-fr="ACCORD les valide." data-en="ACCORD validates them.">ACCORD les valide.</span>
+            </h1>
+            <p class="subtitle" data-fr="Un moteur de règles canadien et souverain qui vérifie les calculs de rémunération de Dayforce par rapport au texte officiel des conventions collectives &mdash; conçu pour les quelque 150 conventions collectives du GC, avec citations d'articles, dans les deux langues officielles." data-en="A Canadian-sovereign rules engine that checks Dayforce pay calculations against the authoritative collective agreement text &mdash; built for all ~150 GC collective agreements, with article citations, in both official languages.">Un moteur de règles canadien et souverain qui vérifie les calculs de rémunération de Dayforce par rapport au texte officiel des conventions collectives &mdash; conçu pour les quelque 150 conventions collectives du GC, avec citations d'articles, dans les deux langues officielles.</p>
             <div class="hero-stats">
-                <div class="hero-stat">
-                    <span class="num">866</span>
-                    <span class="label">Tests passing<br>Zero failures</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="num">26</span>
-                    <span class="label">Collective agreements<br>encoded</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="num">9</span>
-                    <span class="label">API endpoints<br>live (v0.3)</span>
-                </div>
+                <div class="hero-stat"><span class="num">~150</span><span class="label" data-fr="Conventions collectives<br>couvertes" data-en="Collective agreements<br>covered">Conventions collectives<br>couvertes</span></div>
+                <div class="hero-stat"><span class="num">8</span><span class="label" data-fr="Domaines de<br>rémunération" data-en="Pay domains<br>covered">Domaines de<br>rémunération</span></div>
+                <div class="hero-stat"><span class="num">1M+</span><span class="label" data-fr="Scénarios validés<br>Zéro bogues" data-en="Scenarios validated<br>Zero bugs">Scénarios validés<br>Zéro bogues</span></div>
+                <div class="hero-stat"><span class="num">963</span><span class="label" data-fr="Tests unitaires<br>100% réussis" data-en="Unit tests<br>100% passing">Tests unitaires<br>100% réussis</span></div>
+            </div>
+            <div class="hero-cta">
+                <a href="/accord/demo/" class="cta-btn" data-fr="Voir la démo &rarr;" data-en="See the demo &rarr;">Voir la démo &rarr;</a>
+                <a href="#produits" class="cta-btn-outline" data-fr="En savoir plus" data-en="Learn more">En savoir plus</a>
             </div>
         </div>
     </header>
 
-    <!-- The Problem -->
-    <section>
-        <div class="section-inner">
-            <h2>The Problem</h2>
-            <p>The Government of Canada pays 431,000 current and former employees biweekly — $40.1 billion a year across 13.4 million transactions. The rules governing those payments live in approximately 150 collective agreements, each with unique provisions for rates of pay, overtime, leave, acting assignments, and more.</p>
-            <p>As the Government migrates from Phoenix to Dayforce, an independent assessment identified <strong>18 complex, GC-specific gaps</strong> that the new platform's planned enhancements will not address. These gaps — mass salary revision, establishing rates of pay, and acting administration — require deep knowledge of collective agreement rules that no off-the-shelf payroll system can provide.</p>
-            <p class="muted">Today, that knowledge lives in PDF documents, spreadsheets, and the heads of experienced compensation advisors. It's fragile, inconsistent, and impossible to audit at scale.</p>
+    <!-- AG Quote -->
+    <section style="padding: 4rem 2rem 2rem;">
+        <div class="ag-callout">
+            <div class="ag-label" data-fr="VÉRIFICATRICE GÉNÉRALE DU CANADA &mdash; 23 MARS 2026" data-en="AUDITOR GENERAL OF CANADA &mdash; MARCH 23, 2026">VÉRIFICATRICE GÉNÉRALE DU CANADA &mdash; 23 MARS 2026</div>
+            <blockquote data-fr="&laquo;&nbsp;Services publics et Approvisionnement Canada personnalisait Dayforce pour fonctionner sans règles de rémunération simplifiées&hellip; SPAC a demandé à Dayforce de développer 3 applications sur mesure, appelées &laquo;&nbsp;extensions infonuagiques&nbsp;&raquo;, pour s'assurer que le système puisse traiter les règles de rémunération gouvernementales qui pourraient demeurer en vigueur sans être simplifiées.&nbsp;&raquo;" data-en="&ldquo;Public Services and Procurement Canada was customizing Dayforce to work without simplified pay rules&hellip; PSPC requested that Dayforce develop 3 custom applications, called &lsquo;cloud extensions,&rsquo; to ensure that the system could process government pay rules that may remain in effect without being simplified.&rdquo;">&laquo;&nbsp;Services publics et Approvisionnement Canada personnalisait Dayforce pour fonctionner sans règles de rémunération simplifiées&hellip; SPAC a demandé à Dayforce de développer 3 applications sur mesure, appelées &laquo;&nbsp;extensions infonuagiques&nbsp;&raquo;, pour s'assurer que le système puisse traiter les règles de rémunération gouvernementales qui pourraient demeurer en vigueur sans être simplifiées.&nbsp;&raquo;</blockquote>
+            <div class="ag-cost" data-fr="Coût estimé : près de 4 millions de dollars par année &mdash; Paragraphe 15" data-en="Estimated cost: almost $4 million annually &mdash; Paragraph 15">Coût estimé : près de 4 millions de dollars par année &mdash; Paragraphe 15</div>
         </div>
     </section>
 
-    <!-- What ACCORD Does -->
-    <section>
+    <!-- Three Products -->
+    <section id="produits">
         <div class="section-inner">
-            <h2>What ACCORD Does</h2>
-            <p>ACCORD (API des règles des conventions collectives) translates collective agreement provisions into structured, machine-readable rules. Instead of a human reading a 200-page PDF to determine an employee's correct rate of pay, a system queries the API and gets an authoritative, traceable answer.</p>
-
-            <ul class="gap-list">
-                <li>
-                    <strong>Mass Salary Revision</strong>
-                    <span>When a new collective agreement is signed, ACCORD recalculates pay retroactively across thousands of employees — automatically and consistently.</span>
-                </li>
-                <li>
-                    <strong>Establishing Rate of Pay</strong>
-                    <span>Step increases, pay revision dates, salary protection rules, and rate determination logic — encoded once, applied everywhere.</span>
-                </li>
-                <li>
-                    <strong>Acting Administration</strong>
-                    <span>Acting-in-higher-position pay calculations across multiple collective agreement frameworks, with full audit trails.</span>
-                </li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- Why It Matters -->
-    <section>
-        <div class="section-inner">
-            <h2>Why It Matters Now</h2>
-            <p>Post-Phoenix, the Government needs confidence that every department migrating to Dayforce will see accurate pay from day one. ACCORD provides the authoritative rules layer that bridges what Dayforce can do natively and what the GC uniquely requires.</p>
-
+            <h2 data-fr="Trois produits, une mission" data-en="Three products, one mission">Trois produits, une mission</h2>
+            <p data-fr="Validation indépendante des calculs de rémunération du gouvernement du Canada." data-en="Independent validation of Government of Canada pay calculations.">Validation indépendante des calculs de rémunération du gouvernement du Canada.</p>
             <div class="features">
                 <div class="feature-card">
+                    <div class="icon">🔍</div>
+                    <h3 data-fr="Outil de validation" data-en="Validation Tool">Outil de validation</h3>
+                    <p data-fr="Interface pour les conseillers en rémunération. Entrez un scénario, obtenez la réponse validée avec la citation d'article, en français et en anglais." data-en="Interface for compensation advisors. Enter a scenario, get the validated answer with article citation, in English and French.">Interface pour les conseillers en rémunération. Entrez un scénario, obtenez la réponse validée avec la citation d'article, en français et en anglais.</p>
+                    <div class="status status-live" data-fr="&#x25cf; Opérationnel" data-en="&#x25cf; Operational">&#x25cf; Opérationnel</div>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⚡</div>
+                    <h3 data-fr="API REST" data-en="REST API">API REST</h3>
+                    <p data-fr="Points d'accès pour intégration système. Hébergé au Canada, authentifié, bilingue. Chaque réponse inclut la citation de la convention collective." data-en="Endpoints for system integration. Canadian-hosted, authenticated, bilingual. Every response includes the collective agreement article citation.">Points d'accès pour intégration système. Hébergé au Canada, authentifié, bilingue. Chaque réponse inclut la citation de la convention collective.</p>
+                    <div class="status status-live" data-fr="&#x25cf; Opérationnel" data-en="&#x25cf; Operational">&#x25cf; Opérationnel</div>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h3 data-fr="Validateur par lots" data-en="Batch Validator">Validateur par lots</h3>
+                    <p data-fr="Téléversez les résultats de tests de Dayforce &mdash; ACCORD valide chaque ligne et produit un rapport bilingue d'écarts avec citations." data-en="Upload Dayforce test results &mdash; ACCORD validates every row and produces a bilingual discrepancy report with citations.">Téléversez les résultats de tests de Dayforce &mdash; ACCORD valide chaque ligne et produit un rapport bilingue d'écarts avec citations.</p>
+                    <div class="status status-soon" data-fr="&#x25d0; Prêt pour juin 2026" data-en="&#x25d0; Ready for June 2026">&#x25d0; Prêt pour juin 2026</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8 Domains -->
+    <section>
+        <div class="section-inner">
+            <h2 data-fr="8 domaines de rémunération couverts" data-en="8 pay domains covered">8 domaines de rémunération couverts</h2>
+            <div class="coverage-grid">
+                <div class="cov-card"><div class="cov-icon">☀️</div><div class="label" data-fr="Congés annuels" data-en="Vacation Accrual">Congés annuels</div></div>
+                <div class="cov-card"><div class="cov-icon">⬆️</div><div class="label" data-fr="Rémunération d'intérim" data-en="Acting Pay">Rémunération d'intérim</div></div>
+                <div class="cov-card"><div class="cov-icon">🗓️</div><div class="label" data-fr="Jours fériés désignés" data-en="Designated Holidays">Jours fériés désignés</div></div>
+                <div class="cov-card"><div class="cov-icon">⏰</div><div class="label" data-fr="Heures supplémentaires" data-en="Overtime">Heures supplémentaires</div></div>
+                <div class="cov-card"><div class="cov-icon">½</div><div class="label" data-fr="Temps partiel" data-en="Part-Time">Temps partiel</div></div>
+                <div class="cov-card"><div class="cov-icon">🌙</div><div class="label" data-fr="Primes de quart" data-en="Shift Premiums">Primes de quart</div></div>
+                <div class="cov-card"><div class="cov-icon">⚖️</div><div class="label" data-fr="Anti-cumul" data-en="Anti-Pyramiding">Anti-cumul</div></div>
+                <div class="cov-card"><div class="cov-icon">🔒</div><div class="label" data-fr="Maintien ICSS" data-en="CSSDA Retention">Maintien ICSS</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Validation Stats -->
+    <section>
+        <div class="section-inner">
+            <h2 data-fr="Validé à l'échelle" data-en="Validated at scale">Validé à l'échelle</h2>
+            <p data-fr="ACCORD a été soumis à des tests adversariaux structurés et à un million de scénarios aléatoires. Zéro bogue de calcul. Zéro plantage." data-en="ACCORD has been subjected to structured adversarial testing and one million randomized scenarios. Zero calculation bugs. Zero crashes.">ACCORD a été soumis à des tests adversariaux structurés et à un million de scénarios aléatoires. Zéro bogue de calcul. Zéro plantage.</p>
+            <div class="stats-grid">
+                <div class="stat-card"><span class="num">963</span><span class="label" data-fr="Tests unitaires" data-en="Unit tests">Tests unitaires</span></div>
+                <div class="stat-card"><span class="num">973</span><span class="label" data-fr="Scénarios adversariaux" data-en="Adversarial scenarios">Scénarios adversariaux</span></div>
+                <div class="stat-card"><span class="num green">1M</span><span class="label" data-fr="Scénarios aléatoires" data-en="Fuzz scenarios">Scénarios aléatoires</span></div>
+                <div class="stat-card"><span class="num red">0</span><span class="label" data-fr="Bogues du moteur" data-en="Engine bugs">Bogues du moteur</span></div>
+                <div class="stat-card"><span class="num">31 505</span><span class="label" data-fr="Calculs/seconde" data-en="Calculations/sec">Calculs/seconde</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Now -->
+    <section>
+        <div class="section-inner">
+            <h2 data-fr="Pourquoi maintenant" data-en="Why now">Pourquoi maintenant</h2>
+            <p data-fr="La vérificatrice générale a constaté que 29&nbsp;% des employés ont eu une erreur de paie en 2024-2025. Le calendrier de Dayforce a été compressé de 3 ans. Le rapport Goss Gilroy exige une &laquo;&nbsp;validation indépendante&nbsp;&raquo;. ACCORD est cette validation." data-en="The Auditor General found 29% of employees had a pay error in 2024-25. The Dayforce timeline was compressed by 3 years. The Goss Gilroy report calls for &ldquo;independent validation.&rdquo; ACCORD is that validation.">La vérificatrice générale a constaté que 29&nbsp;% des employés ont eu une erreur de paie en 2024-2025. Le calendrier de Dayforce a été compressé de 3 ans. Le rapport Goss Gilroy exige une &laquo;&nbsp;validation indépendante&nbsp;&raquo;. ACCORD est cette validation.</p>
+            <div class="features" style="grid-template-columns: 1fr 1fr;">
+                <div class="feature-card">
                     <div class="icon">🛡️</div>
-                    <h3>Post-Phoenix Assurance</h3>
-                    <p>A single source of truth for compensation rules — the kind of governance that post-Phoenix accountability demands.</p>
+                    <h3 data-fr="Assurance post-Phoenix" data-en="Post-Phoenix Assurance">Assurance post-Phoenix</h3>
+                    <p data-fr="Une source unique de vérité pour les règles de rémunération &mdash; la gouvernance que l'après-Phoenix exige." data-en="A single source of truth for compensation rules &mdash; the governance that post-Phoenix accountability demands.">Une source unique de vérité pour les règles de rémunération &mdash; la gouvernance que l'après-Phoenix exige.</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">🔓</div>
-                    <h3>Vendor Agnostic</h3>
-                    <p>If the GC moves off Dayforce, the rules API still works. Collective agreement knowledge isn't trapped in one vendor's platform.</p>
+                    <h3 data-fr="Indépendant du fournisseur" data-en="Vendor Agnostic">Indépendant du fournisseur</h3>
+                    <p data-fr="Si le GC quitte Dayforce, l'API fonctionne toujours. Les règles ne sont pas emprisonnées chez un fournisseur." data-en="If the GC moves off Dayforce, the API still works. Rules aren't trapped in one vendor's platform.">Si le GC quitte Dayforce, l'API fonctionne toujours. Les règles ne sont pas emprisonnées chez un fournisseur.</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">⏱️</div>
-                    <h3>De-risks the Transition</h3>
-                    <p>Validates calculations during parallel runs and early production — when the cost of errors is highest and trust is most fragile.</p>
+                    <h3 data-fr="Réduit les risques" data-en="De-risks the Transition">Réduit les risques</h3>
+                    <p data-fr="Valide les calculs pendant les exécutions parallèles &mdash; quand le coût des erreurs est le plus élevé." data-en="Validates calculations during parallel runs &mdash; when the cost of errors is highest.">Valide les calculs pendant les exécutions parallèles &mdash; quand le coût des erreurs est le plus élevé.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="icon">🔎</div>
-                    <h3>Audit-Ready Compliance</h3>
-                    <p>Every API response traces back to the specific collective agreement article, TBS directive, and rule. Ready for OAG review from day one.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Current Coverage -->
-    <section>
-        <div class="section-inner">
-            <h2>Current Coverage</h2>
-            <p>ACCORD currently encodes rules from 26 Core Public Administration collective agreements, covering the majority of federal public servants. The framework is designed to scale to all ~150 agreements, including separate employers.</p>
-
-            <div class="coverage-grid">
-                <div class="cov-card">
-                    <span class="num">26</span>
-                    <span class="label">CPA collective agreements encoded</span>
-                </div>
-                <div class="cov-card">
-                    <span class="num">84</span>
-                    <span class="label">Article rules validated &amp; verified</span>
-                </div>
-                <div class="cov-card">
-                    <span class="num">100%</span>
-                    <span class="label">Vacation domain coverage across all CAs</span>
-                </div>
-            </div>
-
-            <p style="margin-top: 1.5rem;" class="muted">Domains currently covered include rates of pay, vacation leave, overtime provisions, and acting pay rules. Additional domains — bereavement, designated paid holidays, severance — are in active development.</p>
-        </div>
-    </section>
-
-    <!-- Built for Government -->
-    <section>
-        <div class="section-inner">
-            <h2>Built for Government</h2>
-
-            <div class="features">
                 <div class="feature-card">
                     <div class="icon">🇨🇦</div>
-                    <h3>Canadian Data Sovereignty</h3>
-                    <p>Canadian data residency. Canadian company. No foreign dependency for the interpretation of Canadian collective agreements.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon">🧠</div>
-                    <h3>Domain Expertise</h3>
-                    <p>Built by professionals with direct experience in federal compensation policy, collective agreement interpretation, and public service data analytics.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon">🔬</div>
-                    <h3>Data Science Core</h3>
-                    <p>Advanced analytical capabilities for pattern detection, anomaly identification, and predictive compliance risk — beyond simple rule checking.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="icon">🔄</div>
-                    <h3>Single Source of Truth</h3>
-                    <p>Update once when a collective agreement is renegotiated — every downstream system, department, and calculation gets the new rules automatically.</p>
+                    <h3 data-fr="Souveraineté canadienne" data-en="Canadian Sovereignty">Souveraineté canadienne</h3>
+                    <p data-fr="Entreprise canadienne. Hébergement canadien. Aucune dépendance étrangère pour l'interprétation des conventions collectives." data-en="Canadian company. Canadian hosting. No foreign dependency for collective agreement interpretation.">Entreprise canadienne. Hébergement canadien. Aucune dépendance étrangère pour l'interprétation des conventions collectives.</p>
                 </div>
             </div>
         </div>
@@ -498,9 +253,11 @@
     <!-- CTA -->
     <section class="cta-section">
         <div class="section-inner">
-            <h2>Interested in Learning More?</h2>
-            <p>ACCORD is currently in active development with a target of audit-ready, bilingual deployment by June 2026. We welcome conversations with departments, TBS, and compensation stakeholders.</p>
-            <a href="mailto:fred@hazeydata.ai" class="cta-btn">Get in Touch →</a>
+            <h2 data-fr="Prêt pour une démonstration" data-en="Ready for a demonstration">Prêt pour une démonstration</h2>
+            <p data-fr="ACCORD est opérationnel aujourd'hui. Déploiement bilingue prêt pour l'audit d'ici juin 2026. Nous accueillons les conversations avec les ministères, le SCT et les intervenants en rémunération." data-en="ACCORD is operational today. Audit-ready bilingual deployment by June 2026. We welcome conversations with departments, TBS, and compensation stakeholders.">ACCORD est opérationnel aujourd'hui. Déploiement bilingue prêt pour l'audit d'ici juin 2026. Nous accueillons les conversations avec les ministères, le SCT et les intervenants en rémunération.</p>
+            <a href="/accord/demo/" class="cta-btn" data-fr="Voir la démo &rarr;" data-en="See the demo &rarr;">Voir la démo &rarr;</a>
+            &nbsp;&nbsp;
+            <a href="mailto:fred@hazeydata.ai" class="cta-btn" style="background: rgba(255,255,255,0.15);" data-fr="Nous contacter" data-en="Get in touch">Nous contacter</a>
         </div>
     </section>
 
@@ -508,11 +265,26 @@
     <footer class="footer">
         <div class="footer-links">
             <a href="/">hazeydata.ai</a>
-            <a href="/blog/">Blog</a>
-            <a href="/bio.html">About</a>
+            <a href="/accord/">ACCORD</a>
             <a href="mailto:fred@hazeydata.ai">Contact</a>
         </div>
-        <p>© 2026 hazeydata.ai — Ottawa, Canada</p>
+        <p data-fr="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1&nbsp;000&nbsp;000 scénarios validés &middot; 31&nbsp;505 calculs/seconde &middot; zéro plantage" data-en="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,000,000 scenarios validated &middot; 31,505 calculations/second &middot; zero crashes">&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1&nbsp;000&nbsp;000 scénarios validés &middot; 31&nbsp;505 calculs/seconde &middot; zéro plantage</p>
     </footer>
+
+    <script>
+    let currentLang = 'fr';
+    function toggleLang() {
+        currentLang = currentLang === 'fr' ? 'en' : 'fr';
+        document.documentElement.lang = currentLang;
+        document.querySelector('.lang-btn').textContent = currentLang === 'fr' ? 'EN' : 'FR';
+        // Update nav links
+        const navHome = document.querySelector('.nav-links a:first-child');
+        navHome.textContent = currentLang === 'fr' ? 'Accueil' : 'Home';
+        // Update all bilingual elements
+        document.querySelectorAll('[data-fr][data-en]').forEach(el => {
+            el.innerHTML = el.getAttribute('data-' + currentLang);
+        });
+    }
+    </script>
 </body>
 </html>
