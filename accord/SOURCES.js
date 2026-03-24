@@ -14,11 +14,14 @@
 // Key phrase: "independent validation"
 
 // Collective Agreement URLs (canada.ca)
-// PA: https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/programme-and-administrative-services.html
-// TC: https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/technical-services.html
-// IT: https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/computer-systems.html
-// EC: https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/economics-and-social-science-services.html
-// FB: https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/border-services.html
-// SV: https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/operational-services.html
-// CX: https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/correctional-services.html
-// SP: https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/applied-science-and-patent-examination.html
+// NOTE: TBS restructured URLs in 2025. Old path /services/collective-agreements/ is DEAD (404).
+//       New path is /topics/pay/collective-agreements/{code}.html
+// Index: https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements.html
+// PA: https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/pa.html
+// TC: https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/tc.html
+// IT: https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/it.html
+// EC: https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/ec.html
+// FB: https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/fb.html
+// SV: https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/sv.html
+// CX: https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/cx.html
+// SP: https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/sp.html
