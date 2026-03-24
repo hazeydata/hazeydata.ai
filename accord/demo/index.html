@@ -62,7 +62,6 @@
         .match-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 4px; margin-top: 1rem; }
         .match-badge.pass { background: rgba(26,122,76,0.08); color: var(--green); border: 1px solid rgba(26,122,76,0.2); }
         .match-badge.fail { background: rgba(175,60,67,0.08); color: var(--gc-red); border: 1px solid rgba(175,60,67,0.2); }
-        /* Insight bubble */
         .insight-bubble { background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 0.75rem 1rem; margin-top: 1rem; font-size: 0.82rem; color: #856404; line-height: 1.5; position: relative; animation: fadeIn 0.4s ease-out; }
         .insight-bubble::before { content: '\1F4A1'; margin-right: 0.4rem; }
         .insight-bubble .close-x { position: absolute; top: 0.4rem; right: 0.6rem; cursor: pointer; font-size: 0.9rem; color: #856404; opacity: 0.6; }
@@ -95,7 +94,6 @@
             <button class="lang-btn" onclick="toggleLang()">FR</button>
         </div>
     </nav>
-
     <div class="stats-bar">
         <div><span class="sb-num">~150</span><span class="sb-label" data-en="Coll. Agreements" data-fr="Conv. coll.">Coll. Agreements</span></div>
         <div><span class="sb-num">8</span><span class="sb-label" data-en="Domains" data-fr="Domaines">Domains</span></div>
@@ -103,19 +101,16 @@
         <div><span class="sb-num">1M+</span><span class="sb-label" data-en="Scenarios" data-fr="Sc&eacute;narios">Scenarios</span></div>
         <div><span class="sb-num" style="color:#ff6b6b">0</span><span class="sb-label" data-en="Bugs" data-fr="Bogues">Bugs</span></div>
     </div>
-
     <div class="demo-wrap">
         <div class="demo-header">
             <h1 data-en="ACCORD Interactive Demo" data-fr="D&eacute;mo interactive ACCORD">ACCORD Interactive Demo</h1>
             <p data-en="Select a domain, enter parameters, get the validated answer with article citation." data-fr="S&eacute;lectionnez un domaine, entrez les param&egrave;tres, obtenez la r&eacute;ponse valid&eacute;e avec citation d'article.">Select a domain, enter parameters, get the validated answer with article citation.</p>
         </div>
-
         <div class="tabs">
             <button class="tab active" onclick="showTab('calc',this)" data-en="&#x1F50D; Validation" data-fr="&#x1F50D; Validation">&#x1F50D; Validation</button>
             <button class="tab" onclick="showTab('api',this)" data-en="&#x26A1; API" data-fr="&#x26A1; API">&#x26A1; API</button>
             <button class="tab" onclick="showTab('batch',this)" data-en="&#x1F4CA; Batch" data-fr="&#x1F4CA; Lots">&#x1F4CA; Batch</button>
         </div>
-
         <div class="panel" id="tab-calc">
             <div class="controls">
                 <div>
@@ -141,7 +136,6 @@
                 </div>
             </div>
             <button class="run-btn" onclick="runCalc()" data-en="&#x25B8; Run ACCORD Validation" data-fr="&#x25B8; Valider avec ACCORD">&#x25B8; Run ACCORD Validation</button>
-
             <div class="result" id="result">
                 <div class="result-grid">
                     <div class="result-card accord">
@@ -162,7 +156,6 @@
                 <div id="insight-container"></div>
             </div>
         </div>
-
         <div class="panel panel-hidden" id="tab-api">
             <div class="api-tabs">
                 <button class="api-tab active" onclick="showApi(0,this)"><span class="api-method post">POST</span>/vacation</button>
@@ -175,7 +168,6 @@
                 <div><div class="code-label" data-en="Response (200 OK)" data-fr="R&eacute;ponse (200 OK)">Response (200 OK)</div><div class="code-block" id="api-res"></div></div>
             </div>
         </div>
-
         <div class="panel panel-hidden" id="tab-batch">
             <div class="batch-zone">
                 <div style="font-size:2.5rem;margin-bottom:1rem;opacity:0.3">&#x1F4C4;</div>
@@ -185,26 +177,26 @@
             </div>
         </div>
     </div>
-
     <footer style="text-align:center;padding:2rem;font-size:0.75rem;color:var(--gc-grey-mid)">
         <a href="/accord/" class="back-link" style="font-size:0.8rem" data-en="&larr; Back to ACCORD" data-fr="&larr; Retour &agrave; ACCORD">&larr; Back to ACCORD</a>
         <p style="margin-top:1rem" data-en="1,000,000 scenarios validated &middot; zero crashes" data-fr="1&nbsp;000&nbsp;000 sc&eacute;narios valid&eacute;s &middot; z&eacute;ro plantage">1,000,000 scenarios validated &middot; zero crashes</p>
     </footer>
-
 <script>
 var currentLang = localStorage.getItem('accord-lang') || 'en';
 var isDefaultScenario = true;
 
 // Collective agreement URLs on canada.ca
+// TBS restructured URLs in 2025: /services/collective-agreements/ is DEAD
+// New path: /topics/pay/collective-agreements/{code}.html
 var CA_URLS = {
-  PA: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/programme-and-administrative-services.html',
-  TC: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/technical-services.html',
-  IT: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/computer-systems.html',
-  EC: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/economics-and-social-science-services.html',
-  FB: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/border-services.html',
-  SV: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/operational-services.html',
-  CX: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/correctional-services.html',
-  SP: 'https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements/applied-science-and-patent-examination.html'
+  PA: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/pa.html',
+  TC: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/tc.html',
+  IT: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/it.html',
+  EC: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/ec.html',
+  FB: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/fb.html',
+  SV: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/sv.html',
+  CX: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/cx.html',
+  SP: 'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/sp.html'
 };
 
 function applyLang() {
@@ -213,7 +205,6 @@ function applyLang() {
     document.querySelectorAll('[data-en][data-fr]').forEach(function(el) {
         el.innerHTML = el.getAttribute('data-' + currentLang);
     });
-    // Re-run calc to update explain text
     if (document.getElementById('result').classList.contains('show')) runCalc();
 }
 function toggleLang() {
@@ -221,7 +212,6 @@ function toggleLang() {
     localStorage.setItem('accord-lang', currentLang);
     applyLang();
 }
-
 function hideInsight() {
     isDefaultScenario = false;
     var ic = document.getElementById('insight-container');
@@ -247,7 +237,6 @@ function makeClauseLink(ca, clauseText) {
     if (url) return '<a href="'+url+'" target="_blank" rel="noopener">Art. '+clauseText+'</a>';
     return 'Art. '+clauseText;
 }
-
 function makeInlineClauseLink(ca, clauseText) {
     var url = CA_URLS[ca];
     if (url) return '<a href="'+url+'" target="_blank" rel="noopener">Clause '+clauseText+'</a>';
@@ -283,12 +272,10 @@ function runCalc(){
     mr.innerHTML='<div class="match-badge fail">\u2717 '+(currentLang==='fr'?'D\u00c9SACCORD':'DISAGREE')+' \u2014 ACCORD: '+bp.r+'h ('+bp.c+') vs AI: '+llm.r+'h ('+llm.c+')<br><span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.78rem">'+(currentLang==='fr'?'L\u2019IA interpr\u00e8te \u00ab\u00a0\u00e0 compter de la 8e ann\u00e9e\u00a0\u00bb comme excluant l\u2019ann\u00e9e 8. ACCORD a raison.':'The AI misreads \u201ccommencing with the 8th year\u201d as not including year 8. ACCORD is correct.')+'</span></div>';
   }
 
-  // Insight bubble only on default scenario
   var ic = document.getElementById('insight-container');
   if (isDefaultScenario && !match) {
     ic.innerHTML = '<div class="insight-bubble">'+(currentLang==='fr'?'Dans deux tests ind\u00e9pendants, une IA a mal interpr\u00e9t\u00e9 la convention pour ce sc\u00e9nario. ACCORD l\u2019a d\u00e9tect\u00e9.':'In two independent tests, an AI misinterpreted the agreement for this scenario. ACCORD caught it.')+'<span class="close-x" onclick="this.parentElement.remove()">&times;</span></div>';
   }
-
   document.getElementById('result').classList.add('show');
 }
 
@@ -305,7 +292,6 @@ function showApi(i,btn){
   document.getElementById('api-req').textContent=apis[i].req;
   document.getElementById('api-res').textContent=apis[i].res;
 }
-
 function showTab(id,btn){
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
   document.querySelectorAll('.panel').forEach(function(p){p.classList.add('panel-hidden');});
