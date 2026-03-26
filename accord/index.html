@@ -118,7 +118,9 @@
         <div class="nav-links">
             <a href="/" data-en="Home" data-fr="Accueil">Home</a>
             <a href="/accord/" style="color: var(--gc-blue); font-weight: 600;">ACCORD</a>
-            <a href="mailto:fred@hazeydata.ai">Contact</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
+            <a href="/accord/guides/" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="/accord/blog/" data-en="Blog" data-fr="Blogue">Blog</a>
             <button class="lang-btn" onclick="toggleLang()">FR</button>
         </div>
     </nav>
@@ -135,7 +137,7 @@
                 <div class="hero-stat"><span class="num">~150</span><span class="label" data-en="Collective agreements<br>covered" data-fr="Conventions collectives<br>couvertes">Collective agreements<br>covered</span></div>
                 <div class="hero-stat"><span class="num">8</span><span class="label" data-en="Pay domains<br>covered" data-fr="Domaines de<br>r&eacute;mun&eacute;ration">Pay domains<br>covered</span></div>
                 <div class="hero-stat"><span class="num">1M+</span><span class="label" data-en="Scenarios validated<br>Zero bugs" data-fr="Sc&eacute;narios valid&eacute;s<br>Z&eacute;ro bogues">Scenarios validated<br>Zero bugs</span></div>
-                <div class="hero-stat"><span class="num">963</span><span class="label" data-en="Unit tests<br>100% passing" data-fr="Tests unitaires<br>100% r&eacute;ussis">Unit tests<br>100% passing</span></div>
+                <div class="hero-stat"><span class="num">1,001+</span><span class="label" data-en="Unit tests<br>100% passing" data-fr="Tests unitaires<br>100% r&eacute;ussis">Unit tests<br>100% passing</span></div>
             </div>
             <div class="hero-cta">
                 <a href="/accord/demo/" class="cta-btn" data-en="See the demo &rarr;" data-fr="Voir la d&eacute;mo &rarr;">See the demo &rarr;</a>
@@ -198,10 +200,11 @@
     <section>
         <div class="section-inner">
             <h2 data-en="Validated at scale" data-fr="Valid&eacute; &agrave; l'&eacute;chelle">Validated at scale</h2>
-            <p data-en="ACCORD has been subjected to structured adversarial testing and one million randomized scenarios. Zero calculation bugs. Zero crashes." data-fr="ACCORD a &eacute;t&eacute; soumis &agrave; des tests adversariaux structur&eacute;s et &agrave; un million de sc&eacute;narios al&eacute;atoires. Z&eacute;ro bogue de calcul. Z&eacute;ro plantage.">ACCORD has been subjected to structured adversarial testing and one million randomized scenarios. Zero calculation bugs. Zero crashes.</p>
+            <p data-en="ACCORD has been subjected to structured adversarial testing, one million randomized scenarios, and 38 documented Phoenix failure replications. Every rule independently verified by two AI agents against the authoritative CA source text. Zero calculation bugs. Zero crashes." data-fr="ACCORD a &eacute;t&eacute; soumis &agrave; des tests adversariaux structur&eacute;s, un million de sc&eacute;narios al&eacute;atoires et 38 r&eacute;plications document&eacute;es de d&eacute;faillances Ph&eacute;nix. Chaque r&egrave;gle v&eacute;rifi&eacute;e ind&eacute;pendamment par deux agents IA par rapport au texte source officiel des CC. Z&eacute;ro bogue de calcul. Z&eacute;ro plantage.">ACCORD has been subjected to structured adversarial testing, one million randomized scenarios, and 38 documented Phoenix failure replications. Every rule independently verified by two AI agents against the authoritative CA source text. Zero calculation bugs. Zero crashes.</p>
             <div class="stats-grid">
-                <div class="stat-card"><span class="num">963</span><span class="label" data-en="Unit tests" data-fr="Tests unitaires">Unit tests</span></div>
-                <div class="stat-card"><span class="num">973</span><span class="label" data-en="Adversarial scenarios" data-fr="Sc&eacute;narios adversariaux">Adversarial scenarios</span></div>
+                <div class="stat-card"><span class="num">1,001+</span><span class="label" data-en="Unit tests" data-fr="Tests unitaires">Unit tests</span></div>
+                <div class="stat-card"><span class="num">1,011</span><span class="label" data-en="Adversarial scenarios" data-fr="Sc&eacute;narios adversariaux">Adversarial scenarios</span></div>
+                <div class="stat-card"><span class="num">38</span><span class="label" data-en="Phoenix failure<br>replications" data-fr="R&eacute;plications de<br>d&eacute;faillances Ph&eacute;nix">Phoenix failure<br>replications</span></div>
                 <div class="stat-card"><span class="num green">1M</span><span class="label" data-en="Fuzz scenarios" data-fr="Sc&eacute;narios al&eacute;atoires">Fuzz scenarios</span></div>
                 <div class="stat-card"><span class="num red">0</span><span class="label" data-en="Engine bugs" data-fr="Bogues du moteur">Engine bugs</span></div>
                 <div class="stat-card"><span class="num">31 505</span><span class="label" data-en="Calculations/sec" data-fr="Calculs/seconde">Calculations/sec</span></div>
@@ -259,6 +262,32 @@
         </div>
         <p data-en="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,000,000 scenarios validated &middot; 31,505 calculations/second &middot; zero crashes" data-fr="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1&nbsp;000&nbsp;000 sc&eacute;narios valid&eacute;s &middot; 31&nbsp;505 calculs/seconde &middot; z&eacute;ro plantage">&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,000,000 scenarios validated &middot; 31,505 calculations/second &middot; zero crashes</p>
     </footer>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Organization",
+                "name": "HazeyData",
+                "url": "https://hazeydata.ai/",
+                "logo": "https://hazeydata.ai/assets/icon-180.png"
+            },
+            {
+                "@type": "SoftwareApplication",
+                "name": "ACCORD",
+                "description": "A Canadian-sovereign rules engine that checks Dayforce pay calculations against the authoritative collective agreement text, built for all ~150 GC collective agreements, with article citations, in both official languages.",
+                "applicationCategory": "BusinessApplication",
+                "operatingSystem": "Web",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CAD"
+                }
+            }
+        ]
+    }
+    </script>
 
     <script>
     var currentLang = localStorage.getItem('accord-lang') || 'en';

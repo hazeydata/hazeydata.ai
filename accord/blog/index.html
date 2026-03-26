@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCORD Blog | Federal Pay News & Analysis</title>
+    <meta name="description" content="News, analysis, and commentary on federal pay modernization from the ACCORD team.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/icon-180.png">
+    <meta name="theme-color" content="#26374A">
+    <link rel="canonical" href="https://hazeydata.ai/accord/blog/">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hazeydata.ai/accord/blog/">
+    <meta property="og:title" content="ACCORD Blog | Federal Pay News & Analysis">
+    <meta property="og:description" content="News, analysis, and commentary on federal pay modernization.">
+    <meta property="og:image" content="https://hazeydata.ai/assets/accord-og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ACCORD Blog | Federal Pay News & Analysis">
+    <meta name="twitter:description" content="News, analysis, and commentary on federal pay modernization.">
+    <meta name="twitter:image" content="https://hazeydata.ai/assets/accord-og.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "ACCORD Blog",
+        "description": "News, analysis, and commentary on federal pay modernization.",
+        "url": "https://hazeydata.ai/accord/blog/",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "hazeydata.ai",
+            "url": "https://hazeydata.ai/"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "HazeyData",
+            "url": "https://hazeydata.ai/"
+        }
+    }
+    </script>
+    <style>
+        :root {
+            --gc-blue: #26374A; --gc-blue-light: #335075; --gc-blue-lighter: #4a6fa5;
+            --gc-red: #AF3C43; --gc-red-dark: #8B1E2F; --gc-white: #FFFFFF;
+            --gc-grey-light: #F8F9FA; --gc-grey: #E5E5E5; --gc-grey-mid: #6C757D;
+            --gc-grey-dark: #333333; --accent-gold: #C8A951; --accent-teal: #2A7F8E;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--gc-grey-dark); line-height: 1.6; -webkit-font-smoothing: antialiased; background: var(--gc-white); }
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; max-width: 1100px; margin: 0 auto; }
+        .nav-brand { font-weight: 800; font-size: 1rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-brand .logo-mark { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.12em; background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: logo-shimmer 6s linear infinite; }
+        .nav-brand .logo-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4a90a4; margin-left: 2px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; }
+        @keyframes logo-shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-links a { color: var(--gc-grey-mid); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--gc-blue); }
+        .lang-btn { padding: 0.3rem 0.75rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: white; color: var(--gc-grey-dark); cursor: pointer; transition: all 0.2s; }
+        .lang-btn:hover { border-color: var(--gc-blue); color: var(--gc-blue); }
+        .gc-bar { height: 4px; background: var(--gc-red); }
+        .page-header { background: var(--gc-grey-light); padding: 3.5rem 2rem 3rem; text-align: center; }
+        .page-header h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; color: var(--gc-blue); letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+        .page-header .subtitle { font-size: 1.05rem; color: var(--gc-grey-mid); max-width: 640px; margin: 0 auto; line-height: 1.65; }
+        .blog-grid { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem 4rem; display: flex; flex-direction: column; gap: 1.25rem; }
+        .blog-card { display: block; text-decoration: none; background: var(--gc-white); border: 1px solid var(--gc-grey); border-radius: 10px; padding: 1.75rem 2rem; box-shadow: var(--shadow); transition: box-shadow 0.2s, border-color 0.2s; }
+        .blog-card:hover { box-shadow: 0 6px 32px rgba(0,0,0,0.12); border-color: var(--gc-blue-light); }
+        .blog-card h2 { font-size: 1.1rem; font-weight: 700; color: var(--gc-blue); margin-bottom: 0.35rem; }
+        .blog-card .desc { font-size: 0.92rem; color: var(--gc-grey-mid); line-height: 1.55; margin-bottom: 0.5rem; }
+        .blog-card .meta { font-size: 0.78rem; color: var(--gc-grey-mid); font-weight: 500; }
+        .blog-card .meta .date { margin-right: 0.75rem; }
+        .footer { background: var(--gc-blue); color: rgba(255,255,255,0.5); text-align: center; padding: 2rem; font-size: 0.8rem; }
+        .footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+        .footer a:hover { color: white; }
+        .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+        @media (max-width: 768px) {
+            .blog-grid { padding: 2rem 1.5rem 3rem; }
+            .blog-card { padding: 1.25rem 1.5rem; }
+            .page-header { padding: 2.5rem 1.5rem 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gc-bar"></div>
+    <nav class="nav">
+        <a href="/" class="nav-brand"><span class="logo-mark">HAZEYDATA</span><span class="logo-dot"></span></a>
+        <div class="nav-links">
+            <a href="/" data-en="Home" data-fr="Accueil">Home</a>
+            <a href="/accord/">ACCORD</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
+            <a href="/accord/guides/" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="/accord/blog/" style="color: var(--gc-blue); font-weight: 600;" data-en="Blog" data-fr="Blogue">Blog</a>
+            <button class="lang-btn" onclick="toggleLang()">FR</button>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1 data-en="Blog" data-fr="Blogue">Blog</h1>
+        <p class="subtitle" data-en="News, analysis, and commentary on federal pay modernization." data-fr="Nouvelles, analyses et commentaires sur la modernisation de la r&eacute;mun&eacute;ration f&eacute;d&eacute;rale.">News, analysis, and commentary on federal pay modernization.</p>
+    </div>
+
+    <div class="blog-grid">
+        <a href="/accord/blog/ag-report-march-2026/" class="blog-card">
+            <h2 data-en="What the Auditor General's March 2026 Report Means for Federal Pay" data-fr="Ce que le rapport de mars 2026 de la v&eacute;rificatrice g&eacute;n&eacute;rale signifie pour la r&eacute;mun&eacute;ration f&eacute;d&eacute;rale">What the Auditor General's March 2026 Report Means for Federal Pay</h2>
+            <p class="desc" data-en="The AG found 29% of employees had pay errors and flagged $4M/year in cloud extensions. We break down the findings and what they mean for the Dayforce transition." data-fr="La VG a constat&eacute; que 29&nbsp;% des employ&eacute;s avaient des erreurs de paie et a signal&eacute; 4&nbsp;M$/an en extensions infonuagiques. Nous analysons les conclusions et leurs implications pour la transition vers Dayforce.">The AG found 29% of employees had pay errors and flagged $4M/year in cloud extensions. We break down the findings and what they mean for the Dayforce transition.</p>
+            <div class="meta">
+                <span class="date" data-en="March 26, 2026" data-fr="26 mars 2026">March 26, 2026</span>
+                <span data-en="6 min read" data-fr="6 min de lecture">6 min read</span>
+            </div>
+        </a>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/">hazeydata.ai</a>
+            <a href="/accord/">ACCORD</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
+            <a href="/accord/guides/" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="/accord/blog/" data-en="Blog" data-fr="Blogue">Blog</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </div>
+        <p data-en="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada" data-fr="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada">&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada</p>
+    </footer>
+
+    <script>
+    var currentLang = localStorage.getItem('accord-lang') || 'en';
+    function applyLang() {
+        document.documentElement.lang = currentLang;
+        document.querySelector('.lang-btn').textContent = currentLang === 'en' ? 'FR' : 'EN';
+        document.querySelectorAll('[data-en][data-fr]').forEach(function(el) {
+            el.innerHTML = el.getAttribute('data-' + currentLang);
+        });
+    }
+    function toggleLang() {
+        currentLang = currentLang === 'en' ? 'fr' : 'en';
+        localStorage.setItem('accord-lang', currentLang);
+        applyLang();
+    }
+    applyLang();
+    </script>
+</body>
+</html>
