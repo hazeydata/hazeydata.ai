@@ -681,10 +681,9 @@
         <div class="heatmap-pct" id="heatmap-pct"></div>
         <div class="heatmap-legend">
             <span><span class="swatch" style="background:transparent;border:1px solid rgba(255,255,255,0.15)"></span> In session</span>
-            <span><span class="swatch" style="background:rgba(251,146,60,0.5)"></span> 20-40% on break</span>
-            <span><span class="swatch" style="background:rgba(166,0,56,0.5)"></span> 40-60% on break</span>
-            <span><span class="swatch" style="background:rgba(166,0,56,0.8)"></span> &gt;60% on break</span>
-            <span><span class="swatch" style="background:rgba(74,144,164,0.4)"></span> Weekend/Summer</span>
+            <span><span class="swatch" style="background:rgba(255,80,100,0.3)"></span> On break (small district)</span>
+            <span><span class="swatch" style="background:rgba(166,0,56,0.7)"></span> On break (large district)</span>
+            <span><span class="swatch" style="background:rgba(255,255,255,0.05)"></span> No data</span>
         </div>
         <div class="heatmap-controls">
             <button id="heatmap-pause" onclick="toggleHeatmapAnimation()">Pause</button>
@@ -921,30 +920,33 @@
         var canvasW = 960, canvasH = 600;
         var FADE_MS = 800; // crossfade duration
 
-        function getCountyColor(stateFips, dayData) {
-            if (!dayData || !dayData.fips_pct) return 'rgba(255,255,255,0.02)';
-            var fips2 = stateFips.substring(0, 2);
-            var pctInSession = dayData.fips_pct[fips2];
-            if (pctInSession === undefined || pctInSession === null) return 'rgba(255,255,255,0.02)';
-            var pctOnBreak = 100 - pctInSession;
-            // In session = transparent (base bg shows through)
-            // On break = colored by intensity
-            if (pctInSession === 0 && dayData.date) {
-                var dow = new Date(dayData.date).getDay();
-                if (dow === 0 || dow === 6) return 'rgba(74,144,164,0.25)'; // weekend = blue tint
-            }
-            if (pctOnBreak < 20) return 'rgba(255,255,255,0.02)'; // mostly in session
-            if (pctOnBreak < 40) return 'rgba(251,146,60,0.35)';  // orange
-            if (pctOnBreak < 60) return 'rgba(166,0,56,0.4)';     // red
-            return 'rgba(166,0,56,0.7)';                           // deep red
+        // Max enrollment for color scaling (NYC ~1M, but cap at 200K for good gradient)
+        var MAX_ENROLL = 200000;
+
+        function getDistrictColor(geoid, dayData) {
+            if (!dayData || !dayData.districts) return 'rgba(255,255,255,0.02)';
+            var d = dayData.districts[geoid];
+            if (!d) return 'rgba(255,255,255,0.02)'; // no data for this district
+            var sess = d.s; // is_in_session
+            var enroll = d.e || 0;
+            if (sess > 0) return 'rgba(255,255,255,0.02)'; // in session = transparent
+            if (sess === -1) return 'rgba(255,255,255,0.05)'; // unknown = subtle gray
+            // Not in session — color by enrollment (bigger = deeper)
+            var intensity = Math.min(enroll / MAX_ENROLL, 1);
+            var r = Math.round(166 + (255 - 166) * (1 - intensity)); // 166-255
+            var g = Math.round(0 + 80 * (1 - intensity)); // 0-80
+            var b = Math.round(56 + (100 - 56) * (1 - intensity)); // 56-100
+            var alpha = 0.25 + 0.55 * intensity; // 0.25-0.80
+            return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha.toFixed(2) + ')';
         }
 
         function drawToCanvas(ctx, pathFn, dayData) {
             ctx.clearRect(0, 0, canvasW, canvasH);
-            counties.forEach(function(county) {
+            counties.forEach(function(district) {
                 ctx.beginPath();
-                pathFn(county);
-                ctx.fillStyle = getCountyColor(county.id, dayData);
+                pathFn(district);
+                var geoid = district.properties ? district.properties.GEOID : district.id;
+                ctx.fillStyle = getDistrictColor(geoid, dayData);
                 ctx.fill();
             });
             ctx.beginPath();
@@ -1018,7 +1020,7 @@
 
         // Load topology + heatmap data
         Promise.all([
-            d3.json('/ssd/us-counties-10m.json'),
+            d3.json('/ssd/us-districts.topojson'),
             fetch('/ssd/heatmap_data.json').then(function(r) { return r.json(); })
         ]).then(function(results) {
             var us = results[0];
@@ -1056,14 +1058,19 @@
             canvasB.style.opacity = '0';
 
             // Projection (shared — both canvases use same projection)
-            var projection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], topojson.feature(us, us.objects.nation));
+            var projection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], topojson.feature(us, us.objects[objName]));
             pathA = d3.geoPath(projection, ctxA);
             pathB = d3.geoPath(projection, ctxB);
 
-            // Extract geometries
-            counties = topojson.feature(us, us.objects.counties).features;
-            states = topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; });
-            nation = topojson.mesh(us, us.objects.nation);
+            // Extract geometries — district boundaries
+            var objName = Object.keys(us.objects)[0]; // cb_2022_us_unsd_500k
+            counties = topojson.feature(us, us.objects[objName]).features;
+            // State borders from district mesh (where STATEFP differs)
+            states = topojson.mesh(us, us.objects[objName], function(a, b) {
+                return a.properties.STATEFP !== b.properties.STATEFP;
+            });
+            // Nation border = outer mesh
+            nation = topojson.mesh(us, us.objects[objName], function(a, b) { return a === b; });
 
             // Render first day (instant, no fade)
             if (heatmapData.days && heatmapData.days.length > 0) {
