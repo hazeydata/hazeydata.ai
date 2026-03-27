@@ -906,7 +906,7 @@
     </footer>
 
     <script>
-        // ═══ D3.js Geographic Heatmap ═══
+        // ═══ D3.js Geographic Heatmap with Crossfade ═══
         var heatmapData = null;
         var heatmapDayIndex = 0;
         var heatmapInterval = null;
@@ -914,9 +914,12 @@
         var counties = null;
         var states = null;
         var nation = null;
-        var ctx = null;
-        var path = null;
+        var canvasA = null, canvasB = null;
+        var ctxA = null, ctxB = null;
+        var pathA = null, pathB = null;
+        var activeCanvas = 'A'; // which canvas is currently visible
         var canvasW = 960, canvasH = 600;
+        var FADE_MS = 800; // crossfade duration
 
         function getCountyColor(stateFips, dayData) {
             if (!dayData || !dayData.fips_pct) return 'rgba(255,255,255,0.02)';
@@ -936,47 +939,62 @@
             return 'rgba(166,0,56,0.7)';                           // deep red
         }
 
-        function renderMapDay(dayData) {
-            if (!ctx || !counties) return;
+        function drawToCanvas(ctx, pathFn, dayData) {
+            ctx.clearRect(0, 0, canvasW, canvasH);
+            counties.forEach(function(county) {
+                ctx.beginPath();
+                pathFn(county);
+                ctx.fillStyle = getCountyColor(county.id, dayData);
+                ctx.fill();
+            });
+            ctx.beginPath();
+            pathFn(states);
+            ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+            ctx.beginPath();
+            pathFn(nation);
+            ctx.strokeStyle = 'rgba(74,144,164,0.4)';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+        }
+
+        function renderMapDay(dayData, instant) {
+            if (!counties) return;
             var dateLabel = document.getElementById('heatmap-date');
             var pctLabel = document.getElementById('heatmap-pct');
 
-            // Format date nicely
             if (dayData && dayData.date) {
                 var d = new Date(dayData.date + 'T12:00:00');
                 var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
                 var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
                 dateLabel.textContent = days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
             }
-
             if (dayData && dayData.national_pct !== undefined) {
                 pctLabel.textContent = Math.round(dayData.national_pct) + '% of 44M students in session';
             }
 
-            // Clear and redraw
-            ctx.clearRect(0, 0, canvasW, canvasH);
+            if (instant) {
+                // First render — no fade, draw directly on A
+                drawToCanvas(ctxA, pathA, dayData);
+                canvasA.style.opacity = '1';
+                canvasB.style.opacity = '0';
+                activeCanvas = 'A';
+                return;
+            }
 
-            // Draw counties colored by state data
-            counties.forEach(function(county) {
-                ctx.beginPath();
-                path(county);
-                ctx.fillStyle = getCountyColor(county.id, dayData);
-                ctx.fill();
-            });
-
-            // Draw state borders
-            ctx.beginPath();
-            path(states);
-            ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-
-            // Draw nation border
-            ctx.beginPath();
-            path(nation);
-            ctx.strokeStyle = 'rgba(74,144,164,0.4)';
-            ctx.lineWidth = 1.2;
-            ctx.stroke();
+            // Crossfade: draw new frame on the hidden canvas, then swap opacity
+            if (activeCanvas === 'A') {
+                drawToCanvas(ctxB, pathB, dayData);
+                canvasB.style.opacity = '1';
+                canvasA.style.opacity = '0';
+                activeCanvas = 'B';
+            } else {
+                drawToCanvas(ctxA, pathA, dayData);
+                canvasA.style.opacity = '1';
+                canvasB.style.opacity = '0';
+                activeCanvas = 'A';
+            }
         }
 
         function advanceHeatmap() {
@@ -1006,34 +1024,51 @@
             var us = results[0];
             heatmapData = results[1];
 
-            // Create canvas
+            // Create dual canvases for crossfade
             var container = document.getElementById('heatmap-map');
             var dpr = window.devicePixelRatio || 1;
             canvasW = Math.min(960, container.clientWidth || 960);
             canvasH = canvasW * 0.625;
-            var canvas = document.createElement('canvas');
-            canvas.width = canvasW * dpr;
-            canvas.height = canvasH * dpr;
-            canvas.style.width = canvasW + 'px';
-            canvas.style.height = canvasH + 'px';
-            container.appendChild(canvas);
+            container.style.height = canvasH + 'px';
 
-            ctx = canvas.getContext('2d');
-            ctx.scale(dpr, dpr);
+            function makeCanvas() {
+                var c = document.createElement('canvas');
+                c.width = canvasW * dpr;
+                c.height = canvasH * dpr;
+                c.style.width = canvasW + 'px';
+                c.style.height = canvasH + 'px';
+                c.style.position = 'absolute';
+                c.style.top = '0';
+                c.style.left = '50%';
+                c.style.transform = 'translateX(-50%)';
+                c.style.transition = 'opacity ' + FADE_MS + 'ms ease-in-out';
+                container.appendChild(c);
+                var cx = c.getContext('2d');
+                cx.scale(dpr, dpr);
+                return { canvas: c, ctx: cx };
+            }
 
-            // Projection
+            var a = makeCanvas();
+            var b = makeCanvas();
+            canvasA = a.canvas; ctxA = a.ctx;
+            canvasB = b.canvas; ctxB = b.ctx;
+            canvasA.style.opacity = '1';
+            canvasB.style.opacity = '0';
+
+            // Projection (shared — both canvases use same projection)
             var projection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], topojson.feature(us, us.objects.nation));
-            path = d3.geoPath(projection, ctx);
+            pathA = d3.geoPath(projection, ctxA);
+            pathB = d3.geoPath(projection, ctxB);
 
             // Extract geometries
             counties = topojson.feature(us, us.objects.counties).features;
             states = topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; });
             nation = topojson.mesh(us, us.objects.nation);
 
-            // Render first day
+            // Render first day (instant, no fade)
             if (heatmapData.days && heatmapData.days.length > 0) {
-                renderMapDay(heatmapData.days[0]);
-                heatmapInterval = setInterval(advanceHeatmap, 2500);
+                renderMapDay(heatmapData.days[0], true);
+                heatmapInterval = setInterval(advanceHeatmap, 3000);
             }
         }).catch(function(err) {
             console.error('Map load error:', err);
