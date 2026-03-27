@@ -376,7 +376,7 @@
 
         // Load TopoJSON + heatmap data
         Promise.all([
-            d3.json('/ssd/us-districts.topojson'),
+            d3.json('/ssd/us-districts.json'),
             fetch('/ssd/heatmap_data.json').then(function(r) { return r.json(); })
         ]).then(function(results) {
             var us = results[0];
