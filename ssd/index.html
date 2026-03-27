@@ -675,20 +675,23 @@
     <!-- HEATMAP -->
     <section class="heatmap-section" id="heatmap">
         <h2 class="heatmap-title">Schools in Session This Week</h2>
-        <p class="heatmap-sub">Live view of which states have students in school right now.</p>
+        <p class="heatmap-sub">County-level view of school session status across the US. Colors show breaks and holidays.</p>
         <div class="heatmap-date" id="heatmap-date">Loading...</div>
-        <div class="heatmap-grid" id="heatmap-grid"></div>
+        <div id="heatmap-map" style="width:100%;max-width:960px;margin:0 auto;position:relative;"></div>
         <div class="heatmap-pct" id="heatmap-pct"></div>
         <div class="heatmap-legend">
-            <span><span class="swatch" style="background:rgba(74,222,128,0.4)"></span> &gt;80% in session</span>
-            <span><span class="swatch" style="background:rgba(250,204,21,0.35)"></span> 60-80%</span>
-            <span><span class="swatch" style="background:rgba(251,146,60,0.35)"></span> 40-60%</span>
-            <span><span class="swatch" style="background:rgba(166,0,56,0.35)"></span> &lt;40%</span>
+            <span><span class="swatch" style="background:transparent;border:1px solid rgba(255,255,255,0.15)"></span> In session</span>
+            <span><span class="swatch" style="background:rgba(251,146,60,0.5)"></span> 20-40% on break</span>
+            <span><span class="swatch" style="background:rgba(166,0,56,0.5)"></span> 40-60% on break</span>
+            <span><span class="swatch" style="background:rgba(166,0,56,0.8)"></span> &gt;60% on break</span>
+            <span><span class="swatch" style="background:rgba(74,144,164,0.4)"></span> Weekend/Summer</span>
         </div>
         <div class="heatmap-controls">
             <button id="heatmap-pause" onclick="toggleHeatmapAnimation()">Pause</button>
         </div>
     </section>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
 
     <!-- DATA QUALITY -->
     <section class="section">
@@ -903,70 +906,89 @@
     </footer>
 
     <script>
-        // Heatmap animation
-        const ALL_STATES = [
-            'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
-            'HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',
-            'MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
-            'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC',
-            'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC'
-        ];
+        // ═══ D3.js Geographic Heatmap ═══
+        var heatmapData = null;
+        var heatmapDayIndex = 0;
+        var heatmapInterval = null;
+        var heatmapPaused = false;
+        var counties = null;
+        var states = null;
+        var nation = null;
+        var ctx = null;
+        var path = null;
+        var canvasW = 960, canvasH = 600;
 
-        let heatmapData = null;
-        let heatmapDayIndex = 0;
-        let heatmapInterval = null;
-        let heatmapPaused = false;
-
-        function getColorClass(pct) {
-            if (pct === null || pct === undefined) return 'nodata';
-            if (pct > 80) return 'green';
-            if (pct >= 60) return 'yellow';
-            if (pct >= 40) return 'orange';
-            return 'red';
+        function getCountyColor(stateFips, dayData) {
+            if (!dayData || !dayData.fips_pct) return 'rgba(255,255,255,0.02)';
+            var fips2 = stateFips.substring(0, 2);
+            var pctInSession = dayData.fips_pct[fips2];
+            if (pctInSession === undefined || pctInSession === null) return 'rgba(255,255,255,0.02)';
+            var pctOnBreak = 100 - pctInSession;
+            // In session = transparent (base bg shows through)
+            // On break = colored by intensity
+            if (pctInSession === 0 && dayData.date) {
+                var dow = new Date(dayData.date).getDay();
+                if (dow === 0 || dow === 6) return 'rgba(74,144,164,0.25)'; // weekend = blue tint
+            }
+            if (pctOnBreak < 20) return 'rgba(255,255,255,0.02)'; // mostly in session
+            if (pctOnBreak < 40) return 'rgba(251,146,60,0.35)';  // orange
+            if (pctOnBreak < 60) return 'rgba(166,0,56,0.4)';     // red
+            return 'rgba(166,0,56,0.7)';                           // deep red
         }
 
-        function renderHeatmapDay(dayData) {
-            const grid = document.getElementById('heatmap-grid');
-            const dateLabel = document.getElementById('heatmap-date');
-            const pctLabel = document.getElementById('heatmap-pct');
+        function renderMapDay(dayData) {
+            if (!ctx || !counties) return;
+            var dateLabel = document.getElementById('heatmap-date');
+            var pctLabel = document.getElementById('heatmap-pct');
 
-            if (!dayData) return;
+            // Format date nicely
+            if (dayData && dayData.date) {
+                var d = new Date(dayData.date + 'T12:00:00');
+                var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                dateLabel.textContent = days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+            }
 
-            dateLabel.textContent = dayData.date || '';
+            if (dayData && dayData.national_pct !== undefined) {
+                pctLabel.textContent = Math.round(dayData.national_pct) + '% of 44M students in session';
+            }
 
-            // Build state cells
-            grid.innerHTML = '';
-            let totalPct = 0;
-            let count = 0;
+            // Clear and redraw
+            ctx.clearRect(0, 0, canvasW, canvasH);
 
-            ALL_STATES.forEach(function(st) {
-                var cell = document.createElement('div');
-                cell.className = 'heatmap-cell';
-                var pct = dayData.states && dayData.states[st] !== undefined ? dayData.states[st] : null;
-                cell.classList.add(getColorClass(pct));
-                cell.textContent = st;
-                cell.title = pct !== null ? st + ': ' + Math.round(pct) + '% in session' : st + ': no data';
-                grid.appendChild(cell);
-                if (pct !== null) {
-                    totalPct += pct;
-                    count++;
-                }
+            // Draw counties colored by state data
+            counties.forEach(function(county) {
+                ctx.beginPath();
+                path(county);
+                ctx.fillStyle = getCountyColor(county.id, dayData);
+                ctx.fill();
             });
 
-            var avgPct = count > 0 ? Math.round(totalPct / count) : 0;
-            pctLabel.textContent = avgPct + '% of US students in session';
+            // Draw state borders
+            ctx.beginPath();
+            path(states);
+            ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+
+            // Draw nation border
+            ctx.beginPath();
+            path(nation);
+            ctx.strokeStyle = 'rgba(74,144,164,0.4)';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
         }
 
         function advanceHeatmap() {
             if (!heatmapData || !heatmapData.days || heatmapData.days.length === 0) return;
             heatmapDayIndex = (heatmapDayIndex + 1) % heatmapData.days.length;
-            renderHeatmapDay(heatmapData.days[heatmapDayIndex]);
+            renderMapDay(heatmapData.days[heatmapDayIndex]);
         }
 
         function toggleHeatmapAnimation() {
             var btn = document.getElementById('heatmap-pause');
             if (heatmapPaused) {
-                heatmapInterval = setInterval(advanceHeatmap, 2000);
+                heatmapInterval = setInterval(advanceHeatmap, 2500);
                 btn.textContent = 'Pause';
                 heatmapPaused = false;
             } else {
@@ -976,22 +998,47 @@
             }
         }
 
-        // Load heatmap data
-        fetch('/ssd/heatmap_data.json')
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                heatmapData = data;
-                if (data.days && data.days.length > 0) {
-                    renderHeatmapDay(data.days[0]);
-                    heatmapInterval = setInterval(advanceHeatmap, 2000);
-                }
-            })
-            .catch(function() {
-                // Fallback: show placeholder with all states as nodata
-                var fallbackDay = { date: 'Data loading...', states: {} };
-                renderHeatmapDay(fallbackDay);
-                document.getElementById('heatmap-pct').textContent = 'Interactive heat map -- heatmap_data.json not found';
-            });
+        // Load topology + heatmap data
+        Promise.all([
+            d3.json('/ssd/us-counties-10m.json'),
+            fetch('/ssd/heatmap_data.json').then(function(r) { return r.json(); })
+        ]).then(function(results) {
+            var us = results[0];
+            heatmapData = results[1];
+
+            // Create canvas
+            var container = document.getElementById('heatmap-map');
+            var dpr = window.devicePixelRatio || 1;
+            canvasW = Math.min(960, container.clientWidth || 960);
+            canvasH = canvasW * 0.625;
+            var canvas = document.createElement('canvas');
+            canvas.width = canvasW * dpr;
+            canvas.height = canvasH * dpr;
+            canvas.style.width = canvasW + 'px';
+            canvas.style.height = canvasH + 'px';
+            container.appendChild(canvas);
+
+            ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+
+            // Projection
+            var projection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], topojson.feature(us, us.objects.nation));
+            path = d3.geoPath(projection, ctx);
+
+            // Extract geometries
+            counties = topojson.feature(us, us.objects.counties).features;
+            states = topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; });
+            nation = topojson.mesh(us, us.objects.nation);
+
+            // Render first day
+            if (heatmapData.days && heatmapData.days.length > 0) {
+                renderMapDay(heatmapData.days[0]);
+                heatmapInterval = setInterval(advanceHeatmap, 2500);
+            }
+        }).catch(function(err) {
+            console.error('Map load error:', err);
+            document.getElementById('heatmap-map').innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px;">Map loading failed. Refresh to retry.</p>';
+        });
 
         // Fetch live coverage stats
         fetch('/api/ssd/coverage')
@@ -1002,7 +1049,7 @@
                         data.total_districts.toLocaleString();
                 }
             })
-            .catch(function() {}); // Fail silently -- static fallbacks are fine
+            .catch(function() {});
     </script>
 
 </body>
