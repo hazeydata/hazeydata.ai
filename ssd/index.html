@@ -149,7 +149,7 @@
     </section>
 
     <section class="heatmap-section" id="heatmap">
-        <h2 class="heatmap-title">Schools in Session This Week</h2>
+        <h2 class="heatmap-title">School Districts in Session This Week</h2>
         <p class="heatmap-sub">District-level view. Colors show districts NOT in session — intensity reflects enrollment size.</p>
         <div class="heatmap-date" id="heatmap-date">Loading...</div>
         <div id="heatmap-map" style="width:100%;max-width:960px;margin:0 auto;position:relative;"></div>
@@ -362,9 +362,19 @@
             }
         }
 
+        function isWeekend(dateStr) {
+            var d = new Date(dateStr + 'T12:00:00');
+            var day = d.getDay();
+            return day === 0 || day === 6;
+        }
+
         function advanceHeatmap() {
             if (!heatmapData || !heatmapData.days || heatmapData.days.length === 0) return;
-            heatmapDayIndex = (heatmapDayIndex + 1) % heatmapData.days.length;
+            var tries = 0;
+            do {
+                heatmapDayIndex = (heatmapDayIndex + 1) % heatmapData.days.length;
+                tries++;
+            } while (isWeekend(heatmapData.days[heatmapDayIndex].date) && tries < heatmapData.days.length);
             renderMapDay(heatmapData.days[heatmapDayIndex]);
         }
 
@@ -430,9 +440,12 @@
             pathA = d3.geoPath(projection, ctxA);
             pathB = d3.geoPath(projection, ctxB);
 
-            // Render first day
+            // Render first weekday
             if (heatmapData.days && heatmapData.days.length > 0) {
-                renderMapDay(heatmapData.days[0], true);
+                while (isWeekend(heatmapData.days[heatmapDayIndex].date) && heatmapDayIndex < heatmapData.days.length - 1) {
+                    heatmapDayIndex++;
+                }
+                renderMapDay(heatmapData.days[heatmapDayIndex], true);
                 heatmapInterval = setInterval(advanceHeatmap, 3000);
             }
         }).catch(function(err) {
