@@ -154,10 +154,12 @@
     </section>
 
     <section class="heatmap-section" id="heatmap">
-        <h2 class="heatmap-title">School Districts in Session This Week</h2>
-        <p class="heatmap-sub">District-level view. Colors show districts NOT in session — intensity reflects enrollment size.</p>
+        <h2 class="heatmap-title">Schools on Break This Week</h2>
+        <p class="heatmap-sub">District-level view of every US school district. Color intensity reflects enrollment size.</p>
         <div class="weekday-nav" id="weekday-nav"></div>
-        <div id="heatmap-map" style="width:100%;max-width:960px;margin:0 auto;position:relative;"></div>
+        <div id="heatmap-map" style="width:100%;max-width:960px;margin:0 auto;position:relative;">
+            <button id="back-to-us" class="day-btn" style="display:none;position:absolute;top:10px;left:10px;z-index:10;font-size:11px;padding:6px 14px;" onclick="zoomToUS()">&larr; Back to US</button>
+        </div>
         <div class="heatmap-pct" id="heatmap-pct"></div>
         <div class="heatmap-legend">
             <span><span class="swatch" style="background:transparent;border:1px solid rgba(255,255,255,0.15)"></span> In session</span>
@@ -337,6 +339,27 @@
         function updateCounter(dayData) {
             var pctLabel = document.getElementById('heatmap-pct');
             if (!dayData || !pctLabel) return;
+
+            if (currentZoomState && dayData.districts) {
+                // State-specific stats
+                var stateName = FIPS_TO_NAME[currentZoomState] || ('State ' + currentZoomState);
+                var totalE = 0, notInE = 0;
+                Object.keys(dayData.districts).forEach(function(geoid) {
+                    if (geoid.substring(0, 2) === currentZoomState) {
+                        var d = dayData.districts[geoid];
+                        totalE += d.e || 0;
+                        if (d.s !== null && d.s <= 0) notInE += d.e || 0;
+                    }
+                });
+                if (totalE > 0) {
+                    var pctNot = Math.round(notInE * 100 / totalE);
+                    pctLabel.textContent = pctNot + '% of ' + stateName + ' students not in session';
+                } else {
+                    pctLabel.textContent = stateName;
+                }
+                return;
+            }
+
             var notIn = dayData.not_in_session_students || 0;
             var pct = dayData.national_pct || 0;
             if (notIn > 0) {
@@ -405,6 +428,76 @@
             });
         }
 
+        // ═══ State zoom ═══
+        var currentZoomState = null;
+        var nationalProjection = null;
+        var allFeatureCollection = null;
+        var FIPS_TO_NAME = {'01':'Alabama','02':'Alaska','04':'Arizona','05':'Arkansas','06':'California','08':'Colorado','09':'Connecticut','10':'Delaware','11':'DC','12':'Florida','13':'Georgia','15':'Hawaii','16':'Idaho','17':'Illinois','18':'Indiana','19':'Iowa','20':'Kansas','21':'Kentucky','22':'Louisiana','23':'Maine','24':'Maryland','25':'Massachusetts','26':'Michigan','27':'Minnesota','28':'Mississippi','29':'Missouri','30':'Montana','31':'Nebraska','32':'Nevada','33':'New Hampshire','34':'New Jersey','35':'New Mexico','36':'New York','37':'North Carolina','38':'North Dakota','39':'Ohio','40':'Oklahoma','41':'Oregon','42':'Pennsylvania','44':'Rhode Island','45':'South Carolina','46':'South Dakota','47':'Tennessee','48':'Texas','49':'Utah','50':'Vermont','51':'Virginia','53':'Washington','54':'West Virginia','55':'Wisconsin','56':'Wyoming','72':'Puerto Rico'};
+
+        function zoomToState(statefp) {
+            currentZoomState = statefp;
+            var stateFeatures = districts.filter(function(d) { return d.properties.STATEFP === statefp; });
+            if (stateFeatures.length === 0) return;
+            var sc = { type: 'FeatureCollection', features: stateFeatures };
+            var sp = d3.geoAlbersUsa().fitSize([canvasW, canvasH], sc);
+            pathA = d3.geoPath(sp, ctxA);
+            pathB = d3.geoPath(sp, ctxB);
+            renderMapDay(heatmapData.days[heatmapDayIndex], true);
+            document.getElementById('back-to-us').style.display = 'block';
+        }
+
+        function zoomToUS() {
+            currentZoomState = null;
+            pathA = d3.geoPath(nationalProjection, ctxA);
+            pathB = d3.geoPath(nationalProjection, ctxB);
+            renderMapDay(heatmapData.days[heatmapDayIndex], true);
+            document.getElementById('back-to-us').style.display = 'none';
+        }
+
+        function setupClickHandler(canvas) {
+            canvas.addEventListener('click', function(event) {
+                var rect = canvas.getBoundingClientRect();
+                var scaleX = canvasW / rect.width;
+                var scaleY = canvasH / rect.height;
+                var x = (event.clientX - rect.left) * scaleX;
+                var y = (event.clientY - rect.top) * scaleY;
+
+                // Get current active projection for inversion
+                var activeProj = currentZoomState ? pathA.projection() : nationalProjection;
+                if (!activeProj || !activeProj.invert) {
+                    // Fallback: just zoom out if zoomed
+                    if (currentZoomState) zoomToUS();
+                    return;
+                }
+                var point = activeProj.invert([x, y]);
+                if (!point || isNaN(point[0])) {
+                    if (currentZoomState) zoomToUS();
+                    return;
+                }
+
+                if (currentZoomState) {
+                    // Zoomed in — click on empty area zooms out
+                    var found = false;
+                    var stateDistricts = districts.filter(function(d) { return d.properties.STATEFP === currentZoomState; });
+                    for (var i = 0; i < stateDistricts.length; i++) {
+                        try { if (d3.geoContains(stateDistricts[i], point)) { found = true; break; } } catch(e) {}
+                    }
+                    if (!found) zoomToUS();
+                    return;
+                }
+
+                // National view — find clicked district → zoom to its state
+                for (var j = 0; j < districts.length; j++) {
+                    try {
+                        if (d3.geoContains(districts[j], point)) {
+                            zoomToState(districts[j].properties.STATEFP);
+                            return;
+                        }
+                    } catch(e) {}
+                }
+            });
+        }
+
         Promise.all([
             d3.json('/ssd/us-districts.json'),
             fetch('/ssd/heatmap_data.json').then(function(r) { return r.json(); })
@@ -439,9 +532,13 @@
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0';
 
             var fc = topojson.feature(us, us.objects[objKey]);
-            var projection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], fc);
-            pathA = d3.geoPath(projection, ctxA);
-            pathB = d3.geoPath(projection, ctxB);
+            nationalProjection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], fc);
+            pathA = d3.geoPath(nationalProjection, ctxA);
+            pathB = d3.geoPath(nationalProjection, ctxB);
+
+            // Attach click-to-zoom on both canvases
+            setupClickHandler(canvasA);
+            setupClickHandler(canvasB);
 
             buildWeekdayNav();
             if (heatmapData.days && heatmapData.days.length > 0) {
