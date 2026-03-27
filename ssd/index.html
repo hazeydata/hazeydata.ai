@@ -681,9 +681,10 @@
         <div class="heatmap-pct" id="heatmap-pct"></div>
         <div class="heatmap-legend">
             <span><span class="swatch" style="background:transparent;border:1px solid rgba(255,255,255,0.15)"></span> In session</span>
-            <span><span class="swatch" style="background:rgba(255,80,100,0.3)"></span> On break (small district)</span>
-            <span><span class="swatch" style="background:rgba(166,0,56,0.7)"></span> On break (large district)</span>
-            <span><span class="swatch" style="background:rgba(255,255,255,0.05)"></span> No data</span>
+            <span><span class="swatch" style="background:#FFE0E0"></span> &lt;1K students</span>
+            <span><span class="swatch" style="background:#F06060"></span> 5K-10K</span>
+            <span><span class="swatch" style="background:#E02020"></span> 20K-50K</span>
+            <span><span class="swatch" style="background:#A00000"></span> 100K+ students</span>
         </div>
         <div class="heatmap-controls">
             <button id="heatmap-pause" onclick="toggleHeatmapAnimation()">Pause</button>
@@ -920,24 +921,22 @@
         var canvasW = 960, canvasH = 600;
         var FADE_MS = 800; // crossfade duration
 
-        // Max enrollment for color scaling (NYC ~1M, but cap at 200K for good gradient)
-        var MAX_ENROLL = 200000;
-
         function getDistrictColor(geoid, dayData) {
-            if (!dayData || !dayData.districts) return 'rgba(255,255,255,0.02)';
+            if (!dayData || !dayData.districts) return 'transparent';
             var d = dayData.districts[geoid];
-            if (!d) return 'rgba(255,255,255,0.02)'; // no data for this district
-            var sess = d.s; // is_in_session
+            if (!d) return 'transparent';
+            var sess = d.s;
             var enroll = d.e || 0;
-            if (sess > 0) return 'rgba(255,255,255,0.02)'; // in session = transparent
-            if (sess === -1) return 'rgba(255,255,255,0.05)'; // unknown = subtle gray
-            // Not in session — color by enrollment (bigger = deeper)
-            var intensity = Math.min(enroll / MAX_ENROLL, 1);
-            var r = Math.round(166 + (255 - 166) * (1 - intensity)); // 166-255
-            var g = Math.round(0 + 80 * (1 - intensity)); // 0-80
-            var b = Math.round(56 + (100 - 56) * (1 - intensity)); // 56-100
-            var alpha = 0.25 + 0.55 * intensity; // 0.25-0.80
-            return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha.toFixed(2) + ')';
+            if (sess > 0) return 'transparent';                      // in session = invisible
+            if (sess === -1) return 'rgba(128,128,128,0.15)';        // unknown = faint gray
+            // Not in session — color by enrollment size
+            if (enroll >= 100000) return '#A00000';
+            if (enroll >= 50000)  return '#C41030';
+            if (enroll >= 20000)  return '#E02020';
+            if (enroll >= 10000)  return '#E84040';
+            if (enroll >= 5000)   return '#F06060';
+            if (enroll >= 1000)   return '#FFB0B0';
+            return '#FFE0E0';
         }
 
         function drawToCanvas(ctx, pathFn, dayData) {
@@ -972,8 +971,15 @@
                 var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
                 dateLabel.textContent = days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
             }
-            if (dayData && dayData.national_pct !== undefined) {
-                pctLabel.textContent = Math.round(dayData.national_pct) + '% of 44M students in session';
+            if (dayData) {
+                var notInSession = dayData.not_in_session_students || 0;
+                var pct = dayData.national_pct || 0;
+                if (notInSession > 0) {
+                    var millions = (notInSession / 1000000).toFixed(1);
+                    pctLabel.textContent = millions + 'M students not in session (' + Math.round(100 - pct) + '% of 44M)';
+                } else {
+                    pctLabel.textContent = Math.round(pct) + '% of 44M students in session';
+                }
             }
 
             if (instant) {
