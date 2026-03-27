@@ -285,8 +285,11 @@
                 <div class="price-label">Everything Included</div>
                 <div class="price-amount"><span class="currency">$</span>99<span class="period">/mo</span></div>
                 <p class="price-desc">All districts. All school years. Day-level data. Full API access.</p>
-                <div class="price-annual">Annual: $990/year -- save 2 months</div><br>
-                <a href="mailto:fred@hazeydata.ai?subject=SSD%20Access&body=I'm%20interested%20in%20the%20School%20Schedule%20Database%20($99/mo).%0A%0ACompany:%20%0AUse%20case:%20" class="price-cta primary">Get Started</a>
+                <div class="price-toggle" style="display:flex;justify-content:center;gap:8px;margin:16px 0;">
+                    <button id="toggle-monthly" class="day-btn active" onclick="setInterval_('month')" style="font-size:11px;padding:6px 14px;">Monthly — $99/mo</button>
+                    <button id="toggle-annual" class="day-btn" onclick="setInterval_('year')" style="font-size:11px;padding:6px 14px;">Annual — $990/yr (save 2 mo)</button>
+                </div>
+                <button onclick="subscribe()" class="price-cta primary" id="subscribe-btn">Get Started</button>
                 <ul class="price-features">
                     <li><span class="check">&#10003;</span> All 13,700+ districts nationwide</li>
                     <li><span class="check">&#10003;</span> All 3 school years (2024-2027)</li>
@@ -524,6 +527,37 @@
             console.error('Map load error:', err);
             document.getElementById('heatmap-map').innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px;">Map loading failed. Refresh to retry.</p>';
         });
+        // ═══ Stripe Checkout ═══
+        var selectedInterval = 'month';
+        function setInterval_(iv) {
+            selectedInterval = iv;
+            document.getElementById('toggle-monthly').classList.toggle('active', iv === 'month');
+            document.getElementById('toggle-annual').classList.toggle('active', iv === 'year');
+        }
+        async function subscribe() {
+            var btn = document.getElementById('subscribe-btn');
+            btn.textContent = 'Redirecting to checkout...';
+            btn.disabled = true;
+            try {
+                var res = await fetch('https://api.hazeydata.ai/ssd/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ interval: selectedInterval }),
+                });
+                var data = await res.json();
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    alert('Error creating checkout session. Please try again.');
+                    btn.textContent = 'Get Started';
+                    btn.disabled = false;
+                }
+            } catch(e) {
+                alert('Error connecting to payment system. Please try again.');
+                btn.textContent = 'Get Started';
+                btn.disabled = false;
+            }
+        }
     </script>
 </body>
 </html>

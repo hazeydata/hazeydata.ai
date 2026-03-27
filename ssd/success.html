@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome — School Schedule Database | HazeyData</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0a1628; --accent: #4a90a4; --accent-light: #6bb5c9; --text: #fff; --text-muted: rgba(255,255,255,0.5); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .card { max-width: 560px; padding: 48px; text-align: center; }
+        h1 { font-size: 28px; margin-bottom: 16px; }
+        .check { font-size: 64px; margin-bottom: 24px; display: block; }
+        p { color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; font-size: 15px; }
+        .key-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(74,144,164,0.3); border-radius: 8px; padding: 16px; margin: 24px 0; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent-light); word-break: break-all; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .btn { display: inline-block; margin-top: 24px; padding: 12px 32px; background: var(--accent); color: var(--bg); border-radius: 8px; font-weight: 600; font-size: 14px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <span class="check">✅</span>
+        <h1>Welcome to the School Schedule Database!</h1>
+        <p>Your subscription is active. Your API key has been generated and will be emailed to the address you provided during checkout.</p>
+        <div class="key-box" id="key-display">Loading your API key...</div>
+        <p><strong>Save this key — it's shown only once.</strong> Use it in the Authorization header:</p>
+        <div class="key-box" style="font-size:12px;color:rgba(255,255,255,0.4)">Authorization: Bearer ssd_live_your_key_here</div>
+        <p>Read the <a href="/ssd/docs/">API documentation</a> to get started, or explore the <a href="/ssd/">landing page</a>.</p>
+        <a href="/ssd/docs/" class="btn">View API Docs →</a>
+    </div>
+    <script>
+        // Try to retrieve the API key from the session
+        var params = new URLSearchParams(window.location.search);
+        var sessionId = params.get('session_id');
+        if (sessionId) {
+            fetch('https://api.hazeydata.ai/ssd/key-reveal?session_id=' + encodeURIComponent(sessionId))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.api_key) {
+                        document.getElementById('key-display').textContent = data.api_key;
+                    } else {
+                        document.getElementById('key-display').textContent = 'Your key will be emailed to you shortly.';
+                    }
+                })
+                .catch(function() {
+                    document.getElementById('key-display').textContent = 'Your key will be emailed to you shortly.';
+                });
+        } else {
+            document.getElementById('key-display').textContent = 'Your key will be emailed to you shortly.';
+        }
+    </script>
+</body>
+</html>
