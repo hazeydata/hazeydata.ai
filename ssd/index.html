@@ -146,21 +146,14 @@
         </nav>
     </header>
 
-    <section class="hero">
+    <section class="hero" style="padding-bottom:20px;">
         <div class="hero-badge"><span class="dot"></span> Actively Growing -- Updated Daily</div>
-        <h1>The School Schedule Database</h1>
-        <p>Day-level US school calendar data. 13,700+ districts, 44M+ students. Every day classified as in-session or break, with confidence scores. Three school years of coverage, ready for your pipeline.</p>
-        <div class="hero-stats">
-            <div class="hero-stat"><div class="val">13,700+</div><div class="lbl">Districts</div></div>
-            <div class="hero-stat"><div class="val">44M+</div><div class="lbl">Students</div></div>
-            <div class="hero-stat"><div class="val">50</div><div class="lbl">States + DC</div></div>
-            <div class="hero-stat"><div class="val">3 Years</div><div class="lbl">2024-2027</div></div>
-        </div>
+        <h1>Know When Every School in America Is on Break</h1>
+        <p>Day-level school calendar data for 13,700+ districts, 44M+ students. API access for demand forecasting, travel planning, and market research.</p>
     </section>
 
-    <section class="heatmap-section" id="heatmap">
-        <h2 class="heatmap-title">Schools on Break This Week</h2>
-        <p class="heatmap-sub">District-level view of every US school district. Color intensity reflects enrollment size.</p>
+    <section class="heatmap-section" id="heatmap" style="padding-top:10px;">
+        <p class="heatmap-sub" style="margin-bottom:16px;font-size:13px;color:var(--text-muted);">Schools on Break This Week</p>
         <div class="weekday-nav" id="weekday-nav"></div>
         <div class="state-selector"><select id="state-select">
             <option value="US">All United States</option>
@@ -189,6 +182,16 @@
         </div>
         <div class="heatmap-controls">
             <button id="heatmap-pause" onclick="toggleHeatmapAnimation()">Pause</button>
+        </div>
+        <div style="text-align:center;margin:40px auto;max-width:500px;">
+            <button onclick="subscribe()" class="price-cta primary" style="margin-bottom:12px;width:100%;">Get API Access &mdash; $99/mo</button>
+            <a href="/ssd/ssd_sample_top100.csv" download style="display:block;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);text-decoration:none;padding:10px;border:1px solid var(--border-card);border-radius:8px;transition:border-color 0.2s;">Download Free Sample &mdash; Top 100 Districts, Last 30 Days</a>
+        </div>
+        <div class="hero-stats" style="margin-bottom:0;">
+            <div class="hero-stat"><div class="val">13,700+</div><div class="lbl">Districts</div></div>
+            <div class="hero-stat"><div class="val">44M+</div><div class="lbl">Students</div></div>
+            <div class="hero-stat"><div class="val">50</div><div class="lbl">States + DC</div></div>
+            <div class="hero-stat"><div class="val">3 Years</div><div class="lbl">2024-2027</div></div>
         </div>
     </section>
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -305,9 +308,10 @@
 
     <section class="cta-section">
         <div class="cta-card">
-            <h2>Ready to See the Data?</h2>
-            <p>$99/mo gets you day-level school calendar data for every US district. Three school years, confidence scores, full API access. See a free sample before you commit.</p>
-            <a href="mailto:fred@hazeydata.ai?subject=SSD%20Sample%20Request&body=I'd%20like%20a%20free%20sample%20of%20the%20School%20Schedule%20Database.%0A%0AState%20of%20interest:%20%0ACompany:%20%0AUse%20case:%20" class="btn">Request Free Sample</a>
+            <h2>Ready to Plug School Calendars Into Your Pipeline?</h2>
+            <p>$99/mo, cancel anytime. Day-level data for every US district, three school years, confidence scores, full API.</p>
+            <button onclick="subscribe()" class="btn" style="border:none;cursor:pointer;font-family:var(--font-mono);margin-bottom:12px;">Get API Access &rarr;</button>
+            <br><a href="/ssd/ssd_sample_top100.csv" download style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);text-decoration:none;">or download the free sample first</a>
         </div>
     </section>
 
