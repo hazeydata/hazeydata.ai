@@ -56,6 +56,11 @@
         .heatmap-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
         .heatmap-sub { font-size: 15px; color: var(--text-secondary); margin-bottom: 24px; }
         .heatmap-date { font-family: var(--font-mono); font-size: 14px; color: var(--accent); margin-bottom: 16px; letter-spacing: 1px; }
+        .weekday-nav { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+        .day-btn { font-family: var(--font-mono); font-size: 12px; font-weight: 600; padding: 10px 18px; border-radius: 8px; border: 1px solid var(--border-card); background: var(--bg-glass); color: var(--text-muted); cursor: pointer; transition: all 0.3s ease; text-align: center; line-height: 1.4; }
+        .day-btn span { font-size: 10px; font-weight: 400; display: block; margin-top: 2px; }
+        .day-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(74,144,164,0.1); box-shadow: 0 0 12px rgba(74,144,164,0.2); }
+        .day-btn:hover:not(.active) { border-color: rgba(255,255,255,0.2); color: var(--text-secondary); }
         .heatmap-pct { font-family: var(--font-mono); font-size: 20px; font-weight: 700; color: var(--accent); margin-top: 12px; }
         .heatmap-legend { display: flex; justify-content: center; gap: 20px; margin-top: 16px; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; flex-wrap: wrap; }
         .heatmap-legend span { display: inline-flex; align-items: center; gap: 6px; }
@@ -151,7 +156,7 @@
     <section class="heatmap-section" id="heatmap">
         <h2 class="heatmap-title">School Districts in Session This Week</h2>
         <p class="heatmap-sub">District-level view. Colors show districts NOT in session — intensity reflects enrollment size.</p>
-        <div class="heatmap-date" id="heatmap-date">Loading...</div>
+        <div class="weekday-nav" id="weekday-nav"></div>
         <div id="heatmap-map" style="width:100%;max-width:960px;margin:0 auto;position:relative;"></div>
         <div class="heatmap-pct" id="heatmap-pct"></div>
         <div class="heatmap-legend">
@@ -295,12 +300,11 @@
     </footer>
 
     <script>
-        // D3.js District-Level Heatmap with Crossfade
+        // ═══ D3.js Heatmap — Weekday Nav + Slow Crossfade ═══
         var heatmapData = null, heatmapDayIndex = 0, heatmapInterval = null, heatmapPaused = false;
         var districts = null, stateBorders = null, nationBorder = null;
         var canvasA = null, canvasB = null, ctxA = null, ctxB = null, pathA = null, pathB = null;
-        var activeCanvas = 'A';
-        var canvasW = 960, canvasH = 600;
+        var activeCanvas = 'A', canvasW = 960, canvasH = 600, FADE_MS = 1200;
 
         function getDistrictColor(geoid, dayData) {
             if (!dayData || !dayData.districts) return 'transparent';
@@ -310,11 +314,11 @@
             if (d.s === -1) return 'rgba(128,128,128,0.15)';
             var e = d.e || 0;
             if (e >= 100000) return '#A00000';
-            if (e >= 50000) return '#C41030';
-            if (e >= 20000) return '#E02020';
-            if (e >= 10000) return '#E84040';
-            if (e >= 5000) return '#F06060';
-            if (e >= 1000) return '#FFB0B0';
+            if (e >= 50000)  return '#C41030';
+            if (e >= 20000)  return '#E02020';
+            if (e >= 10000)  return '#E84040';
+            if (e >= 5000)   return '#F06060';
+            if (e >= 1000)   return '#FFB0B0';
             return '#FFE0E0';
         }
 
@@ -322,32 +326,30 @@
             ctx.clearRect(0, 0, canvasW, canvasH);
             if (!districts) return;
             districts.forEach(function(dist) {
-                ctx.beginPath();
-                pathFn(dist);
-                var geoid = dist.properties ? (dist.properties.GEOID || dist.properties.geoid) : dist.id;
-                ctx.fillStyle = getDistrictColor(geoid, dayData);
+                ctx.beginPath(); pathFn(dist);
+                ctx.fillStyle = getDistrictColor(dist.properties ? (dist.properties.GEOID || dist.properties.geoid) : dist.id, dayData);
                 ctx.fill();
             });
             if (stateBorders) { ctx.beginPath(); pathFn(stateBorders); ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 0.8; ctx.stroke(); }
             if (nationBorder) { ctx.beginPath(); pathFn(nationBorder); ctx.strokeStyle = 'rgba(74,144,164,0.4)'; ctx.lineWidth = 1.2; ctx.stroke(); }
         }
 
+        function updateCounter(dayData) {
+            var pctLabel = document.getElementById('heatmap-pct');
+            if (!dayData || !pctLabel) return;
+            var notIn = dayData.not_in_session_students || 0;
+            var pct = dayData.national_pct || 0;
+            if (notIn > 0) {
+                pctLabel.textContent = (notIn / 1000000).toFixed(1) + 'M students not in session (' + Math.round(100 - pct) + '% of 44M)';
+            } else {
+                pctLabel.textContent = Math.round(pct) + '% of 44M students in session';
+            }
+        }
+
         function renderMapDay(dayData, instant) {
             if (!districts) return;
-            var dateLabel = document.getElementById('heatmap-date');
-            var pctLabel = document.getElementById('heatmap-pct');
-            if (dayData && dayData.date) {
-                var dt = new Date(dayData.date + 'T12:00:00');
-                var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-                var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-                dateLabel.textContent = days[dt.getDay()] + ', ' + months[dt.getMonth()] + ' ' + dt.getDate() + ', ' + dt.getFullYear();
-            }
-            if (dayData) {
-                var notIn = dayData.not_in_session_students || 0;
-                var totalStudents = 44000000;
-                var pctNot = notIn > 0 ? Math.round(notIn / totalStudents * 100) : (dayData.national_pct ? Math.round(100 - dayData.national_pct) : 0);
-                pctLabel.textContent = pctNot + '% of students not in session today';
-            }
+            updateCounter(dayData);
+            updateActiveButton(heatmapDayIndex);
             if (instant) {
                 drawToCanvas(ctxA, pathA, dayData);
                 canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';
@@ -362,57 +364,59 @@
             }
         }
 
-        function isWeekend(dateStr) {
-            var d = new Date(dateStr + 'T12:00:00');
-            var day = d.getDay();
-            return day === 0 || day === 6;
+        function updateActiveButton(index) {
+            document.querySelectorAll('.day-btn').forEach(function(btn, i) {
+                btn.classList.toggle('active', i === index);
+            });
         }
 
         function advanceHeatmap() {
             if (!heatmapData || !heatmapData.days || heatmapData.days.length === 0) return;
-            var tries = 0;
-            do {
-                heatmapDayIndex = (heatmapDayIndex + 1) % heatmapData.days.length;
-                tries++;
-            } while (isWeekend(heatmapData.days[heatmapDayIndex].date) && tries < heatmapData.days.length);
+            heatmapDayIndex = (heatmapDayIndex + 1) % heatmapData.days.length;
             renderMapDay(heatmapData.days[heatmapDayIndex]);
         }
 
         function toggleHeatmapAnimation() {
             var btn = document.getElementById('heatmap-pause');
-            if (heatmapPaused) { heatmapInterval = setInterval(advanceHeatmap, 2500); btn.textContent = 'Pause'; heatmapPaused = false; }
+            if (heatmapPaused) { heatmapInterval = setInterval(advanceHeatmap, 3500); btn.textContent = 'Pause'; heatmapPaused = false; }
             else { clearInterval(heatmapInterval); btn.textContent = 'Play'; heatmapPaused = true; }
         }
 
-        // Load TopoJSON + heatmap data
+        function buildWeekdayNav() {
+            var nav = document.getElementById('weekday-nav');
+            if (!nav || !heatmapData || !heatmapData.days) return;
+            nav.innerHTML = '';
+            var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+            var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            heatmapData.days.forEach(function(day, i) {
+                var d = new Date(day.date + 'T12:00:00');
+                var btn = document.createElement('button');
+                btn.className = 'day-btn' + (i === 0 ? ' active' : '');
+                btn.innerHTML = dayNames[d.getDay()] + '<span>' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+                btn.onclick = function() {
+                    heatmapDayIndex = i;
+                    renderMapDay(heatmapData.days[i]);
+                    clearInterval(heatmapInterval);
+                    heatmapInterval = setInterval(advanceHeatmap, 3500);
+                    heatmapPaused = false;
+                    document.getElementById('heatmap-pause').textContent = 'Pause';
+                };
+                nav.appendChild(btn);
+            });
+        }
+
         Promise.all([
             d3.json('/ssd/us-districts.json'),
             fetch('/ssd/heatmap_data.json').then(function(r) { return r.json(); })
         ]).then(function(results) {
             var us = results[0];
             heatmapData = results[1];
-
-            // Find the object key in the TopoJSON (could be anything)
             var objKey = Object.keys(us.objects)[0];
-            console.log('TopoJSON object key:', objKey);
 
-            // Extract district features
             districts = topojson.feature(us, us.objects[objKey]).features;
-            console.log('Districts loaded:', districts.length);
+            try { stateBorders = topojson.mesh(us, us.objects[objKey], function(a, b) { return a.properties.STATEFP !== b.properties.STATEFP; }); } catch(e) {}
+            try { nationBorder = topojson.mesh(us, us.objects[objKey], function(a, b) { return a === b; }); } catch(e) {}
 
-            // State borders (where STATEFP differs between adjacent districts)
-            try {
-                stateBorders = topojson.mesh(us, us.objects[objKey], function(a, b) {
-                    return a.properties.STATEFP !== b.properties.STATEFP;
-                });
-            } catch(e) { console.warn('State borders mesh failed:', e); }
-
-            // Nation border
-            try {
-                nationBorder = topojson.mesh(us, us.objects[objKey], function(a, b) { return a === b; });
-            } catch(e) { console.warn('Nation border mesh failed:', e); }
-
-            // Create dual canvases
             var container = document.getElementById('heatmap-map');
             var dpr = window.devicePixelRatio || 1;
             canvasW = Math.min(960, container.clientWidth || 960);
@@ -425,7 +429,7 @@
                 c.style.width = canvasW + 'px'; c.style.height = canvasH + 'px';
                 c.style.position = 'absolute'; c.style.top = '0';
                 c.style.left = '50%'; c.style.transform = 'translateX(-50%)';
-                c.style.transition = 'opacity 800ms ease-in-out';
+                c.style.transition = 'opacity ' + FADE_MS + 'ms ease-in-out';
                 container.appendChild(c);
                 var cx = c.getContext('2d'); cx.scale(dpr, dpr);
                 return { canvas: c, ctx: cx };
@@ -434,23 +438,19 @@
             canvasA = a.canvas; ctxA = a.ctx; canvasB = b.canvas; ctxB = b.ctx;
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0';
 
-            // Projection — MUST use the feature collection we already built
-            var featureCollection = topojson.feature(us, us.objects[objKey]);
-            var projection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], featureCollection);
+            var fc = topojson.feature(us, us.objects[objKey]);
+            var projection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], fc);
             pathA = d3.geoPath(projection, ctxA);
             pathB = d3.geoPath(projection, ctxB);
 
-            // Render first weekday
+            buildWeekdayNav();
             if (heatmapData.days && heatmapData.days.length > 0) {
-                while (isWeekend(heatmapData.days[heatmapDayIndex].date) && heatmapDayIndex < heatmapData.days.length - 1) {
-                    heatmapDayIndex++;
-                }
-                renderMapDay(heatmapData.days[heatmapDayIndex], true);
-                heatmapInterval = setInterval(advanceHeatmap, 3000);
+                renderMapDay(heatmapData.days[0], true);
+                heatmapInterval = setInterval(advanceHeatmap, 3500);
             }
         }).catch(function(err) {
             console.error('Map load error:', err);
-            document.getElementById('heatmap-map').innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px;">Map loading failed: ' + err.message + '. Check console for details.</p>';
+            document.getElementById('heatmap-map').innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px;">Map loading failed. Refresh to retry.</p>';
         });
     </script>
 </body>
