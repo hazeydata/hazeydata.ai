@@ -185,7 +185,16 @@
         </div>
         <div style="text-align:center;margin:40px auto;max-width:500px;">
             <button onclick="subscribe()" class="price-cta primary" style="margin-bottom:12px;width:100%;">Get API Access &mdash; $99/mo</button>
-            <a href="/ssd/ssd_sample_top100.csv" download style="display:block;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);text-decoration:none;padding:10px;border:1px solid var(--border-card);border-radius:8px;transition:border-color 0.2s;">Download Free Sample &mdash; Top 100 Districts, Last 30 Days</a>
+            <div id="sample-cta">
+                <button onclick="document.getElementById('sample-cta').innerHTML=document.getElementById('sample-form-tpl').innerHTML" style="display:block;width:100%;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);background:none;border:1px solid var(--border-card);border-radius:8px;padding:10px;cursor:pointer;transition:border-color 0.2s;">Download Free Sample &mdash; Top 100 Districts, Last 30 Days</button>
+            </div>
+            <template id="sample-form-tpl">
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <input id="lead-email" type="email" placeholder="Your email" style="flex:1;font-family:var(--font-mono);font-size:12px;padding:10px 12px;border-radius:8px;border:1px solid var(--border-card);background:var(--bg-glass);color:var(--text-primary);outline:none;" />
+                    <button onclick="submitLead()" id="lead-btn" style="font-family:var(--font-mono);font-size:12px;font-weight:600;padding:10px 18px;border-radius:8px;border:none;background:var(--accent);color:var(--bg-primary);cursor:pointer;white-space:nowrap;">Download</button>
+                </div>
+                <div id="lead-status" style="font-size:11px;color:var(--text-muted);margin-top:6px;text-align:center;"></div>
+            </template>
         </div>
         <div class="hero-stats" style="margin-bottom:0;">
             <div class="hero-stat"><div class="val">13,700+</div><div class="lbl">Districts</div></div>
@@ -311,7 +320,7 @@
             <h2>Ready to Plug School Calendars Into Your Pipeline?</h2>
             <p>$99/mo, cancel anytime. Day-level data for every US district, three school years, confidence scores, full API.</p>
             <button onclick="subscribe()" class="btn" style="border:none;cursor:pointer;font-family:var(--font-mono);margin-bottom:12px;">Get API Access &rarr;</button>
-            <br><a href="/ssd/ssd_sample_top100.csv" download style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);text-decoration:none;">or download the free sample first</a>
+            <br><a href="#heatmap" onclick="document.getElementById('sample-cta').innerHTML=document.getElementById('sample-form-tpl').innerHTML;setTimeout(function(){document.getElementById('lead-email').focus()},100)" style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);text-decoration:none;cursor:pointer;">or download the free sample first</a>
         </div>
     </section>
 
@@ -531,6 +540,36 @@
             console.error('Map load error:', err);
             document.getElementById('heatmap-map').innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px;">Map loading failed. Refresh to retry.</p>';
         });
+        // ═══ Lead Capture ═══
+        async function submitLead() {
+            var email = document.getElementById('lead-email').value.trim();
+            var status = document.getElementById('lead-status');
+            var btn = document.getElementById('lead-btn');
+            if (!email || !email.includes('@')) { status.textContent = 'Please enter a valid email'; return; }
+            btn.textContent = '...';
+            btn.disabled = true;
+            try {
+                var res = await fetch('https://api.hazeydata.ai/ssd/leads', {
+                    method: 'POST', headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({email: email})
+                });
+                var data = await res.json();
+                if (data.download_url || data.success) {
+                    window.location.href = data.download_url || '/ssd/ssd_sample_top100.csv';
+                    status.innerHTML = '\u2713 Check your downloads!';
+                    status.style.color = 'var(--accent-green)';
+                } else {
+                    status.textContent = data.error || 'Please check your email';
+                    btn.textContent = 'Download'; btn.disabled = false;
+                }
+            } catch(e) {
+                // Fallback: direct download on any error
+                window.location.href = '/ssd/ssd_sample_top100.csv';
+                status.innerHTML = '\u2713 Check your downloads!';
+                status.style.color = 'var(--accent-green)';
+            }
+        }
+
         // ═══ Stripe Checkout ═══
         var selectedInterval = 'month';
         function setInterval_(iv) {
