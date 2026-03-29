@@ -57,11 +57,33 @@
         .nav-brand .logo-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4a90a4; margin-left: 2px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; }
         @keyframes logo-shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
         @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
-        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-        .nav-links a { color: var(--gc-grey-mid); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--gc-blue); }
-        .lang-btn { padding: 0.3rem 0.75rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: white; color: var(--gc-grey-dark); cursor: pointer; transition: all 0.2s; }
-        .lang-btn:hover { border-color: var(--gc-blue); color: var(--gc-blue); }
+        .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
+        
+        .hamburger-btn, .lang-btn { 
+            padding: 0.3rem 0.75rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; 
+            font-size: 0.75rem; font-weight: 600; background: white; color: var(--gc-grey-dark); 
+            cursor: pointer; transition: all 0.2s;
+        }
+        .hamburger-btn:hover, .lang-btn:hover { 
+            border-color: var(--gc-blue); color: var(--gc-blue); 
+        }
+        
+        .hamburger-menu { 
+            display: none; position: absolute; top: 100%; right: 2rem; 
+            background: white; border: 1px solid var(--gc-grey); border-radius: 8px; 
+            box-shadow: var(--shadow); min-width: 200px; z-index: 1000; 
+        }
+        .hamburger-menu.show { display: block; animation: slideDown 0.2s ease-out; }
+        .hamburger-menu a { 
+            display: block; padding: 0.75rem 1rem; text-decoration: none; 
+            color: var(--gc-grey-dark); font-size: 0.9rem; border-bottom: 1px solid var(--gc-grey); 
+            transition: background 0.2s; 
+        }
+        .hamburger-menu a:last-child { border-bottom: none; }
+        .hamburger-menu a:hover { background: var(--gc-grey-light); }
+        .hamburger-menu a.current { color: var(--gc-blue); font-weight: 600; }
+        
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .gc-bar { height: 4px; background: var(--gc-red); }
         .page-header { background: var(--gc-grey-light); padding: 3.5rem 2rem 3rem; text-align: center; }
         .page-header h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; color: var(--gc-blue); letter-spacing: -0.02em; margin-bottom: 0.5rem; }
@@ -80,6 +102,8 @@
             .guides-grid { padding: 2rem 1.5rem 3rem; }
             .guide-card { padding: 1.25rem 1.5rem; }
             .page-header { padding: 2.5rem 1.5rem 2rem; }
+            .nav { padding: 1.25rem 1rem; }
+            .hamburger-menu { right: 1rem; min-width: 180px; }
         }
             .disclaimer { font-size: 0.7rem; color: rgba(255,255,255,0.35); max-width: 720px; margin: 1rem auto 0; line-height: 1.5; } .disclaimer a { color: rgba(255,255,255,0.5); text-decoration: underline; }
             .info-banner { background: #fff9e6; text-align: center; padding: 0.5rem 1rem; font-size: 0.75rem; color: #5a5a5a; line-height: 1.4; } .info-banner a { color: #335075; text-decoration: underline; }
@@ -90,13 +114,19 @@
     <div class="info-banner" data-en="&#x2139;&#xFE0F; For information purposes only. Not affiliated with the Government of Canada. Always verify with the <a href='https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html'>official collective agreement text</a>." data-fr="&#x2139;&#xFE0F; &Agrave; titre informatif seulement. Non affili&eacute; au gouvernement du Canada. Toujours v&eacute;rifier avec le <a href='https://www.canada.ca/fr/secretariat-conseil-tresor/services/conventions-collectives.html'>texte officiel de la convention collective</a>.">&#x2139;&#xFE0F; For information purposes only. Not affiliated with the Government of Canada. Always verify with the <a href="https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html">official collective agreement text</a>.</div>
     <nav class="nav">
         <a href="/" class="nav-brand"><span class="logo-mark">HAZEYDATA</span><span class="logo-dot"></span></a>
-        <div class="nav-links">
-            <a href="/" data-en="Home" data-fr="Accueil">Home</a>
-            <a href="/accord/">ACCORD</a>
-            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
-            <a href="/accord/guides/" style="color: var(--gc-blue); font-weight: 600;" data-en="Guides" data-fr="Guides">Guides</a>
-            <a href="/accord/blog/" data-en="Blog" data-fr="Blogue">Blog</a>
+        <div class="nav-actions">
+            <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
             <button class="lang-btn" onclick="toggleLang()">FR</button>
+        </div>
+        <div class="hamburger-menu" id="hamburger-menu">
+            <a href="/" data-en="Home" data-fr="Accueil">Home</a>
+            <a href="/accord/" data-en="ACCORD" data-fr="ACCORD">ACCORD</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="Démo">Demo</a>
+            <a href="/accord/wfa-calculator/" data-en="WFA Calculator" data-fr="Calculateur RAE">WFA Calculator</a>
+            <a href="/accord/guides/" class="current" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="/accord/blog/" data-en="Blog" data-fr="Blog">Blog</a>
+            <a href="#" data-en="API Docs" data-fr="Documentation API">API Docs</a>
+            <a href="mailto:fred@hazeydata.ai" data-en="Contact" data-fr="Contact">Contact</a>
         </div>
     </nav>
 
@@ -142,6 +172,22 @@
         localStorage.setItem('accord-lang', currentLang);
         applyLang();
     }
+    
+    function toggleMenu() {
+        const menu = document.getElementById('hamburger-menu');
+        menu.classList.toggle('show');
+    }
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        const menu = document.getElementById('hamburger-menu');
+        const hamburgerBtn = document.querySelector('.hamburger-btn');
+        
+        if (!menu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+            menu.classList.remove('show');
+        }
+    });
+    
     applyLang();
     </script>
 </body>
