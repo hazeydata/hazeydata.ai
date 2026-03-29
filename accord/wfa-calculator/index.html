@@ -114,6 +114,20 @@
         }
         .internal-ad-cta:hover { background: var(--gc-red-dark); }
         
+        .auto-calculated { 
+            background: rgba(26,122,76,0.08); border: 1px solid rgba(26,122,76,0.2); 
+            border-radius: 8px; padding: 1.25rem; margin-top: 1.5rem; 
+        }
+        .auto-calculated h4 { 
+            font-size: 0.8rem; font-weight: 600; color: var(--green); 
+            text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.75rem; 
+        }
+        .calc-display { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 0.4rem 0; font-size: 0.9rem; 
+        }
+        .calc-display strong { color: var(--green); font-weight: 700; }
+        
         .form-card { 
             background: white; border: 1px solid var(--gc-grey); border-radius: 12px; 
             padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; 
@@ -279,28 +293,44 @@
         </div>
 
         <div class="form-card">
-            <div class="demo-controls">
+            <div class="demo-controls demo-controls-4">
                 <div>
-                    <label class="ctrl-label" data-en="Annual Salary ($)" data-fr="Salaire annuel ($)">Annual Salary ($)</label>
-                    <input type="number" id="salary" value="85000" min="40000" max="200000" step="1000">
+                    <label class="ctrl-label" data-en="Classification Group" data-fr="Groupe de classification">Classification Group</label>
+                    <select id="classification" onchange="updateLevels()">
+                        <option value="" data-en-text="Select..." data-fr-text="Sélectionner...">Select...</option>
+                        <option value="AS" data-en-text="AS - Administrative Services" data-fr-text="AS - Services administratifs">AS - Administrative Services</option>
+                        <option value="PM" data-en-text="PM - Program Administration" data-fr-text="PM - Administration de programmes">PM - Program Administration</option>
+                        <option value="CR" data-en-text="CR - Clerical and Regulatory" data-fr-text="CR - Clérical et réglementaire">CR - Clerical and Regulatory</option>
+                        <option value="EC" data-en-text="EC - Economics and Social Science" data-fr-text="EC - Économie et sciences sociales">EC - Economics and Social Science</option>
+                        <option value="IT" data-en-text="IT - Information Technology" data-fr-text="IT - Technologie de l'information">IT - Information Technology</option>
+                        <option value="IS" data-en-text="IS - Information Services" data-fr-text="IS - Services d'information">IS - Information Services</option>
+                    </select>
                 </div>
                 <div>
-                    <label class="ctrl-label" data-en="Years of Service (complete)" data-fr="Années de service (complètes)">Years of Service (complete)</label>
-                    <input type="number" id="years" value="15" min="0" max="45">
+                    <label class="ctrl-label" data-en="Level" data-fr="Niveau">Level</label>
+                    <select id="level" onchange="updateSteps()" disabled>
+                        <option value="" data-en-text="Select group first..." data-fr-text="Sélectionner le groupe d'abord...">Select group first...</option>
+                    </select>
                 </div>
                 <div>
-                    <label class="ctrl-label" data-en="Additional Days (partial year)" data-fr="Jours additionnels (année partielle)">Additional Days (partial year)</label>
-                    <input type="number" id="days" value="0" min="0" max="364">
+                    <label class="ctrl-label" data-en="Step" data-fr="Échelon">Step</label>
+                    <select id="step" onchange="updateSalary()" disabled>
+                        <option value="" data-en-text="Select level first..." data-fr-text="Sélectionner le niveau d'abord...">Select level first...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="Start Date in Public Service" data-fr="Date de début dans la fonction publique">Start Date in Public Service</label>
+                    <input type="date" id="start-date" value="2009-03-29" onchange="updateServiceTime()">
                 </div>
             </div>
 
             <div class="demo-controls">
                 <div>
-                    <label class="ctrl-label" data-en="Bargaining Agent" data-fr="Agent négociateur">Bargaining Agent</label>
-                    <select id="bargaining-agent">
-                        <option value="NJC" data-en-text="NJC (Non-unionized)" data-fr-text="CNM (Non syndiqué)">NJC (Non-unionized)</option>
-                        <option value="PSAC" data-en-text="PSAC (PA, SV, FB, TC, EB, CX)" data-fr-text="AFPC (PA, SV, FB, TC, EB, CX)">PSAC (PA, SV, FB, TC, EB, CX)</option>
-                        <option value="PIPSC" data-en-text="PIPSC (IT, EC, RE, SP, etc.)" data-fr-text="IPFPC (IT, EC, RE, SP, etc.)">PIPSC (IT, EC, RE, SP, etc.)</option>
+                    <label class="ctrl-label" data-en="WFA Option" data-fr="Option RAE">WFA Option</label>
+                    <select id="option">
+                        <option value="B" data-en-text="Option B: TSM only" data-fr-text="Option B : MST seulement">Option B: TSM only</option>
+                        <option value="C1" data-en-text="Option C(i): TSM + Education" data-fr-text="Option C(i) : MST + Éducation">Option C(i): TSM + Education</option>
+                        <option value="C2" data-en-text="Option C(ii): TSM + Education + LWOP" data-fr-text="Option C(ii) : MST + Éducation + CSRP">Option C(ii): TSM + Education + LWOP</option>
                     </select>
                 </div>
                 <div>
@@ -310,6 +340,19 @@
                 <div>
                     <label class="ctrl-label" data-en="Comp Leave Balance (hours)" data-fr="Solde congés compensatoires (heures)">Comp Leave Balance (hours)</label>
                     <input type="number" id="comp" value="0" min="0" max="200" step="0.5">
+                </div>
+            </div>
+
+            <div class="auto-calculated" id="auto-calculated" style="display: none;">
+                <h4 data-en="Auto-Calculated Values:" data-fr="Valeurs calculées automatiquement :">Auto-Calculated Values:</h4>
+                <div class="calc-display">
+                    <span data-en="Annual Salary:" data-fr="Salaire annuel :">Annual Salary:</span> <strong id="calc-salary">—</strong>
+                </div>
+                <div class="calc-display">
+                    <span data-en="Years of Service:" data-fr="Années de service :">Years of Service:</span> <strong id="calc-years">—</strong>
+                </div>
+                <div class="calc-display">
+                    <span data-en="Bargaining Agent:" data-fr="Agent négociateur :">Bargaining Agent:</span> <strong id="calc-agent">—</strong>
                 </div>
             </div>
 
@@ -408,6 +451,176 @@
         // TSM Table (from verified ACCORD rules)
         const TSM_TABLE = {0:10,1:22,2:24,3:26,4:28,5:30,6:32,7:34,8:36,9:38,10:40,11:42,12:44,13:46,14:48,15:50,16:52,17:52,18:52,19:52,20:52,21:52,22:52,23:52,24:52,25:52,26:52,27:52,28:52,29:52,30:49,31:46,32:43,33:40,34:37,35:34,36:31,37:28,38:25,39:22,40:19,41:16,42:13,43:10,44:7,45:4};
         
+        // Simplified Pay Tables (2026 rates - sample data for major classifications)
+        const PAY_TABLES = {
+            AS: {
+                bargainingAgent: 'PSAC',
+                levels: {
+                    1: [37458, 39233, 41008, 42784, 44559, 46334, 48110, 49885],
+                    2: [41008, 42955, 44903, 46851, 48799, 50747, 52694, 54642],
+                    3: [45334, 47487, 49640, 51793, 53946, 56099, 58252, 60405],
+                    4: [50747, 53156, 55565, 57974, 60384, 62793, 65202, 67611],
+                    5: [57159, 59904, 62649, 65395, 68140, 70885, 73630, 76375],
+                    6: [64784, 67890, 70996, 74102, 77208, 80314, 83420, 86526],
+                    7: [74102, 77664, 81226, 84788, 88351, 91913, 95475, 99037],
+                    8: [85947, 90094, 94241, 98388, 102535, 106682, 110829, 114976]
+                }
+            },
+            PM: {
+                bargainingAgent: 'PSAC',
+                levels: {
+                    1: [50747, 53156, 55565, 57974, 60384, 62793, 65202, 67611],
+                    2: [57159, 59904, 62649, 65395, 68140, 70885, 73630, 76375],
+                    3: [64784, 67890, 70996, 74102, 77208, 80314, 83420, 86526],
+                    4: [74102, 77664, 81226, 84788, 88351, 91913, 95475, 99037],
+                    5: [85947, 90094, 94241, 98388, 102535, 106682, 110829, 114976],
+                    6: [99037, 103889, 108741, 113593, 118445, 123297, 128149, 133001]
+                }
+            },
+            CR: {
+                bargainingAgent: 'PSAC',
+                levels: {
+                    3: [41008, 42955, 44903, 46851, 48799, 50747, 52694, 54642],
+                    4: [45334, 47487, 49640, 51793, 53946, 56099, 58252, 60405],
+                    5: [50747, 53156, 55565, 57974, 60384, 62793, 65202, 67611]
+                }
+            },
+            EC: {
+                bargainingAgent: 'PIPSC',
+                levels: {
+                    2: [50747, 53156, 55565, 57974, 60384, 62793, 65202, 67611],
+                    3: [57159, 59904, 62649, 65395, 68140, 70885, 73630, 76375],
+                    4: [64784, 67890, 70996, 74102, 77208, 80314, 83420, 86526],
+                    5: [74102, 77664, 81226, 84788, 88351, 91913, 95475, 99037],
+                    6: [85947, 90094, 94241, 98388, 102535, 106682, 110829, 114976],
+                    7: [99037, 103889, 108741, 113593, 118445, 123297, 128149, 133001],
+                    8: [114976, 120626, 126276, 131926, 137576, 143226, 148876, 154526]
+                }
+            },
+            IT: {
+                bargainingAgent: 'PIPSC',
+                levels: {
+                    1: [50747, 53156, 55565, 57974, 60384, 62793, 65202, 67611],
+                    2: [57159, 59904, 62649, 65395, 68140, 70885, 73630, 76375],
+                    3: [64784, 67890, 70996, 74102, 77208, 80314, 83420, 86526],
+                    4: [74102, 77664, 81226, 84788, 88351, 91913, 95475, 99037],
+                    5: [85947, 90094, 94241, 98388, 102535, 106682, 110829, 114976]
+                }
+            },
+            IS: {
+                bargainingAgent: 'PSAC',
+                levels: {
+                    1: [37458, 39233, 41008, 42784, 44559, 46334, 48110, 49885],
+                    2: [41008, 42955, 44903, 46851, 48799, 50747, 52694, 54642],
+                    3: [45334, 47487, 49640, 51793, 53946, 56099, 58252, 60405],
+                    4: [50747, 53156, 55565, 57974, 60384, 62793, 65202, 67611],
+                    5: [57159, 59904, 62649, 65395, 68140, 70885, 73630, 76375],
+                    6: [64784, 67890, 70996, 74102, 77208, 80314, 83420, 86526]
+                }
+            }
+        };
+        
+        // Classification dropdown cascade functions
+        function updateLevels() {
+            const classification = document.getElementById('classification').value;
+            const levelSelect = document.getElementById('level');
+            const stepSelect = document.getElementById('step');
+            
+            // Reset dependent dropdowns
+            levelSelect.innerHTML = '<option value="">Select level...</option>';
+            stepSelect.innerHTML = '<option value="">Select level first...</option>';
+            stepSelect.disabled = true;
+            hideAutoCalculated();
+            
+            if (!classification || !PAY_TABLES[classification]) {
+                levelSelect.disabled = true;
+                return;
+            }
+            
+            levelSelect.disabled = false;
+            const levels = Object.keys(PAY_TABLES[classification].levels);
+            
+            levels.forEach(level => {
+                const option = document.createElement('option');
+                option.value = level;
+                option.textContent = classification + '-' + level.toString().padStart(2, '0');
+                levelSelect.appendChild(option);
+            });
+            
+            // Update language for new options
+            applyLang();
+        }
+        
+        function updateSteps() {
+            const classification = document.getElementById('classification').value;
+            const level = document.getElementById('level').value;
+            const stepSelect = document.getElementById('step');
+            
+            stepSelect.innerHTML = '<option value="">Select step...</option>';
+            hideAutoCalculated();
+            
+            if (!classification || !level || !PAY_TABLES[classification] || !PAY_TABLES[classification].levels[level]) {
+                stepSelect.disabled = true;
+                return;
+            }
+            
+            stepSelect.disabled = false;
+            const steps = PAY_TABLES[classification].levels[level];
+            
+            steps.forEach((salary, index) => {
+                const stepNum = index + 1;
+                const option = document.createElement('option');
+                option.value = stepNum;
+                option.textContent = `Step ${stepNum} ($${salary.toLocaleString()})`;
+                stepSelect.appendChild(option);
+            });
+            
+            applyLang();
+        }
+        
+        function updateSalary() {
+            updateAutoCalculated();
+        }
+        
+        function updateServiceTime() {
+            updateAutoCalculated();
+        }
+        
+        function updateAutoCalculated() {
+            const classification = document.getElementById('classification').value;
+            const level = document.getElementById('level').value;
+            const step = document.getElementById('step').value;
+            const startDate = document.getElementById('start-date').value;
+            
+            if (!classification || !level || !step || !startDate) {
+                hideAutoCalculated();
+                return;
+            }
+            
+            // Calculate salary
+            const payData = PAY_TABLES[classification];
+            const salary = payData.levels[level][step - 1];
+            
+            // Calculate years of service
+            const start = new Date(startDate);
+            const now = new Date();
+            const diffMs = now - start;
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const years = Math.floor(diffDays / 365.25);
+            const remainingDays = Math.floor(diffDays % 365.25);
+            
+            // Update display
+            document.getElementById('calc-salary').textContent = '$' + salary.toLocaleString();
+            document.getElementById('calc-years').textContent = years + ' years, ' + remainingDays + ' days';
+            document.getElementById('calc-agent').textContent = payData.bargainingAgent;
+            
+            document.getElementById('auto-calculated').style.display = 'block';
+        }
+        
+        function hideAutoCalculated() {
+            document.getElementById('auto-calculated').style.display = 'none';
+        }
+        
         // Language management
         var currentLang = localStorage.getItem('wfa-lang') || 'en';
         
@@ -465,11 +678,33 @@
         }
         
         function calculateWFA() {
-            // Get inputs
-            const salary = parseInt(document.getElementById('salary').value) || 0;
-            const years = parseInt(document.getElementById('years').value) || 0;
-            const days = parseInt(document.getElementById('days').value) || 0;
-            const bargainingAgent = document.getElementById('bargaining-agent').value;
+            // Check if auto-calculated values are available
+            const autoCalcDisplay = document.getElementById('auto-calculated');
+            if (autoCalcDisplay.style.display === 'none') {
+                alert(currentLang === 'fr' ? 
+                    'Veuillez sélectionner votre classification, niveau, échelon et date de début.' :
+                    'Please select your classification, level, step, and start date.');
+                return;
+            }
+            
+            // Get auto-calculated values
+            const classification = document.getElementById('classification').value;
+            const level = document.getElementById('level').value;
+            const step = document.getElementById('step').value;
+            const startDate = document.getElementById('start-date').value;
+            
+            const payData = PAY_TABLES[classification];
+            const salary = payData.levels[level][step - 1];
+            const bargainingAgent = payData.bargainingAgent;
+            
+            // Calculate years and days from start date
+            const start = new Date(startDate);
+            const now = new Date();
+            const diffMs = now - start;
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const years = Math.floor(diffDays / 365.25);
+            const days = Math.floor(diffDays % 365.25);
+            
             const vacation = parseFloat(document.getElementById('vacation').value) || 0;
             const comp = parseFloat(document.getElementById('comp').value) || 0;
             const option = document.getElementById('option').value;
