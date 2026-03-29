@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WFA Departure Package Calculator — ACCORD | HazeyData</title>
+    <meta name="description" content="Free calculator for federal public servants affected by workforce adjustment. Verify your TSM, severance, and leave cashout.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/icon-180.png">
+    <meta name="theme-color" content="#26374A">
+    <link rel="canonical" href="https://hazeydata.ai/accord/wfa-calculator/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hazeydata.ai/accord/wfa-calculator/">
+    <meta property="og:title" content="WFA Departure Package Calculator — ACCORD">
+    <meta property="og:description" content="Free calculator for federal public servants affected by workforce adjustment. Verify your TSM, severance, and leave cashout.">
+    <meta property="og:image" content="https://hazeydata.ai/assets/accord-og.png">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="WFA Departure Package Calculator — ACCORD">
+    <meta name="twitter:description" content="Free calculator for federal public servants affected by workforce adjustment. Verify your TSM, severance, and leave cashout.">
+    <meta name="twitter:image" content="https://hazeydata.ai/assets/accord-og.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --gc-blue: #26374A; --gc-blue-light: #335075; --gc-red: #AF3C43; --gc-red-dark: #8B1E2F; 
+            --gc-white: #FFFFFF; --gc-grey-light: #F8F9FA; --gc-grey: #E5E5E5; --gc-grey-mid: #6C757D; 
+            --gc-grey-dark: #333; --green: #1a7a4c; --shadow: 0 4px 24px rgba(0,0,0,0.08); 
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; color: var(--gc-grey-dark); background: var(--gc-grey-light); 
+            -webkit-font-smoothing: antialiased; 
+        }
+        
+        .gc-bar { height: 4px; background: var(--gc-red); }
+        .nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 1rem 2rem; max-width: 1100px; margin: 0 auto; 
+        }
+        .nav a { text-decoration: none; }
+        .nav-brand { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.08em; color: var(--gc-blue); }
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-links a { color: var(--gc-grey-mid); font-size: 0.85rem; font-weight: 500; }
+        .back-link { 
+            color: var(--gc-blue) !important; font-weight: 600 !important; 
+            background: rgba(38,55,74,0.06); padding: 0.4rem 0.9rem; border-radius: 6px; 
+            transition: background 0.2s; 
+        }
+        .back-link:hover { background: rgba(38,55,74,0.12); }
+        .lang-btn { 
+            padding: 0.25rem 0.65rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; 
+            font-size: 0.75rem; font-weight: 600; background: white; cursor: pointer; 
+        }
+        
+        .calculator-wrap { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        
+        .header { margin-bottom: 2rem; text-align: center; }
+        .header h1 { 
+            font-size: 1.8rem; font-weight: 800; color: var(--gc-blue); margin-bottom: 0.5rem; 
+            line-height: 1.3;
+        }
+        .free-badge { 
+            display: inline-flex; align-items: center; gap: 0.5rem; 
+            background: var(--green); color: white; padding: 0.3rem 0.8rem; 
+            border-radius: 15px; font-size: 0.75rem; font-weight: 600; 
+            text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;
+        }
+        .pulse-dot { 
+            width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.8); 
+            animation: pulse 1.5s infinite; 
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        
+        .context-text { 
+            font-size: 1rem; line-height: 1.6; color: var(--gc-grey-dark); 
+            max-width: 700px; margin: 0 auto 2.5rem; 
+        }
+        .context-text a { color: var(--gc-blue); text-decoration: none; border-bottom: 1px solid rgba(38,55,74,0.3); }
+        .context-text a:hover { border-bottom-color: var(--gc-blue); }
+        
+        .ad-placeholder { 
+            background: var(--gc-grey); border: 2px dashed var(--gc-grey-mid); 
+            border-radius: 8px; padding: 2rem; text-align: center; margin: 1.5rem 0; 
+            color: var(--gc-grey-mid); font-size: 0.85rem; 
+        }
+        
+        .form-card { 
+            background: white; border: 1px solid var(--gc-grey); border-radius: 12px; 
+            padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; 
+        }
+        
+        .demo-controls { 
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; 
+        }
+        .demo-controls-2 { grid-template-columns: 1fr 1fr; }
+        .demo-controls-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+        
+        label.ctrl-label { 
+            display: block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; 
+            letter-spacing: 0.06em; color: var(--gc-grey-mid); margin-bottom: 0.35rem; 
+        }
+        
+        select, input[type=number] { 
+            width: 100%; padding: 0.55rem 0.7rem; border: 1.5px solid var(--gc-grey); 
+            border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.9rem; 
+            background: var(--gc-grey-light); 
+        }
+        select:focus, input:focus { outline: none; border-color: var(--gc-blue); }
+        
+        .calculate-btn { 
+            display: block; width: 100%; padding: 0.8rem; background: var(--gc-blue); 
+            color: white; border: none; border-radius: 8px; font-family: 'Inter', sans-serif; 
+            font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s; 
+        }
+        .calculate-btn:hover { background: var(--gc-blue-light); }
+        
+        .results { display: none; margin-top: 2rem; }
+        .results.show { display: block; animation: fadeIn 0.3s ease-out; }
+        
+        .result-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--gc-grey); 
+            border: 1px solid var(--gc-grey); border-radius: 12px; overflow: hidden; margin-bottom: 2rem; 
+        }
+        .result-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+        
+        .result-card { background: white; padding: 1.5rem; text-align: center; }
+        .result-card.total { 
+            grid-column: 1 / -1; background: var(--green); color: white; 
+            border-top: 2px solid var(--gc-grey); 
+        }
+        
+        .rc-label { 
+            font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; 
+            text-transform: uppercase; color: var(--gc-grey-mid); margin-bottom: 0.8rem; 
+        }
+        .result-card.total .rc-label { color: rgba(255,255,255,0.8); }
+        
+        .rc-amount { 
+            font-size: 2.2rem; font-weight: 800; line-height: 1; margin-bottom: 0.3rem; 
+            color: var(--green); 
+        }
+        .result-card.total .rc-amount { color: white; font-size: 2.8rem; }
+        
+        .rc-details { 
+            font-size: 0.8rem; color: var(--gc-grey-mid); margin-bottom: 0.8rem; 
+            line-height: 1.4; 
+        }
+        .result-card.total .rc-details { color: rgba(255,255,255,0.9); }
+        
+        .rc-citation { 
+            font-size: 0.75rem; color: var(--gc-blue); background: rgba(38,55,74,0.08); 
+            padding: 0.3rem 0.6rem; border-radius: 4px; font-weight: 500; 
+        }
+        .result-card.total .rc-citation { 
+            background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.95); 
+        }
+        
+        .explain-box { 
+            background: var(--gc-grey-light); border: 1px solid var(--gc-grey); 
+            border-radius: 8px; padding: 1.2rem; font-size: 0.9rem; line-height: 1.6; 
+            white-space: pre-line; color: var(--gc-grey-dark); margin-bottom: 2rem; 
+        }
+        .explain-box strong { color: var(--gc-blue); }
+        
+        .disclaimer { 
+            background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; 
+            padding: 1rem 1.25rem; font-size: 0.85rem; color: #856404; line-height: 1.6; 
+            margin-bottom: 1.5rem; 
+        }
+        .disclaimer strong { color: #856404; }
+        .disclaimer a { color: #856404; font-weight: 600; }
+        
+        .union-links { 
+            display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; 
+            margin: 1rem 0; 
+        }
+        .union-link { 
+            background: var(--gc-blue); color: white; padding: 0.4rem 1rem; 
+            border-radius: 6px; text-decoration: none; font-size: 0.8rem; 
+            font-weight: 500; transition: background 0.2s; 
+        }
+        .union-link:hover { background: var(--gc-blue-light); }
+        
+        .footer { 
+            background: var(--gc-blue); color: rgba(255,255,255,0.5); text-align: center; 
+            padding: 2rem; font-size: 0.8rem; margin-top: 3rem; 
+        }
+        .footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+        .footer a:hover { color: white; }
+        .footer-links { 
+            display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.75rem; 
+            flex-wrap: wrap; 
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media (max-width: 700px) {
+            .demo-controls, .demo-controls-2, .demo-controls-4 { grid-template-columns: 1fr; }
+            .result-grid, .result-grid-4 { grid-template-columns: 1fr; }
+            .nav { padding: 1rem; }
+            .calculator-wrap { padding: 1.5rem; }
+            .union-links { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gc-bar"></div>
+    <nav class="nav">
+        <a href="/" class="nav-brand">HAZEYDATA</a>
+        <div class="nav-links">
+            <a href="/accord/" class="back-link" data-en="← Back to ACCORD" data-fr="← Retour à ACCORD">← Back to ACCORD</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+            <button class="lang-btn" onclick="toggleLang()">FR</button>
+        </div>
+    </nav>
+
+    <div class="calculator-wrap">
+        <div class="header">
+            <div class="free-badge">
+                <span class="pulse-dot"></span>
+                <span data-en="Free Tool" data-fr="Outil gratuit">Free Tool</span>
+            </div>
+            <h1>
+                <span data-en="Verify Your Departure Package" data-fr="Vérifiez votre indemnité de départ">Verify Your Departure Package</span>
+            </h1>
+            <p class="context-text" data-en="26,000+ federal employees received WFA notices. The Auditor General found a 29% error rate in Phoenix (March 2026). This tool calculates what you SHOULD receive based on authoritative collective agreement text." data-fr="Plus de 26 000 employés fédéraux ont reçu des avis de RAE. La vérificatrice générale a trouvé un taux d'erreur de 29 % dans Phoenix (mars 2026). Cet outil calcule ce que vous DEVRIEZ recevoir selon le texte officiel des conventions collectives.">26,000+ federal employees received WFA notices. The <a href="https://www.canada.ca/en/auditor-general/our-work/audit-reports/auditor-general-report-2026-modernizing-pay-system.html" target="_blank">Auditor General found a 29% error rate</a> in Phoenix (March 2026). This tool calculates what you SHOULD receive based on authoritative collective agreement text.</p>
+        </div>
+
+        <div class="ad-placeholder" data-en="Advertisement space" data-fr="Espace publicitaire">Advertisement space</div>
+
+        <div class="form-card">
+            <div class="demo-controls">
+                <div>
+                    <label class="ctrl-label" data-en="Annual Salary ($)" data-fr="Salaire annuel ($)">Annual Salary ($)</label>
+                    <input type="number" id="salary" value="85000" min="40000" max="200000" step="1000">
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="Years of Service (complete)" data-fr="Années de service (complètes)">Years of Service (complete)</label>
+                    <input type="number" id="years" value="15" min="0" max="45">
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="Additional Days (partial year)" data-fr="Jours additionnels (année partielle)">Additional Days (partial year)</label>
+                    <input type="number" id="days" value="0" min="0" max="364">
+                </div>
+            </div>
+
+            <div class="demo-controls">
+                <div>
+                    <label class="ctrl-label" data-en="Bargaining Agent" data-fr="Agent négociateur">Bargaining Agent</label>
+                    <select id="bargaining-agent">
+                        <option value="NJC" data-en-text="NJC (Non-unionized)" data-fr-text="CNM (Non syndiqué)">NJC (Non-unionized)</option>
+                        <option value="PSAC" data-en-text="PSAC (PA, SV, FB, TC, EB, CX)" data-fr-text="AFPC (PA, SV, FB, TC, EB, CX)">PSAC (PA, SV, FB, TC, EB, CX)</option>
+                        <option value="PIPSC" data-en-text="PIPSC (IT, EC, RE, SP, etc.)" data-fr-text="IPFPC (IT, EC, RE, SP, etc.)">PIPSC (IT, EC, RE, SP, etc.)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="Vacation Leave Balance (hours)" data-fr="Solde congés annuels (heures)">Vacation Leave Balance (hours)</label>
+                    <input type="number" id="vacation" value="150" min="0" max="500" step="0.5">
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="Comp Leave Balance (hours)" data-fr="Solde congés compensatoires (heures)">Comp Leave Balance (hours)</label>
+                    <input type="number" id="comp" value="0" min="0" max="200" step="0.5">
+                </div>
+            </div>
+
+            <div class="demo-controls demo-controls-2">
+                <div>
+                    <label class="ctrl-label" data-en="WFA Option" data-fr="Option RAE">WFA Option</label>
+                    <select id="option">
+                        <option value="B" data-en-text="Option B: TSM only" data-fr-text="Option B : MST seulement">Option B: TSM only</option>
+                        <option value="C1" data-en-text="Option C(i): TSM + Education" data-fr-text="Option C(i) : MST + Éducation">Option C(i): TSM + Education</option>
+                        <option value="C2" data-en-text="Option C(ii): TSM + Education + LWOP" data-fr-text="Option C(ii) : MST + Éducation + CSRP">Option C(ii): TSM + Education + LWOP</option>
+                    </select>
+                </div>
+                <div style="display: flex; align-items: end;">
+                    <button class="calculate-btn" onclick="calculateWFA()">
+                        <span data-en="▶ Calculate My Package" data-fr="▶ Calculer mon indemnité">▶ Calculate My Package</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="results" id="results">
+            <div class="result-grid result-grid-4">
+                <div class="result-card">
+                    <div class="rc-label" data-en="Transition Support" data-fr="Soutien à la transition">Transition Support</div>
+                    <div class="rc-amount" id="tsm-amount">—</div>
+                    <div class="rc-details" id="tsm-details">—</div>
+                    <div class="rc-citation" data-en="NJC Appendix C" data-fr="CNM Annexe C">NJC Appendix C</div>
+                </div>
+                <div class="result-card">
+                    <div class="rc-label" data-en="Severance Pay" data-fr="Indemnité de départ">Severance Pay</div>
+                    <div class="rc-amount" id="sev-amount">—</div>
+                    <div class="rc-details" id="sev-details">—</div>
+                    <div class="rc-citation" data-en="Art. 66.01" data-fr="Art. 66.01">Art. 66.01</div>
+                </div>
+                <div class="result-card">
+                    <div class="rc-label" data-en="Vacation Cashout" data-fr="Rachat congés annuels">Vacation Cashout</div>
+                    <div class="rc-amount" id="vac-amount">—</div>
+                    <div class="rc-details" id="vac-details">—</div>
+                    <div class="rc-citation" data-en="Hours × Rate" data-fr="Heures × Taux">Hours × Rate</div>
+                </div>
+                <div class="result-card">
+                    <div class="rc-label" data-en="Comp Leave Cashout" data-fr="Rachat congés comp.">Comp Leave Cashout</div>
+                    <div class="rc-amount" id="comp-amount">—</div>
+                    <div class="rc-details" id="comp-details">—</div>
+                    <div class="rc-citation" data-en="Hours × Rate" data-fr="Heures × Taux">Hours × Rate</div>
+                </div>
+                <div class="result-card total">
+                    <div class="rc-label" data-en="Total Departure Package" data-fr="Indemnité totale de départ">Total Departure Package</div>
+                    <div class="rc-amount" id="total-amount">—</div>
+                    <div class="rc-details" id="total-details">—</div>
+                    <div class="rc-citation" data-en="Compare to your pay centre" data-fr="Comparez avec votre centre de paye">Compare to your pay centre</div>
+                </div>
+            </div>
+
+            <div class="explain-box" id="explanation">—</div>
+
+            <div id="education-note" style="display: none;" class="disclaimer">
+                <strong data-en="Option C Selected:" data-fr="Option C sélectionnée :">Option C Selected:</strong>
+                <span data-en="You're also eligible for up to $11,000 in education reimbursement (tuition, books, equipment). This amount is NOT included in the total above." data-fr="Vous êtes également admissible à un remboursement d'éducation pouvant atteindre 11 000 $ (frais de scolarité, livres, équipement). Ce montant N'EST PAS inclus dans le total ci-dessus.">You're also eligible for up to $11,000 in education reimbursement (tuition, books, equipment). This amount is NOT included in the total above.</span>
+            </div>
+        </div>
+
+        <div class="ad-placeholder" data-en="Advertisement space" data-fr="Espace publicitaire">Advertisement space</div>
+
+        <div class="disclaimer">
+            <strong data-en="Important Disclaimer:" data-fr="Avis de non-responsabilité important :">Important Disclaimer:</strong>
+            <span data-en="This calculator provides estimates based on standard collective agreement provisions and may not account for all individual circumstances. Results are not legal or financial advice. Always verify calculations with your compensation advisor or pay centre." data-fr="Ce calculateur fournit des estimations basées sur les dispositions standard des conventions collectives et peut ne pas tenir compte de toutes les circonstances individuelles. Les résultats ne constituent pas des conseils juridiques ou financiers. Vérifiez toujours les calculs avec votre conseiller en rémunération ou votre centre de paye.">This calculator provides estimates based on standard collective agreement provisions and may not account for all individual circumstances. Results are not legal or financial advice. Always verify calculations with your compensation advisor or pay centre.</span>
+        </div>
+
+        <div class="union-links">
+            <a href="https://psacunion.ca/news-issues/understanding-work-force-adjustment" target="_blank" class="union-link" data-en="PSAC WFA Resources" data-fr="Ressources RAE AFPC">PSAC WFA Resources</a>
+            <a href="https://pipsc.ca/news-issues/understanding-work-force-adjustment" target="_blank" class="union-link" data-en="PIPSC WFA FAQ" data-fr="FAQ RAE IPFPC">PIPSC WFA FAQ</a>
+            <a href="https://www.canada.ca/en/government/publicservice/workforce/workforce-adjustment.html" target="_blank" class="union-link" data-en="GC WFA Policy" data-fr="Politique RAE GC">GC WFA Policy</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/">hazeydata.ai</a>
+            <a href="/accord/">ACCORD</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="Démo">Demo</a>
+            <a href="https://www.canada.ca/en/auditor-general/our-work/audit-reports/auditor-general-report-2026-modernizing-pay-system.html" target="_blank" rel="noopener" data-en="AG Report" data-fr="Rapport de la VG">AG Report</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </div>
+        <p data-en="© 2026 hazeydata.ai — Ottawa, Canada • Independent pay validation for 26,000+ affected employees" data-fr="© 2026 hazeydata.ai — Ottawa, Canada • Validation indépendante de la rémunération pour plus de 26 000 employés touchés">© 2026 hazeydata.ai — Ottawa, Canada • Independent pay validation for 26,000+ affected employees</p>
+    </footer>
+
+    <script>
+        // TSM Table (from verified ACCORD rules)
+        const TSM_TABLE = {0:10,1:22,2:24,3:26,4:28,5:30,6:32,7:34,8:36,9:38,10:40,11:42,12:44,13:46,14:48,15:50,16:52,17:52,18:52,19:52,20:52,21:52,22:52,23:52,24:52,25:52,26:52,27:52,28:52,29:52,30:49,31:46,32:43,33:40,34:37,35:34,36:31,37:28,38:25,39:22,40:19,41:16,42:13,43:10,44:7,45:4};
+        
+        // Language management
+        var currentLang = localStorage.getItem('wfa-lang') || 'en';
+        
+        function applyLang() {
+            document.documentElement.lang = currentLang;
+            document.querySelector('.lang-btn').textContent = currentLang === 'en' ? 'FR' : 'EN';
+            
+            // Update all data-en/data-fr elements
+            document.querySelectorAll('[data-en][data-fr]').forEach(function(el) {
+                el.innerHTML = el.getAttribute('data-' + currentLang);
+            });
+            
+            // Update select options
+            document.querySelectorAll('option[data-en-text][data-fr-text]').forEach(function(option) {
+                option.textContent = option.getAttribute('data-' + currentLang + '-text');
+            });
+        }
+        
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'fr' : 'en';
+            localStorage.setItem('wfa-lang', currentLang);
+            applyLang();
+        }
+        
+        // Calculation functions
+        function calculateTSM(years, salary) {
+            const cappedYears = Math.min(years, 45);
+            const weeks = TSM_TABLE[cappedYears] || 4;
+            const weeklyRate = salary / 52.176;
+            const amount = weeks * weeklyRate;
+            return { weeks, weeklyRate, amount };
+        }
+        
+        function calculateSeverance(years, days, salary) {
+            if (years === 0 && days === 0) {
+                return { weeks: 0, amount: 0 };
+            }
+            
+            const weeklyRate = salary / 52.176;
+            const partialYear = days / 365;
+            const totalWeeks = Math.min(2 + Math.max(0, years - 1) + partialYear, 30);
+            const amount = totalWeeks * weeklyRate;
+            
+            return { weeks: totalWeeks, amount, weeklyRate };
+        }
+        
+        function calculateLeave(hours, salary) {
+            const hourlyRate = salary / 52.176 / 37.5;
+            const amount = hours * hourlyRate;
+            return { hourlyRate, amount };
+        }
+        
+        function formatCurrency(amount) {
+            return '$' + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+        
+        function calculateWFA() {
+            // Get inputs
+            const salary = parseInt(document.getElementById('salary').value) || 0;
+            const years = parseInt(document.getElementById('years').value) || 0;
+            const days = parseInt(document.getElementById('days').value) || 0;
+            const bargainingAgent = document.getElementById('bargaining-agent').value;
+            const vacation = parseFloat(document.getElementById('vacation').value) || 0;
+            const comp = parseFloat(document.getElementById('comp').value) || 0;
+            const option = document.getElementById('option').value;
+            
+            // Calculate components
+            const tsm = calculateTSM(years, salary);
+            const severance = calculateSeverance(years, days, salary);
+            const vacCashout = calculateLeave(vacation, salary);
+            const compCashout = calculateLeave(comp, salary);
+            
+            const total = tsm.amount + severance.amount + vacCashout.amount + compCashout.amount;
+            
+            // Update display
+            document.getElementById('tsm-amount').textContent = formatCurrency(tsm.amount);
+            document.getElementById('tsm-details').textContent = currentLang === 'fr' 
+                ? `${tsm.weeks} semaines × ${formatCurrency(tsm.weeklyRate)}/sem`
+                : `${tsm.weeks} weeks × ${formatCurrency(tsm.weeklyRate)}/week`;
+            
+            document.getElementById('sev-amount').textContent = formatCurrency(severance.amount);
+            document.getElementById('sev-details').textContent = currentLang === 'fr'
+                ? `${severance.weeks.toFixed(1)} semaines × ${formatCurrency(severance.weeklyRate || 0)}/sem`
+                : `${severance.weeks.toFixed(1)} weeks × ${formatCurrency(severance.weeklyRate || 0)}/week`;
+            
+            document.getElementById('vac-amount').textContent = formatCurrency(vacCashout.amount);
+            document.getElementById('vac-details').textContent = currentLang === 'fr'
+                ? `${vacation}h × ${formatCurrency(vacCashout.hourlyRate)}/h`
+                : `${vacation}h × ${formatCurrency(vacCashout.hourlyRate)}/hr`;
+            
+            document.getElementById('comp-amount').textContent = formatCurrency(compCashout.amount);
+            document.getElementById('comp-details').textContent = currentLang === 'fr'
+                ? `${comp}h × ${formatCurrency(compCashout.hourlyRate)}/h`
+                : `${comp}h × ${formatCurrency(compCashout.hourlyRate)}/hr`;
+            
+            document.getElementById('total-amount').textContent = formatCurrency(total);
+            document.getElementById('total-details').textContent = currentLang === 'fr'
+                ? 'Selon les conventions collectives fédérales'
+                : 'Based on federal collective agreements';
+            
+            // Update explanation
+            const explanation = currentLang === 'fr' 
+                ? `Calcul de l'indemnité de départ (RAE)
+
+Mesure de soutien à la transition (MST) :
+${years} années de service → ${tsm.weeks} semaines selon le tableau CNM
+${tsm.weeks} semaines × ${formatCurrency(tsm.weeklyRate)} = ${formatCurrency(tsm.amount)}
+
+Indemnité de départ (mise en disponibilité) :
+Formule : 2 semaines + ${Math.max(0, years-1)} années additionnelles${days > 0 ? ` + ${days} jours/365` : ''}
+${severance.weeks.toFixed(1)} semaines × ${formatCurrency(severance.weeklyRate || 0)} = ${formatCurrency(severance.amount)}
+
+Rachat de congés :
+Congés annuels : ${vacation}h × ${formatCurrency(vacCashout.hourlyRate)} = ${formatCurrency(vacCashout.amount)}
+Congés comp. : ${comp}h × ${formatCurrency(compCashout.hourlyRate)} = ${formatCurrency(compCashout.amount)}
+
+Indemnité totale : ${formatCurrency(total)}
+
+Source : CNM Directive RAE, Convention collective ${bargainingAgent}`
+                : `Departure Package Calculation (WFA)
+
+Transition Support Measure (TSM):
+${years} years of service → ${tsm.weeks} weeks per NJC table
+${tsm.weeks} weeks × ${formatCurrency(tsm.weeklyRate)} = ${formatCurrency(tsm.amount)}
+
+Severance Pay (layoff):
+Formula: 2 weeks + ${Math.max(0, years-1)} additional years${days > 0 ? ` + ${days} days/365` : ''}
+${severance.weeks.toFixed(1)} weeks × ${formatCurrency(severance.weeklyRate || 0)} = ${formatCurrency(severance.amount)}
+
+Leave Cashout:
+Vacation: ${vacation}h × ${formatCurrency(vacCashout.hourlyRate)} = ${formatCurrency(vacCashout.amount)}
+Comp time: ${comp}h × ${formatCurrency(compCashout.hourlyRate)} = ${formatCurrency(compCashout.amount)}
+
+Total Package: ${formatCurrency(total)}
+
+Source: NJC WFA Directive, ${bargainingAgent} Collective Agreement`;
+            
+            document.getElementById('explanation').textContent = explanation;
+            
+            // Show/hide education note
+            const educationNote = document.getElementById('education-note');
+            if (option.startsWith('C')) {
+                educationNote.style.display = 'block';
+            } else {
+                educationNote.style.display = 'none';
+            }
+            
+            // Show results
+            document.getElementById('results').classList.add('show');
+        }
+        
+        // Initialize
+        applyLang();
+    </script>
+</body>
+</html>
