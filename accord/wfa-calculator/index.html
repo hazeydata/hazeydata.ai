@@ -85,11 +85,34 @@
         .context-text a { color: var(--gc-blue); text-decoration: none; border-bottom: 1px solid rgba(38,55,74,0.3); }
         .context-text a:hover { border-bottom-color: var(--gc-blue); }
         
-        .ad-placeholder { 
-            background: var(--gc-grey); border: 2px dashed var(--gc-grey-mid); 
-            border-radius: 8px; padding: 2rem; text-align: center; margin: 1.5rem 0; 
-            color: var(--gc-grey-mid); font-size: 0.85rem; 
+        .internal-ad { 
+            background: linear-gradient(135deg, rgba(38,55,74,0.05) 0%, rgba(175,60,67,0.05) 100%);
+            border: 1px solid rgba(38,55,74,0.1); border-radius: 12px; 
+            margin: 2rem 0; overflow: hidden; 
         }
+        .internal-ad-content { 
+            padding: 1.5rem 2rem; text-align: center; 
+        }
+        .internal-ad-badge { 
+            display: inline-block; background: var(--gc-blue); color: white; 
+            font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; 
+            text-transform: uppercase; padding: 0.25rem 0.75rem; border-radius: 12px; 
+            margin-bottom: 0.75rem; 
+        }
+        .internal-ad h3 { 
+            font-size: 1.25rem; font-weight: 700; color: var(--gc-blue); 
+            margin-bottom: 0.5rem; line-height: 1.3; 
+        }
+        .internal-ad p { 
+            font-size: 0.9rem; line-height: 1.5; color: var(--gc-grey-dark); 
+            margin-bottom: 1rem; max-width: 500px; margin-left: auto; margin-right: auto; 
+        }
+        .internal-ad-cta { 
+            display: inline-block; background: var(--gc-red); color: white; 
+            text-decoration: none; font-weight: 600; font-size: 0.85rem; 
+            padding: 0.7rem 1.5rem; border-radius: 8px; transition: background 0.2s; 
+        }
+        .internal-ad-cta:hover { background: var(--gc-red-dark); }
         
         .form-card { 
             background: white; border: 1px solid var(--gc-grey); border-radius: 12px; 
@@ -209,12 +232,17 @@
             .union-links { flex-direction: column; align-items: center; }
             .rc-amount { font-size: 1.8rem; }
             .result-card.total .rc-amount { font-size: 2.2rem; }
+            .internal-ad-content { padding: 1.25rem 1.5rem; }
+            .internal-ad h3 { font-size: 1.1rem; }
         }
         
         @media (max-width: 600px) {
             .result-card { padding: 1rem; }
             .rc-amount { font-size: 1.6rem; }
             .result-card.total .rc-amount { font-size: 2rem; }
+            .internal-ad-content { padding: 1rem; }
+            .internal-ad h3 { font-size: 1rem; }
+            .internal-ad p { font-size: 0.85rem; }
         }
     </style>
 </head>
@@ -241,7 +269,14 @@
             <p class="context-text" data-en="26,000+ federal employees received WFA notices. The Auditor General found a 29% error rate in Phoenix (March 2026). This tool calculates what you SHOULD receive based on authoritative collective agreement text." data-fr="Plus de 26 000 employés fédéraux ont reçu des avis de RAE. La vérificatrice générale a trouvé un taux d'erreur de 29 % dans Phoenix (mars 2026). Cet outil calcule ce que vous DEVRIEZ recevoir selon le texte officiel des conventions collectives.">26,000+ federal employees received WFA notices. The <a href="https://www.canada.ca/en/auditor-general/our-work/audit-reports/auditor-general-report-2026-modernizing-pay-system.html" target="_blank">Auditor General found a 29% error rate</a> in Phoenix (March 2026). This tool calculates what you SHOULD receive based on authoritative collective agreement text.</p>
         </div>
 
-        <div class="ad-placeholder" data-en="Advertisement space" data-fr="Espace publicitaire">Advertisement space</div>
+        <div class="internal-ad">
+            <div class="internal-ad-content">
+                <div class="internal-ad-badge" data-en="From HazeyData" data-fr="De HazeyData">From HazeyData</div>
+                <h3 data-en="ACCORD — Independent Pay Validation for the Government of Canada" data-fr="ACCORD — Validation indépendante de la rémunération pour le gouvernement du Canada">ACCORD — Independent Pay Validation for the Government of Canada</h3>
+                <p data-en="963+ tests. Zero bugs. 150+ collective agreements. Bilingual." data-fr="963+ tests. Zéro bogues. 150+ conventions collectives. Bilingue.">963+ tests. Zero bugs. 150+ collective agreements. Bilingual.</p>
+                <a href="/accord/" class="internal-ad-cta" data-en="Learn More →" data-fr="En savoir plus →">Learn More →</a>
+            </div>
+        </div>
 
         <div class="form-card">
             <div class="demo-controls">
@@ -337,16 +372,23 @@
             </div>
         </div>
 
-        <div class="ad-placeholder" data-en="Advertisement space" data-fr="Espace publicitaire">Advertisement space</div>
+        <div class="internal-ad">
+            <div class="internal-ad-content">
+                <div class="internal-ad-badge" data-en="From HazeyData" data-fr="De HazeyData">From HazeyData</div>
+                <h3 data-en="School Schedules Database" data-fr="Base de données des horaires scolaires">School Schedules Database</h3>
+                <p data-en="Know when schools are in session across North America. Essential for families, travel planning, and workforce scheduling." data-fr="Sachez quand les écoles sont en session à travers l'Amérique du Nord. Essentiel pour les familles, la planification de voyages et les horaires de travail.">Know when schools are in session across North America. Essential for families, travel planning, and workforce scheduling.</p>
+                <a href="/ssd/" class="internal-ad-cta" data-en="Explore Database →" data-fr="Explorer la base de données →">Explore Database →</a>
+            </div>
+        </div>
 
         <div class="disclaimer">
             <strong data-en="Important Disclaimer:" data-fr="Avis de non-responsabilité important :">Important Disclaimer:</strong>
             <span data-en="This calculator provides estimates based on standard collective agreement provisions and may not account for all individual circumstances. Results are not legal or financial advice. Always verify calculations with your compensation advisor or pay centre." data-fr="Ce calculateur fournit des estimations basées sur les dispositions standard des conventions collectives et peut ne pas tenir compte de toutes les circonstances individuelles. Les résultats ne constituent pas des conseils juridiques ou financiers. Vérifiez toujours les calculs avec votre conseiller en rémunération ou votre centre de paye.">This calculator provides estimates based on standard collective agreement provisions and may not account for all individual circumstances. Results are not legal or financial advice. Always verify calculations with your compensation advisor or pay centre.</span>
         </div>
 
-        <div class="union-links">
-            <a href="https://psacunion.ca/news-issues/understanding-work-force-adjustment" target="_blank" class="union-link" data-en="PSAC WFA Resources" data-fr="Ressources RAE AFPC">PSAC WFA Resources</a>
-            <a href="https://pipsc.ca/news-issues/understanding-work-force-adjustment" target="_blank" class="union-link" data-en="PIPSC WFA FAQ" data-fr="FAQ RAE IPFPC">PIPSC WFA FAQ</a>
+        <div class="union-links" id="union-links">
+            <a href="https://psacunion.ca/faq-workforce-adjustment-treasury-board" target="_blank" class="union-link" data-en="PSAC WFA Resources" data-fr="Ressources RAE AFPC">PSAC WFA Resources</a>
+            <a href="https://pipsc.ca/news-issues/phoenix-pay-system" target="_blank" class="union-link" data-en="PIPSC WFA FAQ" data-fr="FAQ RAE IPFPC">PIPSC WFA FAQ</a>
             <a href="https://www.canada.ca/en/government/publicservice/workforce/workforce-adjustment.html" target="_blank" class="union-link" data-en="GC WFA Policy" data-fr="Politique RAE GC">GC WFA Policy</a>
         </div>
     </div>
@@ -513,8 +555,49 @@ Source: NJC WFA Directive, ${bargainingAgent} Collective Agreement`;
                 educationNote.style.display = 'none';
             }
             
+            // Update union links based on bargaining agent
+            updateUnionLinks(bargainingAgent);
+            
             // Show results
             document.getElementById('results').classList.add('show');
+        }
+        
+        function updateUnionLinks(bargainingAgent) {
+            const unionLinksContainer = document.getElementById('union-links');
+            let linksHTML = '';
+            
+            if (bargainingAgent === 'PSAC') {
+                linksHTML = `
+                    <a href="https://psacunion.ca/faq-workforce-adjustment-treasury-board" target="_blank" class="union-link" data-en="PSAC WFA Resources" data-fr="Ressources RAE AFPC">
+                        <span data-en="PSAC WFA Resources" data-fr="Ressources RAE AFPC">PSAC WFA Resources</span>
+                    </a>
+                    <a href="https://www.canada.ca/en/government/publicservice/workforce/workforce-adjustment.html" target="_blank" class="union-link" data-en="GC WFA Policy" data-fr="Politique RAE GC">
+                        <span data-en="GC WFA Policy" data-fr="Politique RAE GC">GC WFA Policy</span>
+                    </a>
+                `;
+            } else if (bargainingAgent === 'PIPSC') {
+                linksHTML = `
+                    <a href="https://pipsc.ca/news-issues/phoenix-pay-system" target="_blank" class="union-link" data-en="PIPSC WFA Resources" data-fr="Ressources RAE IPFPC">
+                        <span data-en="PIPSC WFA Resources" data-fr="Ressources RAE IPFPC">PIPSC WFA Resources</span>
+                    </a>
+                    <a href="https://www.canada.ca/en/government/publicservice/workforce/workforce-adjustment.html" target="_blank" class="union-link" data-en="GC WFA Policy" data-fr="Politique RAE GC">
+                        <span data-en="GC WFA Policy" data-fr="Politique RAE GC">GC WFA Policy</span>
+                    </a>
+                `;
+            } else { // NJC
+                linksHTML = `
+                    <a href="https://www.canada.ca/en/government/publicservice/workforce/workforce-adjustment.html" target="_blank" class="union-link" data-en="GC WFA Policy" data-fr="Politique RAE GC">
+                        <span data-en="GC WFA Policy" data-fr="Politique RAE GC">GC WFA Policy</span>
+                    </a>
+                `;
+            }
+            
+            unionLinksContainer.innerHTML = linksHTML;
+            
+            // Re-apply language after updating HTML
+            unionLinksContainer.querySelectorAll('[data-en][data-fr]').forEach(function(el) {
+                el.textContent = el.getAttribute('data-' + currentLang);
+            });
         }
         
         // Initialize
