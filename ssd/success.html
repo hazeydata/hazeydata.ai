@@ -6,32 +6,69 @@
     <title>Welcome — School Schedule Database | HazeyData</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0a1628; --accent: #4a90a4; --accent-light: #6bb5c9; --text: #fff; --text-muted: rgba(255,255,255,0.5); }
+        :root { --bg: #0a1628; --accent: #4a90a4; --accent-light: #6bb5c9; --accent-green: #4ade80; --text: #fff; --text-muted: rgba(255,255,255,0.5); --border: rgba(255,255,255,0.08); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .card { max-width: 560px; padding: 48px; text-align: center; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+        .card { max-width: 600px; padding: 48px; text-align: center; }
         h1 { font-size: 28px; margin-bottom: 16px; }
+        h2 { font-size: 18px; margin: 32px 0 12px; color: var(--accent-light); }
         .check { font-size: 64px; margin-bottom: 24px; display: block; }
         p { color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; font-size: 15px; }
-        .key-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(74,144,164,0.3); border-radius: 8px; padding: 16px; margin: 24px 0; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent-light); word-break: break-all; }
+        p strong { color: var(--text); }
+        .key-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(74,144,164,0.3); border-radius: 8px; padding: 16px; margin: 24px 0; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent-light); word-break: break-all; position: relative; cursor: pointer; }
+        .key-box:hover { border-color: var(--accent); }
+        .key-box .copy-hint { position: absolute; top: -8px; right: 12px; font-size: 10px; background: var(--bg); padding: 0 6px; color: var(--text-muted); font-family: 'Inter', sans-serif; }
+        .code-example { background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 16px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); text-align: left; line-height: 1.8; overflow-x: auto; }
+        .code-example .comment { color: rgba(255,255,255,0.3); }
+        .code-example .string { color: var(--accent-green); }
         a { color: var(--accent); text-decoration: none; }
         a:hover { text-decoration: underline; }
-        .btn { display: inline-block; margin-top: 24px; padding: 12px 32px; background: var(--accent); color: var(--bg); border-radius: 8px; font-weight: 600; font-size: 14px; text-decoration: none; }
+        .btn { display: inline-block; margin-top: 16px; padding: 12px 32px; background: var(--accent); color: var(--bg); border-radius: 8px; font-weight: 600; font-size: 14px; text-decoration: none; transition: opacity 0.15s; }
+        .btn:hover { opacity: 0.9; text-decoration: none; }
+        .help-box { background: rgba(74,144,164,0.08); border: 1px solid rgba(74,144,164,0.2); border-radius: 10px; padding: 20px; margin-top: 32px; text-align: center; }
+        .help-box p { margin-bottom: 8px; }
+        .help-box a.email { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: var(--accent-light); }
+        .steps { display: flex; gap: 16px; margin: 24px 0; text-align: center; }
+        .step { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 16px 12px; }
+        .step .num { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+        .step .label { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
     </style>
 </head>
 <body>
     <div class="card">
         <span class="check">✅</span>
         <h1>Welcome to the School Schedule Database!</h1>
-        <p>Your subscription is active. Your API key has been generated and will be emailed to the address you provided during checkout.</p>
-        <div class="key-box" id="key-display">Loading your API key...</div>
-        <p><strong>Save this key — it's shown only once.</strong> Use it in the Authorization header:</p>
-        <div class="key-box" style="font-size:12px;color:rgba(255,255,255,0.4)">Authorization: Bearer ssd_live_your_key_here</div>
-        <p>Read the <a href="/ssd/docs/">API documentation</a> to get started, or explore the <a href="/ssd/">landing page</a>.</p>
-        <a href="/ssd/docs/" class="btn">View API Docs →</a>
+        <p>Your subscription is active and your API key is ready.</p>
+
+        <div class="key-box" id="key-display" onclick="navigator.clipboard.writeText(this.textContent).then(function(){document.querySelector('.copy-hint').textContent='Copied!'})">
+            <span class="copy-hint">Click to copy</span>
+            Loading your API key...
+        </div>
+        <p><strong>Save this key now — it's shown only once.</strong> We store only a hash and cannot recover it for you.</p>
+
+        <h2>Quick Start</h2>
+        <div class="steps">
+            <div class="step"><div class="num">1</div><div class="label">Copy your API key above</div></div>
+            <div class="step"><div class="num">2</div><div class="label">Try the request below</div></div>
+            <div class="step"><div class="num">3</div><div class="label">You're in business</div></div>
+        </div>
+
+        <div class="code-example">
+            <span class="comment"># Your first request — try it now</span><br>
+            curl <span class="string">"https://api.hazeydata.ai/ssd/v1/districts?state=FL&amp;limit=5"</span> \<br>
+            &nbsp;&nbsp;-H <span class="string">"Authorization: Bearer YOUR_KEY_HERE"</span>
+        </div>
+        <p style="font-size:13px;">Replace <code style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);background:rgba(74,144,164,0.1);padding:2px 6px;border-radius:3px;">YOUR_KEY_HERE</code> with the key above. You should see Florida's largest districts.</p>
+
+        <a href="/ssd/docs.html" class="btn">Read Full API Docs →</a>
+
+        <div class="help-box">
+            <p><strong>Need help connecting?</strong></p>
+            <p style="font-size:13px;">If anything isn't working, email me directly — I'll get you sorted out fast.</p>
+            <a href="mailto:fred@hazeydata.ai?subject=SSD%20API%20Help&body=My%20API%20key%20prefix%3A%20ssd_live_...%0A%0AIssue%3A%20" class="email">fred@hazeydata.ai</a>
+        </div>
     </div>
     <script>
-        // Try to retrieve the API key from the session
         var params = new URLSearchParams(window.location.search);
         var sessionId = params.get('session_id');
         if (sessionId) {
@@ -39,16 +76,16 @@
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     if (data.api_key) {
-                        document.getElementById('key-display').textContent = data.api_key;
+                        document.getElementById('key-display').childNodes[1].textContent = data.api_key;
                     } else {
-                        document.getElementById('key-display').textContent = 'Your key will be emailed to you shortly.';
+                        document.getElementById('key-display').childNodes[1].textContent = 'Your key will be emailed to you shortly.';
                     }
                 })
                 .catch(function() {
-                    document.getElementById('key-display').textContent = 'Your key will be emailed to you shortly.';
+                    document.getElementById('key-display').childNodes[1].textContent = 'Your key will be emailed to you shortly.';
                 });
         } else {
-            document.getElementById('key-display').textContent = 'Your key will be emailed to you shortly.';
+            document.getElementById('key-display').childNodes[1].textContent = 'Your key will be emailed to you shortly.';
         }
     </script>
 </body>
