@@ -106,7 +106,32 @@
     <!-- ACCORD -->
     <url>
         <loc>https://hazeydata.ai/accord/</loc>
-        <lastmod>2026-03-15</lastmod>
+        <lastmod>2026-03-26</lastmod>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://hazeydata.ai/accord/demo/</loc>
+        <lastmod>2026-03-26</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://hazeydata.ai/accord/guides/</loc>
+        <lastmod>2026-03-26</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://hazeydata.ai/accord/blog/</loc>
+        <lastmod>2026-03-26</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://hazeydata.ai/accord/blog/ag-report-march-2026/</loc>
+        <lastmod>2026-03-26</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://hazeydata.ai/accord/guides/vacation-leave-federal-government/</loc>
+        <lastmod>2026-03-26</lastmod>
         <priority>0.7</priority>
     </url>
 </urlset>

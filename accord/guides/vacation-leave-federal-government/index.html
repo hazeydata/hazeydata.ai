@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Vacation Leave Works in the Federal Public Service | ACCORD</title>
+    <meta name="description" content="A plain-language guide to vacation leave accrual in the Government of Canada federal public service — tiers, rates, carry-over rules, and common Phoenix errors.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/icon-180.png">
+    <meta name="theme-color" content="#26374A">
+    <link rel="canonical" href="https://hazeydata.ai/accord/guides/vacation-leave-federal-government/">
+    <link rel="alternate" hreflang="en" href="https://hazeydata.ai/accord/guides/vacation-leave-federal-government/">
+    <link rel="alternate" hreflang="fr" href="https://hazeydata.ai/accord/guides/vacation-leave-federal-government/">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://hazeydata.ai/accord/guides/vacation-leave-federal-government/">
+    <meta property="og:title" content="How Vacation Leave Works in the Federal Public Service">
+    <meta property="og:description" content="Vacation accrual tiers, carry-over caps, part-time rules, and why Phoenix got the year-8 jump wrong. A plain-language guide for GC employees.">
+    <meta property="og:image" content="https://hazeydata.ai/assets/accord-og.png">
+    <meta property="og:site_name" content="hazeydata.ai">
+    <meta property="article:published_time" content="2026-03-26">
+    <meta property="article:author" content="hazeydata.ai">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How Vacation Leave Works in the Federal Public Service">
+    <meta name="twitter:description" content="Vacation accrual tiers, carry-over caps, part-time rules, and why Phoenix got the year-8 jump wrong.">
+    <meta name="twitter:image" content="https://hazeydata.ai/assets/accord-og.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Article",
+                "headline": "How Vacation Leave Works in the Federal Public Service",
+                "description": "A plain-language guide to vacation leave accrual in the Government of Canada federal public service.",
+                "datePublished": "2026-03-26",
+                "author": { "@type": "Organization", "name": "hazeydata.ai", "url": "https://hazeydata.ai" },
+                "publisher": { "@type": "Organization", "name": "hazeydata.ai", "url": "https://hazeydata.ai" },
+                "mainEntityOfPage": "https://hazeydata.ai/accord/guides/vacation-leave-federal-government/",
+                "image": "https://hazeydata.ai/assets/accord-og.png",
+                "inLanguage": ["en", "fr"]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "When does my vacation year start?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "The federal vacation year runs from April 1 to March 31."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "What happens if I don't use all my vacation?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Up to 262.5 hours (35 days) carries over to the next vacation year. Any excess above that cap is automatically paid out at your daily rate."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "I'm IT classification - do I get more vacation sooner?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Yes. IT classification breaks at year 7 instead of year 8 under the PA agreement. You earn 12.5 hours per month one year earlier than PA employees."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "What is the 75-hour threshold for vacation credits?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "You must earn at least 75 hours' pay in a calendar month to earn vacation leave credits for that month. If you fall below 75 hours (e.g., due to leave without pay), you do not accrue vacation credits that month."
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        :root {
+            --gc-blue: #26374A; --gc-blue-light: #335075; --gc-blue-lighter: #4a6fa5;
+            --gc-red: #AF3C43; --gc-red-dark: #8B1E2F; --gc-white: #FFFFFF;
+            --gc-grey-light: #F8F9FA; --gc-grey: #E5E5E5; --gc-grey-mid: #6C757D;
+            --gc-grey-dark: #333333; --accent-gold: #C8A951; --accent-teal: #2A7F8E;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--gc-grey-dark); line-height: 1.6; -webkit-font-smoothing: antialiased; background: var(--gc-white); }
+
+        /* Nav */
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; max-width: 1100px; margin: 0 auto; }
+        .nav-brand { font-weight: 800; font-size: 1rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-brand .logo-mark { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.12em; background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: logo-shimmer 6s linear infinite; }
+        .nav-brand .logo-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4a90a4; margin-left: 2px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; }
+        @keyframes logo-shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+        .nav-links a { color: var(--gc-grey-mid); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--gc-blue); }
+        .nav-links a.active { color: var(--gc-blue); font-weight: 600; }
+        .lang-btn { padding: 0.3rem 0.75rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: white; color: var(--gc-grey-dark); cursor: pointer; transition: all 0.2s; }
+        .lang-btn:hover { border-color: var(--gc-blue); color: var(--gc-blue); }
+        .gc-bar { height: 4px; background: var(--gc-red); }
+
+        /* Article header */
+        .article-header { background: linear-gradient(165deg, var(--gc-blue) 0%, #1a2e45 60%, var(--gc-blue-light) 100%); color: var(--gc-white); padding: 4rem 2rem 3rem; }
+        .article-header-inner { max-width: 720px; margin: 0 auto; }
+        .article-header .breadcrumb { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+        .article-header .breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .article-header .breadcrumb a:hover { color: white; border-color: white; }
+        .article-header h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; line-height: 1.2; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .article-meta { font-size: 0.85rem; color: rgba(255,255,255,0.55); display: flex; gap: 1.5rem; flex-wrap: wrap; }
+
+        /* Article body */
+        .article-body { max-width: 720px; margin: 0 auto; padding: 3rem 2rem 4rem; }
+        .article-body h2 { font-size: 1.5rem; font-weight: 800; color: var(--gc-blue); margin: 2.5rem 0 1rem; letter-spacing: -0.01em; line-height: 1.3; }
+        .article-body h2:first-child { margin-top: 0; }
+        .article-body p { font-size: 1rem; line-height: 1.75; margin-bottom: 1.25rem; color: var(--gc-grey-dark); }
+        .article-body ul, .article-body ol { margin: 0 0 1.25rem 1.5rem; }
+        .article-body li { font-size: 1rem; line-height: 1.75; margin-bottom: 0.5rem; color: var(--gc-grey-dark); }
+        .article-body a { color: var(--gc-blue-light); text-decoration: none; border-bottom: 1px solid rgba(51,80,117,0.3); transition: border-color 0.2s; }
+        .article-body a:hover { border-color: var(--gc-blue-light); }
+        .article-body strong { font-weight: 700; }
+
+        /* Tables */
+        .table-wrap { overflow-x: auto; margin: 1.5rem 0; border-radius: 8px; border: 1px solid var(--gc-grey); }
+        .article-body table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+        .article-body thead { background: var(--gc-blue); color: white; }
+        .article-body th { padding: 0.75rem 1rem; text-align: left; font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+        .article-body td { padding: 0.7rem 1rem; border-top: 1px solid var(--gc-grey); }
+        .article-body tbody tr:nth-child(even) { background: var(--gc-grey-light); }
+        .article-body tbody tr:hover { background: #e8f0fe; }
+        .article-body .highlight-row { background: #fff3cd !important; font-weight: 600; }
+
+        /* Callout boxes */
+        .callout { background: #f0f6ff; border-left: 4px solid var(--gc-blue-light); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+        .callout p { margin-bottom: 0; font-size: 0.95rem; }
+        .callout-warning { background: #fff8e1; border-left-color: #e6a817; }
+        .callout-tip { background: #e8f5e9; border-left-color: #2e7d32; }
+        .callout-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; color: var(--gc-blue-light); }
+        .callout-warning .callout-label { color: #b8860b; }
+        .callout-tip .callout-label { color: #2e7d32; }
+
+        /* FAQ */
+        .faq-item { border-bottom: 1px solid var(--gc-grey); padding: 1.25rem 0; }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-q { font-weight: 700; font-size: 1.05rem; color: var(--gc-blue); margin-bottom: 0.5rem; }
+        .faq-a { font-size: 0.95rem; line-height: 1.7; color: var(--gc-grey-dark); }
+        .faq-a p { margin-bottom: 0; }
+
+        /* CTA */
+        .article-cta { background: var(--gc-grey-light); border: 1px solid var(--gc-grey); border-radius: 10px; padding: 2rem; text-align: center; margin: 3rem 0 0; }
+        .article-cta h3 { font-size: 1.2rem; font-weight: 700; color: var(--gc-blue); margin-bottom: 0.5rem; }
+        .article-cta p { font-size: 0.95rem; color: var(--gc-grey-mid); margin-bottom: 1.25rem; }
+        .cta-btn { display: inline-block; background: var(--gc-red); color: white !important; padding: 0.85rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: background 0.2s; border: none; }
+        .cta-btn:hover { background: #8B1E2F; } .article-body .cta-btn { color: white !important; border-bottom: none !important; }
+
+        /* Sources */
+        .sources { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--gc-grey); }
+        .sources h3 { font-size: 0.9rem; font-weight: 700; color: var(--gc-grey-mid); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; }
+        .sources ol { margin-left: 1.25rem; }
+        .sources li { font-size: 0.85rem; line-height: 1.6; color: var(--gc-grey-mid); margin-bottom: 0.5rem; }
+
+        /* Footer */
+        .footer { background: var(--gc-blue); color: rgba(255,255,255,0.5); text-align: center; padding: 2rem; font-size: 0.8rem; }
+        .footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+        .footer a:hover { color: white; }
+        .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+
+        @media (max-width: 768px) {
+            .article-header { padding: 3rem 1.5rem 2rem; }
+            .article-body { padding: 2rem 1.5rem 3rem; }
+            .article-meta { flex-direction: column; gap: 0.5rem; }
+            .nav-links { gap: 1rem; }
+        }
+            .disclaimer { font-size: 0.7rem; color: rgba(255,255,255,0.35); max-width: 720px; margin: 1rem auto 0; line-height: 1.5; } .disclaimer a { color: rgba(255,255,255,0.5); text-decoration: underline; }
+            .info-banner { background: #fff9e6; text-align: center; padding: 0.5rem 1rem; font-size: 0.75rem; color: #5a5a5a; line-height: 1.4; } .info-banner a { color: #335075; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="gc-bar"></div>
+    <div class="info-banner" data-en="&#x2139;&#xFE0F; For information purposes only. Not affiliated with the Government of Canada. Always verify with the <a href='https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html'>official collective agreement text</a>." data-fr="&#x2139;&#xFE0F; &Agrave; titre informatif seulement. Non affili&eacute; au gouvernement du Canada. Toujours v&eacute;rifier avec le <a href='https://www.canada.ca/fr/secretariat-conseil-tresor/services/conventions-collectives.html'>texte officiel de la convention collective</a>.">&#x2139;&#xFE0F; For information purposes only. Not affiliated with the Government of Canada. Always verify with the <a href="https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html">official collective agreement text</a>.</div>
+    <nav class="nav">
+        <a href="/" class="nav-brand"><span class="logo-mark">HAZEYDATA</span><span class="logo-dot"></span></a>
+        <div class="nav-links">
+            <a href="/" data-en="Home" data-fr="Accueil">Home</a>
+            <a href="/accord/">ACCORD</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
+            <a href="/accord/guides/" class="active" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="/accord/blog/" data-en="Blog" data-fr="Blogue">Blog</a>
+            <button class="lang-btn" onclick="toggleLang()">FR</button>
+        </div>
+    </nav>
+
+    <header class="article-header">
+        <div class="article-header-inner">
+            <div class="breadcrumb">
+                <a href="/accord/">ACCORD</a> &rsaquo; <a href="/accord/guides/" data-en="Guides" data-fr="Guides">Guides</a> &rsaquo; <span data-en="Vacation Leave" data-fr="Cong&eacute;s annuels">Vacation Leave</span>
+            </div>
+            <h1 data-en="How Vacation Leave Works in the Federal Public Service" data-fr="Fonctionnement des cong&eacute;s annuels dans la fonction publique f&eacute;d&eacute;rale">How Vacation Leave Works in the Federal Public Service</h1>
+            <div class="article-meta">
+                <span data-en="March 26, 2026" data-fr="26 mars 2026">March 26, 2026</span>
+                <span data-en="8 min read" data-fr="8 min de lecture">8 min read</span>
+                <span data-en="PA Art. 34 &middot; IT Art. 15 &middot; CX Art. 34" data-fr="PA art. 34 &middot; IT art. 15 &middot; CX art. 34">PA Art. 34 &middot; IT Art. 15 &middot; CX Art. 34</span>
+            </div>
+        </div>
+    </header>
+
+    <article class="article-body">
+
+        <p data-en="Vacation leave is one of the most valuable benefits in the federal public service &mdash; and one of the most frequently miscalculated. If you work for the Government of Canada, your vacation entitlement is governed by your collective agreement, not by a generic HR policy. The rates, thresholds, and break points vary by classification group, years of service, and whether you work full-time or part-time." data-fr="Les cong&eacute;s annuels constituent l'un des avantages les plus pr&eacute;cieux de la fonction publique f&eacute;d&eacute;rale &mdash; et l'un des plus fr&eacute;quemment mal calcul&eacute;s. Si vous travaillez pour le gouvernement du Canada, vos droits aux cong&eacute;s annuels sont r&eacute;gis par votre convention collective et non par une politique RH g&eacute;n&eacute;rique. Les taux, les seuils et les points de transition varient selon le groupe de classification, les ann&eacute;es de service et le fait que vous travailliez &agrave; temps plein ou &agrave; temps partiel.">Vacation leave is one of the most valuable benefits in the federal public service &mdash; and one of the most frequently miscalculated. If you work for the Government of Canada, your vacation entitlement is governed by your collective agreement, not by a generic HR policy. The rates, thresholds, and break points vary by classification group, years of service, and whether you work full-time or part-time.</p>
+
+        <p data-en="This guide walks through the rules as written in the collective agreements themselves &mdash; with article references you can verify. We cover the Programme Administration (PA) group in detail, then explain where IT, EC, FB, CX, and part-time employees differ." data-fr="Ce guide passe en revue les r&egrave;gles telles qu'elles sont &eacute;crites dans les conventions collectives elles-m&ecirc;mes &mdash; avec les r&eacute;f&eacute;rences aux articles que vous pouvez v&eacute;rifier. Nous couvrons en d&eacute;tail le groupe Administration du programme (PA), puis nous expliquons les diff&eacute;rences pour les employ&eacute;s IT, EC, FB, CX et &agrave; temps partiel.">This guide walks through the rules as written in the collective agreements themselves &mdash; with article references you can verify. We cover the Programme Administration (PA) group in detail, then explain where IT, EC, FB, CX, and part-time employees differ.</p>
+
+        <!-- Section 1: How Vacation Accrual Works -->
+        <h2 data-en="How Vacation Accrual Works (Art. 34.02)" data-fr="Fonctionnement de l'accumulation des cong&eacute;s annuels (art. 34.02)">How Vacation Accrual Works (Art. 34.02)</h2>
+
+        <p data-en="Federal employees earn vacation leave credits on a monthly basis. The number of hours you earn each month depends on how many years of continuous service you have. This is set out in Article 34.02 of the PA collective agreement." data-fr="Les employ&eacute;s f&eacute;d&eacute;raux accumulent des cr&eacute;dits de cong&eacute;s annuels sur une base mensuelle. Le nombre d'heures que vous accumulez chaque mois d&eacute;pend de vos ann&eacute;es de service continu. Cela est &eacute;tabli &agrave; l'article 34.02 de la convention collective PA.">Federal employees earn vacation leave credits on a monthly basis. The number of hours you earn each month depends on how many years of continuous service you have. This is set out in Article 34.02 of the PA collective agreement.</p>
+
+        <p data-en="There are a few key rules to understand upfront:" data-fr="Il y a quelques r&egrave;gles cl&eacute;s &agrave; comprendre d'embl&eacute;e&nbsp;:">There are a few key rules to understand upfront:</p>
+
+        <ul>
+            <li data-en="<strong>Credits are in hours, not days.</strong> A &ldquo;day&rdquo; of vacation equals 7.5 hours for most employees (those on a 37.5-hour workweek). When your pay stub shows vacation leave, it shows hours." data-fr="<strong>Les cr&eacute;dits sont en heures, pas en jours.</strong> Un &laquo;&nbsp;jour&nbsp;&raquo; de cong&eacute; annuel &eacute;quivaut &agrave; 7,5 heures pour la plupart des employ&eacute;s (ceux sur une semaine de 37,5 heures). Lorsque votre talon de paie affiche les cong&eacute;s annuels, il affiche des heures."><strong>Credits are in hours, not days.</strong> A &ldquo;day&rdquo; of vacation equals 7.5 hours for most employees (those on a 37.5-hour workweek). When your pay stub shows vacation leave, it shows hours.</li>
+            <li data-en="<strong>You must earn at least 75 hours' pay in the month.</strong> If you fall below 75 hours of paid time in a calendar month &mdash; for example, because of extended leave without pay &mdash; you do not earn vacation credits for that month." data-fr="<strong>Vous devez toucher au moins 75 heures de r&eacute;mun&eacute;ration dans le mois.</strong> Si vous &ecirc;tes en de&ccedil;&agrave; de 75 heures de temps r&eacute;mun&eacute;r&eacute; dans un mois civil &mdash; par exemple, en raison d'un cong&eacute; non pay&eacute; prolong&eacute; &mdash; vous n'accumulez pas de cr&eacute;dits de cong&eacute; annuel pour ce mois."><strong>You must earn at least 75 hours' pay in the month.</strong> If you fall below 75 hours of paid time in a calendar month &mdash; for example, because of extended leave without pay &mdash; you do not earn vacation credits for that month.</li>
+            <li data-en="<strong>The vacation year runs April 1 to March 31.</strong> This aligns with the Government of Canada fiscal year, not the calendar year. Your carry-over balance resets on April 1." data-fr="<strong>L'ann&eacute;e de cong&eacute; annuel va du 1er avril au 31 mars.</strong> Cela correspond &agrave; l'ann&eacute;e fiscale du gouvernement du Canada, et non &agrave; l'ann&eacute;e civile. Votre solde de report est recalcul&eacute; au 1er avril."><strong>The vacation year runs April 1 to March 31.</strong> This aligns with the Government of Canada fiscal year, not the calendar year. Your carry-over balance resets on April 1.</li>
+            <li data-en="<strong>Accrual starts immediately.</strong> You begin earning vacation credits in your first month of employment, as long as you meet the 75-hour threshold." data-fr="<strong>L'accumulation commence imm&eacute;diatement.</strong> Vous commencez &agrave; accumuler des cr&eacute;dits de cong&eacute; annuel d&egrave;s votre premier mois d'emploi, pourvu que vous atteigniez le seuil de 75 heures."><strong>Accrual starts immediately.</strong> You begin earning vacation credits in your first month of employment, as long as you meet the 75-hour threshold.</li>
+        </ul>
+
+        <!-- Section 2: The 7 Accrual Tiers -->
+        <h2 data-en="The 7 Accrual Tiers" data-fr="Les 7 niveaux d'accumulation">The 7 Accrual Tiers</h2>
+
+        <p data-en="The PA collective agreement defines seven tiers of vacation accrual. Each tier corresponds to a range of continuous service years and a specific monthly credit rate. Here are the exact values from Article 34.02:" data-fr="La convention collective PA d&eacute;finit sept niveaux d'accumulation de cong&eacute;s annuels. Chaque niveau correspond &agrave; une plage d'ann&eacute;es de service continu et &agrave; un taux mensuel de cr&eacute;dit sp&eacute;cifique. Voici les valeurs exactes de l'article 34.02&nbsp;:">The PA collective agreement defines seven tiers of vacation accrual. Each tier corresponds to a range of continuous service years and a specific monthly credit rate. Here are the exact values from Article 34.02:</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th data-en="Years of Service" data-fr="Ann&eacute;es de service">Years of Service</th>
+                        <th data-en="Hours / Month" data-fr="Heures / mois">Hours / Month</th>
+                        <th data-en="Days / Year" data-fr="Jours / an">Days / Year</th>
+                        <th data-en="Article" data-fr="Article">Article</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0&ndash;7</td>
+                        <td>9.375</td>
+                        <td>15</td>
+                        <td>34.02(a)</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>8&ndash;15</td>
+                        <td>12.5</td>
+                        <td>20</td>
+                        <td>34.02(b)</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>13.75</td>
+                        <td>22</td>
+                        <td>34.02(c)</td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>14.4</td>
+                        <td>&sim;23</td>
+                        <td>34.02(d)</td>
+                    </tr>
+                    <tr>
+                        <td>18&ndash;26</td>
+                        <td>15.625</td>
+                        <td>25</td>
+                        <td>34.02(e)</td>
+                    </tr>
+                    <tr>
+                        <td>27</td>
+                        <td>16.875</td>
+                        <td>27</td>
+                        <td>34.02(f)</td>
+                    </tr>
+                    <tr>
+                        <td>28+</td>
+                        <td>18.75</td>
+                        <td>30</td>
+                        <td>34.02(g)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="callout callout-tip">
+            <div class="callout-label" data-en="How to read this table" data-fr="Comment lire ce tableau">How to read this table</div>
+            <p data-en="&ldquo;Days / Year&rdquo; assumes 12 months of qualifying service at 7.5 hours per day. For example, tier (a): 9.375 hours &times; 12 months = 112.5 hours &divide; 7.5 hours/day = 15 days." data-fr="&laquo;&nbsp;Jours / an&nbsp;&raquo; suppose 12 mois de service admissible &agrave; 7,5 heures par jour. Par exemple, niveau (a)&nbsp;: 9,375 heures &times; 12 mois = 112,5 heures &divide; 7,5 heures/jour = 15 jours.">&ldquo;Days / Year&rdquo; assumes 12 months of qualifying service at 7.5 hours per day. For example, tier (a): 9.375 hours &times; 12 months = 112.5 hours &divide; 7.5 hours/day = 15 days.</p>
+        </div>
+
+        <!-- Section 3: The Year-8 Problem -->
+        <h2 data-en="The Year-8 Problem &mdash; Why This Matters" data-fr="Le probl&egrave;me de l'ann&eacute;e 8 &mdash; pourquoi c'est important">The Year-8 Problem &mdash; Why This Matters</h2>
+
+        <p data-en="The jump from tier (a) to tier (b) &mdash; from year 7 to year 8 &mdash; is the single largest increase in the entire accrual schedule. Your vacation entitlement goes from 15 days per year to 20 days per year. That is a 33% increase overnight." data-fr="Le passage du niveau (a) au niveau (b) &mdash; de l'ann&eacute;e 7 &agrave; l'ann&eacute;e 8 &mdash; est la plus grande augmentation de tout le bar&egrave;me d'accumulation. Votre droit aux cong&eacute;s annuels passe de 15 jours par ann&eacute;e &agrave; 20 jours par ann&eacute;e. C'est une augmentation de 33&nbsp;% du jour au lendemain.">The jump from tier (a) to tier (b) &mdash; from year 7 to year 8 &mdash; is the single largest increase in the entire accrual schedule. Your vacation entitlement goes from 15 days per year to 20 days per year. That is a 33% increase overnight.</p>
+
+        <div class="callout callout-warning">
+            <div class="callout-label" data-en="Worked example" data-fr="Exemple concret">Worked example</div>
+            <p data-en="An employee at year 7 earns 9.375 hours/month (15 days/year). At year 8, they earn 12.5 hours/month (20 days/year). That is 37.5 more hours of vacation per year &mdash; <strong>a full extra week</strong>. If this transition is missed or delayed in the pay system, you lose a week of vacation every year until it is corrected." data-fr="Un employ&eacute; &agrave; l'ann&eacute;e 7 accumule 9,375 heures/mois (15 jours/an). &Agrave; l'ann&eacute;e 8, il accumule 12,5 heures/mois (20 jours/an). C'est 37,5 heures de cong&eacute; annuel de plus par ann&eacute;e &mdash; <strong>une semaine compl&egrave;te en plus</strong>. Si cette transition est manqu&eacute;e ou retard&eacute;e dans le syst&egrave;me de paie, vous perdez une semaine de vacances chaque ann&eacute;e jusqu'&agrave; ce que cela soit corrig&eacute;.">An employee at year 7 earns 9.375 hours/month (15 days/year). At year 8, they earn 12.5 hours/month (20 days/year). That is 37.5 more hours of vacation per year &mdash; <strong>a full extra week</strong>. If this transition is missed or delayed in the pay system, you lose a week of vacation every year until it is corrected.</p>
+        </div>
+
+        <p data-en="This is not a hypothetical problem. The Auditor General's 2017 report on Phoenix found that 40% of retroactive pay transactions could not be auto-processed. Service-date adjustments &mdash; the kind that trigger a tier change &mdash; were among the most common failures. If your years-of-service calculation was wrong in the system, your vacation accrual was wrong too." data-fr="Ce n'est pas un probl&egrave;me hypoth&eacute;tique. Le rapport de 2017 du v&eacute;rificateur g&eacute;n&eacute;ral sur Ph&eacute;nix a constat&eacute; que 40&nbsp;% des transactions de paie r&eacute;troactives ne pouvaient pas &ecirc;tre trait&eacute;es automatiquement. Les ajustements de date de service &mdash; le genre qui d&eacute;clenche un changement de niveau &mdash; &eacute;taient parmi les &eacute;checs les plus fr&eacute;quents. Si votre calcul d'ann&eacute;es de service &eacute;tait erron&eacute; dans le syst&egrave;me, votre accumulation de cong&eacute;s annuels l'&eacute;tait aussi.">This is not a hypothetical problem. The Auditor General's 2017 report on Phoenix found that 40% of retroactive pay transactions could not be auto-processed. Service-date adjustments &mdash; the kind that trigger a tier change &mdash; were among the most common failures. If your years-of-service calculation was wrong in the system, your vacation accrual was wrong too.</p>
+
+        <p data-en="If you are approaching your 8th year of service, check your leave balances carefully. Confirm the service date in your HR file matches what appears in the pay system. A single wrong date can cascade into years of under-accrual." data-fr="Si vous approchez de votre 8e ann&eacute;e de service, v&eacute;rifiez attentivement vos soldes de cong&eacute;s. Confirmez que la date de service dans votre dossier RH correspond &agrave; ce qui appara&icirc;t dans le syst&egrave;me de paie. Une seule date erron&eacute;e peut entra&icirc;ner des ann&eacute;es de sous-accumulation.">If you are approaching your 8th year of service, check your leave balances carefully. Confirm the service date in your HR file matches what appears in the pay system. A single wrong date can cascade into years of under-accrual.</p>
+
+        <!-- Section 4: How IT Employees Are Different -->
+        <h2 data-en="How IT Employees Are Different" data-fr="En quoi les employ&eacute;s IT sont diff&eacute;rents">How IT Employees Are Different</h2>
+
+        <p data-en="The Information Technology (IT) group is not covered by the PA collective agreement for vacation leave purposes. IT employees have their own agreement, and the vacation provisions are in Article 15.02. The critical difference: <strong>IT breaks at year 7, not year 8.</strong>" data-fr="Le groupe Technologies de l'information (IT) n'est pas couvert par la convention collective PA en ce qui concerne les cong&eacute;s annuels. Les employ&eacute;s IT ont leur propre convention, et les dispositions sur les cong&eacute;s annuels se trouvent &agrave; l'article 15.02. La diff&eacute;rence cruciale&nbsp;: <strong>le niveau IT change &agrave; l'ann&eacute;e 7, pas &agrave; l'ann&eacute;e 8.</strong>">The Information Technology (IT) group is not covered by the PA collective agreement for vacation leave purposes. IT employees have their own agreement, and the vacation provisions are in Article 15.02. The critical difference: <strong>IT breaks at year 7, not year 8.</strong></p>
+
+        <p data-en="This means an IT employee begins earning 12.5 hours per month (20 days/year) one full year earlier than a PA employee with the same start date. Over the course of that year, that is 37.5 hours &mdash; five full working days &mdash; of additional vacation." data-fr="Cela signifie qu'un employ&eacute; IT commence &agrave; accumuler 12,5 heures par mois (20 jours/an) une ann&eacute;e compl&egrave;te plus t&ocirc;t qu'un employ&eacute; PA ayant la m&ecirc;me date de d&eacute;but. Sur le cours de cette ann&eacute;e, cela repr&eacute;sente 37,5 heures &mdash; cinq jours ouvrables complets &mdash; de cong&eacute;s annuels suppl&eacute;mentaires.">This means an IT employee begins earning 12.5 hours per month (20 days/year) one full year earlier than a PA employee with the same start date. Over the course of that year, that is 37.5 hours &mdash; five full working days &mdash; of additional vacation.</p>
+
+        <div class="callout callout-warning">
+            <div class="callout-label" data-en="Watch for this error" data-fr="Attention &agrave; cette erreur">Watch for this error</div>
+            <p data-en="If you are IT classification and Phoenix (or any successor system) applied the PA year-8 breakpoint to your file, you lost an entire year of higher accrual. This is a known category of pay error. If your accrual did not increase in your 7th year, file a PAR (Pay Action Request) referencing IT Art. 15.02." data-fr="Si vous &ecirc;tes de classification IT et que Ph&eacute;nix (ou tout syst&egrave;me successeur) a appliqu&eacute; le point de transition de l'ann&eacute;e 8 du PA &agrave; votre dossier, vous avez perdu une ann&eacute;e compl&egrave;te d'accumulation plus &eacute;lev&eacute;e. Il s'agit d'une cat&eacute;gorie connue d'erreur de paie. Si votre accumulation n'a pas augment&eacute; &agrave; votre 7e ann&eacute;e, soumettez une DAP (Demande d'action de paie) en r&eacute;f&eacute;ren&ccedil;ant l'art. 15.02 IT.">If you are IT classification and Phoenix (or any successor system) applied the PA year-8 breakpoint to your file, you lost an entire year of higher accrual. This is a known category of pay error. If your accrual did not increase in your 7th year, file a PAR (Pay Action Request) referencing IT Art. 15.02.</p>
+        </div>
+
+        <p data-en="IT is not the only group with an earlier breakpoint. The Economics and Social Science Services (EC) group also breaks at year 7. The Foreign Service (FB) group breaks at year 7 as well, although their tier (d) rate is 14.375 hours/month rather than the PA's 14.4 &mdash; a small but real difference that matters for precise pay validation." data-fr="Le groupe IT n'est pas le seul &agrave; avoir un point de transition plus pr&eacute;coce. Le groupe &Eacute;conomique et services de sciences sociales (EC) change aussi &agrave; l'ann&eacute;e 7. Le groupe Service ext&eacute;rieur (FB) change &eacute;galement &agrave; l'ann&eacute;e 7, bien que son taux au niveau (d) soit de 14,375 heures/mois plut&ocirc;t que le 14,4 du PA &mdash; une petite diff&eacute;rence r&eacute;elle qui compte pour la validation pr&eacute;cise de la paie.">IT is not the only group with an earlier breakpoint. The Economics and Social Science Services (EC) group also breaks at year 7. The Foreign Service (FB) group breaks at year 7 as well, although their tier (d) rate is 14.375 hours/month rather than the PA's 14.4 &mdash; a small but real difference that matters for precise pay validation.</p>
+
+        <!-- Section 5: Carry-Over and the 262.5-Hour Cap -->
+        <h2 data-en="Carry-Over and the 262.5-Hour Cap" data-fr="Le report et le plafond de 262,5 heures">Carry-Over and the 262.5-Hour Cap</h2>
+
+        <p data-en="Unused vacation leave credits carry over from one vacation year to the next, but there is a cap. Under the PA agreement, the maximum carry-over is <strong>262.5 hours</strong>, which equals 35 days at 7.5 hours per day." data-fr="Les cr&eacute;dits de cong&eacute;s annuels non utilis&eacute;s sont report&eacute;s d'une ann&eacute;e de cong&eacute; &agrave; l'autre, mais il y a un plafond. En vertu de la convention PA, le report maximal est de <strong>262,5 heures</strong>, soit 35 jours &agrave; 7,5 heures par jour.">Unused vacation leave credits carry over from one vacation year to the next, but there is a cap. Under the PA agreement, the maximum carry-over is <strong>262.5 hours</strong>, which equals 35 days at 7.5 hours per day.</p>
+
+        <p data-en="Any hours above 262.5 at the end of the vacation year (March 31) are automatically paid out at your daily rate of pay. This is not optional &mdash; you cannot bank them indefinitely. The payout is calculated using your rate as of March 31." data-fr="Toute heure au-del&agrave; de 262,5 &agrave; la fin de l'ann&eacute;e de cong&eacute; (31 mars) est automatiquement pay&eacute;e &agrave; votre taux journalier. Cela n'est pas optionnel &mdash; vous ne pouvez pas les accumuler ind&eacute;finiment. Le paiement est calcul&eacute; selon votre taux en date du 31 mars.">Any hours above 262.5 at the end of the vacation year (March 31) are automatically paid out at your daily rate of pay. This is not optional &mdash; you cannot bank them indefinitely. The payout is calculated using your rate as of March 31.</p>
+
+        <div class="callout callout-tip">
+            <div class="callout-label" data-en="The 2nd-anniversary bonus" data-fr="Le bonus du 2e anniversaire">The 2nd-anniversary bonus</div>
+            <p data-en="Article 34.18 provides a one-time credit of 37.5 hours (5 days) upon completing your second year of continuous employment. This is in addition to your normal monthly accrual. It was negotiated as a retention incentive for early-career employees." data-fr="L'article 34.18 pr&eacute;voit un cr&eacute;dit unique de 37,5 heures (5 jours) &agrave; la fin de votre deuxi&egrave;me ann&eacute;e d'emploi continu. Cela s'ajoute &agrave; votre accumulation mensuelle normale. Il a &eacute;t&eacute; n&eacute;goci&eacute; comme incitatif &agrave; la r&eacute;tention pour les employ&eacute;s en d&eacute;but de carri&egrave;re.">Article 34.18 provides a one-time credit of 37.5 hours (5 days) upon completing your second year of continuous employment. This is in addition to your normal monthly accrual. It was negotiated as a retention incentive for early-career employees.</p>
+        </div>
+
+        <!-- Section 6: Part-Time Employees -->
+        <h2 data-en="Part-Time Employees" data-fr="Employ&eacute;s &agrave; temps partiel">Part-Time Employees</h2>
+
+        <p data-en="Part-time employees earn vacation leave under the same tier structure, but with pro-rated credits. The rules are slightly different from full-time accrual:" data-fr="Les employ&eacute;s &agrave; temps partiel accumulent des cong&eacute;s annuels selon la m&ecirc;me structure de niveaux, mais avec des cr&eacute;dits au prorata. Les r&egrave;gles diff&egrave;rent l&eacute;g&egrave;rement de l'accumulation &agrave; temps plein&nbsp;:">Part-time employees earn vacation leave under the same tier structure, but with pro-rated credits. The rules are slightly different from full-time accrual:</p>
+
+        <ul>
+            <li data-en="<strong>Minimum hours threshold:</strong> Instead of 75 hours, you must earn pay for at least twice your normal weekly hours in the month. If your scheduled workweek is 22.5 hours, you need at least 45 hours of paid time to earn credits that month." data-fr="<strong>Seuil minimum d'heures&nbsp;:</strong> Au lieu de 75 heures, vous devez toucher une r&eacute;mun&eacute;ration d'au moins deux fois vos heures hebdomadaires normales dans le mois. Si votre semaine de travail pr&eacute;vue est de 22,5 heures, vous avez besoin d'au moins 45 heures de temps r&eacute;mun&eacute;r&eacute; pour accumuler des cr&eacute;dits ce mois-l&agrave;."><strong>Minimum hours threshold:</strong> Instead of 75 hours, you must earn pay for at least twice your normal weekly hours in the month. If your scheduled workweek is 22.5 hours, you need at least 45 hours of paid time to earn credits that month.</li>
+            <li data-en="<strong>Pro-rated multipliers:</strong> Credits are calculated using multipliers based on the ratio of your scheduled hours to the standard 37.5-hour week. For tier (a), the multiplier is 0.250; for tier (b), it is 0.333. The collective agreement specifies these multipliers explicitly." data-fr="<strong>Multiplicateurs au prorata&nbsp;:</strong> Les cr&eacute;dits sont calcul&eacute;s &agrave; l'aide de multiplicateurs bas&eacute;s sur le rapport entre vos heures pr&eacute;vues et la semaine standard de 37,5 heures. Pour le niveau (a), le multiplicateur est de 0,250&nbsp;; pour le niveau (b), il est de 0,333. La convention collective sp&eacute;cifie ces multiplicateurs explicitement."><strong>Pro-rated multipliers:</strong> Credits are calculated using multipliers based on the ratio of your scheduled hours to the standard 37.5-hour week. For tier (a), the multiplier is 0.250; for tier (b), it is 0.333. The collective agreement specifies these multipliers explicitly.</li>
+            <li data-en="<strong>Designated Paid Holiday (DPH) allowance:</strong> Part-time employees receive a DPH allowance of 4.6% of regular straight-time pay instead of individual paid holidays. This compensates for not receiving full-day holiday pay on statutory holidays." data-fr="<strong>Allocation de jours f&eacute;ri&eacute;s d&eacute;sign&eacute;s pay&eacute;s (JFD)&nbsp;:</strong> Les employ&eacute;s &agrave; temps partiel re&ccedil;oivent une allocation de JFD de 4,6&nbsp;% du salaire r&eacute;gulier &agrave; taux simple au lieu de jours f&eacute;ri&eacute;s pay&eacute;s individuels. Cela compense le fait de ne pas recevoir la paie compl&egrave;te d'une journ&eacute;e pour les jours f&eacute;ri&eacute;s."><strong>Designated Paid Holiday (DPH) allowance:</strong> Part-time employees receive a DPH allowance of 4.6% of regular straight-time pay instead of individual paid holidays. This compensates for not receiving full-day holiday pay on statutory holidays.</li>
+        </ul>
+
+        <p data-en="Part-time vacation calculations are one of the most error-prone areas in federal pay. The interaction between pro-rated credits, variable work schedules, and the DPH allowance creates many opportunities for miscalculation &mdash; especially during schedule changes." data-fr="Les calculs de cong&eacute;s annuels &agrave; temps partiel sont l'un des domaines les plus sujets aux erreurs en paie f&eacute;d&eacute;rale. L'interaction entre les cr&eacute;dits au prorata, les horaires de travail variables et l'allocation de JFD cr&eacute;e de nombreuses occasions d'erreur de calcul &mdash; surtout lors de changements d'horaire.">Part-time vacation calculations are one of the most error-prone areas in federal pay. The interaction between pro-rated credits, variable work schedules, and the DPH allowance creates many opportunities for miscalculation &mdash; especially during schedule changes.</p>
+
+        <!-- Section 7: CX — A Completely Different System -->
+        <h2 data-en="CX (Correctional) &mdash; A Completely Different System" data-fr="CX (Services correctionnels) &mdash; un syst&egrave;me compl&egrave;tement diff&eacute;rent">CX (Correctional) &mdash; A Completely Different System</h2>
+
+        <p data-en="If you work as a Correctional Officer (CX group), almost everything about vacation leave is different. The CX collective agreement is negotiated separately, and the numbers reflect the 40-hour workweek that CX employees work (compared to 37.5 for most other groups)." data-fr="Si vous travaillez comme agent correctionnel (groupe CX), presque tout concernant les cong&eacute;s annuels est diff&eacute;rent. La convention collective CX est n&eacute;goci&eacute;e s&eacute;par&eacute;ment, et les chiffres refl&egrave;tent la semaine de travail de 40 heures des employ&eacute;s CX (compar&eacute;e &agrave; 37,5 pour la plupart des autres groupes).">If you work as a Correctional Officer (CX group), almost everything about vacation leave is different. The CX collective agreement is negotiated separately, and the numbers reflect the 40-hour workweek that CX employees work (compared to 37.5 for most other groups).</p>
+
+        <p data-en="Here are the key differences:" data-fr="Voici les principales diff&eacute;rences&nbsp;:">Here are the key differences:</p>
+
+        <ul>
+            <li data-en="<strong>Base accrual rate:</strong> 10 hours/month (not 9.375)" data-fr="<strong>Taux d'accumulation de base&nbsp;:</strong> 10 heures/mois (et non 9,375)"><strong>Base accrual rate:</strong> 10 hours/month (not 9.375)</li>
+            <li data-en="<strong>Minimum hours threshold:</strong> 80 hours (not 75), reflecting the 40-hour workweek" data-fr="<strong>Seuil minimum d'heures&nbsp;:</strong> 80 heures (et non 75), refl&eacute;tant la semaine de 40 heures"><strong>Minimum hours threshold:</strong> 80 hours (not 75), reflecting the 40-hour workweek</li>
+            <li data-en="<strong>Number of tiers:</strong> 6 (not 7). CX does not have the same granularity of breakpoints as PA" data-fr="<strong>Nombre de niveaux&nbsp;:</strong> 6 (et non 7). Le CX n'a pas la m&ecirc;me granularit&eacute; de points de transition que le PA"><strong>Number of tiers:</strong> 6 (not 7). CX does not have the same granularity of breakpoints as PA</li>
+            <li data-en="<strong>Carry-over cap:</strong> 280 hours (not 262.5), which equals 35 days at 8 hours per day" data-fr="<strong>Plafond de report&nbsp;:</strong> 280 heures (et non 262,5), soit 35 jours &agrave; 8 heures par jour"><strong>Carry-over cap:</strong> 280 hours (not 262.5), which equals 35 days at 8 hours per day</li>
+            <li data-en="<strong>Daily rate:</strong> A &ldquo;day&rdquo; for CX is 8 hours, not 7.5. This affects all leave deductions and payouts" data-fr="<strong>Taux journalier&nbsp;:</strong> Un &laquo;&nbsp;jour&nbsp;&raquo; pour le CX est de 8 heures, et non 7,5. Cela affecte toutes les d&eacute;ductions et paiements de cong&eacute;s"><strong>Daily rate:</strong> A &ldquo;day&rdquo; for CX is 8 hours, not 7.5. This affects all leave deductions and payouts</li>
+        </ul>
+
+        <div class="callout">
+            <div class="callout-label" data-en="Why this matters for pay validation" data-fr="Pourquoi c'est important pour la validation de la paie">Why this matters for pay validation</div>
+            <p data-en="Any pay validation system that treats all groups the same will get CX wrong. The thresholds, rates, caps, and day-lengths are all different. This is exactly the kind of classification-specific logic that ACCORD encodes from the source collective agreement text." data-fr="Tout syst&egrave;me de validation de la paie qui traite tous les groupes de la m&ecirc;me mani&egrave;re se trompera pour le CX. Les seuils, les taux, les plafonds et les dur&eacute;es de journ&eacute;e sont tous diff&eacute;rents. C'est exactement le type de logique propre &agrave; chaque classification qu'ACCORD encode &agrave; partir du texte source de la convention collective.">Any pay validation system that treats all groups the same will get CX wrong. The thresholds, rates, caps, and day-lengths are all different. This is exactly the kind of classification-specific logic that ACCORD encodes from the source collective agreement text.</p>
+        </div>
+
+        <!-- Not your classification? -->
+        <h2 data-en="Not your classification?" data-fr="Pas votre classification&nbsp;?">Not your classification?</h2>
+        <div class="callout callout-info">
+            <p data-en="This guide focuses on PA, IT, EC, FB, and CX &mdash; the largest groups. If you're in TC, SV, EB, TR, NR, SP, or another group, your vacation provisions may differ. ACCORD covers all ~150 collective agreements. <a href='/accord/demo/'>Try the demo &rarr;</a> to calculate your specific entitlement, or check back as we publish individual CA guides." data-fr="Ce guide porte sur les groupes PA, TI, EC, FB et CX &mdash; les plus importants. Si vous faites partie des groupes TC, SV, EB, TR, NR, SP ou d'un autre groupe, vos dispositions de cong&eacute; annuel peuvent diff&eacute;rer. ACCORD couvre les quelque 150 conventions collectives. <a href='/accord/demo/'>Essayez la d&eacute;mo &rarr;</a> pour calculer votre droit sp&eacute;cifique, ou revenez bient&ocirc;t pour nos guides par convention collective.">This guide focuses on PA, IT, EC, FB, and CX &mdash; the largest groups. If you're in TC, SV, EB, TR, NR, SP, or another group, your vacation provisions may differ. ACCORD covers all ~150 collective agreements. <a href="/accord/demo/">Try the demo &rarr;</a> to calculate your specific entitlement, or check back as we publish individual CA guides.</p>
+        </div>
+
+        <!-- FAQ Section -->
+        <h2 data-en="Frequently Asked Questions" data-fr="Foire aux questions">Frequently Asked Questions</h2>
+
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-q" data-en="When does my vacation year start?" data-fr="Quand commence mon ann&eacute;e de cong&eacute; annuel&nbsp;?" itemprop="name">When does my vacation year start?</div>
+            <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <p data-en="April 1 to March 31. This follows the Government of Canada fiscal year. Your carry-over balance is assessed as of March 31, and any excess above the cap is paid out." data-fr="Du 1er avril au 31 mars. Cela suit l'ann&eacute;e fiscale du gouvernement du Canada. Votre solde de report est &eacute;valu&eacute; au 31 mars, et tout exc&eacute;dent au-dessus du plafond est pay&eacute;." itemprop="text">April 1 to March 31. This follows the Government of Canada fiscal year. Your carry-over balance is assessed as of March 31, and any excess above the cap is paid out.</p>
+            </div>
+        </div>
+
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-q" data-en="What happens if I don't use all my vacation?" data-fr="Que se passe-t-il si je n'utilise pas tous mes cong&eacute;s annuels&nbsp;?" itemprop="name">What happens if I don't use all my vacation?</div>
+            <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <p data-en="Up to 262.5 hours (35 days) carries over to the next vacation year. Any amount above that cap is automatically paid out at your daily rate of pay as of March 31. You cannot opt out of this payout." data-fr="Jusqu'&agrave; 262,5 heures (35 jours) sont report&eacute;es &agrave; l'ann&eacute;e de cong&eacute; suivante. Tout montant au-dessus de ce plafond est automatiquement pay&eacute; &agrave; votre taux journalier en date du 31 mars. Vous ne pouvez pas refuser ce paiement." itemprop="text">Up to 262.5 hours (35 days) carries over to the next vacation year. Any amount above that cap is automatically paid out at your daily rate of pay as of March 31. You cannot opt out of this payout.</p>
+            </div>
+        </div>
+
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-q" data-en="I'm IT classification &mdash; do I get more vacation sooner?" data-fr="Je suis de classification IT &mdash; est-ce que j'ai droit &agrave; plus de cong&eacute;s plus t&ocirc;t&nbsp;?" itemprop="name">I'm IT classification &mdash; do I get more vacation sooner?</div>
+            <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <p data-en="Yes. The IT collective agreement (Art. 15.02) breaks at year 7 instead of year 8 under the PA agreement. This means you earn 12.5 hours/month (20 days/year) one full year earlier than a PA employee. If your system shows 9.375h/month in your 7th year of service, that is an error." data-fr="Oui. La convention collective IT (art. 15.02) change de niveau &agrave; l'ann&eacute;e 7 au lieu de l'ann&eacute;e 8 selon la convention PA. Cela signifie que vous accumulez 12,5 heures/mois (20 jours/an) une ann&eacute;e compl&egrave;te plus t&ocirc;t qu'un employ&eacute; PA. Si votre syst&egrave;me indique 9,375 h/mois dans votre 7e ann&eacute;e de service, c'est une erreur." itemprop="text">Yes. The IT collective agreement (Art. 15.02) breaks at year 7 instead of year 8 under the PA agreement. This means you earn 12.5 hours/month (20 days/year) one full year earlier than a PA employee. If your system shows 9.375h/month in your 7th year of service, that is an error.</p>
+            </div>
+        </div>
+
+        <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <div class="faq-q" data-en="What's the 75-hour threshold?" data-fr="Qu'est-ce que le seuil de 75 heures&nbsp;?" itemprop="name">What's the 75-hour threshold?</div>
+            <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <p data-en="You must earn at least 75 hours' pay in a calendar month to earn vacation leave credits for that month. This means if you take extended leave without pay, you may not accrue vacation during that period. The threshold is 80 hours for CX employees (40-hour workweek) and pro-rated for part-time employees based on their scheduled hours." data-fr="Vous devez toucher au moins 75 heures de r&eacute;mun&eacute;ration dans un mois civil pour accumuler des cr&eacute;dits de cong&eacute; annuel ce mois-l&agrave;. Cela signifie que si vous prenez un cong&eacute; non pay&eacute; prolong&eacute;, vous pourriez ne pas accumuler de cong&eacute;s annuels durant cette p&eacute;riode. Le seuil est de 80 heures pour les employ&eacute;s CX (semaine de 40 heures) et au prorata pour les employ&eacute;s &agrave; temps partiel selon leurs heures pr&eacute;vues." itemprop="text">You must earn at least 75 hours' pay in a calendar month to earn vacation leave credits for that month. This means if you take extended leave without pay, you may not accrue vacation during that period. The threshold is 80 hours for CX employees (40-hour workweek) and pro-rated for part-time employees based on their scheduled hours.</p>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="article-cta">
+            <h3 data-en="Calculate your vacation accrual" data-fr="Calculez votre accumulation de cong&eacute;s annuels">Calculate your vacation accrual</h3>
+            <p data-en="ACCORD validates vacation leave calculations against the actual collective agreement text &mdash; with article citations for every result. See it in action." data-fr="ACCORD valide les calculs de cong&eacute;s annuels par rapport au texte r&eacute;el de la convention collective &mdash; avec des citations d'articles pour chaque r&eacute;sultat. Voyez-le en action.">ACCORD validates vacation leave calculations against the actual collective agreement text &mdash; with article citations for every result. See it in action.</p>
+            <a href="/accord/demo/" class="cta-btn" data-en="Try the ACCORD demo &rarr;" data-fr="Essayer la d&eacute;mo ACCORD &rarr;">Try the ACCORD demo &rarr;</a>
+        </div>
+
+        <!-- Sources -->
+        <div class="sources">
+            <h3 data-en="Sources" data-fr="Sources">Sources</h3>
+            <ol>
+                <li data-en="Treasury Board of Canada Secretariat, <em>Programme Administration (PA) Collective Agreement</em>, Article 34 &mdash; Vacation Leave with Pay. <a href='https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=15' target='_blank' rel='noopener'>tbs-sct.canada.ca</a>" data-fr="Secr&eacute;tariat du Conseil du Tr&eacute;sor du Canada, <em>Convention collective de l'Administration du programme (PA)</em>, article 34 &mdash; Cong&eacute; annuel pay&eacute;. <a href='https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-fra.aspx?id=15' target='_blank' rel='noopener'>tbs-sct.canada.ca</a>">Treasury Board of Canada Secretariat, <em>Programme Administration (PA) Collective Agreement</em>, Article 34 &mdash; Vacation Leave with Pay. <a href="https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=15" target="_blank" rel="noopener">tbs-sct.canada.ca</a></li>
+                <li data-en="Treasury Board of Canada Secretariat, <em>Information Technology (IT) Collective Agreement</em>, Article 15.02 &mdash; Vacation Leave Credits. <a href='https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=1' target='_blank' rel='noopener'>tbs-sct.canada.ca</a>" data-fr="Secr&eacute;tariat du Conseil du Tr&eacute;sor du Canada, <em>Convention collective des Technologies de l'information (IT)</em>, article 15.02 &mdash; Cr&eacute;dits de cong&eacute; annuel. <a href='https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-fra.aspx?id=1' target='_blank' rel='noopener'>tbs-sct.canada.ca</a>">Treasury Board of Canada Secretariat, <em>Information Technology (IT) Collective Agreement</em>, Article 15.02 &mdash; Vacation Leave Credits. <a href="https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=1" target="_blank" rel="noopener">tbs-sct.canada.ca</a></li>
+                <li data-en="Treasury Board of Canada Secretariat, <em>Correctional Services (CX) Collective Agreement</em>, Article 34 &mdash; Vacation Leave with Pay. <a href='https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=23' target='_blank' rel='noopener'>tbs-sct.canada.ca</a>" data-fr="Secr&eacute;tariat du Conseil du Tr&eacute;sor du Canada, <em>Convention collective des Services correctionnels (CX)</em>, article 34 &mdash; Cong&eacute; annuel pay&eacute;. <a href='https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-fra.aspx?id=23' target='_blank' rel='noopener'>tbs-sct.canada.ca</a>">Treasury Board of Canada Secretariat, <em>Correctional Services (CX) Collective Agreement</em>, Article 34 &mdash; Vacation Leave with Pay. <a href="https://www.tbs-sct.canada.ca/agreements-conventions/view-visualiser-eng.aspx?id=23" target="_blank" rel="noopener">tbs-sct.canada.ca</a></li>
+                <li data-en="Office of the Auditor General of Canada, <em>Report 1 &mdash; Building and Implementing Phoenix</em>, Fall 2017. <a href='https://www.oag-bvg.gc.ca/internet/English/parl_oag_201711_01_e_42666.html' target='_blank' rel='noopener'>oag-bvg.gc.ca</a>" data-fr="Bureau du v&eacute;rificateur g&eacute;n&eacute;ral du Canada, <em>Rapport 1 &mdash; La cr&eacute;ation et le d&eacute;ploiement du syst&egrave;me Ph&eacute;nix</em>, automne 2017. <a href='https://www.oag-bvg.gc.ca/internet/Francais/parl_oag_201711_01_f_42666.html' target='_blank' rel='noopener'>oag-bvg.gc.ca</a>">Office of the Auditor General of Canada, <em>Report 1 &mdash; Building and Implementing Phoenix</em>, Fall 2017. <a href="https://www.oag-bvg.gc.ca/internet/English/parl_oag_201711_01_e_42666.html" target="_blank" rel="noopener">oag-bvg.gc.ca</a></li>
+                <li data-en="Office of the Auditor General of Canada, <em>Report 1 &mdash; Modernizing the Government of Canada's Pay System</em>, March 2026. <a href='https://www.canada.ca/en/auditor-general/our-work/audit-reports/auditor-general-report-2026-modernizing-pay-system.html' target='_blank' rel='noopener'>canada.ca</a>" data-fr="Bureau du v&eacute;rificateur g&eacute;n&eacute;ral du Canada, <em>Rapport 1 &mdash; La modernisation du syst&egrave;me de paie du gouvernement du Canada</em>, mars 2026. <a href='https://www.canada.ca/en/auditor-general/our-work/audit-reports/auditor-general-report-2026-modernizing-pay-system.html' target='_blank' rel='noopener'>canada.ca</a>">Office of the Auditor General of Canada, <em>Report 1 &mdash; Modernizing the Government of Canada's Pay System</em>, March 2026. <a href="https://www.canada.ca/en/auditor-general/our-work/audit-reports/auditor-general-report-2026-modernizing-pay-system.html" target="_blank" rel="noopener">canada.ca</a></li>
+            </ol>
+        </div>
+
+    </article>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/">hazeydata.ai</a>
+            <a href="/accord/">ACCORD</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
+            <a href="/accord/guides/" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="/accord/blog/" data-en="Blog" data-fr="Blogue">Blog</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </div>
+        <p class="disclaimer" data-en="Disclaimer: The information provided on this site is for reference purposes only and does not constitute legal or professional advice. ACCORD is not affiliated with the Government of Canada, the Treasury Board Secretariat, or any federal bargaining agent. Always consult the official collective agreement text on <a href='https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html'>Canada.ca</a> for authoritative information. Use at your own risk." data-fr="Avis juridique : Les renseignements fournis sur ce site le sont &agrave; titre informatif seulement. ACCORD n'est pas affili&eacute; au gouvernement du Canada. Consultez toujours le texte officiel sur <a href='https://www.canada.ca/fr/secretariat-conseil-tresor/services/conventions-collectives.html'>Canada.ca</a>. Utilisation &agrave; vos propres risques.">Disclaimer: The information provided on this site is for reference purposes only. ACCORD is not affiliated with the Government of Canada. Always consult the official collective agreement text on <a href="https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html">Canada.ca</a>. Use at your own risk.</p>
+        <p data-en="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,000,000 scenarios validated &middot; 31,505 calculations/second &middot; zero crashes" data-fr="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1&nbsp;000&nbsp;000 sc&eacute;narios valid&eacute;s &middot; 31&nbsp;505 calculs/seconde &middot; z&eacute;ro plantage">&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,000,000 scenarios validated &middot; 31,505 calculations/second &middot; zero crashes</p>
+    </footer>
+
+    <script>
+    var currentLang = localStorage.getItem('accord-lang') || 'en';
+    function applyLang() {
+        document.documentElement.lang = currentLang;
+        document.querySelector('.lang-btn').textContent = currentLang === 'en' ? 'FR' : 'EN';
+        document.querySelectorAll('[data-en][data-fr]').forEach(function(el) {
+            el.innerHTML = el.getAttribute('data-' + currentLang);
+        });
+    }
+    function toggleLang() {
+        currentLang = currentLang === 'en' ? 'fr' : 'en';
+        localStorage.setItem('accord-lang', currentLang);
+        applyLang();
+    }
+    applyLang();
+    </script>
+</body>
+</html>

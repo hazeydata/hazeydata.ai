@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation — School Schedules Database | HazeyData</title>
+  <meta name="description" content="REST API documentation for the School Schedules Database. Day-level school calendar data for every US public school district.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1117; --bg-card: #181a24; --bg-code: #1e2030;
+      --bg-code-inline: rgba(99,130,255,0.1); --border: #2a2d3a; --border-accent: #3d6bff;
+      --text: #c9cdd8; --text-bright: #ebedf2; --text-dim: #7a7f8e;
+      --accent: #3d6bff; --accent-soft: rgba(61,107,255,0.12);
+      --green: #34d399; --green-soft: rgba(52,211,153,0.12);
+      --orange: #f59e0b; --orange-soft: rgba(245,158,11,0.12);
+      --red: #ef4444; --purple: #a78bfa;
+      --font-body: 'DM Sans', -apple-system, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'Menlo', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.65; font-size: 15px; -webkit-font-smoothing: antialiased; }
+    .page { display: flex; min-height: 100vh; }
+    .sidebar { position: fixed; top: 0; left: 0; width: 260px; height: 100vh; overflow-y: auto; background: var(--bg-card); border-right: 1px solid var(--border); padding: 28px 0; z-index: 10; }
+    .sidebar-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+    .sidebar-logo a { text-decoration: none; color: var(--text-bright); font-weight: 700; font-size: 16px; letter-spacing: -0.3px; }
+    .sidebar-logo a span { color: var(--accent); }
+    .sidebar-logo .sub { display: block; font-size: 12px; color: var(--text-dim); margin-top: 4px; font-weight: 400; }
+    .sidebar nav { padding: 0 12px; }
+    .nav-section { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); padding: 16px 12px 6px; }
+    .sidebar nav a { display: block; padding: 7px 12px; border-radius: 6px; color: var(--text); text-decoration: none; font-size: 13.5px; font-weight: 500; transition: all 0.15s; }
+    .sidebar nav a:hover { background: var(--accent-soft); color: var(--text-bright); }
+    .sidebar nav a .method { display: inline-block; font-family: var(--font-mono); font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 3px; margin-right: 6px; vertical-align: 1px; }
+    .method-get { background: var(--green-soft); color: var(--green); }
+    .method-post { background: var(--orange-soft); color: var(--orange); }
+    .main { margin-left: 260px; flex: 1; max-width: 900px; padding: 48px 56px 120px; }
+    h1 { font-size: 32px; font-weight: 700; color: var(--text-bright); letter-spacing: -0.8px; line-height: 1.2; margin-bottom: 12px; }
+    h1 .version { display: inline-block; font-size: 13px; font-weight: 600; background: var(--accent-soft); color: var(--accent); padding: 3px 10px; border-radius: 20px; vertical-align: 6px; margin-left: 10px; letter-spacing: 0; }
+    .lead { font-size: 17px; color: var(--text); line-height: 1.6; margin-bottom: 32px; }
+    h2 { font-size: 22px; font-weight: 700; color: var(--text-bright); letter-spacing: -0.4px; margin: 56px 0 16px; padding-top: 24px; border-top: 1px solid var(--border); }
+    h2:first-of-type { border-top: none; margin-top: 32px; }
+    h3 { font-size: 16px; font-weight: 600; color: var(--text-bright); margin: 32px 0 10px; }
+    p { margin-bottom: 14px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code { font-family: var(--font-mono); font-size: 13px; background: var(--bg-code-inline); color: var(--accent); padding: 2px 6px; border-radius: 4px; }
+    pre { background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; overflow-x: auto; margin: 12px 0 20px; position: relative; }
+    pre code { background: none; padding: 0; color: var(--text); font-size: 13px; line-height: 1.6; }
+    pre .comment { color: var(--text-dim); } pre .string { color: var(--green); } pre .key { color: var(--purple); } pre .number { color: var(--orange); }
+    .endpoint { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 28px; margin: 20px 0 28px; }
+    .endpoint-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .endpoint-method { font-family: var(--font-mono); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 5px; flex-shrink: 0; }
+    .endpoint-path { font-family: var(--font-mono); font-size: 15px; color: var(--text-bright); font-weight: 500; }
+    .endpoint-desc { color: var(--text); margin-bottom: 16px; font-size: 14.5px; }
+    .auth-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; margin-left: auto; }
+    .auth-required { background: var(--accent-soft); color: var(--accent); }
+    .auth-free { background: var(--green-soft); color: var(--green); }
+    .params { width: 100%; border-collapse: collapse; margin: 12px 0 6px; font-size: 14px; }
+    .params th { text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    .params td { padding: 10px 12px; border-bottom: 1px solid rgba(42,45,58,0.5); vertical-align: top; }
+    .params td:first-child { font-family: var(--font-mono); font-size: 13px; color: var(--accent); white-space: nowrap; font-weight: 500; }
+    .params .type { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+    .info-box { border-radius: 8px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+    .info-box.tip { background: var(--green-soft); border-left: 3px solid var(--green); }
+    .info-box.warn { background: var(--orange-soft); border-left: 3px solid var(--orange); }
+    .info-box strong { color: var(--text-bright); }
+    .cta-bar { background: linear-gradient(135deg, rgba(61,107,255,0.1), rgba(167,139,250,0.08)); border: 1px solid var(--border-accent); border-radius: 10px; padding: 28px 32px; margin: 40px 0; text-align: center; }
+    .cta-bar h3 { margin: 0 0 8px; font-size: 18px; }
+    .cta-bar p { color: var(--text); margin-bottom: 16px; font-size: 14.5px; }
+    .cta-btn { display: inline-block; background: var(--accent); color: #fff; font-weight: 600; font-size: 14px; padding: 10px 28px; border-radius: 8px; text-decoration: none; transition: opacity 0.15s; }
+    .cta-btn:hover { opacity: 0.9; text-decoration: none; }
+    .support-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 28px; margin: 20px 0; }
+    .support-box p { font-size: 14.5px; }
+    .support-email { font-family: var(--font-mono); font-size: 16px; font-weight: 600; color: var(--accent); }
+    @media (max-width: 900px) { .sidebar { display: none; } .main { margin-left: 0; padding: 32px 20px 80px; } }
+  </style>
+</head>
+<body>
+<div class="page">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="/ssd/">Hazey<span>Data</span><span class="sub">School Schedules Database</span></a>
+    </div>
+    <nav>
+      <div class="nav-section">Getting Started</div>
+      <a href="#overview">Overview</a>
+      <a href="#authentication">Authentication</a>
+      <a href="#base-url">Base URL</a>
+      <a href="#rate-limits">Rate Limits</a>
+      <div class="nav-section">Endpoints</div>
+      <a href="#list-districts"><span class="method method-get">GET</span> Districts</a>
+      <a href="#get-days"><span class="method method-get">GET</span> Days</a>
+      <a href="#search-breaks"><span class="method method-get">GET</span> Breaks</a>
+      <a href="#export-csv"><span class="method method-get">GET</span> Export CSV</a>
+      <a href="#sample-districts"><span class="method method-get">GET</span> Sample (Free)</a>
+      <div class="nav-section">Reference</div>
+      <a href="#data-model">Data Model</a>
+      <a href="#school-years">School Years</a>
+      <a href="#confidence">Confidence Scores</a>
+      <a href="#errors">Error Codes</a>
+      <a href="#support">Support</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <h1 id="overview">API Documentation <span class="version">v1</span></h1>
+    <p class="lead">Day-level school calendar data for every US public school district. One row per district per day&mdash;every school day classified, every break named and typed&mdash;for 13,700+ districts covering 44.5 million students.</p>
+
+    <div class="cta-bar">
+      <h3>Ready to get started?</h3>
+      <p>Subscribe and get your API key instantly. $99/month, cancel anytime.</p>
+      <a href="/ssd/#pricing" class="cta-btn">Get API Access</a>
+    </div>
+
+    <h2 id="authentication">Authentication</h2>
+    <p>All data endpoints require a valid API key, passed as a Bearer token in the <code>Authorization</code> header.</p>
+    <p>Your API key starts with <code>ssd_live_</code> and is displayed once after purchase. Store it securely&mdash;we store only a SHA-256 hash and cannot recover it for you.</p>
+    <pre><code><span class="comment"># Include your API key in every request</span>
+curl https://api.hazeydata.ai/ssd/v1/districts \
+  -H <span class="string">"Authorization: Bearer ssd_live_your_key_here"</span></code></pre>
+
+    <h2 id="base-url">Base URL</h2>
+    <pre><code>https://api.hazeydata.ai/ssd/v1/</code></pre>
+    <p>All endpoints return JSON with <code>Content-Type: application/json</code> unless otherwise noted (the CSV export returns <code>text/csv</code>).</p>
+
+    <h2 id="rate-limits">Rate Limits</h2>
+    <p>Each subscription includes <strong>10,000 API calls per month</strong>. Usage resets on the 1st of each month. If you exceed the limit, requests return <code>429 Too Many Requests</code> until the next reset.</p>
+    <p>Need higher volume? <a href="mailto:fred@hazeydata.ai">Contact us</a> for enterprise pricing.</p>
+
+    <h2 id="list-districts">List Districts</h2>
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="endpoint-method method-get">GET</span>
+        <span class="endpoint-path">/ssd/v1/districts</span>
+        <span class="auth-badge auth-required">Auth Required</span>
+      </div>
+      <p class="endpoint-desc">Search and list US public school districts. Results are ordered by enrollment (largest first).</p>
+      <h3>Query Parameters</h3>
+      <table class="params">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>state</td><td><span class="type">string</span></td><td>Two-letter state code (e.g. <code>CA</code>, <code>TX</code>). Case-insensitive.</td></tr>
+          <tr><td>search</td><td><span class="type">string</span></td><td>Search district names. Partial match (e.g. <code>search=Houston</code>).</td></tr>
+          <tr><td>min_enrollment</td><td><span class="type">integer</span></td><td>Filter to districts with at least this many students.</td></tr>
+          <tr><td>limit</td><td><span class="type">integer</span></td><td>Results per page. Default <code>100</code>, max <code>1000</code>.</td></tr>
+          <tr><td>offset</td><td><span class="type">integer</span></td><td>Pagination offset. Default <code>0</code>.</td></tr>
+        </tbody>
+      </table>
+      <h3>Example Request</h3>
+      <pre><code>curl <span class="string">"https://api.hazeydata.ai/ssd/v1/districts?state=FL&amp;min_enrollment=10000"</span> \
+  -H <span class="string">"Authorization: Bearer ssd_live_your_key"</span></code></pre>
+      <h3>Example Response</h3>
+      <pre><code>{
+  <span class="key">"total"</span>: <span class="number">32</span>,
+  <span class="key">"limit"</span>: <span class="number">100</span>,
+  <span class="key">"offset"</span>: <span class="number">0</span>,
+  <span class="key">"districts"</span>: [
+    {
+      <span class="key">"district_id"</span>: <span class="string">"FL_00870"</span>,
+      <span class="key">"district_name"</span>: <span class="string">"Miami-Dade County Public Schools"</span>,
+      <span class="key">"state"</span>: <span class="string">"FL"</span>,
+      <span class="key">"enrollment"</span>: <span class="number">334235</span>
+    },
+    ...
+  ]
+}</code></pre>
+    </div>
+
+    <h2 id="get-days">Get School Days</h2>
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="endpoint-method method-get">GET</span>
+        <span class="endpoint-path">/ssd/v1/days</span>
+        <span class="auth-badge auth-required">Auth Required</span>
+      </div>
+      <p class="endpoint-desc">The core endpoint. Returns day-level calendar data showing whether each district is in session on each date, with break names and confidence scores.</p>
+      <h3>Query Parameters</h3>
+      <table class="params">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>district_id</td><td><span class="type">string</span></td><td>Filter to a specific district (e.g. <code>FL_00870</code>).</td></tr>
+          <tr><td>state</td><td><span class="type">string</span></td><td>Two-letter state code.</td></tr>
+          <tr><td>date</td><td><span class="type">string</span></td><td>Exact date (<code>YYYY-MM-DD</code>). Returns all districts for that date.</td></tr>
+          <tr><td>date_from</td><td><span class="type">string</span></td><td>Start of date range (<code>YYYY-MM-DD</code>).</td></tr>
+          <tr><td>date_to</td><td><span class="type">string</span></td><td>End of date range (<code>YYYY-MM-DD</code>).</td></tr>
+          <tr><td>school_year</td><td><span class="type">string</span></td><td>School year (e.g. <code>2025-2026</code>).</td></tr>
+          <tr><td>limit</td><td><span class="type">integer</span></td><td>Max rows. Default <code>365</code>, max <code>5000</code>.</td></tr>
+        </tbody>
+      </table>
+      <div class="info-box tip">
+        <strong>Tip:</strong> The most common query pattern is <code>date=2025-12-25&amp;state=FL</code> &mdash; "which Florida districts are off on Christmas?" Or <code>district_id=FL_00870&amp;date_from=2025-12-20&amp;date_to=2026-01-05</code> for a single district's winter break window.
+      </div>
+      <h3>Example Request</h3>
+      <pre><code><span class="comment"># What does spring break look like in Texas?</span>
+curl <span class="string">"https://api.hazeydata.ai/ssd/v1/days?state=TX&amp;date_from=2026-03-09&amp;date_to=2026-03-20"</span> \
+  -H <span class="string">"Authorization: Bearer ssd_live_your_key"</span></code></pre>
+      <h3>Example Response</h3>
+      <pre><code>{
+  <span class="key">"total"</span>: <span class="number">2</span>,
+  <span class="key">"days"</span>: [
+    {
+      <span class="key">"district_id"</span>: <span class="string">"TX_04302"</span>,
+      <span class="key">"district_name"</span>: <span class="string">"Houston Independent School District"</span>,
+      <span class="key">"state"</span>: <span class="string">"TX"</span>,
+      <span class="key">"enrollment"</span>: <span class="number">189854</span>,
+      <span class="key">"date"</span>: <span class="string">"2026-03-09"</span>,
+      <span class="key">"school_year"</span>: <span class="string">"2025-2026"</span>,
+      <span class="key">"is_in_session"</span>: <span class="number">0.0</span>,
+      <span class="key">"day_type"</span>: <span class="string">"BREAK"</span>,
+      <span class="key">"break_name"</span>: <span class="string">"Spring Break"</span>,
+      <span class="key">"confidence"</span>: <span class="number">0.92</span>,
+      <span class="key">"source_method"</span>: <span class="string">"markitdown_extraction"</span>
+    },
+    ...
+  ]
+}</code></pre>
+    </div>
+
+    <h2 id="search-breaks">Search Breaks</h2>
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="endpoint-method method-get">GET</span>
+        <span class="endpoint-path">/ssd/v1/breaks</span>
+        <span class="auth-badge auth-required">Auth Required</span>
+      </div>
+      <p class="endpoint-desc">Search specifically for school breaks, holidays, and non-school days (excluding weekends). Useful for finding when spring break, winter break, or teacher workdays fall across districts.</p>
+      <h3>Query Parameters</h3>
+      <table class="params">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>state</td><td><span class="type">string</span></td><td>Two-letter state code.</td></tr>
+          <tr><td>break_name</td><td><span class="type">string</span></td><td>Search break names. Partial match (e.g. <code>Spring</code>, <code>Thanksgiving</code>).</td></tr>
+          <tr><td>date_from</td><td><span class="type">string</span></td><td>Start of date range.</td></tr>
+          <tr><td>date_to</td><td><span class="type">string</span></td><td>End of date range.</td></tr>
+          <tr><td>limit</td><td><span class="type">integer</span></td><td>Max rows. Default <code>100</code>, max <code>1000</code>.</td></tr>
+        </tbody>
+      </table>
+      <h3>Example</h3>
+      <pre><code><span class="comment"># When is spring break in California?</span>
+curl <span class="string">"https://api.hazeydata.ai/ssd/v1/breaks?state=CA&amp;break_name=Spring"</span> \
+  -H <span class="string">"Authorization: Bearer ssd_live_your_key"</span></code></pre>
+    </div>
+
+    <h2 id="export-csv">Export CSV</h2>
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="endpoint-method method-get">GET</span>
+        <span class="endpoint-path">/ssd/v1/export</span>
+        <span class="auth-badge auth-required">Auth Required</span>
+      </div>
+      <p class="endpoint-desc">Bulk download school calendar data as a CSV file. Ideal for loading into a data warehouse, spreadsheet, or analytics tool.</p>
+      <h3>Query Parameters</h3>
+      <table class="params">
+        <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>school_year</td><td><span class="type">string</span></td><td>School year to export. Default <code>2025-2026</code>.</td></tr>
+          <tr><td>state</td><td><span class="type">string</span></td><td>Two-letter state code. Omit for all states.</td></tr>
+          <tr><td>limit</td><td><span class="type">integer</span></td><td>Max rows. Default <code>50000</code>, max <code>100000</code>.</td></tr>
+        </tbody>
+      </table>
+      <h3>Example</h3>
+      <pre><code><span class="comment"># Download all Florida data as CSV</span>
+curl <span class="string">"https://api.hazeydata.ai/ssd/v1/export?state=FL&amp;school_year=2025-2026"</span> \
+  -H <span class="string">"Authorization: Bearer ssd_live_your_key"</span> \
+  -o florida_2025_2026.csv</code></pre>
+      <div class="info-box tip">
+        <strong>Tip:</strong> Returns <code>text/csv</code> with a <code>Content-Disposition</code> header suggesting a filename. Pipe directly to a file with <code>-o</code> or load into pandas with <code>pd.read_csv(url, ...)</code>.
+      </div>
+    </div>
+
+    <h2 id="sample-districts">Sample Districts (Free)</h2>
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="endpoint-method method-get">GET</span>
+        <span class="endpoint-path">/ssd/v1/sample/districts</span>
+        <span class="auth-badge auth-free">No Auth Required</span>
+      </div>
+      <p class="endpoint-desc">Free endpoint&mdash;no API key needed. Returns the top 100 districts by enrollment. Use this to preview the data model before subscribing.</p>
+      <h3>Example</h3>
+      <pre><code><span class="comment"># No auth required</span>
+curl <span class="string">"https://api.hazeydata.ai/ssd/v1/sample/districts"</span></code></pre>
+    </div>
+
+    <h2 id="data-model">Data Model</h2>
+    <h3>District Object</h3>
+    <table class="params">
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>district_id</td><td><span class="type">string</span></td><td>Unique identifier. Format: <code>{STATE}_{NCES_ID}</code> (e.g. <code>TX_04302</code>).</td></tr>
+        <tr><td>district_name</td><td><span class="type">string</span></td><td>Full district name.</td></tr>
+        <tr><td>state</td><td><span class="type">string</span></td><td>Two-letter state code.</td></tr>
+        <tr><td>enrollment</td><td><span class="type">integer</span></td><td>Total student enrollment.</td></tr>
+      </tbody>
+    </table>
+    <h3>School Day Object</h3>
+    <table class="params">
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>district_id</td><td><span class="type">string</span></td><td>District identifier.</td></tr>
+        <tr><td>date</td><td><span class="type">string</span></td><td>Calendar date (<code>YYYY-MM-DD</code>).</td></tr>
+        <tr><td>school_year</td><td><span class="type">string</span></td><td>Academic year (e.g. <code>2025-2026</code>).</td></tr>
+        <tr><td>is_in_session</td><td><span class="type">float</span></td><td><code>1.0</code> = full school day, <code>0.5</code> = half day, <code>0.0</code> = no school. See <a href="#confidence">Confidence Scores</a>.</td></tr>
+        <tr><td>day_type</td><td><span class="type">string</span></td><td>Category: <code>SCHOOL_DAY</code>, <code>WEEKEND</code>, <code>BREAK</code>, <code>HOLIDAY</code>, <code>TEACHER_WORKDAY</code>, <code>HALF_DAY</code>, <code>SUMMER</code>.</td></tr>
+        <tr><td>break_name</td><td><span class="type">string | null</span></td><td>Name of break/holiday if applicable (e.g. <code>Spring Break</code>, <code>Thanksgiving</code>, <code>Martin Luther King Jr. Day</code>).</td></tr>
+        <tr><td>confidence</td><td><span class="type">float</span></td><td>Confidence score from <code>0.0</code> to <code>1.0</code>. See <a href="#confidence">Confidence Scores</a>.</td></tr>
+        <tr><td>source_method</td><td><span class="type">string</span></td><td>How this data was obtained: <code>markitdown_extraction</code>, <code>pdf_extraction</code>, <code>deterministic</code> (weekends), <code>inferred</code>.</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="school-years">School Years</h2>
+    <p>The API exposes a rolling 3-year window of school calendar data:</p>
+    <table class="params">
+      <thead><tr><th>School Year</th><th>Period</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>2024-2025</td><td>Aug 2024 &ndash; Jun 2025</td><td>Previous year (historical)</td></tr>
+        <tr><td>2025-2026</td><td>Aug 2025 &ndash; Jun 2026</td><td>Current year (most complete)</td></tr>
+        <tr><td>2026-2027</td><td>Aug 2026 &ndash; Jun 2027</td><td>Next year (as published by districts)</td></tr>
+      </tbody>
+    </table>
+    <p>The oldest year drops off each September when a new school year begins. Subscribers building historical archives from the API accumulate data over time&mdash;the rolling window ensures the most relevant data is always fresh.</p>
+
+    <h2 id="confidence">Confidence Scores</h2>
+    <p>Every row in the database carries a confidence score indicating how reliable the classification is.</p>
+    <table class="params">
+      <thead><tr><th>Range</th><th>Meaning</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td>0.90 &ndash; 1.00</td><td>High confidence. Extracted directly from an official district calendar.</td><td>Named holidays, published break dates, first/last day of school.</td></tr>
+        <tr><td>0.70 &ndash; 0.89</td><td>Good confidence. Extracted from a PDF or secondary source.</td><td>PDF calendars with OCR, aggregator sites.</td></tr>
+        <tr><td>0.50 &ndash; 0.69</td><td>Moderate. Inferred from surrounding data or state-level patterns.</td><td>School days between known breaks, district-reported start/end dates only.</td></tr>
+        <tr><td>1.00 (deterministic)</td><td>Weekends and summer days classified by rule, not extraction.</td><td>Saturdays, Sundays, July.</td></tr>
+      </tbody>
+    </table>
+    <div class="info-box warn">
+      <strong>Note:</strong> <code>is_in_session</code> is a float, not a boolean. Values of <code>0.5</code> represent half-days (early release, parent-teacher conference days, etc.). Filter with <code>is_in_session &gt; 0</code> to include half-days as "in session," or <code>is_in_session = 1.0</code> for full days only.
+    </div>
+
+    <h2 id="errors">Error Codes</h2>
+    <table class="params">
+      <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>200</td><td>Success.</td></tr>
+        <tr><td>400</td><td>Bad request. Check your query parameters.</td></tr>
+        <tr><td>401</td><td>Unauthorized. Missing or invalid API key. Double-check your <code>Authorization: Bearer ssd_live_...</code> header.</td></tr>
+        <tr><td>403</td><td>Forbidden. Subscription cancelled or suspended.</td></tr>
+        <tr><td>429</td><td>Rate limit exceeded. Resets on the 1st of the month.</td></tr>
+        <tr><td>500</td><td>Server error. <a href="mailto:fred@hazeydata.ai">Let us know</a> if this persists.</td></tr>
+      </tbody>
+    </table>
+    <p>Error responses include a JSON body with an <code>error</code> field describing the issue:</p>
+    <pre><code>{
+  <span class="key">"error"</span>: <span class="string">"Monthly rate limit exceeded (10000 calls). Resets on the 1st."</span>
+}</code></pre>
+
+    <!-- ── Support ── -->
+    <h2 id="support">Support</h2>
+    <div class="support-box">
+      <p>Having trouble connecting? Something not working as expected? Email the founder directly&mdash;you'll get a real human response, usually within a few hours.</p>
+      <p style="margin-top:16px;margin-bottom:4px;"><a href="mailto:fred@hazeydata.ai?subject=SSD%20API%20Help&amp;body=My%20API%20key%20prefix%3A%20ssd_live_...%0A%0AIssue%3A%20" class="support-email">fred@hazeydata.ai</a></p>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:0;">Include your API key prefix (first 16 characters) so we can look up your account quickly.</p>
+    </div>
+    <div class="info-box tip" style="margin-top:20px;">
+      <strong>Common first-request issues:</strong> Getting a 401? Make sure you're including the full key (starts with <code>ssd_live_</code>) in the header as <code>Authorization: Bearer ssd_live_...</code>. The most common mistake is a missing <code>Bearer</code> prefix or an extra space.
+    </div>
+
+    <!-- ── Bottom CTA ── -->
+    <div class="cta-bar">
+      <h3>Start building with real school calendar data</h3>
+      <p>13,700+ districts. 44.5 million students. Day-level granularity. $99/month.</p>
+      <a href="/ssd/#pricing" class="cta-btn">Get API Access</a>
+    </div>
+
+  </main>
+</div>
+</body>
+</html>
