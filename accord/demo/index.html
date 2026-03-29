@@ -17,11 +17,33 @@
         .nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; max-width: 1100px; margin: 0 auto; }
         .nav a { text-decoration: none; }
         .nav-brand { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.08em; color: var(--gc-blue); }
-        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-        .nav-links a { color: var(--gc-grey-mid); font-size: 0.85rem; font-weight: 500; }
-        .back-link { color: var(--gc-blue) !important; font-weight: 600 !important; background: rgba(38,55,74,0.06); padding: 0.4rem 0.9rem; border-radius: 6px; transition: background 0.2s; }
-        .back-link:hover { background: rgba(38,55,74,0.12); }
-        .lang-btn { padding: 0.25rem 0.65rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: white; cursor: pointer; }
+        .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
+        
+        .hamburger-btn, .lang-btn { 
+            padding: 0.25rem 0.65rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; 
+            font-size: 0.75rem; font-weight: 600; background: white; cursor: pointer; 
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .hamburger-btn:hover, .lang-btn:hover { 
+            background: var(--gc-grey-light); border-color: var(--gc-grey-mid); 
+        }
+        
+        .hamburger-menu { 
+            display: none; position: absolute; top: 100%; right: 2rem; 
+            background: white; border: 1px solid var(--gc-grey); border-radius: 8px; 
+            box-shadow: var(--shadow); min-width: 200px; z-index: 1000; 
+        }
+        .hamburger-menu.show { display: block; animation: slideDown 0.2s ease-out; }
+        .hamburger-menu a { 
+            display: block; padding: 0.75rem 1rem; text-decoration: none; 
+            color: var(--gc-grey-dark); font-size: 0.9rem; border-bottom: 1px solid var(--gc-grey); 
+            transition: background 0.2s; 
+        }
+        .hamburger-menu a:last-child { border-bottom: none; }
+        .hamburger-menu a:hover { background: var(--gc-grey-light); }
+        .hamburger-menu a.current { color: var(--gc-blue); font-weight: 600; }
+        
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .demo-wrap { max-width: 900px; margin: 0 auto; padding: 2rem; }
         .demo-header { margin-bottom: 2rem; }
         .demo-header h1 { font-size: 1.6rem; font-weight: 800; color: var(--gc-blue); margin-bottom: 0.3rem; }
@@ -85,14 +107,37 @@
         .holiday-list .h-date { color: var(--gc-grey-mid); font-family: 'Courier New', monospace; font-size: 0.8rem; }
         .holiday-list .h-sub { color: var(--gc-red); font-size: 0.7rem; font-weight: 600; margin-left: 0.5rem; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 700px) { .controls,.controls-2,.controls-4 { grid-template-columns: 1fr; } .result-grid,.code-grid { grid-template-columns: 1fr; } .tabs { flex-wrap: wrap; } .tab { flex: none; width: calc(25% - 2px); font-size: 0.65rem; padding: 0.6rem 0.3rem; } }
+        @media (max-width: 700px) { 
+            .controls,.controls-2,.controls-4 { grid-template-columns: 1fr; } 
+            .result-grid,.code-grid { grid-template-columns: 1fr; } 
+            .tabs { flex-wrap: wrap; } 
+            .tab { flex: none; width: calc(25% - 2px); font-size: 0.65rem; padding: 0.6rem 0.3rem; } 
+            .nav { padding: 1rem; }
+            .hamburger-menu { right: 1rem; min-width: 180px; }
+        }
             .info-banner { background: #fff9e6; text-align: center; padding: 0.5rem 1rem; font-size: 0.75rem; color: #5a5a5a; line-height: 1.4; } .info-banner a { color: #335075; text-decoration: underline; }
     </style>
 </head>
 <body>
     <div class="gc-bar"></div>
     <div class="info-banner" data-en="&#x2139;&#xFE0F; For information purposes only. Not affiliated with the Government of Canada. Always verify with the <a href='https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html'>official collective agreement text</a>." data-fr="&#x2139;&#xFE0F; &Agrave; titre informatif seulement. Non affili&eacute; au gouvernement du Canada. Toujours v&eacute;rifier avec le <a href='https://www.canada.ca/fr/secretariat-conseil-tresor/services/conventions-collectives.html'>texte officiel de la convention collective</a>.">&#x2139;&#xFE0F; For information purposes only. Not affiliated with the Government of Canada. Always verify with the <a href="https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html">official collective agreement text</a>.</div>
-    <nav class="nav"><a href="/" class="nav-brand">HAZEYDATA</a><div class="nav-links"><a href="/accord/" class="back-link" data-en="&larr; Back to ACCORD" data-fr="&larr; Retour &agrave; ACCORD">&larr; Back to ACCORD</a><a href="mailto:fred@hazeydata.ai">Contact</a><button class="lang-btn" onclick="toggleLang()">FR</button></div></nav>
+    <nav class="nav">
+        <a href="/" class="nav-brand">HAZEYDATA</a>
+        <div class="nav-actions">
+            <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
+            <button class="lang-btn" onclick="toggleLang()">FR</button>
+        </div>
+        <div class="hamburger-menu" id="hamburger-menu">
+            <a href="/" data-en="Home" data-fr="Accueil">Home</a>
+            <a href="/accord/" data-en="ACCORD" data-fr="ACCORD">ACCORD</a>
+            <a href="/accord/demo/" class="current" data-en="Demo" data-fr="Démo">Demo</a>
+            <a href="/accord/wfa-calculator/" data-en="WFA Calculator" data-fr="Calculateur RAE">WFA Calculator</a>
+            <a href="/accord/guides/" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="/accord/blog/" data-en="Blog" data-fr="Blog">Blog</a>
+            <a href="#" data-en="API Docs" data-fr="Documentation API">API Docs</a>
+            <a href="mailto:fred@hazeydata.ai" data-en="Contact" data-fr="Contact">Contact</a>
+        </div>
+    </nav>
     <div class="stats-bar"><div><span class="sb-num">~150</span><span class="sb-label" data-en="Coll. Agreements" data-fr="Conv. coll.">Coll. Agreements</span></div><div><span class="sb-num">8</span><span class="sb-label" data-en="Domains" data-fr="Domaines">Domains</span></div><div><span class="sb-num">963</span><span class="sb-label" data-en="Tests" data-fr="Tests">Tests</span></div><div><span class="sb-num">1M+</span><span class="sb-label" data-en="Scenarios" data-fr="Sc&eacute;narios">Scenarios</span></div><div><span class="sb-num" style="color:#ff6b6b">0</span><span class="sb-label" data-en="Bugs" data-fr="Bogues">Bugs</span></div></div>
     <div class="demo-wrap">
         <div class="demo-header"><h1 data-en="ACCORD Interactive Demo" data-fr="D&eacute;mo interactive ACCORD">ACCORD Interactive Demo</h1><p data-en="8 pay domains. Pick one, enter parameters, get the validated answer with article citation." data-fr="8 domaines de r&eacute;mun&eacute;ration. Choisissez-en un, entrez les param&egrave;tres, obtenez la r&eacute;ponse valid&eacute;e avec citation d'article.">8 pay domains. Pick one, enter parameters, get the validated answer with article citation.</p></div>
@@ -118,6 +163,8 @@ var currentLang=localStorage.getItem('accord-lang')||'en';var isDefaultVacScenar
 var CA_URLS={PA:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/pa.html',TC:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/tc.html',IT:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/it.html',EC:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/ec.html',FB:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/fb.html',SV:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/sv.html',CX:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/cx.html',SP:'https://www.canada.ca/en/treasury-board-secretariat/topics/pay/collective-agreements/sp.html'};
 function applyLang(){document.documentElement.lang=currentLang;document.querySelector('.lang-btn').textContent=currentLang==='en'?'FR':'EN';document.querySelectorAll('[data-en][data-fr]').forEach(function(el){el.innerHTML=el.getAttribute('data-'+currentLang);});}
 function toggleLang(){currentLang=currentLang==='en'?'fr':'en';localStorage.setItem('accord-lang',currentLang);applyLang();}
+function toggleMenu(){document.getElementById('hamburger-menu').classList.toggle('show');}
+document.addEventListener('click',function(e){var m=document.getElementById('hamburger-menu'),b=document.querySelector('.hamburger-btn');if(!m.contains(e.target)&&!b.contains(e.target))m.classList.remove('show');});
 function showDomain(id,btn){document.querySelectorAll('#domain-tabs .tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.demo-wrap > .panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');document.getElementById('panel-'+id).classList.add('active');}
 function clauseLink(ca,c){var u=CA_URLS[ca];return u?'<a href="'+u+'" target="_blank" rel="noopener">Art. '+c+'</a>':'Art. '+c;}
 function inlineClauseLink(ca,c){var u=CA_URLS[ca];return u?'<a href="'+u+'" target="_blank" rel="noopener">Clause '+c+'</a>':'Clause '+c;}

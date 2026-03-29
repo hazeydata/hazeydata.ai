@@ -54,10 +54,32 @@
             transition: background 0.2s; 
         }
         .back-link:hover { background: rgba(38,55,74,0.12); }
-        .lang-btn { 
+        .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
+        
+        .hamburger-btn, .lang-btn { 
             padding: 0.25rem 0.65rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; 
             font-size: 0.75rem; font-weight: 600; background: white; cursor: pointer; 
+            transition: background 0.2s, border-color 0.2s;
         }
+        .hamburger-btn:hover, .lang-btn:hover { 
+            background: var(--gc-grey-light); border-color: var(--gc-grey-mid); 
+        }
+        
+        .hamburger-menu { 
+            display: none; position: absolute; top: 100%; right: 2rem; 
+            background: white; border: 1px solid var(--gc-grey); border-radius: 8px; 
+            box-shadow: var(--shadow); min-width: 200px; z-index: 1000; 
+        }
+        .hamburger-menu.show { display: block; animation: slideDown 0.2s ease-out; }
+        .hamburger-menu a { 
+            display: block; padding: 0.75rem 1rem; text-decoration: none; 
+            color: var(--gc-grey-dark); font-size: 0.9rem; border-bottom: 1px solid var(--gc-grey); 
+            transition: background 0.2s; 
+        }
+        .hamburger-menu a:last-child { border-bottom: none; }
+        .hamburger-menu a:hover { background: var(--gc-grey-light); }
+        
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
         .calculator-wrap { max-width: 900px; margin: 0 auto; padding: 2rem; }
         
@@ -248,6 +270,7 @@
             .result-card.total .rc-amount { font-size: 2.2rem; }
             .internal-ad-content { padding: 1.25rem 1.5rem; }
             .internal-ad h3 { font-size: 1.1rem; }
+            .hamburger-menu { right: 1rem; min-width: 180px; }
         }
         
         @media (max-width: 600px) {
@@ -264,10 +287,18 @@
     <div class="gc-bar"></div>
     <nav class="nav">
         <a href="/" class="nav-brand">HAZEYDATA</a>
-        <div class="nav-links">
-            <a href="/accord/" class="back-link" data-en="← Back to ACCORD" data-fr="← Retour à ACCORD">← Back to ACCORD</a>
-            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        <div class="nav-actions">
+            <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
             <button class="lang-btn" onclick="toggleLang()">FR</button>
+        </div>
+        <div class="hamburger-menu" id="hamburger-menu">
+            <a href="/accord/" data-en="Home" data-fr="Accueil">Home</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="Démo">Demo</a>
+            <a href="/accord/wfa-calculator/" data-en="WFA Calculator" data-fr="Calculateur RAE">WFA Calculator</a>
+            <a href="/accord/guides/" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="/accord/blog/" data-en="Blog" data-fr="Blog">Blog</a>
+            <a href="#" data-en="API Docs" data-fr="Documentation API">API Docs</a>
+            <a href="mailto:fred@hazeydata.ai" data-en="Contact" data-fr="Contact">Contact</a>
         </div>
     </nav>
 
@@ -644,6 +675,21 @@
             localStorage.setItem('wfa-lang', currentLang);
             applyLang();
         }
+        
+        function toggleMenu() {
+            const menu = document.getElementById('hamburger-menu');
+            menu.classList.toggle('show');
+        }
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('hamburger-menu');
+            const hamburgerBtn = document.querySelector('.hamburger-btn');
+            
+            if (!menu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
         
         // Calculation functions
         function calculateTSM(years, salary) {
