@@ -128,9 +128,9 @@
             display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--gc-grey); 
             border: 1px solid var(--gc-grey); border-radius: 12px; overflow: hidden; margin-bottom: 2rem; 
         }
-        .result-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+        .result-grid-4 { grid-template-columns: 1fr 1fr; }
         
-        .result-card { background: white; padding: 1.5rem; text-align: center; }
+        .result-card { background: white; padding: 1.2rem; text-align: center; }
         .result-card.total { 
             grid-column: 1 / -1; background: var(--green); color: white; 
             border-top: 2px solid var(--gc-grey); 
@@ -201,12 +201,20 @@
         
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
         
-        @media (max-width: 700px) {
+        @media (max-width: 768px) {
             .demo-controls, .demo-controls-2, .demo-controls-4 { grid-template-columns: 1fr; }
             .result-grid, .result-grid-4 { grid-template-columns: 1fr; }
             .nav { padding: 1rem; }
             .calculator-wrap { padding: 1.5rem; }
             .union-links { flex-direction: column; align-items: center; }
+            .rc-amount { font-size: 1.8rem; }
+            .result-card.total .rc-amount { font-size: 2.2rem; }
+        }
+        
+        @media (max-width: 600px) {
+            .result-card { padding: 1rem; }
+            .rc-amount { font-size: 1.6rem; }
+            .result-card.total .rc-amount { font-size: 2rem; }
         }
     </style>
 </head>
