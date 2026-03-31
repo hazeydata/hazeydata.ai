@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — School Schedules Database | HazeyData</title>
+    <meta name="description" content="Analysis, guides, and insights about US school calendar data — from the team building the most comprehensive school schedule database in the country.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+    <link rel="canonical" href="https://hazeydata.ai/ssd/blog/">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hazeydata.ai/ssd/blog/">
+    <meta property="og:title" content="Blog — School Schedules Database | HazeyData">
+    <meta property="og:description" content="Analysis, guides, and insights about US school calendar data.">
+    <meta property="og:site_name" content="HazeyData">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0a1628; --bg-secondary: #0f1d32;
+            --bg-glass: rgba(255,255,255,0.04);
+            --border-card: rgba(255,255,255,0.08); --border-accent: rgba(74,144,164,0.3);
+            --accent: #4a90a4; --accent-light: #6bb5c9;
+            --accent-green: #4ade80; --accent-yellow: #facc15;
+            --text-primary: #ffffff; --text-secondary: rgba(255,255,255,0.7); --text-muted: rgba(255,255,255,0.4);
+            --font-text: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+        body { background: var(--bg-primary); min-height: 100vh; font-family: var(--font-text); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(74,144,164,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(74,144,164,0.02) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+        .header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; background: rgba(10,22,40,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-card); }
+        .header::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.4; }
+        .logo { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 800; letter-spacing: 0.12em; text-decoration: none; background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .nav-links { display: flex; gap: 24px; align-items: center; }
+        .nav-links a { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent-light); }
+        .blog-header { position: relative; z-index: 1; text-align: center; padding: 80px 24px 40px; max-width: 720px; margin: 0 auto; }
+        .blog-header h1 { font-size: 36px; font-weight: 800; margin-bottom: 12px; }
+        .blog-header p { font-size: 16px; color: var(--text-secondary); }
+        .blog-list { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 0 24px 80px; display: flex; flex-direction: column; gap: 20px; }
+        .blog-card { background: var(--bg-glass); border: 1px solid var(--border-card); border-radius: 14px; padding: 32px; transition: border-color 0.3s, transform 0.2s; text-decoration: none; display: block; }
+        .blog-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
+        .blog-card-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; display: flex; gap: 16px; }
+        .blog-card-tag { color: var(--accent); border: 1px solid rgba(74,144,164,0.3); padding: 2px 8px; border-radius: 4px; font-size: 10px; }
+        .blog-card h2 { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; line-height: 1.3; }
+        .blog-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin: 0; }
+        .blog-card .read-more { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-top: 12px; display: inline-block; }
+        .footer { position: relative; z-index: 1; text-align: center; padding: 32px 24px; border-top: 1px solid var(--border-card); font-size: 12px; color: var(--text-muted); }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
+        @media (max-width: 768px) { .blog-header h1 { font-size: 28px; } .blog-card { padding: 24px; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">HAZEYDATA</a>
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/ssd/">SSD</a>
+            <a href="/ssd/docs.html">Docs</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </nav>
+    </header>
+    <div class="blog-header">
+        <h1>Blog</h1>
+        <p>Analysis, guides, and insights from the School Schedules Database.</p>
+    </div>
+    <div class="blog-list">
+        <a href="school-calendar-demand-forecasting.html" class="blog-card">
+            <div class="blog-card-meta">
+                <span>April 14, 2026</span>
+                <span>•</span>
+                <span>12 min read</span>
+                <span class="blog-card-tag">Tutorial</span>
+            </div>
+            <h2>School Calendar Data for Demand Forecasting: A Practical Guide</h2>
+            <p>How to integrate district-level school calendar data into demand forecasting models. Python examples, API walkthrough, and feature engineering techniques for tourism, retail, and transportation.</p>
+            <span class="read-more">Read →</span>
+        </a>
+        <a href="school-breaks-theme-park-crowds.html" class="blog-card">
+            <div class="blog-card-meta">
+                <span>April 10, 2026</span>
+                <span>•</span>
+                <span>10 min read</span>
+                <span class="blog-card-tag">Analysis</span>
+            </div>
+            <h2>How School Breaks Drive Theme Park Crowds: A Data Analysis</h2>
+            <p>Spring break isn't one week — it's a six-week rolling wave of demand as 13,700 districts take breaks at different times. We analyzed the data to show exactly how school calendars shape theme park attendance.</p>
+            <span class="read-more">Read →</span>
+        </a>
+        <a href="us-school-calendar-dataset.html" class="blog-card">
+            <div class="blog-card-meta">
+                <span>April 7, 2026</span>
+                <span>•</span>
+                <span>8 min read</span>
+                <span class="blog-card-tag">Product</span>
+            </div>
+            <h2>The US School Calendar Dataset: What It Is and Why It Matters</h2>
+            <p>There are 13,700 public school districts in the United States, each setting their own calendar. There has never been a clean, structured, machine-readable dataset covering all of them — until now.</p>
+            <span class="read-more">Read →</span>
+        </a>
+    </div>
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/">hazeydata.ai</a>
+            <a href="/ssd/">SSD Product</a>
+            <a href="/ssd/docs.html">API Docs</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </div>
+        <p>&copy; 2026 HazeyData. School Schedule Database.</p>
+    </footer>
+</body>
+</html>
