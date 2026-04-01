@@ -142,6 +142,7 @@
         <nav class="nav-links">
             <a href="/">Home</a>
             <a href="/ssd/" class="active">SSD</a>
+            <a href="/ssd/blog/">Blog</a>
             <a href="/ssd/docs.html">Docs</a>
             <a href="mailto:fred@hazeydata.ai">Contact</a>
         </nav>
@@ -328,6 +329,7 @@
     <footer class="footer">
         <div class="footer-links">
             <a href="/">hazeydata.ai</a>
+            <a href="/ssd/blog/">Blog</a>
             <a href="/ssd/docs.html">API Docs</a>
             <a href="/ssd/explorer.html">Data Explorer</a>
             <a href="/ssd/dashboard.html">Dashboard</a>
@@ -376,9 +378,7 @@
         function updateCounter(dayData) {
             var pctLabel = document.getElementById('heatmap-pct');
             if (!dayData || !pctLabel) return;
-
             if (currentZoomState && dayData.districts) {
-                // State-specific stats
                 var stateName = FIPS_TO_NAME[currentZoomState] || ('State ' + currentZoomState);
                 var totalE = 0, notInE = 0;
                 Object.keys(dayData.districts).forEach(function(geoid) {
@@ -396,7 +396,6 @@
                 }
                 return;
             }
-
             var notIn = dayData.not_in_session_students || 0;
             var pct = dayData.national_pct || 0;
             if (notIn > 0) {
@@ -502,17 +501,14 @@
             var us = results[0];
             heatmapData = results[1];
             var objKey = Object.keys(us.objects)[0];
-
             districts = topojson.feature(us, us.objects[objKey]).features;
             try { stateBorders = topojson.mesh(us, us.objects[objKey], function(a, b) { return a.properties.STATEFP !== b.properties.STATEFP; }); } catch(e) {}
             try { nationBorder = topojson.mesh(us, us.objects[objKey], function(a, b) { return a === b; }); } catch(e) {}
-
             var container = document.getElementById('heatmap-map');
             var dpr = window.devicePixelRatio || 1;
             canvasW = Math.min(960, container.clientWidth || 960);
             canvasH = canvasW * 0.625;
             container.style.height = canvasH + 'px';
-
             function makeCanvas() {
                 var c = document.createElement('canvas');
                 c.width = canvasW * dpr; c.height = canvasH * dpr;
@@ -527,12 +523,10 @@
             var a = makeCanvas(), b = makeCanvas();
             canvasA = a.canvas; ctxA = a.ctx; canvasB = b.canvas; ctxB = b.ctx;
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0';
-
             var fc = topojson.feature(us, us.objects[objKey]);
             nationalProjection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], fc);
             pathA = d3.geoPath(nationalProjection, ctxA);
             pathB = d3.geoPath(nationalProjection, ctxB);
-
             buildWeekdayNav();
             if (heatmapData.days && heatmapData.days.length > 0) {
                 renderMapDay(heatmapData.days[0], true);
@@ -542,6 +536,7 @@
             console.error('Map load error:', err);
             document.getElementById('heatmap-map').innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px;">Map loading failed. Refresh to retry.</p>';
         });
+
         // ═══ Lead Capture ═══
         async function submitLead() {
             var email = document.getElementById('lead-email').value.trim();
@@ -565,7 +560,6 @@
                     btn.textContent = 'Download'; btn.disabled = false;
                 }
             } catch(e) {
-                // Fallback: direct download on any error
                 window.location.href = '/ssd/ssd_sample_top100.csv';
                 status.innerHTML = '\u2713 Check your downloads!';
                 status.style.color = 'var(--accent-green)';
