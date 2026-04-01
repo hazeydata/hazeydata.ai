@@ -327,110 +327,15 @@
             <div class="demo-controls demo-controls-4">
                 <div>
                     <label class="ctrl-label" data-en="Classification Group" data-fr="Groupe de classification">Classification Group</label>
-                    <select id="classification" onchange="updateLevels()">
-                        <option value="" data-en-text="Select your classification..." data-fr-text="Sélectionner votre classification...">Select your classification...</option>
-                        
-                        <optgroup label="PA — Program & Administrative Services (PSAC)">
-                            <option value="AS">AS — Administrative Services</option>
-                            <option value="PM">PM — Programme Administration</option>
-                            <option value="CR">CR — Clerical and Regulatory</option>
-                            <option value="IS">IS — Information Services</option>
-                            <option value="WP">WP — Welfare Programmes</option>
-                            <option value="ST">ST — Secretarial, Stenographic and Typing</option>
-                            <option value="CM">CM — Communications</option>
-                            <option value="DA">DA — Data Processing</option>
-                            <option value="OE">OE — Office Equipment</option>
-                        </optgroup>
-                        
-                        <optgroup label="TC — Technical Services (PSAC)">
-                            <option value="EG">EG — Engineering and Scientific Support</option>
-                            <option value="GT">GT — General Technical</option>
-                            <option value="DD">DD — Drafting and Illustration</option>
-                            <option value="PI">PI — Primary Products Inspection</option>
-                            <option value="TI">TI — Technical Inspection</option>
-                            <option value="PY">PY — Photography</option>
-                        </optgroup>
-                        
-                        <optgroup label="SV — Operational Services (PSAC)">
-                            <option value="GL">GL — General Labour and Trades</option>
-                            <option value="GS">GS — General Services</option>
-                            <option value="HP">HP — Heating, Power and Stationary Plant Operation</option>
-                            <option value="HS">HS — Hospital Services</option>
-                            <option value="FR">FR — Firefighters</option>
-                            <option value="SC">SC — Ships' Crews</option>
-                            <option value="LI">LI — Lightkeepers</option>
-                            <option value="PR">PR(S) — Program Delivery</option>
-                        </optgroup>
-                        
-                        <optgroup label="EB — Education & Library Science (PSAC)">
-                            <option value="ED">ED — Education Services</option>
-                            <option value="EU">EU — Educational Support</option>
-                            <option value="LS">LS — Library Science</option>
-                        </optgroup>
-                        
-                        <optgroup label="Other PSAC Groups">
-                            <option value="FB">FB — Border Services</option>
-                        </optgroup>
-                        
-                        <optgroup label="CX — Correctional Services (UCCO)">
-                            <option value="CX">CX — Correctional Services</option>
-                        </optgroup>
-                        
-                        <optgroup label="IT — Information Technology (PIPSC)">
-                            <option value="IT">IT — Information Technology</option>
-                        </optgroup>
-                        
-                        <optgroup label="EC — Economics & Social Science (CAPE)">
-                            <option value="EC">EC — Economics and Social Science Services</option>
-                        </optgroup>
-                        
-                        <optgroup label="SP — Applied Science & Patent Examination (PIPSC)">
-                            <option value="AC">AC — Actuarial Science</option>
-                            <option value="AG">AG — Agriculture</option>
-                            <option value="BI">BI — Biological Sciences</option>
-                            <option value="CH">CH — Chemistry</option>
-                            <option value="FO">FO — Forestry</option>
-                            <option value="MT">MT — Mathematics</option>
-                            <option value="PC">PC — Physical Sciences</option>
-                        </optgroup>
-                        
-                        <optgroup label="NR — Architecture, Engineering & Land Survey (PIPSC)">
-                            <option value="AR">AR — Architecture and Town Planning</option>
-                            <option value="EN">EN — Engineering and Land Survey</option>
-                        </optgroup>
-                        
-                        <optgroup label="RE — Research (PIPSC)">
-                            <option value="DS">DS — Defence Scientific Service</option>
-                            <option value="HR">HR — Historical Research</option>
-                            <option value="MA">MA — Mathematics</option>
-                            <option value="SE">SE — Scientific Research</option>
-                        </optgroup>
-                        
-                        <optgroup label="SH — Health Services (PIPSC)">
-                            <option value="DE">DE — Dentistry</option>
-                            <option value="MD">MD — Medicine</option>
-                            <option value="ND">ND — Nutrition and Dietetics</option>
-                            <option value="NU">NU — Nursing</option>
-                            <option value="OP">OP — Occupational and Physical Therapy</option>
-                            <option value="PH">PH — Pharmacy</option>
-                            <option value="PS">PS — Psychology</option>
-                            <option value="SW">SW — Social Work</option>
-                            <option value="VM">VM — Veterinary Medicine</option>
-                        </optgroup>
-                        
-                        <optgroup label="Other Professional Groups">
-                            <option value="FS">FS — Foreign Service (PAFSO)</option>
-                            <option value="LP">LP — Law Practitioner (AJC)</option>
-                            <option value="AI">AI — Air Traffic Control (CATCA)</option>
-                            <option value="TR">TR — Translation (CAPE)</option>
-                            <option value="EL">EL — Electronics (IBEW)</option>
-                        </optgroup>
-                        
-                        <optgroup label="Non-Unionized">
-                            <option value="EX">EX — Executive (NJC)</option>
-                            <option value="DM">DM — Deputy Minister (NJC)</option>
-                        </optgroup>
-                    </select>
+                    <div style="position:relative;">
+                        <input type="text" id="class-search" placeholder="Type to search (e.g. EC, AS, IT...)" autocomplete="off"
+                            style="width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid var(--gc-grey);font-size:0.95rem;font-family:inherit;background:white;color:var(--gc-grey-dark);"
+                            onfocus="showClassList()" oninput="filterClassList()">
+                        <div id="class-list" style="display:none;position:absolute;top:100%;left:0;right:0;max-height:250px;overflow-y:auto;background:white;border:1.5px solid var(--gc-blue-lighter);border-top:none;border-radius:0 0 8px 8px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,0.12);">
+                        </div>
+                    </div>
+                    <input type="hidden" id="classification" value="">
+                    <!-- Classification data built by JS from PAY_TABLES keys -->
                 </div>
                 <div>
                     <label class="ctrl-label" data-en="Level" data-fr="Niveau">Level</label>
@@ -663,6 +568,119 @@
             DM: { bargainingAgent: 'NJC', levels: { 1: [253400, 265600, 277800, 290000, 302200, 314400, 326600, 338800], 2: [314400, 329600, 344800, 360000, 375200, 390400, 405600, 420800], 3: [405600, 425600, 445600, 465600, 485600, 505600, 525600, 545600] }}
         };
         
+        // Searchable classification combo box
+        const CLASS_GROUP_NAMES = {
+            AS:'Administrative Services',PM:'Programme Administration',CR:'Clerical & Regulatory',
+            IS:'Information Services',WP:'Welfare Programmes',ST:'Secretarial/Stenographic',
+            CM:'Communications',DA:'Data Processing',OE:'Office Equipment',
+            EG:'Engineering & Scientific Support',GT:'General Technical',DD:'Drafting & Illustration',
+            PI:'Primary Products Inspection',TI:'Technical Inspection',PY:'Photography',
+            GL:'General Labour & Trades',GS:'General Services',HP:'Heating/Power/Stationary Plant',
+            HS:'Hospital Services',FR:'Fire Fighting',SC:'Ships Crews',LI:'Lightkeepers',PR:'Printing Operations',
+            ED:'Education',EU:'Educational Support',LS:'Library Science',
+            FB:'Border Services',CX:'Correctional Services',
+            IT:'Information Technology',EC:'Economics & Social Science',
+            AC:'Actuarial Science',AG:'Agriculture',AR:'Architecture & Town Planning',
+            EN:'Engineering',BI:'Biological Science',CH:'Chemistry',FO:'Forestry',
+            MT:'Meteorology',PC:'Physical Sciences',
+            DS:'Defence Science',HR:'Historical Research',MA:'Mathematics',SE:'Scientific Research',
+            DE:'Dentistry',MD:'Medicine',ND:'Nutrition & Dietetics',NU:'Nursing',
+            OP:'Occupational/Physical Therapy',PH:'Pharmacy',PS:'Psychology',SW:'Social Work',VM:'Veterinary Medicine',
+            TR:'Translation',EL:'Electronics',
+            FS:'Foreign Service',LP:'Law Practitioner',AI:'Air Traffic Control',
+            EX:'Executive',DM:'Deputy Minister'
+        };
+
+        function buildClassList() {
+            var list = document.getElementById('class-list');
+            var keys = Object.keys(PAY_TABLES).sort();
+            var html = '';
+            keys.forEach(function(k) {
+                var levels = Object.keys(PAY_TABLES[k].levels);
+                var agent = PAY_TABLES[k].bargainingAgent;
+                var name = CLASS_GROUP_NAMES[k] || k;
+                levels.forEach(function(lv) {
+                    var label = k + '-' + lv.toString().padStart(2, '0');
+                    var detail = name + ' (' + agent + ')';
+                    html += '<div class="class-option" data-group="' + k + '" data-level="' + lv + '" data-search="' + (k + ' ' + label + ' ' + name + ' ' + agent).toLowerCase() + '" style="padding:8px 12px;cursor:pointer;border-bottom:1px solid #eee;font-size:0.9rem;" onmouseenter="this.style.background=\'#f0f7ff\'" onmouseleave="this.style.background=\'white\'">';
+                    html += '<strong>' + label + '</strong> <span style="color:#666;font-size:0.82rem;">— ' + detail + '</span>';
+                    html += '</div>';
+                });
+            });
+            list.innerHTML = html;
+
+            list.querySelectorAll('.class-option').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    selectClassification(el.getAttribute('data-group'), el.getAttribute('data-level'), el.querySelector('strong').textContent);
+                });
+            });
+        }
+
+        function showClassList() {
+            var list = document.getElementById('class-list');
+            if (!list.children.length) buildClassList();
+            list.style.display = 'block';
+            filterClassList();
+        }
+
+        function filterClassList() {
+            var query = document.getElementById('class-search').value.toLowerCase().trim();
+            var items = document.getElementById('class-list').querySelectorAll('.class-option');
+            var visibleCount = 0;
+            items.forEach(function(el) {
+                var match = !query || el.getAttribute('data-search').indexOf(query) !== -1;
+                el.style.display = match ? '' : 'none';
+                if (match) visibleCount++;
+            });
+        }
+
+        function selectClassification(group, level, label) {
+            document.getElementById('class-search').value = label;
+            document.getElementById('classification').value = group;
+            document.getElementById('class-list').style.display = 'none';
+            updateLevels();
+            // Auto-select the level that was clicked
+            var levelSelect = document.getElementById('level');
+            levelSelect.value = level;
+            updateSteps();
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            var wrapper = document.getElementById('class-search');
+            var list = document.getElementById('class-list');
+            if (wrapper && list && !wrapper.contains(e.target) && !list.contains(e.target)) {
+                list.style.display = 'none';
+            }
+        });
+
+        // Keyboard navigation
+        document.getElementById('class-search').addEventListener('keydown', function(e) {
+            var list = document.getElementById('class-list');
+            var visible = Array.from(list.querySelectorAll('.class-option')).filter(function(el) { return el.style.display !== 'none'; });
+            var current = list.querySelector('.class-option[data-active]');
+            var idx = current ? visible.indexOf(current) : -1;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (current) current.removeAttribute('data-active');
+                idx = Math.min(idx + 1, visible.length - 1);
+                if (visible[idx]) { visible[idx].setAttribute('data-active', ''); visible[idx].style.background = '#f0f7ff'; visible[idx].scrollIntoView({block:'nearest'}); }
+                if (current && current !== visible[idx]) current.style.background = 'white';
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (current) current.removeAttribute('data-active');
+                idx = Math.max(idx - 1, 0);
+                if (visible[idx]) { visible[idx].setAttribute('data-active', ''); visible[idx].style.background = '#f0f7ff'; visible[idx].scrollIntoView({block:'nearest'}); }
+                if (current && current !== visible[idx]) current.style.background = 'white';
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (current) current.click();
+            } else if (e.key === 'Escape') {
+                list.style.display = 'none';
+            }
+        });
+
         // Classification dropdown cascade functions
         function updateLevels() {
             const classification = document.getElementById('classification').value;
