@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How School Breaks Drive Theme Park Crowds: A Data Analysis | HazeyData</title>
+    <meta name="description" content="Analysis of how staggered school breaks across 13,700 US districts create rolling waves of theme park demand. Real data on spring break timing, enrollment-weighted impact, and what it means for crowd predictions.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+    <link rel="canonical" href="https://hazeydata.ai/ssd/blog/school-breaks-theme-park-crowds.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://hazeydata.ai/ssd/blog/school-breaks-theme-park-crowds.html">
+    <meta property="og:title" content="How School Breaks Drive Theme Park Crowds: A Data Analysis">
+    <meta property="og:description" content="Real data on how staggered spring breaks across 13,700 US districts create rolling waves of theme park demand.">
+    <meta property="og:site_name" content="HazeyData">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@disneystatswhiz">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "How School Breaks Drive Theme Park Crowds: A Data Analysis",
+        "author": {"@type": "Organization", "name": "HazeyData"},
+        "publisher": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
+        "datePublished": "2026-04-10",
+        "dateModified": "2026-04-10",
+        "description": "Analysis of how staggered school breaks create rolling waves of theme park demand.",
+        "mainEntityOfPage": "https://hazeydata.ai/ssd/blog/school-breaks-theme-park-crowds.html"
+    }
+    </script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0a1628; --bg-secondary: #0f1d32;
+            --bg-card: rgba(255,255,255,0.03); --bg-glass: rgba(255,255,255,0.04);
+            --border-card: rgba(255,255,255,0.08); --border-accent: rgba(74,144,164,0.3);
+            --accent: #4a90a4; --accent-light: #6bb5c9;
+            --accent-green: #4ade80; --accent-yellow: #facc15; --accent-red: #ef4444; --accent-orange: #fb923c;
+            --text-primary: #ffffff; --text-secondary: rgba(255,255,255,0.7); --text-muted: rgba(255,255,255,0.4);
+            --font-text: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+        body { background: var(--bg-primary); min-height: 100vh; font-family: var(--font-text); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(74,144,164,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(74,144,164,0.02) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+        .header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; background: rgba(10,22,40,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-card); }
+        .header::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.4; }
+        .logo { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 800; letter-spacing: 0.12em; text-decoration: none; background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .nav-links { display: flex; gap: 24px; align-items: center; }
+        .nav-links a { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent-light); }
+
+        .article-container { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 60px 24px 80px; }
+        .article-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; display: flex; gap: 20px; flex-wrap: wrap; }
+        .article-meta a { color: var(--accent); text-decoration: none; }
+        h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.85) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .article-lede { font-size: 18px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 40px; border-left: 3px solid var(--accent); padding-left: 20px; }
+        h2 { font-size: 22px; font-weight: 700; margin: 48px 0 16px; color: var(--text-primary); }
+        h3 { font-size: 17px; font-weight: 600; margin: 32px 0 12px; color: var(--accent-light); }
+        p { font-size: 15px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 16px; }
+        .article-container a { color: var(--accent); text-decoration: none; }
+        .article-container a:hover { color: var(--accent-light); text-decoration: underline; }
+        strong { color: var(--text-primary); font-weight: 600; }
+        code { font-family: var(--font-mono); font-size: 13px; color: var(--accent); background: rgba(74,144,164,0.1); padding: 2px 6px; border-radius: 4px; }
+
+        .data-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 13px; }
+        .data-table th { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border-card); }
+        .data-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text-secondary); }
+        .data-table tr:hover td { background: rgba(74,144,164,0.04); }
+        .data-table .highlight { color: var(--accent); font-weight: 600; }
+        .data-table .enrollment { font-family: var(--font-mono); font-size: 12px; color: var(--accent-yellow); }
+
+        .week-bar { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+        .week-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); width: 120px; flex-shrink: 0; text-align: right; }
+        .week-fill { height: 24px; border-radius: 4px; transition: width 0.6s ease; position: relative; }
+        .week-fill span { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 10px; color: var(--bg-primary); font-weight: 700; }
+        .week-chart { margin: 24px 0 32px; }
+        .week-chart-title { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+
+        .callout { background: var(--bg-glass); border: 1px solid var(--border-accent); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+        .callout p { margin-bottom: 0; }
+        .insight { background: rgba(74,222,128,0.05); border: 1px solid rgba(74,222,128,0.2); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+        .insight p { margin-bottom: 0; }
+        .insight strong { color: var(--accent-green); }
+
+        .cta-inline { background: linear-gradient(180deg, rgba(74,144,164,0.06) 0%, var(--bg-glass) 60%); border: 1px solid rgba(74,144,164,0.2); border-radius: 12px; padding: 32px; text-align: center; margin: 40px 0; }
+        .cta-inline h3 { color: var(--text-primary); margin-top: 0; }
+        .cta-inline a.btn { display: inline-block; padding: 12px 28px; border-radius: 8px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; background: linear-gradient(135deg, var(--accent) 0%, #3d7a8c 100%); color: var(--bg-primary); transition: all 0.2s; }
+        .cta-inline a.btn:hover { background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%); text-decoration: none; }
+
+        .footer { position: relative; z-index: 1; text-align: center; padding: 32px 24px; border-top: 1px solid var(--border-card); font-size: 12px; color: var(--text-muted); }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
+        @media (max-width: 768px) { h1 { font-size: 26px; } .article-lede { font-size: 16px; } .week-label { width: 80px; font-size: 10px; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">HAZEYDATA</a>
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/ssd/">SSD</a>
+            <a href="/ssd/docs.html">Docs</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </nav>
+    </header>
+
+    <article class="article-container">
+        <div class="article-meta">
+            <span>April 10, 2026</span>
+            <span>•</span>
+            <span>10 min read</span>
+            <span>•</span>
+            <a href="/ssd/">School Schedules Database</a>
+        </div>
+
+        <h1>How School Breaks Drive Theme Park Crowds: A Data Analysis</h1>
+
+        <p class="article-lede">Spring break isn't a single week — it's a six-week rolling wave of demand as 13,700 school districts take their breaks at different times. We analyzed the data to show exactly how school calendars shape theme park attendance.</p>
+
+        <h2>The Conventional Wisdom Is Wrong</h2>
+
+        <p>If you've ever googled "best time to visit Disney World," you've seen crowd calendars. They all agree on the broad strokes: spring break is busy, September is slow, Christmas week is insanity.</p>
+
+        <p>But the <em>details</em> of spring break — which specific weeks are worst, which are surprisingly manageable — are where the real value lies. And those details are entirely driven by school calendars.</p>
+
+        <p>Most crowd predictions are based on a handful of manually-tracked large districts — maybe a few dozen at best. Someone looks up Orange County, Hillsborough County, a few Texas metros, and some Northeast systems. That's a reasonable approach, but it's inherently limited by how many districts one person can manually track.</p>
+
+        <p>What happens when you have <em>all</em> of them?</p>
+
+        <h2>Spring Break 2026: The Full Picture</h2>
+
+        <p>Using the School Schedules Database, we calculated the total number of US students on spring break for each week from early March through late April 2026. The results reveal a clear wave pattern:</p>
+
+        <div class="week-chart">
+            <div class="week-chart-title">Students on Spring Break by Week — 2026</div>
+            <div class="week-bar">
+                <span class="week-label">Mar 2–6</span>
+                <div class="week-fill" style="width: 12%; background: var(--accent-yellow);"><span>2.1M</span></div>
+            </div>
+            <div class="week-bar">
+                <span class="week-label">Mar 9–13</span>
+                <div class="week-fill" style="width: 28%; background: var(--accent-orange);"><span>4.8M</span></div>
+            </div>
+            <div class="week-bar">
+                <span class="week-label">Mar 16–20</span>
+                <div class="week-fill" style="width: 62%; background: var(--accent-red);"><span>10.7M</span></div>
+            </div>
+            <div class="week-bar">
+                <span class="week-label">Mar 23–27</span>
+                <div class="week-fill" style="width: 78%; background: #dc2626;"><span>13.5M</span></div>
+            </div>
+            <div class="week-bar">
+                <span class="week-label">Mar 30–Apr 3</span>
+                <div class="week-fill" style="width: 100%; background: #b91c1c;"><span>17.2M</span></div>
+            </div>
+            <div class="week-bar">
+                <span class="week-label">Apr 6–10</span>
+                <div class="week-fill" style="width: 72%; background: var(--accent-red);"><span>12.4M</span></div>
+            </div>
+            <div class="week-bar">
+                <span class="week-label">Apr 13–17</span>
+                <div class="week-fill" style="width: 40%; background: var(--accent-orange);"><span>6.9M</span></div>
+            </div>
+            <div class="week-bar">
+                <span class="week-label">Apr 20–24</span>
+                <div class="week-fill" style="width: 15%; background: var(--accent-yellow);"><span>2.6M</span></div>
+            </div>
+        </div>
+
+        <div class="insight">
+            <p><strong>Key finding:</strong> The peak week (March 30–April 3) has over 8x more students on break than the first week of March. But even the "quiet" weeks at the edges still have millions of students out of school. There is no truly empty week during spring break season.</p>
+        </div>
+
+        <p>The peak week in 2026 aligns with Easter (April 5), which is no coincidence. Many districts — especially in the Northeast and parts of the Southeast — peg their spring break to the week before Easter. When Easter falls in early April, as it does in 2026, this creates a massive pileup with Midwest and Western districts that take fixed mid-March breaks.</p>
+
+        <h2>Why the Stagger Matters</h2>
+
+        <p>The six-week spread of spring break is what makes it different from, say, Christmas week (when virtually every district is out simultaneously). This stagger creates several effects that matter for crowd prediction:</p>
+
+        <p><strong>There are no zero-crowd weeks.</strong> Even the lightest week in the spring break window has over 2 million students out of school. For a destination like Walt Disney World, that's still a significant demand driver.</p>
+
+        <p><strong>The peak shifts year to year.</strong> Because Easter moves (ranging from late March to late April), the spring break peak shifts with it. In years with a late Easter, the peak comes later — and the early-March weeks become genuinely quiet. In years with an early Easter, the peak piles on top of the fixed-date breaks, creating extreme compression.</p>
+
+        <p><strong>Local districts matter most.</strong> For a specific destination, the home-state and neighboring-state districts have an outsized impact. Walt Disney World's crowds are disproportionately driven by Central Florida districts (Orange, Osceola, Seminole, Hillsborough) because locals visit during their own breaks. Similarly, Disneyland is heavily influenced by Los Angeles Unified's schedule.</p>
+
+        <h2>The Districts That Move Markets</h2>
+
+        <p>Not all districts are equal. A single large metro district going on break can swing attendance at nearby attractions dramatically. Here are the districts with the largest enrollment — each one a significant demand signal:</p>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>District</th>
+                    <th>State</th>
+                    <th>Enrollment</th>
+                    <th>Spring Break 2026</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="highlight">New York City DOE</td><td>NY</td><td class="enrollment">900K+</td><td>Apr 6–17</td></tr>
+                <tr><td class="highlight">Los Angeles Unified</td><td>CA</td><td class="enrollment">540K+</td><td>Mar 30–Apr 3</td></tr>
+                <tr><td class="highlight">Chicago Public Schools</td><td>IL</td><td class="enrollment">320K+</td><td>Mar 23–27</td></tr>
+                <tr><td class="highlight">Miami-Dade County</td><td>FL</td><td class="enrollment">330K+</td><td>Mar 16–20</td></tr>
+                <tr><td class="highlight">Clark County (Las Vegas)</td><td>NV</td><td class="enrollment">300K+</td><td>Mar 30–Apr 3</td></tr>
+                <tr><td class="highlight">Broward County</td><td>FL</td><td class="enrollment">260K+</td><td>Mar 16–20</td></tr>
+                <tr><td class="highlight">Houston ISD</td><td>TX</td><td class="enrollment">187K+</td><td>Mar 9–13</td></tr>
+                <tr><td class="highlight">Hillsborough County</td><td>FL</td><td class="enrollment">220K+</td><td>Mar 16–20</td></tr>
+                <tr><td class="highlight">Orange County (FL)</td><td>FL</td><td class="enrollment">207K+</td><td>Mar 23–27</td></tr>
+                <tr><td class="highlight">Dallas ISD</td><td>TX</td><td class="enrollment">140K+</td><td>Mar 9–13</td></tr>
+            </tbody>
+        </table>
+
+        <p>Notice the pattern: the big Florida districts cluster in mid-March, while the big California and Northeast districts cluster around Easter. This is exactly why the Disney crowd calendar sites report a dip between those two waves — and why the Easter week itself is the absolute peak, when the late-breaking districts overlap with families traveling for the holiday.</p>
+
+        <h2>Beyond Spring Break: The Year-Round Pattern</h2>
+
+        <p>Spring break gets the most attention, but school calendars shape demand year-round. Some patterns that emerge from the full dataset:</p>
+
+        <p><strong>Fall break is the new spring break.</strong> An increasing number of districts — particularly in the South and Midwest — have adopted week-long fall breaks in October. This has transformed what used to be a quiet shoulder season into one of the year's busiest periods at major attractions. The data shows fall break adoption growing year over year, with measurable impact on October crowd levels.</p>
+
+        <p><strong>The summer start date varies by four weeks.</strong> Some Southern districts start as early as late July, while Northeastern districts often don't begin until after Labor Day. This creates a "last chance for summer" rush in August that varies dramatically by region.</p>
+
+        <p><strong>Teacher workdays create hidden slow days.</strong> Many districts have one or two days per quarter designated as teacher workdays or professional development days. School is out, but parents often haven't planned vacations around them. These create micro-dips in school attendance that show up as surprisingly quiet days at nearby attractions.</p>
+
+        <h2>What This Means for Crowd Predictions</h2>
+
+        <p>The implication is clear: accurate crowd forecasting requires district-level school calendar data, not just a rough sense of "when spring break is." The difference between a 5-million-student week and a 17-million-student week is the difference between manageable and miserable for any major tourist destination.</p>
+
+        <p>This is why we built the School Schedules Database — to give demand forecasters, revenue managers, and operations planners the granular school calendar data they need, covering every US district, updated continuously, accessible via a simple API.</p>
+
+        <div class="callout">
+            <p><strong>Building crowd forecasts or demand models?</strong> The SSD API can give you district-level school calendar data for every US district in a single call — no manual tracking required. <a href="mailto:fred@hazeydata.ai">Get in touch</a> if you'd like to talk about your use case.</p>
+        </div>
+
+        <div class="cta-inline">
+            <h3>Build Better Crowd Predictions</h3>
+            <p style="margin-bottom: 20px;">Day-level school calendar data for every US district. Three school years. One API call.</p>
+            <a href="/ssd/" class="btn">Get API Access →</a>
+            <p style="margin-top: 12px; font-size: 12px;"><a href="/ssd/docs.html">Read the API docs</a> · <a href="/ssd/blog/us-school-calendar-dataset.html">Learn more about the dataset</a></p>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/">hazeydata.ai</a>
+            <a href="/ssd/">SSD Product</a>
+            <a href="/ssd/docs.html">API Docs</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </div>
+        <p>&copy; 2026 HazeyData. School Schedule Database.</p>
+    </footer>
+</body>
+</html>

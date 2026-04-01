@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Calendar Data for Demand Forecasting: A Practical Guide | HazeyData</title>
+    <meta name="description" content="How to integrate US school calendar data into demand forecasting models. Python examples, API walkthrough, and feature engineering techniques for tourism, retail, and transportation.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+    <link rel="canonical" href="https://hazeydata.ai/ssd/blog/school-calendar-demand-forecasting.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://hazeydata.ai/ssd/blog/school-calendar-demand-forecasting.html">
+    <meta property="og:title" content="School Calendar Data for Demand Forecasting: A Practical Guide">
+    <meta property="og:description" content="Python examples and techniques for integrating school calendar data into demand forecasting models.">
+    <meta property="og:site_name" content="HazeyData">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@disneystatswhiz">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "School Calendar Data for Demand Forecasting: A Practical Guide",
+        "author": {"@type": "Organization", "name": "HazeyData"},
+        "publisher": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
+        "datePublished": "2026-04-14",
+        "dateModified": "2026-04-14",
+        "description": "How to integrate school calendar data into demand forecasting models with Python examples.",
+        "mainEntityOfPage": "https://hazeydata.ai/ssd/blog/school-calendar-demand-forecasting.html",
+        "proficiencyLevel": "Intermediate"
+    }
+    </script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0a1628; --bg-secondary: #0f1d32;
+            --bg-card: rgba(255,255,255,0.03); --bg-glass: rgba(255,255,255,0.04);
+            --border-card: rgba(255,255,255,0.08); --border-accent: rgba(74,144,164,0.3);
+            --accent: #4a90a4; --accent-light: #6bb5c9;
+            --accent-green: #4ade80; --accent-yellow: #facc15; --accent-red: #ef4444;
+            --text-primary: #ffffff; --text-secondary: rgba(255,255,255,0.7); --text-muted: rgba(255,255,255,0.4);
+            --font-text: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+        body { background: var(--bg-primary); min-height: 100vh; font-family: var(--font-text); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(74,144,164,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(74,144,164,0.02) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+        .header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; background: rgba(10,22,40,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-card); }
+        .header::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.4; }
+        .logo { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 800; letter-spacing: 0.12em; text-decoration: none; background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .nav-links { display: flex; gap: 24px; align-items: center; }
+        .nav-links a { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent-light); }
+
+        .article-container { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 60px 24px 80px; }
+        .article-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; display: flex; gap: 20px; flex-wrap: wrap; }
+        .article-meta a { color: var(--accent); text-decoration: none; }
+        h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.85) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .article-lede { font-size: 18px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 40px; border-left: 3px solid var(--accent); padding-left: 20px; }
+        h2 { font-size: 22px; font-weight: 700; margin: 48px 0 16px; color: var(--text-primary); }
+        h3 { font-size: 17px; font-weight: 600; margin: 32px 0 12px; color: var(--accent-light); }
+        p { font-size: 15px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 16px; }
+        .article-container a { color: var(--accent); text-decoration: none; }
+        .article-container a:hover { color: var(--accent-light); text-decoration: underline; }
+        strong { color: var(--text-primary); font-weight: 600; }
+        code { font-family: var(--font-mono); font-size: 13px; color: var(--accent); background: rgba(74,144,164,0.1); padding: 2px 6px; border-radius: 4px; }
+
+        .code-block { background: rgba(0,0,0,0.5); border: 1px solid var(--border-card); border-radius: 10px; padding: 20px; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; color: var(--text-secondary); overflow-x: auto; margin: 20px 0; position: relative; }
+        .code-block .comment { color: rgba(255,255,255,0.3); }
+        .code-block .keyword { color: #c792ea; }
+        .code-block .func { color: #82aaff; }
+        .code-block .string { color: var(--accent-green); }
+        .code-block .number { color: var(--accent-yellow); }
+        .code-block .var { color: var(--accent-light); }
+        .code-lang { position: absolute; top: 8px; right: 12px; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        .callout { background: var(--bg-glass); border: 1px solid var(--border-accent); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+        .callout p { margin-bottom: 0; }
+
+        .feature-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 13px; }
+        .feature-table th { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border-card); }
+        .feature-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text-secondary); vertical-align: top; }
+        .feature-table code { font-size: 11px; }
+
+        .cta-inline { background: linear-gradient(180deg, rgba(74,144,164,0.06) 0%, var(--bg-glass) 60%); border: 1px solid rgba(74,144,164,0.2); border-radius: 12px; padding: 32px; text-align: center; margin: 40px 0; }
+        .cta-inline h3 { color: var(--text-primary); margin-top: 0; }
+        .cta-inline a.btn { display: inline-block; padding: 12px 28px; border-radius: 8px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; background: linear-gradient(135deg, var(--accent) 0%, #3d7a8c 100%); color: var(--bg-primary); transition: all 0.2s; }
+        .cta-inline a.btn:hover { background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%); text-decoration: none; }
+
+        .footer { position: relative; z-index: 1; text-align: center; padding: 32px 24px; border-top: 1px solid var(--border-card); font-size: 12px; color: var(--text-muted); }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
+        @media (max-width: 768px) { h1 { font-size: 26px; } .article-lede { font-size: 16px; } .code-block { font-size: 11px; padding: 14px; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">HAZEYDATA</a>
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/ssd/">SSD</a>
+            <a href="/ssd/docs.html">Docs</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </nav>
+    </header>
+
+    <article class="article-container">
+        <div class="article-meta">
+            <span>April 14, 2026</span>
+            <span>•</span>
+            <span>12 min read</span>
+            <span>•</span>
+            <a href="/ssd/">School Schedules Database</a>
+        </div>
+
+        <h1>School Calendar Data for Demand Forecasting: A Practical Guide</h1>
+
+        <p class="article-lede">School schedules are one of the strongest and most underused signals in demand forecasting. This guide shows you how to integrate district-level school calendar data into your models — with Python examples you can run today.</p>
+
+        <h2>Why School Calendars Matter for Demand Models</h2>
+
+        <p>If you're building any kind of demand forecasting model for a business that's affected by family behavior — theme parks, hotels, restaurants, retail, transportation, urgent care clinics — you probably already account for holidays and weekends. But most models treat school breaks as a binary "it's spring break somewhere" flag, if they account for them at all.</p>
+
+        <p>The reality is more nuanced. On any given day during spring break season, somewhere between 2 million and 17 million students are out of school. The specific number depends on which districts are on break that day. And which districts are on break determines <em>where</em> the demand shows up — a hotel in Orlando cares about different districts than a ski resort in Colorado.</p>
+
+        <p>District-level school calendar data lets you build features that capture this nuance. Instead of a binary "spring break" flag, you can compute the actual number of students on break within a given radius of your location on each day. That's a much stronger signal.</p>
+
+        <h2>Getting Set Up</h2>
+
+        <p>The School Schedules Database API returns JSON or CSV. Here's how to pull data in Python:</p>
+
+        <div class="code-block">
+            <span class="code-lang">Python</span>
+<span class="keyword">import</span> <span class="var">requests</span>
+<span class="keyword">import</span> <span class="var">pandas</span> <span class="keyword">as</span> <span class="var">pd</span>
+
+<span class="var">API_KEY</span> = <span class="string">"ssd_live_your_key_here"</span>
+<span class="var">BASE</span> = <span class="string">"https://api.hazeydata.ai/ssd/v1"</span>
+<span class="var">headers</span> = {<span class="string">"Authorization"</span>: <span class="string">f"Bearer {API_KEY}"</span>}
+
+<span class="comment"># Pull all Florida school days for March 2026</span>
+<span class="var">resp</span> = <span class="var">requests</span>.<span class="func">get</span>(
+    <span class="string">f"{BASE}/days"</span>,
+    <span class="var">headers</span>=<span class="var">headers</span>,
+    <span class="var">params</span>={
+        <span class="string">"state"</span>: <span class="string">"FL"</span>,
+        <span class="string">"start_date"</span>: <span class="string">"2026-03-01"</span>,
+        <span class="string">"end_date"</span>: <span class="string">"2026-03-31"</span>,
+        <span class="string">"format"</span>: <span class="string">"csv"</span>
+    }
+)
+
+<span class="var">df</span> = <span class="var">pd</span>.<span class="func">read_csv</span>(<span class="var">pd</span>.<span class="var">io</span>.<span class="var">common</span>.<span class="func">StringIO</span>(<span class="var">resp</span>.<span class="var">text</span>))
+<span class="func">print</span>(<span class="var">df</span>.<span class="var">shape</span>)  <span class="comment"># (districts × days, columns)</span>
+        </div>
+
+        <p>You now have a DataFrame with one row per district per day, including the <code>is_in_session</code> value, <code>day_type</code>, <code>break_name</code>, <code>enrollment</code>, and <code>confidence</code> for each.</p>
+
+        <h2>Feature Engineering: Five Useful Features</h2>
+
+        <p>Here are five features you can derive from school calendar data, ranked by how much predictive power they typically add to demand models:</p>
+
+        <h3>1. Enrollment-Weighted "Students on Break" (National or Regional)</h3>
+
+        <p>The single most useful feature. For each day, sum the enrollment of all districts where <code>is_in_session &lt; 0.5</code>. This gives you a continuous signal of how many students are available to travel.</p>
+
+        <div class="code-block">
+            <span class="code-lang">Python</span>
+<span class="keyword">def</span> <span class="func">students_on_break</span>(<span class="var">df</span>, <span class="var">date</span>, <span class="var">states</span>=<span class="keyword">None</span>):
+    <span class="string">"""Total students not in session on a given date."""</span>
+    <span class="var">day</span> = <span class="var">df</span>[<span class="var">df</span>[<span class="string">"date"</span>] == <span class="var">date</span>]
+    <span class="keyword">if</span> <span class="var">states</span>:
+        <span class="var">day</span> = <span class="var">day</span>[<span class="var">day</span>[<span class="string">"state"</span>].<span class="func">isin</span>(<span class="var">states</span>)]
+    <span class="var">out</span> = <span class="var">day</span>[<span class="var">day</span>[<span class="string">"is_in_session"</span>] < <span class="number">0.5</span>]
+    <span class="keyword">return</span> <span class="var">out</span>[<span class="string">"enrollment"</span>].<span class="func">sum</span>()
+
+<span class="comment"># National</span>
+<span class="func">students_on_break</span>(<span class="var">df</span>, <span class="string">"2026-03-23"</span>)
+<span class="comment"># Regional (FL + GA + AL — relevant for Orlando)</span>
+<span class="func">students_on_break</span>(<span class="var">df</span>, <span class="string">"2026-03-23"</span>, [<span class="string">"FL"</span>, <span class="string">"GA"</span>, <span class="string">"AL"</span>])
+        </div>
+
+        <h3>2. Break Type Indicator</h3>
+
+        <p>Not all breaks are equal. Spring break generates travel. A teacher workday usually doesn't. Snow days are last-minute. Create categorical features for the dominant break type:</p>
+
+        <div class="code-block">
+            <span class="code-lang">Python</span>
+<span class="keyword">def</span> <span class="func">dominant_break_type</span>(<span class="var">df</span>, <span class="var">date</span>):
+    <span class="string">"""What break type accounts for the most students out?"""</span>
+    <span class="var">out</span> = <span class="var">df</span>[(<span class="var">df</span>[<span class="string">"date"</span>] == <span class="var">date</span>) & (<span class="var">df</span>[<span class="string">"is_in_session"</span>] < <span class="number">0.5</span>)]
+    <span class="keyword">if</span> <span class="var">out</span>.<span class="var">empty</span>:
+        <span class="keyword">return</span> <span class="string">"in_session"</span>
+    <span class="keyword">return</span> (
+        <span class="var">out</span>.<span class="func">groupby</span>(<span class="string">"break_name"</span>)[<span class="string">"enrollment"</span>]
+        .<span class="func">sum</span>()
+        .<span class="func">idxmax</span>()
+    )
+        </div>
+
+        <h3>3. Days Into / Until Break</h3>
+
+        <p>Demand doesn't spike on the first day of break — it spikes the day <em>before</em> (travel day) and drops on the last day (return travel). Create lead/lag features:</p>
+
+        <div class="code-block">
+            <span class="code-lang">Python</span>
+<span class="comment"># For a specific district, compute days-until-next-break</span>
+<span class="keyword">def</span> <span class="func">days_until_break</span>(<span class="var">district_df</span>):
+    <span class="string">"""Add column: days until the next break starts."""</span>
+    <span class="var">on_break</span> = <span class="var">district_df</span>[<span class="string">"is_in_session"</span>] < <span class="number">0.5</span>
+    <span class="comment"># Find break start boundaries</span>
+    <span class="var">starts</span> = <span class="var">on_break</span> & ~<span class="var">on_break</span>.<span class="func">shift</span>(<span class="number">1</span>, <span class="var">fill_value</span>=<span class="keyword">False</span>)
+    <span class="var">result</span> = <span class="var">pd</span>.<span class="func">Series</span>(<span class="var">index</span>=<span class="var">district_df</span>.<span class="var">index</span>, <span class="var">dtype</span>=<span class="string">"float"</span>)
+    <span class="comment"># ... fill with day counts</span>
+    <span class="keyword">return</span> <span class="var">result</span>
+        </div>
+
+        <h3>4. Break Density (Rolling Window)</h3>
+
+        <p>Instead of a point-in-time measure, compute the 7-day rolling percentage of students on break. This smooths out single-day holidays and captures the sustained impact of week-long breaks:</p>
+
+        <div class="code-block">
+            <span class="code-lang">Python</span>
+<span class="comment"># Daily national "break density" — 7-day rolling average</span>
+<span class="var">daily</span> = (
+    <span class="var">df</span>.<span class="func">groupby</span>(<span class="string">"date"</span>)
+    .<span class="func">apply</span>(<span class="keyword">lambda</span> <span class="var">g</span>: (<span class="var">g</span>[<span class="string">"enrollment"</span>] * (<span class="number">1</span> - <span class="var">g</span>[<span class="string">"is_in_session"</span>])).<span class="func">sum</span>())
+    / <span class="var">df</span>.<span class="func">groupby</span>(<span class="string">"date"</span>)[<span class="string">"enrollment"</span>].<span class="func">sum</span>()
+)
+<span class="var">break_density</span> = <span class="var">daily</span>.<span class="func">rolling</span>(<span class="number">7</span>).<span class="func">mean</span>()
+        </div>
+
+        <h3>5. Year-Over-Year Break Shift</h3>
+
+        <p>With three years of data, you can detect districts that shifted their break timing. This is valuable for models that were trained on historical data — if a district moved spring break a week earlier, your historical pattern breaks.</p>
+
+        <table class="feature-table">
+            <thead>
+                <tr><th>Feature</th><th>Type</th><th>Best For</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>students_on_break</code></td>
+                    <td>Continuous (millions)</td>
+                    <td>National/regional demand models, theme parks, airlines</td>
+                </tr>
+                <tr>
+                    <td><code>dominant_break_type</code></td>
+                    <td>Categorical</td>
+                    <td>Distinguishing spring break (travel) from workdays (local)</td>
+                </tr>
+                <tr>
+                    <td><code>days_until_break</code></td>
+                    <td>Integer</td>
+                    <td>Anticipatory demand (booking, travel preparation)</td>
+                </tr>
+                <tr>
+                    <td><code>break_density_7d</code></td>
+                    <td>Continuous (0–1)</td>
+                    <td>Smoothed signal for weekly/monthly models</td>
+                </tr>
+                <tr>
+                    <td><code>yoy_break_shift</code></td>
+                    <td>Integer (days)</td>
+                    <td>Detecting schedule changes that break historical patterns</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Confidence Filtering</h2>
+
+        <p>Not all data points in the SSD have equal quality. Each cell carries a confidence score from 0.0 to 1.0. For demand forecasting, you'll want to set a threshold that balances coverage with accuracy:</p>
+
+        <div class="code-block">
+            <span class="code-lang">Python</span>
+<span class="comment"># High-confidence only (directly extracted from calendars)</span>
+<span class="var">hq</span> = <span class="var">df</span>[<span class="var">df</span>[<span class="string">"confidence"</span>] >= <span class="number">0.8</span>]
+
+<span class="comment"># Broader coverage (includes state-pattern imputation)</span>
+<span class="var">broad</span> = <span class="var">df</span>[<span class="var">df</span>[<span class="string">"confidence"</span>] >= <span class="number">0.5</span>]
+
+<span class="comment"># For enrollment-weighted features, high-confidence data</span>
+<span class="comment"># already covers 85%+ of total enrollment because large</span>
+<span class="comment"># districts have the best-quality data.</span>
+        </div>
+
+        <div class="callout">
+            <p><strong>Practical tip:</strong> For most demand forecasting use cases, a confidence threshold of 0.6 or above gives you excellent coverage (90%+ of enrollment) while filtering out the least reliable data points. The districts with low confidence tend to be small and rural — important for completeness, but their enrollment impact on aggregate features is minimal.</p>
+        </div>
+
+        <h2>Putting It Together: A Complete Example</h2>
+
+        <p>Here's a simplified but complete example of building a school-calendar-enhanced demand model for a hotel near Walt Disney World:</p>
+
+        <div class="code-block">
+            <span class="code-lang">Python</span>
+<span class="keyword">import</span> <span class="var">requests</span>, <span class="var">pandas</span> <span class="keyword">as</span> <span class="var">pd</span>, <span class="var">numpy</span> <span class="keyword">as</span> <span class="var">np</span>
+
+<span class="var">API_KEY</span> = <span class="string">"ssd_live_your_key_here"</span>
+<span class="var">BASE</span> = <span class="string">"https://api.hazeydata.ai/ssd/v1"</span>
+<span class="var">headers</span> = {<span class="string">"Authorization"</span>: <span class="string">f"Bearer {API_KEY}"</span>}
+
+<span class="comment"># 1. Pull full-year school calendar data</span>
+<span class="var">resp</span> = <span class="var">requests</span>.<span class="func">get</span>(
+    <span class="string">f"{BASE}/days"</span>,
+    <span class="var">headers</span>=<span class="var">headers</span>,
+    <span class="var">params</span>={
+        <span class="string">"start_date"</span>: <span class="string">"2025-08-01"</span>,
+        <span class="string">"end_date"</span>: <span class="string">"2026-07-31"</span>,
+        <span class="string">"confidence_min"</span>: <span class="string">"0.6"</span>,
+        <span class="string">"format"</span>: <span class="string">"csv"</span>
+    }
+)
+<span class="var">school</span> = <span class="var">pd</span>.<span class="func">read_csv</span>(<span class="var">pd</span>.<span class="var">io</span>.<span class="var">common</span>.<span class="func">StringIO</span>(<span class="var">resp</span>.<span class="var">text</span>))
+
+<span class="comment"># 2. Build daily "students on break" features</span>
+<span class="var">daily_features</span> = (
+    <span class="var">school</span>
+    .<span class="func">groupby</span>(<span class="string">"date"</span>)
+    .<span class="func">apply</span>(<span class="keyword">lambda</span> <span class="var">g</span>: <span class="var">pd</span>.<span class="func">Series</span>({
+        <span class="string">"students_on_break"</span>: <span class="var">g</span>.<span class="func">loc</span>[
+            <span class="var">g</span>[<span class="string">"is_in_session"</span>] < <span class="number">0.5</span>, <span class="string">"enrollment"</span>
+        ].<span class="func">sum</span>(),
+        <span class="string">"fl_students_on_break"</span>: <span class="var">g</span>.<span class="func">loc</span>[
+            (<span class="var">g</span>[<span class="string">"is_in_session"</span>] < <span class="number">0.5</span>) &
+            (<span class="var">g</span>[<span class="string">"state"</span>] == <span class="string">"FL"</span>), <span class="string">"enrollment"</span>
+        ].<span class="func">sum</span>(),
+        <span class="string">"pct_on_break"</span>: (
+            <span class="var">g</span>.<span class="func">loc</span>[<span class="var">g</span>[<span class="string">"is_in_session"</span>] < <span class="number">0.5</span>, <span class="string">"enrollment"</span>].<span class="func">sum</span>()
+            / <span class="var">g</span>[<span class="string">"enrollment"</span>].<span class="func">sum</span>()
+        )
+    }))
+    .<span class="func">reset_index</span>()
+)
+
+<span class="comment"># 3. Merge with your hotel occupancy data</span>
+<span class="var">hotel</span> = <span class="var">pd</span>.<span class="func">read_csv</span>(<span class="string">"hotel_occupancy.csv"</span>)
+<span class="var">model_df</span> = <span class="var">hotel</span>.<span class="func">merge</span>(<span class="var">daily_features</span>, <span class="var">on</span>=<span class="string">"date"</span>)
+
+<span class="comment"># 4. Add rolling features</span>
+<span class="var">model_df</span>[<span class="string">"break_density_7d"</span>] = (
+    <span class="var">model_df</span>[<span class="string">"pct_on_break"</span>].<span class="func">rolling</span>(<span class="number">7</span>).<span class="func">mean</span>()
+)
+
+<span class="comment"># 5. Train your model with school calendar features</span>
+<span class="var">features</span> = [
+    <span class="string">"day_of_week"</span>, <span class="string">"month"</span>, <span class="string">"is_weekend"</span>,
+    <span class="string">"students_on_break"</span>,       <span class="comment"># national signal</span>
+    <span class="string">"fl_students_on_break"</span>,    <span class="comment"># local signal</span>
+    <span class="string">"break_density_7d"</span>,        <span class="comment"># smoothed trend</span>
+]
+<span class="comment"># ... your model training code here</span>
+        </div>
+
+        <h2>Use Case Patterns</h2>
+
+        <p>Different industries benefit from different feature combinations:</p>
+
+        <p><strong>Theme parks and attractions:</strong> Use <code>students_on_break</code> with both national and state-level granularity. The national number captures out-of-state visitors; the local state number captures the base of local/regional guests who drive rather than fly. Weight nearby states more heavily.</p>
+
+        <p><strong>Hotels and short-term rentals:</strong> Focus on <code>break_density_7d</code> rather than daily counts. Hotel demand responds to week-long breaks more than single days. Combine with your own booking lead-time data — guests from distant districts book further ahead than locals.</p>
+
+        <p><strong>Retail:</strong> Back-to-school is the big one. The SSD's <code>first_day</code> field for each district tells you exactly when school starts, which drives back-to-school shopping. Use district-level data for stores within commuting distance; use state-level aggregates for e-commerce.</p>
+
+        <p><strong>Transportation:</strong> School start and end times create daily traffic patterns, but school breaks create weekly patterns. Use <code>is_in_session</code> as a feature in route-level demand models. The 0.5 value for half days is especially useful — a half day generates a midday traffic spike that a full day off doesn't.</p>
+
+        <h2>Tips for Production</h2>
+
+        <p><strong>Cache aggressively.</strong> School calendar data doesn't change frequently. Pull the full dataset monthly and cache locally. Use the API for real-time spot checks, not bulk queries in your training pipeline.</p>
+
+        <p><strong>Use enrollment weighting.</strong> A district with 200,000 students going on break is not the same signal as a district with 2,000. Always weight by enrollment in aggregate features.</p>
+
+        <p><strong>Account for half days.</strong> The <code>is_in_session</code> field is a decimal, not a boolean. A half day (0.5) still puts families on the road by early afternoon. For demand models, treat anything below 0.75 as "available to travel."</p>
+
+        <p><strong>Join with geography.</strong> Every district has an NCES ID and state code. Join with NCES boundary data to compute distance-weighted features: "total enrollment on break within 200 miles of this location."</p>
+
+        <div class="cta-inline">
+            <h3>Start Building</h3>
+            <p style="margin-bottom: 20px;">Full API access. All districts. Three school years. Python-friendly JSON and CSV.</p>
+            <a href="/ssd/" class="btn">Get API Access — $99/mo →</a>
+            <p style="margin-top: 12px; font-size: 12px;"><a href="/ssd/docs.html">API documentation</a> · <a href="/ssd/blog/us-school-calendar-dataset.html">Dataset overview</a></p>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/">hazeydata.ai</a>
+            <a href="/ssd/">SSD Product</a>
+            <a href="/ssd/docs.html">API Docs</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </div>
+        <p>&copy; 2026 HazeyData. School Schedule Database.</p>
+    </footer>
+</body>
+</html>
