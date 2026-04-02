@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Glass UI Design System - HazeyData</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: white;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    background: linear-gradient(180deg, 
+      #0b1a3a 0%, #0e1838 25%, #111535 50%, #12102e 75%, #0d0c22 100%);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .stars { position: fixed; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+  .star { position: absolute; background: white; border-radius: 50%; }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+  }
+
+  /* === HEADER === */
+  .header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    color: #4a90a4;
+  }
+
+  .title {
+    font-size: clamp(48px, 8vw, 72px);
+    font-weight: 200;
+    letter-spacing: -2px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    line-height: 1.5;
+  }
+
+  .design-pills {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .pill {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+  }
+
+  /* === PROTOTYPES GRID === */
+  .prototypes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 32px;
+    margin-bottom: 80px;
+  }
+
+  @media (max-width: 768px) {
+    .prototypes-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  .prototype-card {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 32px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .prototype-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(74, 144, 164, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .card-icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .card-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+
+  .card-type {
+    font-size: 14px;
+    color: #4a90a4;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .card-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 24px;
+  }
+
+  .card-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .feature-tag {
+    background: rgba(74, 144, 164, 0.15);
+    color: #6bb5c9;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .card-preview {
+    width: 100%;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .preview-phone {
+    width: 120px;
+    height: 160px;
+    background: linear-gradient(180deg, #0b1a3a 0%, #0d0c22 100%);
+    border-radius: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+  }
+
+  .preview-desktop {
+    width: 180px;
+    height: 120px;
+    background: linear-gradient(180deg, #0b1a3a 0%, #0d0c22 100%);
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+  }
+
+  .preview-content {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin: 4px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+  }
+
+  .preview-bar {
+    height: 3px;
+    border-radius: 2px;
+  }
+
+  .preview-circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+
+  .cta-button {
+    background: linear-gradient(135deg, #4a90a4, #6bb5c9);
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+  }
+
+  .prototype-card:hover .cta-button {
+    background: linear-gradient(135deg, #6bb5c9, #4a90a4);
+    transform: translateY(-1px);
+  }
+
+  /* === BENEDICTUS SHOWCASE === */
+  .benedictus-section {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .section-title {
+    font-size: 36px;
+    font-weight: 300;
+    margin-bottom: 16px;
+    color: #ffffff;
+  }
+
+  .section-subtitle {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .color-scale {
+    display: flex;
+    height: 60px;
+    border-radius: 30px;
+    overflow: hidden;
+    max-width: 800px;
+    margin: 0 auto 24px;
+    background: linear-gradient(to right, 
+      #0A2F8F, #305FD1, #5A96EA, #9BC4F2, #C1DDFC, 
+      #E9F4FF, #FFE0E9, #FFB1C9, #EB427B, #A60038
+    );
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .color-labels {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    text-align: center;
+    padding: 60px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    font-weight: 700;
+    color: #4a90a4;
+    margin-bottom: 16px;
+  }
+
+  .footer-text {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .footer-credit {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .content {
+      padding: 40px 16px;
+    }
+
+    .prototypes-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .prototype-card {
+      padding: 24px;
+    }
+
+    .title {
+      font-size: 48px;
+    }
+
+    .design-pills {
+      gap: 8px;
+    }
+
+    .pill {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="content">
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">HAZEYDATA.AI</div>
+    <h1 class="title">Glass UI Design System</h1>
+    <p class="subtitle">
+      iOS Weather-inspired crowd reporting interfaces with translucent glass aesthetics, 
+      interactive AI advisors, and beautiful data visualization.
+    </p>
+    <div class="design-pills">
+      <span class="pill">🌤️ iOS Weather Inspired</span>
+      <span class="pill">🧠 AI-Powered Recommendations</span>
+      <span class="pill">📊 Real-Time Data Visualization</span>
+      <span class="pill">🎨 Benedictus Color System</span>
+      <span class="pill">📱 Mobile-First Responsive</span>
+    </div>
+  </header>
+
+  <!-- PROTOTYPES GRID -->
+  <section class="prototypes-grid">
+    
+    <!-- Complete Crowd Report -->
+    <a href="complete_crowd_report.html" class="prototype-card">
+      <div class="card-header">
+        <span class="card-icon">🏰</span>
+        <div>
+          <div class="card-title">Complete Crowd Report</div>
+          <div class="card-type">Mobile Experience</div>
+        </div>
+      </div>
+      
+      <div class="card-preview">
+        <div class="preview-phone">
+          <div class="preview-content">
+            <div class="preview-circle" style="background: linear-gradient(to right, #5A96EA, #9BC4F2); width: 24px; height: 24px; margin: 8px auto;"></div>
+            <div class="preview-bar" style="background: linear-gradient(to right, #0A2F8F, #A60038); width: 80%;"></div>
+            <div class="preview-bar" style="background: rgba(255,255,255,0.1); width: 60%;"></div>
+            <div class="preview-bar" style="background: rgba(255,255,255,0.1); width: 70%;"></div>
+            <div style="display: flex; gap: 4px; margin-top: 8px;">
+              <div class="preview-circle" style="background: #4a90a4; width: 12px; height: 12px;"></div>
+              <div class="preview-circle" style="background: #6bb5c9; width: 12px; height: 12px;"></div>
+              <div class="preview-circle" style="background: #5A96EA; width: 12px; height: 12px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <p class="card-description">
+        The flagship mobile experience featuring complete above-the-fold and below-the-fold sections. 
+        Interactive Merlin AI advisor with brain animations, crowd density visualization, 
+        7-day forecasting, and event timelines.
+      </p>
+      
+      <div class="card-features">
+        <span class="feature-tag">Merlin AI Brain</span>
+        <span class="feature-tag">Wait Time Curves</span>
+        <span class="feature-tag">Glass Cards</span>
+        <span class="feature-tag">Interactive</span>
+      </div>
+      
+      <button class="cta-button">View Complete Experience</button>
+    </a>
+
+    <!-- Below Fold Layout -->
+    <a href="below_fold_with_rides.html" class="prototype-card">
+      <div class="card-header">
+        <span class="card-icon">🎢</span>
+        <div>
+          <div class="card-title">Below Fold Layout</div>
+          <div class="card-type">Desktop Responsive</div>
+        </div>
+      </div>
+      
+      <div class="card-preview">
+        <div class="preview-desktop">
+          <div class="preview-content">
+            <div style="display: flex; gap: 4px;">
+              <div class="preview-bar" style="background: #4a90a4; width: 30%;"></div>
+              <div class="preview-bar" style="background: #6bb5c9; width: 45%;"></div>
+              <div class="preview-bar" style="background: #5A96EA; width: 35%;"></div>
+            </div>
+            <div class="preview-bar" style="background: linear-gradient(to right, #0A2F8F, #A60038); width: 90%;"></div>
+            <div style="display: flex; gap: 4px; margin-top: 4px;">
+              <div class="preview-bar" style="background: rgba(255,255,255,0.1); width: 25%;"></div>
+              <div class="preview-bar" style="background: rgba(255,255,255,0.1); width: 35%;"></div>
+              <div class="preview-bar" style="background: rgba(255,255,255,0.1); width: 40%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <p class="card-description">
+        Clean desktop-focused layout showcasing crowd density visualization, 
+        events timeline, and ride recommendation system. Perfect responsive 
+        design with HazeyData brand system integration.
+      </p>
+      
+      <div class="card-features">
+        <span class="feature-tag">Responsive Grid</span>
+        <span class="feature-tag">Brand Colors</span>
+        <span class="feature-tag">Clean Layout</span>
+        <span class="feature-tag">Desktop First</span>
+      </div>
+      
+      <button class="cta-button">View Desktop Layout</button>
+    </a>
+
+    <!-- Crowd Card with Merlin -->
+    <a href="crowd_card_with_merlin.html" class="prototype-card">
+      <div class="card-header">
+        <span class="card-icon">🧙‍♂️</span>
+        <div>
+          <div class="card-title">Merlin Advisor Card</div>
+          <div class="card-type">Focused Mobile</div>
+        </div>
+      </div>
+      
+      <div class="card-preview">
+        <div class="preview-phone">
+          <div class="preview-content">
+            <div class="preview-circle" style="background: #ffffff; width: 32px; height: 32px; margin: 4px auto; font-size: 16px; display: flex; align-items: center; justify-content: center;">🧠</div>
+            <div class="preview-bar" style="background: linear-gradient(to right, #0A2F8F, #A60038); width: 100%;"></div>
+            <div style="display: flex; gap: 2px; margin-top: 4px;">
+              <div class="preview-bar" style="background: #5A96EA; width: 20%; height: 2px;"></div>
+              <div class="preview-bar" style="background: #9BC4F2; width: 25%; height: 2px;"></div>
+              <div class="preview-bar" style="background: #C1DDFC; width: 30%; height: 2px;"></div>
+              <div class="preview-bar" style="background: #FFB1C9; width: 25%; height: 2px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <p class="card-description">
+        Focused mobile card highlighting the Merlin AI advisor system. 
+        Features WTI display, 7-day forecast with benedictus color mapping, 
+        and intelligent ride recommendations with clean glass styling.
+      </p>
+      
+      <div class="card-features">
+        <span class="feature-tag">AI Advisor</span>
+        <span class="feature-tag">7-Day Forecast</span>
+        <span class="feature-tag">WTI Display</span>
+        <span class="feature-tag">Mobile Optimized</span>
+      </div>
+      
+      <button class="cta-button">View Merlin Advisor</button>
+    </a>
+
+    <!-- NOW Card Dashboard -->
+    <a href="now_card_mk.html" class="prototype-card">
+      <div class="card-header">
+        <span class="card-icon">📊</span>
+        <div>
+          <div class="card-title">Live Dashboard Card</div>
+          <div class="card-type">Large Format</div>
+        </div>
+      </div>
+      
+      <div class="card-preview">
+        <div class="preview-desktop" style="width: 200px; height: 140px;">
+          <div class="preview-content">
+            <div style="background: linear-gradient(135deg, #4a90a4, #A60038); width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 8px; position: relative;">
+              <div style="position: absolute; top: 50%; left: 50%; width: 40px; height: 2px; background: #ffffff; border-radius: 1px; transform-origin: left center; transform: translate(-50%, -50%) rotate(35deg);"></div>
+            </div>
+            <div style="display: flex; gap: 2px;">
+              <div class="preview-bar" style="background: #4ade80; width: 15%; height: 3px;"></div>
+              <div class="preview-bar" style="background: #f0883e; width: 25%; height: 3px;"></div>
+              <div class="preview-bar" style="background: #A60038; width: 20%; height: 3px;"></div>
+              <div class="preview-bar" style="background: rgba(255,255,255,0.3); width: 40%; height: 3px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <p class="card-description">
+        Professional large-format dashboard (1080px) featuring live gauge visualization 
+        with brand color gradients, real-time ride wait data, and comparative analytics. 
+        Perfect for displays and presentations.
+      </p>
+      
+      <div class="card-features">
+        <span class="feature-tag">Live Gauge</span>
+        <span class="feature-tag">1080px Format</span>
+        <span class="feature-tag">Real-Time Data</span>
+        <span class="feature-tag">Professional</span>
+      </div>
+      
+      <button class="cta-button">View Live Dashboard</button>
+    </a>
+
+  </section>
+
+  <!-- BENEDICTUS SHOWCASE -->
+  <section class="benedictus-section">
+    <h2 class="section-title">The Benedictus Color System</h2>
+    <p class="section-subtitle">
+      Our signature 10-step crowd density visualization system. No traffic light colors—
+      instead, a beautiful progression from deep blue (empty) through white (neutral) to deep red (packed).
+    </p>
+    
+    <div class="color-scale"></div>
+    <div class="color-labels">
+      <span>Empty Parks</span>
+      <span>Neutral</span>
+      <span>Packed</span>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">HAZEYDATA.AI</div>
+  <div class="footer-text">iOS Weather-Inspired Theme Park Crowd Intelligence</div>
+  <div class="footer-credit">Glass UI Design System • Created with Merlin AI</div>
+</footer>
+
+<script>
+  // === Stars Animation ===
+  const starsEl = document.getElementById('stars');
+  const rng = (function(s){return function(){s=s*16807%2147483647;return(s-1)/2147483646;}})(42);
+  
+  for (let i = 0; i < 150; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = rng() < 0.7 ? (rng() < 0.8 ? 1 : 1.5) : (rng() < 0.6 ? 2 : 2.5);
+    const opacity = 0.1 + rng() * 0.4;
+    const x = rng() * 100;
+    const y = rng() * 100;
+    
+    star.style.cssText = `
+      width:${size}px;
+      height:${size}px;
+      left:${x}%;
+      top:${y}%;
+      opacity:${opacity};
+      animation: twinkle ${2 + rng() * 4}s ease-in-out infinite;
+      animation-delay: ${rng() * 2}s;
+    `;
+    
+    starsEl.appendChild(star);
+  }
+
+  // Add twinkle animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.8; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Smooth hover effects
+  document.querySelectorAll('.prototype-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.transform = 'translateY(-6px)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0)';
+    });
+  });
+
+  // Add subtle parallax to stars
+  let ticking = false;
+  
+  function updateStars() {
+    const scrolled = window.pageYOffset;
+    const parallax = scrolled * 0.5;
+    
+    starsEl.style.transform = `translateY(${parallax}px)`;
+    ticking = false;
+  }
+  
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(updateStars);
+      ticking = true;
+    }
+  }
+  
+  window.addEventListener('scroll', requestTick);
+</script>
+
+</body>
+</html>
