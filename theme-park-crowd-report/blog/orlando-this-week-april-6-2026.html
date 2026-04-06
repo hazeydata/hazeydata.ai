@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orlando Theme Parks This Week: April 6–12, 2026 | Theme Park Crowd Report</title>
+    <meta name="description" content="Your data-driven guide to Orlando theme park crowds for April 6–12, 2026. Park-by-park WTI forecasts, best days to visit, and practical advice.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/icon-180.png">
+    <meta name="theme-color" content="#0a1628">
+    <link rel="canonical" href="https://hazeydata.ai/theme-park-crowd-report/blog/orlando-this-week-april-6-2026.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://hazeydata.ai/theme-park-crowd-report/blog/orlando-this-week-april-6-2026.html">
+    <meta property="og:title" content="Orlando Theme Parks This Week: April 6–12, 2026">
+    <meta property="og:description" content="Your data-driven guide to Orlando theme park crowds for April 6–12, 2026. Park-by-park WTI forecasts, best days to visit, and practical advice.">
+    <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@disneystatswhiz">
+    <meta name="twitter:title" content="Orlando Theme Parks This Week: April 6–12, 2026">
+    <meta name="twitter:description" content="Your data-driven guide to Orlando theme park crowds for April 6–12, 2026. Park-by-park WTI forecasts, best days to visit, and practical advice.">
+    <meta name="twitter:image" content="https://hazeydata.ai/assets/banner.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=20260406">
+    <link rel="stylesheet" href="blog.css?v=20260406">
+    <style>
+        /* Blog post ambient + sticky nav overrides */
+        .blog-ambient {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .blog-ambient .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            animation: orb-drift 20s ease-in-out infinite alternate;
+        }
+        .blog-ambient .orb-1 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, #EB427B 0%, transparent 70%);
+            top: -10%; left: -10%;
+        }
+        .blog-ambient .orb-2 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, #ff6b9d 0%, transparent 70%);
+            bottom: 10%; right: -10%;
+            animation-delay: -10s;
+            animation-duration: 28s;
+        }
+        @keyframes orb-drift {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 15px) scale(0.95); }
+            100% { transform: translate(10px, -10px) scale(1.02); }
+        }
+
+        .blog-sticky-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+        .blog-sticky-nav.scrolled {
+            background: rgba(10, 22, 40, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        .blog-sticky-nav .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .blog-sticky-nav .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .blog-sticky-nav .nav-back {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            transition: color 0.2s;
+            margin-right: 0.5rem;
+        }
+        .blog-sticky-nav .nav-back:hover { color: var(--text-secondary); }
+        .blog-sticky-nav .nav-logo-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .blog-sticky-nav .nav-logo-link img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
+        .blog-sticky-nav .nav-logo-link span {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.04em;
+            color: var(--text-primary);
+        }
+        .blog-sticky-nav .blog-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .blog-sticky-nav .blog-nav-links a {
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .blog-sticky-nav .blog-nav-links a:hover { color: #FFB1C9; }
+        .blog-sticky-nav .blog-nav-links .btn {
+            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #EB427B 0%, #c93566 100%);
+        }
+        .blog-sticky-nav .blog-nav-links .btn:hover {
+            background: linear-gradient(135deg, #ff6b9d 0%, #EB427B 100%);
+            box-shadow: 0 8px 30px rgba(235, 66, 123, 0.3);
+        }
+        .blog-hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 20;
+        }
+        .blog-hamburger span {
+            display: block; width: 22px; height: 2px;
+            background: var(--text-secondary); margin: 5px 0;
+            transition: all 0.3s; border-radius: 2px;
+        }
+        .blog-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .blog-hamburger.open span:nth-child(2) { opacity: 0; }
+        .blog-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* Blog post hero — adjusted for sticky nav */
+        .blog-post-hero {
+            position: relative;
+            z-index: 1;
+            padding: 8rem 2rem 3rem;
+            text-align: center;
+        }
+        .blog-post-hero h1 {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.85) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .blog-post-hero p {
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* Blog container with z-index */
+        .blog-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer z-index */
+        .blog-footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* WTI Table styling */
+        .wti-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .wti-table th {
+            background: rgba(60, 120, 210, 0.15);
+            color: var(--mid-blue);
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+        .wti-table td {
+            padding: 0.65rem 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+        .wti-table tr:last-child td {
+            border-bottom: none;
+        }
+        .wti-table tr:hover td {
+            background: rgba(60, 120, 210, 0.05);
+        }
+        .wti-table .peak {
+            color: var(--hot-pink);
+            font-weight: 600;
+        }
+        .wti-table .light {
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .blog-sticky-nav { padding: 0.75rem 1.25rem; }
+            .blog-hamburger { display: block; }
+            .blog-sticky-nav .nav-logo-link span { display: none; }
+            .blog-sticky-nav .blog-nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 1rem;
+                background: rgba(10, 22, 40, 0.95);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 0.75rem 1rem;
+                min-width: 180px;
+                flex-direction: column;
+                gap: 0.25rem;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(16px);
+            }
+            .blog-sticky-nav .blog-nav-links.open { display: flex; }
+            .blog-sticky-nav .blog-nav-links a {
+                display: block;
+                padding: 0.5rem 0.25rem;
+                font-size: 0.9rem;
+            }
+            .blog-post-hero {
+                padding: 7rem 1.5rem 2rem;
+            }
+            .wti-table {
+                font-size: 0.8rem;
+            }
+            .wti-table th, .wti-table td {
+                padding: 0.5rem 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Ambient orbs -->
+    <div class="blog-ambient" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <!-- Sticky Navigation -->
+    <nav class="blog-sticky-nav" id="blogNav">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <a href="/theme-park-crowd-report/blog/" class="nav-back">← All posts</a>
+                <a href="/theme-park-crowd-report/" class="nav-logo-link">
+                    <img src="../assets/icon.jpg" alt="Theme Park Crowd Report">
+                    <span>Theme Park Crowd Report</span>
+                </a>
+            </div>
+            <button class="blog-hamburger" id="blogHamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="blog-nav-links" id="blogNavLinks">
+                <a href="/theme-park-crowd-report/">Home</a>
+                <a href="/theme-park-crowd-report/blog/">Blog</a>
+                <a href="/theme-park-crowd-report/pricing.html">Pricing</a>
+                <a href="https://discord.gg/2Estr7sbP7" class="btn btn-sm" target="_blank">Join Discord</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="blog-post-hero">
+        <div class="blog-post-meta" style="margin-bottom: 1rem;">
+            <span>April 6, 2026</span>
+            <span class="tag">Weekly Outlook</span>
+                <span class="tag">WTI</span>
+                <span class="tag">Orlando</span>
+        </div>
+        <h1>Orlando Theme Parks This Week: April 6–12, 2026</h1>
+        <p>Your data-driven guide to Orlando theme park crowds for April 6–12, 2026. Park-by-park WTI forecasts, best days to visit, and practical advice.</p>
+    </section>
+
+    <div class="blog-container">
+        <article class="blog-post">
+
+            <p>We're deep into spring break territory, but the data shows clear winners and losers. But not all parks are created equal — the gap between the lightest and busiest park in Orlando this week is 18 WTI points. That's the difference between walking onto rides and waiting over an hour.</p>
+
+            <p>Here's your park-by-park breakdown for the week of April 6–12, 2026, based on our Wait Time Index forecasts.</p>
+
+            <h3>The Big Picture: Where Should You Go?</h3>
+
+
+            <p>If you're in Orlando this week and have any flexibility, the WTI data makes the choice pretty clear:</p>
+
+            <table class="wti-table">
+                <thead>
+                    <tr>
+                        <th>Park</th>
+                        <th>WTI Range This Week</th>
+                        <th>Verdict</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Universal Studios Florida</td>
+                        <td class="light">17–20</td>
+                        <td class="light">Moderate — plan your must-dos</td>
+                    </tr>
+                    <tr>
+                        <td>Magic Kingdom</td>
+                        <td>17–25</td>
+                        <td>Moderate — plan your must-dos</td>
+                    </tr>
+                    <tr>
+                        <td>Islands of Adventure</td>
+                        <td>19–24</td>
+                        <td>Busy but workable</td>
+                    </tr>
+                    <tr>
+                        <td>EPCOT</td>
+                        <td>20–27</td>
+                        <td>Consistently busy</td>
+                    </tr>
+                    <tr>
+                        <td>Epic Universe</td>
+                        <td>24–25</td>
+                        <td>Consistently busy</td>
+                    </tr>
+                    <tr>
+                        <td>Hollywood Studios</td>
+                        <td>27–31</td>
+                        <td>Very busy all week</td>
+                    </tr>
+                    <tr>
+                        <td>Animal Kingdom</td>
+                        <td class="peak">31–42</td>
+                        <td class="peak">Highly variable — pick your day</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <h3>The Story: Universal Studios Florida vs. Animal Kingdom</h3>
+
+            <p>The headline this week is the gap between parks. <strong>Animal Kingdom is running WTI values around 36</strong> — solidly extreme — while <strong>Universal Studios Florida is forecasting an average WTI of just 17.5.</strong> That's moderate territory.</p>
+
+            <p>If you have flexibility in which park you visit, the math here is straightforward. Universal Studios Florida will give you a dramatically better experience this week.</p>
+
+            <h3>Walt Disney World: Very Busy Overall</h3>
+
+            <p>Across the four WDW parks, the average WTI this week is 26.7 — very busy. Here's the breakdown:</p>
+
+            <p><strong>Animal Kingdom (WTI 31–42):</strong> Expect long waits everywhere. Only go if you have to. There's a 11-point swing between the best and worst days — target <strong>Wednesday, April 8</strong> (WTI 31.1) over Tuesday, April 7 (WTI 42.5) if you can.</p>
+
+            <p><strong>Hollywood Studios (WTI 27–31):</strong> It's going to be a test of patience. Prioritize ruthlessly. Wednesday, April 8 is your best bet (WTI 26.8) — a meaningful improvement over the rest of the week.</p>
+
+            <p><strong>EPCOT (WTI 20–27):</strong> Come with a strategy — Lightning Lane or rope drop will pay off. There's a 6-point swing between the best and worst days — target <strong>Thursday, April 9</strong> (WTI 20.5) over Tuesday, April 7 (WTI 26.9) if you can.</p>
+
+            <p><strong>Magic Kingdom (WTI 17–25):</strong> Plan your headliners and you'll be fine. There's a 7-point swing between the best and worst days — target <strong>Wednesday, April 8</strong> (WTI 17.2) over Tuesday, April 7 (WTI 24.6) if you can.</p>
+
+
+            <h3>Universal Orlando: Busy Overall</h3>
+
+            <p><strong>Epic Universe (WTI 24–25):</strong> Come with a strategy — Lightning Lane or rope drop will pay off. Crowds are consistent all week, so your day choice doesn't matter much here.</p>
+
+            <p><strong>Islands of Adventure (WTI 19–24):</strong> Come with a strategy — Lightning Lane or rope drop will pay off. Wednesday, April 8 is your best bet (WTI 19.2) — a meaningful improvement over the rest of the week.</p>
+
+            <p><strong>Universal Studios Florida (WTI 17–20):</strong> Plan your headliners and you'll be fine. Sunday, April 12 is your best bet (WTI 16.6) — a meaningful improvement over the rest of the week.</p>
+
+
+            <h3>Best Day at Each Park</h3>
+
+            <p>If you can pick your day, here are the lowest-WTI days at each park:</p>
+
+            <table class="wti-table">
+                <thead>
+                    <tr>
+                        <th>Park</th>
+                        <th>Best Day</th>
+                        <th>WTI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Universal Studios Florida</td>
+                        <td>Sunday, April 12</td>
+                        <td class="light">16.6</td>
+                    </tr>
+                    <tr>
+                        <td>Magic Kingdom</td>
+                        <td>Wednesday, April 8</td>
+                        <td>17.2</td>
+                    </tr>
+                    <tr>
+                        <td>Islands of Adventure</td>
+                        <td>Wednesday, April 8</td>
+                        <td>19.2</td>
+                    </tr>
+                    <tr>
+                        <td>EPCOT</td>
+                        <td>Thursday, April 9</td>
+                        <td>20.5</td>
+                    </tr>
+                    <tr>
+                        <td>Epic Universe</td>
+                        <td>Tuesday, April 7</td>
+                        <td>23.8</td>
+                    </tr>
+                    <tr>
+                        <td>Hollywood Studios</td>
+                        <td>Wednesday, April 8</td>
+                        <td>26.8</td>
+                    </tr>
+                    <tr>
+                        <td>Animal Kingdom</td>
+                        <td>Wednesday, April 8</td>
+                        <td class="peak">31.1</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Wednesday, April 8</strong> shapes up as the best overall day across parks (average WTI 22.5). If you're picking one day this week, that's your answer.</p>
+
+            <h3>The Takeaway</h3>
+
+            <ul>
+                <li><strong>Universal Studios Florida</strong> is your lightest option this week (WTI 17–20), though no park is truly empty.</li>
+                <li><strong>Animal Kingdom</strong> is the park to avoid if possible (WTI 31–42). If you must go, arrive at rope drop and prioritize your top 2–3 rides.</li>
+                <li>Day choice matters most at <strong>Animal Kingdom</strong> — there's a 11-point WTI swing between best and worst days.</li>
+                <li>This is a week where rope drop and Lightning Lane / Express Pass really pay off. Don't wing it.</li>
+                <li>The data updates daily. Check the Discord for tomorrow's numbers if your plans are still flexible.</li>
+            </ul>
+
+
+            <div class="blog-cta-box">
+                <p><strong>Get daily WTI forecasts for all 12 parks.</strong> Just type <code>/today</code> or <code>/crowd</code> in the Discord — free during beta.</p>
+                <a href="https://discord.gg/2Estr7sbP7" class="btn btn-primary" target="_blank" style="margin-top: 0.5rem;">Join the Discord — It's Free</a>
+            </div>
+
+            <p class="author-sig">Written by the <a href="https://hazeydata.ai/theme-park-crowd-report/">Theme Park Crowd Report</a> team — data-driven crowd forecasts for 12 parks across Walt Disney World, Universal Orlando, and more.</p>
+        </article>
+
+        <!-- Prev / Next -->
+        <div class="blog-nav-arrows">
+            <a href="/theme-park-crowd-report/blog/wdw-daily-recap-2026-04-04.html" class="blog-nav-prev">
+                <span class="blog-nav-label">Previous</span>
+                <span class="blog-nav-title">← WDW Daily Recap: Saturday, April 4</span>
+            </a>
+            <a href="/theme-park-crowd-report/blog/disneyland-this-week-april-9-2026.html" class="blog-nav-next">
+                <span class="blog-nav-label">Next</span>
+                <span class="blog-nav-title">Disneyland This Week: April 9–15, 2026 →</span>
+            </a>
+        </div>
+    </div>
+
+    <footer class="blog-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="../assets/icon.jpg" alt="" class="footer-icon">
+                <span>Theme Park Crowd Report</span>
+            </div>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/theme-park-crowd-report/">TPCR Home</a>
+                <a href="/theme-park-crowd-report/blog/">Blog</a>
+                <a href="/theme-park-crowd-report/bio.html">About</a>
+                <a href="https://discord.gg/2Estr7sbP7" target="_blank">Discord</a>
+                <a href="https://twitter.com/disneystatswhiz" target="_blank">Twitter</a>
+                <a href="mailto:fred@hazeydata.ai">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 hazeydata.ai</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sticky nav
+        const nav = document.getElementById('blogNav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 40);
+        });
+        // Hamburger
+        const hamburger = document.getElementById('blogHamburger');
+        const navLinks = document.getElementById('blogNavLinks');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                navLinks.classList.remove('open');
+            });
+        });
+    </script>
+</body>
+</html>

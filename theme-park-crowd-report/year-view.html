@@ -520,7 +520,7 @@
                 </div>
             </div>
             <div class="subtitle">Wait Time Index (WTI) — Next 365 Days</div>
-            <div class="date-range" id="date-range">January 2024 - December 2024</div>
+            <div class="date-range" id="date-range">Loading...</div>
         </div>
 
         <div class="heatmap-container">
@@ -1146,7 +1146,7 @@
                 const firstDate = data[0].date;
                 const lastDate = data[data.length - 1].date;
                 const dateRange = document.getElementById('date-range');
-                const fmt = { month: 'short', year: 'numeric' };
+                const fmt = { month: 'long', year: 'numeric' };
                 dateRange.textContent = `${firstDate.toLocaleDateString('en-US', fmt)} — ${lastDate.toLocaleDateString('en-US', fmt)}`;
             }
             
