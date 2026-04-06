@@ -32,6 +32,7 @@
             --text-primary: #ffffff; --text-secondary: rgba(255,255,255,0.7); --text-muted: rgba(255,255,255,0.4);
             --font-text: 'Inter', -apple-system, sans-serif;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --map-bg: #1a2a3a;
         }
         body { background: var(--bg-primary); min-height: 100vh; font-family: var(--font-text); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
         body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(74,144,164,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(74,144,164,0.02) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
@@ -176,7 +177,7 @@
         <div id="heatmap-map" style="width:100%;max-width:960px;margin:0 auto;position:relative;"></div>
         <div class="heatmap-pct" id="heatmap-pct"></div>
         <div class="heatmap-legend">
-            <span><span class="swatch" style="background:transparent;border:1px solid rgba(255,255,255,0.15)"></span> In session</span>
+            <span><span class="swatch" style="background:#1a2a3a;border:1px solid rgba(255,255,255,0.15)"></span> In session</span>
             <span><span class="swatch" style="background:#FFE0E0"></span> &lt;1K students</span>
             <span><span class="swatch" style="background:#F06060"></span> 5K-10K</span>
             <span><span class="swatch" style="background:#E02020"></span> 20K-50K</span>
@@ -360,12 +361,13 @@
         var districts = null, stateBorders = null, nationBorder = null;
         var canvasA = null, canvasB = null, ctxA = null, ctxB = null, pathA = null, pathB = null;
         var activeCanvas = 'A', canvasW = 960, canvasH = 600, FADE_MS = 1200;
+        var MAP_BG = '#1a2a3a'; // dark blue-grey: in-session district background
 
         function getDistrictColor(geoid, dayData) {
-            if (!dayData || !dayData.districts) return 'transparent';
+            if (!dayData || !dayData.districts) return MAP_BG;
             var d = dayData.districts[geoid];
-            if (!d) return 'transparent';
-            if (d.s > 0) return 'transparent';
+            if (!d) return MAP_BG;
+            if (d.s > 0) return MAP_BG;
             if (d.s === -1) return 'rgba(128,128,128,0.15)';
             var e = d.e || 0;
             if (e >= 100000) return '#A00000';
@@ -379,6 +381,11 @@
 
         function drawToCanvas(ctx, pathFn, dayData) {
             ctx.clearRect(0, 0, canvasW, canvasH);
+            // Fill the entire canvas with map background before drawing districts.
+            // Without this, days with mostly in-session districts render white
+            // because transparent canvas fill bleeds through to the page background.
+            ctx.fillStyle = MAP_BG;
+            ctx.fillRect(0, 0, canvasW, canvasH);
             if (!districts) return;
             districts.forEach(function(dist) {
                 ctx.beginPath(); pathFn(dist);
