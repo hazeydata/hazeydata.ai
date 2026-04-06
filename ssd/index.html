@@ -32,7 +32,6 @@
             --text-primary: #ffffff; --text-secondary: rgba(255,255,255,0.7); --text-muted: rgba(255,255,255,0.4);
             --font-text: 'Inter', -apple-system, sans-serif;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-            --map-bg: #1a2a3a;
         }
         body { background: var(--bg-primary); min-height: 100vh; font-family: var(--font-text); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
         body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(74,144,164,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(74,144,164,0.02) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
@@ -174,10 +173,10 @@
             <option value="49">Utah</option><option value="50">Vermont</option><option value="51">Virginia</option><option value="53">Washington</option>
             <option value="54">West Virginia</option><option value="55">Wisconsin</option><option value="56">Wyoming</option>
         </select></div>
-        <div id="heatmap-map" style="width:100%;max-width:960px;margin:0 auto;position:relative;"></div>
+        <div id="heatmap-map" style="width:100%;max-width:960px;margin:0 auto;position:relative;background:var(--bg-primary);border-radius:8px;overflow:hidden;"></div>
         <div class="heatmap-pct" id="heatmap-pct"></div>
         <div class="heatmap-legend">
-            <span><span class="swatch" style="background:#1a2a3a;border:1px solid rgba(255,255,255,0.15)"></span> In session</span>
+            <span><span class="swatch" style="background:var(--bg-primary);border:1px solid rgba(255,255,255,0.15)"></span> In session</span>
             <span><span class="swatch" style="background:#FFE0E0"></span> &lt;1K students</span>
             <span><span class="swatch" style="background:#F06060"></span> 5K-10K</span>
             <span><span class="swatch" style="background:#E02020"></span> 20K-50K</span>
@@ -356,18 +355,20 @@
     </footer>
 
     <script>
-        // ═══ D3.js Heatmap — Weekday Nav + Slow Crossfade ═══
+        // ═══ D3.js Heatmap — Weekday Nav + Instant Swap (no crossfade) ═══
+        // Crossfade was removed: during opacity transitions, the fading-out canvas
+        // showed a white default background when the new canvas was nearly transparent
+        // (low-break days). Instant redraw on a single canvas avoids this entirely.
         var heatmapData = null, heatmapDayIndex = 0, heatmapInterval = null, heatmapPaused = false;
         var districts = null, stateBorders = null, nationBorder = null;
-        var canvasA = null, canvasB = null, ctxA = null, ctxB = null, pathA = null, pathB = null;
-        var activeCanvas = 'A', canvasW = 960, canvasH = 600, FADE_MS = 1200;
-        var MAP_BG = '#1a2a3a'; // dark blue-grey: in-session district background
+        var canvas = null, ctx = null, pathFn = null;
+        var canvasW = 960, canvasH = 600;
 
         function getDistrictColor(geoid, dayData) {
-            if (!dayData || !dayData.districts) return MAP_BG;
+            if (!dayData || !dayData.districts) return null;
             var d = dayData.districts[geoid];
-            if (!d) return MAP_BG;
-            if (d.s > 0) return MAP_BG;
+            if (!d) return null;
+            if (d.s > 0) return null;
             if (d.s === -1) return 'rgba(128,128,128,0.15)';
             var e = d.e || 0;
             if (e >= 100000) return '#A00000';
@@ -379,17 +380,14 @@
             return '#FFE0E0';
         }
 
-        function drawToCanvas(ctx, pathFn, dayData) {
+        function drawMap(dayData) {
+            if (!ctx || !districts) return;
             ctx.clearRect(0, 0, canvasW, canvasH);
-            // Fill the entire canvas with map background before drawing districts.
-            // Without this, days with mostly in-session districts render white
-            // because transparent canvas fill bleeds through to the page background.
-            ctx.fillStyle = MAP_BG;
-            ctx.fillRect(0, 0, canvasW, canvasH);
-            if (!districts) return;
             districts.forEach(function(dist) {
+                var color = getDistrictColor(dist.properties ? (dist.properties.GEOID || dist.properties.geoid) : dist.id, dayData);
+                if (!color) return; // in-session: leave transparent, container bg shows through
                 ctx.beginPath(); pathFn(dist);
-                ctx.fillStyle = getDistrictColor(dist.properties ? (dist.properties.GEOID || dist.properties.geoid) : dist.id, dayData);
+                ctx.fillStyle = color;
                 ctx.fill();
             });
             if (stateBorders) { ctx.beginPath(); pathFn(stateBorders); ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 0.8; ctx.stroke(); }
@@ -426,22 +424,11 @@
             }
         }
 
-        function renderMapDay(dayData, instant) {
+        function renderMapDay(dayData) {
             if (!districts) return;
             updateCounter(dayData);
             updateActiveButton(heatmapDayIndex);
-            if (instant) {
-                drawToCanvas(ctxA, pathA, dayData);
-                canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';
-                return;
-            }
-            if (activeCanvas === 'A') {
-                drawToCanvas(ctxB, pathB, dayData);
-                canvasB.style.opacity = '1'; canvasA.style.opacity = '0'; activeCanvas = 'B';
-            } else {
-                drawToCanvas(ctxA, pathA, dayData);
-                canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';
-            }
+            drawMap(dayData);
         }
 
         function updateActiveButton(index) {
@@ -496,18 +483,16 @@
             if (stateFeatures.length === 0) return;
             var sc = { type: 'FeatureCollection', features: stateFeatures };
             var sp = d3.geoAlbersUsa().fitSize([canvasW, canvasH], sc);
-            pathA = d3.geoPath(sp, ctxA);
-            pathB = d3.geoPath(sp, ctxB);
+            pathFn = d3.geoPath(sp, ctx);
             document.querySelector('.heatmap-title').textContent = 'Schools on Break — ' + (FIPS_TO_NAME[statefp] || statefp);
-            renderMapDay(heatmapData.days[heatmapDayIndex], true);
+            renderMapDay(heatmapData.days[heatmapDayIndex]);
         }
 
         function zoomToUS() {
             currentZoomState = null;
-            pathA = d3.geoPath(nationalProjection, ctxA);
-            pathB = d3.geoPath(nationalProjection, ctxB);
+            pathFn = d3.geoPath(nationalProjection, ctx);
             document.querySelector('.heatmap-title').textContent = 'Schools on Break This Week';
-            renderMapDay(heatmapData.days[heatmapDayIndex], true);
+            renderMapDay(heatmapData.days[heatmapDayIndex]);
         }
 
         var FIPS_TO_SLUG = {'01':'alabama','02':'alaska','04':'arizona','05':'arkansas','06':'california','08':'colorado','09':'connecticut','10':'delaware','11':'district-of-columbia','12':'florida','13':'georgia','15':'hawaii','16':'idaho','17':'illinois','18':'indiana','19':'iowa','20':'kansas','21':'kentucky','22':'louisiana','23':'maine','24':'maryland','25':'massachusetts','26':'michigan','27':'minnesota','28':'mississippi','29':'missouri','30':'montana','31':'nebraska','32':'nevada','33':'new-hampshire','34':'new-jersey','35':'new-mexico','36':'new-york','37':'north-carolina','38':'north-dakota','39':'ohio','40':'oklahoma','41':'oregon','42':'pennsylvania','44':'rhode-island','45':'south-carolina','46':'south-dakota','47':'tennessee','48':'texas','49':'utah','50':'vermont','51':'virginia','53':'washington','54':'west-virginia','55':'wisconsin','56':'wyoming'};
@@ -533,27 +518,18 @@
             canvasW = Math.min(960, container.clientWidth || 960);
             canvasH = canvasW * 0.625;
             container.style.height = canvasH + 'px';
-            function makeCanvas() {
-                var c = document.createElement('canvas');
-                c.width = canvasW * dpr; c.height = canvasH * dpr;
-                c.style.width = canvasW + 'px'; c.style.height = canvasH + 'px';
-                c.style.position = 'absolute'; c.style.top = '0';
-                c.style.left = '50%'; c.style.transform = 'translateX(-50%)';
-                c.style.transition = 'opacity ' + FADE_MS + 'ms ease-in-out';
-                container.appendChild(c);
-                var cx = c.getContext('2d'); cx.scale(dpr, dpr);
-                return { canvas: c, ctx: cx };
-            }
-            var a = makeCanvas(), b = makeCanvas();
-            canvasA = a.canvas; ctxA = a.ctx; canvasB = b.canvas; ctxB = b.ctx;
-            canvasA.style.opacity = '1'; canvasB.style.opacity = '0';
+            canvas = document.createElement('canvas');
+            canvas.width = canvasW * dpr; canvas.height = canvasH * dpr;
+            canvas.style.width = canvasW + 'px'; canvas.style.height = canvasH + 'px';
+            canvas.style.display = 'block';
+            container.appendChild(canvas);
+            ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
             var fc = topojson.feature(us, us.objects[objKey]);
             nationalProjection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], fc);
-            pathA = d3.geoPath(nationalProjection, ctxA);
-            pathB = d3.geoPath(nationalProjection, ctxB);
+            pathFn = d3.geoPath(nationalProjection, ctx);
             buildWeekdayNav();
             if (heatmapData.days && heatmapData.days.length > 0) {
-                renderMapDay(heatmapData.days[0], true);
+                renderMapDay(heatmapData.days[0]);
                 heatmapInterval = setInterval(advanceHeatmap, 3500);
             }
         }).catch(function(err) {
