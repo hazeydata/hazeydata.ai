@@ -375,9 +375,10 @@
             return null;
         }
 
-        function drawMap(dayData) {
+        function drawMap(dayData, fillAlpha) {
             if (!ctx || !districts) return;
             ctx.clearRect(0, 0, canvasW, canvasH);
+            ctx.globalAlpha = fillAlpha === undefined ? 1 : fillAlpha;
             districts.forEach(function(dist) {
                 var color = getDistrictColor(dist.properties ? (dist.properties.GEOID || dist.properties.geoid) : dist.id, dayData);
                 if (!color) return;
@@ -385,6 +386,7 @@
                 ctx.fillStyle = color;
                 ctx.fill();
             });
+            ctx.globalAlpha = 1;
             if (stateBorders) { ctx.beginPath(); pathFn(stateBorders); ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 0.8; ctx.stroke(); }
             if (nationBorder) { ctx.beginPath(); pathFn(nationBorder); ctx.strokeStyle = 'rgba(74,144,164,0.4)'; ctx.lineWidth = 1.2; ctx.stroke(); }
         }
@@ -419,13 +421,23 @@
             }
         }
 
+        var _fadeAnim = null;
         function renderMapDay(dayData, skipFade) {
             if (!districts) return;
             updateCounter(dayData);
             updateActiveButton(heatmapDayIndex);
-            if (!canvas || skipFade) { drawMap(dayData); return; }
-            canvas.style.opacity = '0';
-            setTimeout(function() { drawMap(dayData); canvas.style.opacity = '1'; }, 300);
+            if (skipFade) { drawMap(dayData); return; }
+            if (_fadeAnim) cancelAnimationFrame(_fadeAnim);
+            var start = null, dur = 500;
+            function step(ts) {
+                if (!start) start = ts;
+                var t = Math.min((ts - start) / dur, 1);
+                drawMap(dayData, t * t);
+                if (t < 1) _fadeAnim = requestAnimationFrame(step);
+                else _fadeAnim = null;
+            }
+            drawMap(dayData, 0);
+            _fadeAnim = requestAnimationFrame(step);
         }
 
         function updateActiveButton(index) {
@@ -518,7 +530,6 @@
             canvas.width = canvasW * dpr; canvas.height = canvasH * dpr;
             canvas.style.width = canvasW + 'px'; canvas.style.height = canvasH + 'px';
             canvas.style.display = 'block';
-            canvas.style.transition = 'opacity 0.3s ease';
             container.appendChild(canvas);
             ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
             var fc = topojson.feature(us, us.objects[objKey]);
