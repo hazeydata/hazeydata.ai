@@ -23,7 +23,7 @@
   "name": "North Port-Bradenton-Sarasota, FL School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 2 districts in the North Port-Bradenton-Sarasota, FL metro area covering 113K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/metros/north-port-fl/",
-  "dateModified": "2026-04-07",
+  "dateModified": "2026-04-08",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "spatialCoverage": "North Port-Bradenton-Sarasota, FL, United States",
   "temporalCoverage": "2025-2026",
@@ -61,7 +61,7 @@
             <div class="key-dates-grid">
                 <div class="kd-item"><div class="kd-label">Earliest First Day</div><div class="kd-value">August 11, 2025</div></div>
                 <div class="kd-item"><div class="kd-label">Latest Last Day</div><div class="kd-value">May 27, 2026</div></div>
-                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">Varies</div></div>
+                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">April 20, 2026</div></div>
                 <div class="kd-item"><div class="kd-label">School Year</div><div class="kd-value">2025-2026</div></div>
             </div>
         </div>
@@ -92,7 +92,7 @@
         </table>
 
         <h2>Spring Break in North Port-Bradenton-Sarasota, FL</h2>
-        <p>Spring break data is still being collected for North Port-Bradenton-Sarasota, FL area districts.</p>
+        <p>The peak spring break day in the North Port-Bradenton-Sarasota, FL metro is <strong>April 20, 2026</strong>, when 1 districts (50K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all North Port-Bradenton-Sarasota, FL metro districts (excludes weekends and summer):</p>
@@ -186,7 +186,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

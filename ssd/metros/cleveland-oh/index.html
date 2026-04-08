@@ -23,7 +23,7 @@
   "name": "Cleveland, OH School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 84 districts in the Cleveland, OH metro area covering 243K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/metros/cleveland-oh/",
-  "dateModified": "2026-04-07",
+  "dateModified": "2026-04-08",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "spatialCoverage": "Cleveland, OH, United States",
   "temporalCoverage": "2025-2026",
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';
