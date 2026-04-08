@@ -419,11 +419,13 @@
             }
         }
 
-        function renderMapDay(dayData) {
+        function renderMapDay(dayData, skipFade) {
             if (!districts) return;
             updateCounter(dayData);
             updateActiveButton(heatmapDayIndex);
-            drawMap(dayData);
+            if (!canvas || skipFade) { drawMap(dayData); return; }
+            canvas.style.opacity = '0';
+            setTimeout(function() { drawMap(dayData); canvas.style.opacity = '1'; }, 300);
         }
 
         function updateActiveButton(index) {
@@ -516,6 +518,7 @@
             canvas.width = canvasW * dpr; canvas.height = canvasH * dpr;
             canvas.style.width = canvasW + 'px'; canvas.style.height = canvasH + 'px';
             canvas.style.display = 'block';
+            canvas.style.transition = 'opacity 0.3s ease';
             container.appendChild(canvas);
             ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
             var fc = topojson.feature(us, us.objects[objKey]);
@@ -523,7 +526,7 @@
             pathFn = d3.geoPath(nationalProjection, ctx);
             buildWeekdayNav();
             if (heatmapData.days && heatmapData.days.length > 0) {
-                renderMapDay(heatmapData.days[0]);
+                renderMapDay(heatmapData.days[0], true);
                 heatmapInterval = setInterval(advanceHeatmap, 3500);
             }
         }).catch(function(err) {
