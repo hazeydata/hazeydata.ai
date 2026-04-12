@@ -23,7 +23,7 @@
   "name": "Oklahoma School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 510 Oklahoma districts covering 621K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/oklahoma/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=OK"}],
   "spatialCoverage": "Oklahoma, United States",
@@ -101,15 +101,15 @@
         </table>
 
         <h2>Spring Break in Oklahoma</h2>
-        <p>The peak spring break day in Oklahoma is <strong>March 20, 2026</strong>, when 158 districts (321K students) are on break.</p>
+        <p>The peak spring break day in Oklahoma is <strong>March 20, 2026</strong>, when 172 districts (328K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Oklahoma districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>4.5M student-days</td><td>356</td></tr>
-                <tr><td>Spring Break</td><td>2.4M student-days</td><td>355</td></tr>
+                <tr><td>Winter Break</td><td>4.5M student-days</td><td>371</td></tr>
+                <tr><td>Spring Break</td><td>2.5M student-days</td><td>368</td></tr>
                 <tr><td>Thanksgiving Break</td><td>1.4M student-days</td><td>257</td></tr>
                 <tr><td>Fall Break</td><td>712K student-days</td><td>158</td></tr>
                 <tr><td>No School</td><td>368K student-days</td><td>51</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

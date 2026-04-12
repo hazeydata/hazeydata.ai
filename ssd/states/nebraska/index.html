@@ -23,7 +23,7 @@
   "name": "Nebraska School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 244 Nebraska districts covering 317K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/nebraska/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=NE"}],
   "spatialCoverage": "Nebraska, United States",
@@ -101,7 +101,7 @@
         </table>
 
         <h2>Spring Break in Nebraska</h2>
-        <p>The peak spring break day in Nebraska is <strong>April 3, 2026</strong>, when 46 districts (84K students) are on break.</p>
+        <p>The peak spring break day in Nebraska is <strong>April 3, 2026</strong>, when 47 districts (86K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Nebraska districts (excludes weekends and summer):</p>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

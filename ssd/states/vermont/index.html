@@ -23,7 +23,7 @@
   "name": "Vermont School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 150 Vermont districts covering 50K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/vermont/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=VT"}],
   "spatialCoverage": "Vermont, United States",
@@ -92,24 +92,24 @@
                 <tr><td>Burlington School District</td><td>3,501</td><td>Aug 27</td><td>Jun 17</td><td>187</td></tr>
                 <tr><td>South Burlington School District</td><td>2,694</td><td>Aug 27</td><td>Jun 15</td><td>190</td></tr>
                 <tr><td>Maple Run Unified School District</td><td>2,606</td><td>Aug 27</td><td>May 29</td><td>198</td></tr>
-                <tr><td>Colchester School District</td><td>2,424</td><td>Aug 27</td><td>Jun 15</td><td>191</td></tr>
+                <tr><td>Colchester School District</td><td>2,424</td><td>Aug 27</td><td>Jun 15</td><td>185</td></tr>
                 <tr><td>Rutland City School District</td><td>1,950</td><td>Aug 27</td><td>Jun 15</td><td>179</td></tr>
                 <tr><td>Harwood Unified School District</td><td>1,790</td><td>Aug 27</td><td>Jun 15</td><td>177</td></tr>
-                <tr><td>Addison Central Unified School District</td><td>1,752</td><td>Aug 27</td><td>Jun 10</td><td>194</td></tr>
-                <tr><td>Milton Incorporated School District</td><td>1,499</td><td>Aug 27</td><td>Jun 10</td><td>185</td></tr>
+                <tr><td>Addison Central Unified School District</td><td>1,752</td><td>Aug 27</td><td>Jun 10</td><td>183</td></tr>
+                <tr><td>Milton Incorporated School District</td><td>1,499</td><td>Aug 27</td><td>Jun 10</td><td>177</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Vermont</h2>
-        <p>The peak spring break day in Vermont is <strong>April 24, 2026</strong>, when 41 districts (17K students) are on break.</p>
+        <p>The peak spring break day in Vermont is <strong>April 24, 2026</strong>, when 42 districts (17K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Vermont districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>213K student-days</td><td>99</td></tr>
-                <tr><td>Spring Break</td><td>152K student-days</td><td>90</td></tr>
+                <tr><td>Winter Break</td><td>272K student-days</td><td>101</td></tr>
+                <tr><td>Spring Break</td><td>159K student-days</td><td>91</td></tr>
                 <tr><td>Thanksgiving Break</td><td>111K student-days</td><td>97</td></tr>
                 <tr><td>School Recess</td><td>41K student-days</td><td>2</td></tr>
                 <tr><td>February Break</td><td>38K student-days</td><td>6</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

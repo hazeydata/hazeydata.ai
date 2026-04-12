@@ -23,7 +23,7 @@
   "name": "Colorado School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 178 Colorado districts covering 843K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/colorado/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=CO"}],
   "spatialCoverage": "Colorado, United States",
@@ -94,7 +94,7 @@
                 <tr><td>Aurora Public Schools</td><td>38,000</td><td>Aug 13</td><td>May 28</td><td>174</td></tr>
                 <tr><td>Adams 12 Five Star Schools</td><td>34,998</td><td>Aug 12</td><td>May 21</td><td>166</td></tr>
                 <tr><td>St. Vrain Valley School District No. Re1J</td><td>31,894</td><td>Aug 13</td><td>May 21</td><td>174</td></tr>
-                <tr><td>Poudre School District R-1</td><td>29,977</td><td>Aug 13</td><td>May 27</td><td>190</td></tr>
+                <tr><td>Poudre School District R-1</td><td>29,977</td><td>Aug 13</td><td>May 27</td><td>179</td></tr>
                 <tr><td>Boulder Valley School District No. Re2</td><td>28,485</td><td>Aug 13</td><td>May 20</td><td>167</td></tr>
                 <tr><td>Academy School District No. 20 in the county of El Paso an</td><td>25,719</td><td>Aug 4</td><td>Jun 5</td><td>207</td></tr>
             </tbody>
@@ -108,8 +108,8 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>5.2M student-days</td><td>138</td></tr>
-                <tr><td>Spring Break</td><td>2.3M student-days</td><td>118</td></tr>
+                <tr><td>Winter Break</td><td>5.6M student-days</td><td>138</td></tr>
+                <tr><td>Spring Break</td><td>2.5M student-days</td><td>118</td></tr>
                 <tr><td>Thanksgiving Break</td><td>1.7M student-days</td><td>93</td></tr>
                 <tr><td>Fall Break</td><td>802K student-days</td><td>34</td></tr>
                 <tr><td>Teacher Staff Development</td><td>678K student-days</td><td>1</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

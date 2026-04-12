@@ -23,7 +23,7 @@
   "name": "Memphis, TN-MS-AR School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 19 districts in the Memphis, TN-MS-AR metro area covering 212K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/metros/memphis-tn/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "spatialCoverage": "Memphis, TN-MS-AR, United States",
   "temporalCoverage": "2025-2026",
@@ -109,7 +109,7 @@
             <tbody>
                 <tr><td>Winter Break</td><td>2.3M student-days</td><td>15</td></tr>
                 <tr><td>Thanksgiving Break</td><td>1.0M student-days</td><td>11</td></tr>
-                <tr><td>Spring Break</td><td>992K student-days</td><td>15</td></tr>
+                <tr><td>Spring Break</td><td>1.0M student-days</td><td>15</td></tr>
                 <tr><td>Fall Break</td><td>722K student-days</td><td>11</td></tr>
                 <tr><td>Admin</td><td>220K student-days</td><td>1</td></tr>
                 <tr><td>Labor Day</td><td>190K student-days</td><td>9</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

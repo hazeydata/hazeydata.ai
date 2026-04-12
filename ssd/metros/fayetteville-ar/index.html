@@ -23,7 +23,7 @@
   "name": "Fayetteville-Springdale-Rogers, AR School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 16 districts in the Fayetteville-Springdale-Rogers, AR metro area covering 91K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/metros/fayetteville-ar/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "spatialCoverage": "Fayetteville-Springdale-Rogers, AR, United States",
   "temporalCoverage": "2025-2026",
@@ -91,7 +91,7 @@
                 <tr><td>Rogers School District</td><td>15,964</td><td>Aug 13</td><td>May 22</td><td>168</td></tr>
                 <tr><td>Fayetteville School District</td><td>10,560</td><td>Aug 5</td><td>May 22</td><td>177</td></tr>
                 <tr><td>Siloam Springs School District</td><td>4,659</td><td>Aug 12</td><td>May 22</td><td>172</td></tr>
-                <tr><td>Farmington School District</td><td>2,883</td><td>Sep 2</td><td>Jun 18</td><td>188</td></tr>
+                <tr><td>Farmington School District</td><td>2,883</td><td>Sep 2</td><td>Jun 18</td><td>180</td></tr>
                 <tr><td>Pea Ridge School District</td><td>2,494</td><td>Aug 14</td><td>Jul 31</td><td>246</td></tr>
                 <tr><td>Huntsville School District</td><td>2,339</td><td>N/A</td><td>N/A</td><td>0</td></tr>
                 <tr><td>Prairie Grove School District</td><td>2,207</td><td>Aug 25</td><td>Jun 1</td><td>173</td></tr>
@@ -107,7 +107,7 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>404K student-days</td><td>9</td></tr>
+                <tr><td>Winter Break</td><td>427K student-days</td><td>9</td></tr>
                 <tr><td>Spring Break</td><td>173K student-days</td><td>10</td></tr>
                 <tr><td>Thanksgiving Break</td><td>136K student-days</td><td>9</td></tr>
                 <tr><td>Staff Professional Development – No School</td><td>42K student-days</td><td>1</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

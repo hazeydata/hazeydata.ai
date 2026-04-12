@@ -23,7 +23,7 @@
   "name": "St. Louis, MO-IL School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 124 districts in the St. Louis, MO-IL metro area covering 376K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/metros/st-louis-mo/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "spatialCoverage": "St. Louis, MO-IL, United States",
   "temporalCoverage": "2025-2026",
@@ -95,7 +95,7 @@
                 <tr><td>Hazelwood</td><td>16,109</td><td>Aug 25</td><td>May 20</td><td>179</td></tr>
                 <tr><td>FOX C-6</td><td>10,707</td><td>Aug 25</td><td>May 22</td><td>181</td></tr>
                 <tr><td>Mehlville R-Ix</td><td>10,076</td><td>Aug 18</td><td>May 22</td><td>182</td></tr>
-                <tr><td>Ferguson-Florissant R-Ii</td><td>8,759</td><td>Aug 18</td><td>May 22</td><td>183</td></tr>
+                <tr><td>Ferguson-Florissant R-Ii</td><td>8,759</td><td>Aug 18</td><td>May 22</td><td>180</td></tr>
             </tbody>
         </table>
 
@@ -108,7 +108,7 @@
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
                 <tr><td>Spring Break</td><td>1.8M student-days</td><td>81</td></tr>
-                <tr><td>Winter Break</td><td>1.6M student-days</td><td>85</td></tr>
+                <tr><td>Winter Break</td><td>1.6M student-days</td><td>86</td></tr>
                 <tr><td>Thanksgiving Break</td><td>417K student-days</td><td>52</td></tr>
                 <tr><td>Fall Break</td><td>180K student-days</td><td>18</td></tr>
                 <tr><td>No Classes Pk-12, Winter Break</td><td>161K student-days</td><td>1</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

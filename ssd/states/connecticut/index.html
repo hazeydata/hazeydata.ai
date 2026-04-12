@@ -23,7 +23,7 @@
   "name": "Connecticut School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 169 Connecticut districts covering 457K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/connecticut/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=CT"}],
   "spatialCoverage": "Connecticut, United States",
@@ -108,7 +108,7 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>2.7M student-days</td><td>122</td></tr>
+                <tr><td>Winter Break</td><td>2.7M student-days</td><td>123</td></tr>
                 <tr><td>Spring Break</td><td>1.3M student-days</td><td>103</td></tr>
                 <tr><td>Thanksgiving Break</td><td>531K student-days</td><td>99</td></tr>
                 <tr><td>February Break</td><td>228K student-days</td><td>11</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

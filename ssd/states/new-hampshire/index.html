@@ -23,7 +23,7 @@
   "name": "New Hampshire School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 180 New Hampshire districts covering 157K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/new-hampshire/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=NH"}],
   "spatialCoverage": "New Hampshire, United States",
@@ -95,7 +95,7 @@
                 <tr><td>Rochester School District</td><td>3,891</td><td>Sep 2</td><td>Jun 5</td><td>199</td></tr>
                 <tr><td>Dover School District</td><td>3,644</td><td>Aug 18</td><td>May 29</td><td>180</td></tr>
                 <tr><td>Merrimack School District</td><td>3,561</td><td>N/A</td><td>N/A</td><td>0</td></tr>
-                <tr><td>Salem School District</td><td>3,558</td><td>Sep 4</td><td>Jun 16</td><td>178</td></tr>
+                <tr><td>Salem School District</td><td>3,558</td><td>Sep 4</td><td>Jun 16</td><td>177</td></tr>
                 <tr><td>Timberlane Regional School District</td><td>3,302</td><td>Sep 2</td><td>Jun 5</td><td>198</td></tr>
             </tbody>
         </table>
@@ -108,8 +108,8 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>748K student-days</td><td>100</td></tr>
-                <tr><td>Spring Break</td><td>394K student-days</td><td>84</td></tr>
+                <tr><td>Winter Break</td><td>964K student-days</td><td>103</td></tr>
+                <tr><td>Spring Break</td><td>405K student-days</td><td>85</td></tr>
                 <tr><td>Thanksgiving Break</td><td>263K student-days</td><td>106</td></tr>
                 <tr><td>Winter</td><td>187K student-days</td><td>28</td></tr>
                 <tr><td>Spring</td><td>100K student-days</td><td>28</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

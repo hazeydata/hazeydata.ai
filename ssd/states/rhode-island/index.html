@@ -23,7 +23,7 @@
   "name": "Rhode Island School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 32 Rhode Island districts covering 113K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/rhode-island/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=RI"}],
   "spatialCoverage": "Rhode Island, United States",
@@ -87,10 +87,10 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>Providence</td><td>19,856</td><td>Sep 2</td><td>Jun 18</td><td>190</td></tr>
+                <tr><td>Providence</td><td>19,856</td><td>Sep 2</td><td>Jun 18</td><td>180</td></tr>
                 <tr><td>Cranston</td><td>10,029</td><td>Sep 2</td><td>Jun 12</td><td>204</td></tr>
                 <tr><td>Warwick</td><td>7,914</td><td>Sep 2</td><td>Jun 26</td><td>183</td></tr>
-                <tr><td>Pawtucket</td><td>7,887</td><td>Aug 27</td><td>Jun 16</td><td>191</td></tr>
+                <tr><td>Pawtucket</td><td>7,887</td><td>Aug 27</td><td>Jun 16</td><td>185</td></tr>
                 <tr><td>Woonsocket</td><td>5,525</td><td>Sep 2</td><td>Jun 12</td><td>174</td></tr>
                 <tr><td>East Providence</td><td>5,314</td><td>Aug 27</td><td>Jun 16</td><td>180</td></tr>
                 <tr><td>Cumberland</td><td>4,750</td><td>N/A</td><td>N/A</td><td>0</td></tr>
@@ -108,7 +108,7 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>389K student-days</td><td>21</td></tr>
+                <tr><td>Winter Break</td><td>750K student-days</td><td>22</td></tr>
                 <tr><td>Spring Break</td><td>293K student-days</td><td>21</td></tr>
                 <tr><td>Thanksgiving Break</td><td>179K student-days</td><td>20</td></tr>
                 <tr><td>Supt. Conference Day</td><td>52K student-days</td><td>3</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

@@ -23,7 +23,7 @@
   "name": "California School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 993 California districts covering 4.7M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/california/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=CA"}],
   "spatialCoverage": "California, United States",
@@ -101,15 +101,15 @@
         </table>
 
         <h2>Spring Break in California</h2>
-        <p>The peak spring break day in California is <strong>April 3, 2026</strong>, when 248 districts (1.7M students) are on break.</p>
+        <p>The peak spring break day in California is <strong>April 3, 2026</strong>, when 249 districts (1.7M students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all California districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>42.1M student-days</td><td>660</td></tr>
-                <tr><td>Spring Break</td><td>20.9M student-days</td><td>645</td></tr>
+                <tr><td>Winter Break</td><td>42.5M student-days</td><td>665</td></tr>
+                <tr><td>Spring Break</td><td>21.2M student-days</td><td>651</td></tr>
                 <tr><td>Thanksgiving Break</td><td>10.0M student-days</td><td>492</td></tr>
                 <tr><td>Fall Break</td><td>5.2M student-days</td><td>167</td></tr>
                 <tr><td>Labor Day</td><td>2.5M student-days</td><td>439</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

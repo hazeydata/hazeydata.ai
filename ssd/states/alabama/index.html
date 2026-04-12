@@ -23,7 +23,7 @@
   "name": "Alabama School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 137 Alabama districts covering 728K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/alabama/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=AL"}],
   "spatialCoverage": "Alabama, United States",
@@ -94,7 +94,7 @@
                 <tr><td>Huntsville City</td><td>23,649</td><td>Aug 4</td><td>May 21</td><td>189</td></tr>
                 <tr><td>Shelby County</td><td>20,937</td><td>Aug 7</td><td>May 21</td><td>183</td></tr>
                 <tr><td>Birmingham City</td><td>20,884</td><td>Aug 13</td><td>May 21</td><td>202</td></tr>
-                <tr><td>Madison County</td><td>20,551</td><td>Aug 4</td><td>May 20</td><td>197</td></tr>
+                <tr><td>Madison County</td><td>20,551</td><td>Aug 4</td><td>May 20</td><td>187</td></tr>
                 <tr><td>Tuscaloosa County</td><td>19,228</td><td>Aug 7</td><td>May 21</td><td>186</td></tr>
                 <tr><td>Limestone County</td><td>15,893</td><td>Aug 13</td><td>May 21</td><td>202</td></tr>
             </tbody>
@@ -108,7 +108,7 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>4.1M student-days</td><td>96</td></tr>
+                <tr><td>Winter Break</td><td>4.4M student-days</td><td>96</td></tr>
                 <tr><td>Spring Break</td><td>2.7M student-days</td><td>106</td></tr>
                 <tr><td>Thanksgiving Break</td><td>1.4M student-days</td><td>71</td></tr>
                 <tr><td>Fall Break</td><td>875K student-days</td><td>64</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

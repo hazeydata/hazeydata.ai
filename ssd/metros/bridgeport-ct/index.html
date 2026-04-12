@@ -23,7 +23,7 @@
   "name": "Bridgeport-Stamford-Danbury, CT School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 24 districts in the Bridgeport-Stamford-Danbury, CT metro area covering 135K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/metros/bridgeport-ct/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "spatialCoverage": "Bridgeport-Stamford-Danbury, CT, United States",
   "temporalCoverage": "2025-2026",
@@ -107,7 +107,7 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>955K student-days</td><td>20</td></tr>
+                <tr><td>Winter Break</td><td>970K student-days</td><td>20</td></tr>
                 <tr><td>Spring Break</td><td>517K student-days</td><td>18</td></tr>
                 <tr><td>Thanksgiving Break</td><td>213K student-days</td><td>14</td></tr>
                 <tr><td>Easter Break - No School - Closed</td><td>76K student-days</td><td>1</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

@@ -23,7 +23,7 @@
   "name": "Virginia School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 131 Virginia districts covering 1.1M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/virginia/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=VA"}],
   "spatialCoverage": "Virginia, United States",
@@ -108,8 +108,8 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>5.8M student-days</td><td>100</td></tr>
-                <tr><td>Spring Break</td><td>2.7M student-days</td><td>93</td></tr>
+                <tr><td>Winter Break</td><td>6.1M student-days</td><td>101</td></tr>
+                <tr><td>Spring Break</td><td>2.7M student-days</td><td>94</td></tr>
                 <tr><td>Thanksgiving Break</td><td>1.1M student-days</td><td>72</td></tr>
                 <tr><td>Staff Day (School Closed For Students)</td><td>989K student-days</td><td>18</td></tr>
                 <tr><td>Winter</td><td>984K student-days</td><td>1</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

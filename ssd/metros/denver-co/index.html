@@ -23,7 +23,7 @@
   "name": "Denver-Aurora-Centennial, CO School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 26 districts in the Denver-Aurora-Centennial, CO metro area covering 425K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/metros/denver-co/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "spatialCoverage": "Denver-Aurora-Centennial, CO, United States",
   "temporalCoverage": "2025-2026",
@@ -93,7 +93,7 @@
                 <tr><td>Aurora Public Schools</td><td>38,000</td><td>Aug 13</td><td>May 28</td><td>174</td></tr>
                 <tr><td>Adams 12 Five Star Schools</td><td>34,998</td><td>Aug 12</td><td>May 21</td><td>166</td></tr>
                 <tr><td>School District 27J</td><td>22,713</td><td>Aug 25</td><td>May 22</td><td>195</td></tr>
-                <tr><td>Littleton School District No. 6 in the county of Arapahoe</td><td>13,450</td><td>Aug 26</td><td>Jun 16</td><td>187</td></tr>
+                <tr><td>Littleton School District No. 6 in the county of Arapahoe</td><td>13,450</td><td>Aug 26</td><td>Jun 16</td><td>180</td></tr>
                 <tr><td>Westminster Public Schools</td><td>7,631</td><td>Aug 19</td><td>May 21</td><td>178</td></tr>
                 <tr><td>Mapleton School District No. 1 in the county of Adams &amp; St</td><td>7,088</td><td>Aug 1</td><td>May 28</td><td>176</td></tr>
             </tbody>
@@ -107,7 +107,7 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>2.2M student-days</td><td>21</td></tr>
+                <tr><td>Winter Break</td><td>2.3M student-days</td><td>21</td></tr>
                 <tr><td>Spring Break</td><td>1.0M student-days</td><td>22</td></tr>
                 <tr><td>Thanksgiving Break</td><td>887K student-days</td><td>12</td></tr>
                 <tr><td>Teacher Staff Development</td><td>678K student-days</td><td>1</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

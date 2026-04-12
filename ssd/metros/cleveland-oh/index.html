@@ -23,7 +23,7 @@
   "name": "Cleveland, OH School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 84 districts in the Cleveland, OH metro area covering 243K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/metros/cleveland-oh/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "spatialCoverage": "Cleveland, OH, United States",
   "temporalCoverage": "2025-2026",
@@ -93,7 +93,7 @@
                 <tr><td>Brunswick City</td><td>6,236</td><td>Aug 7</td><td>May 20</td><td>181</td></tr>
                 <tr><td>Medina City SD</td><td>6,172</td><td>Aug 19</td><td>May 28</td><td>174</td></tr>
                 <tr><td>Lorain City</td><td>5,935</td><td>Aug 20</td><td>May 28</td><td>174</td></tr>
-                <tr><td>Elyria City Schools</td><td>5,733</td><td>Aug 18</td><td>May 27</td><td>189</td></tr>
+                <tr><td>Elyria City Schools</td><td>5,733</td><td>Aug 18</td><td>May 27</td><td>187</td></tr>
                 <tr><td>Strongsville City</td><td>5,695</td><td>Aug 18</td><td>May 29</td><td>184</td></tr>
                 <tr><td>Berea City</td><td>5,521</td><td>Aug 20</td><td>Jul 31</td><td>231</td></tr>
             </tbody>
@@ -108,7 +108,7 @@
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
                 <tr><td>Winter Break</td><td>1.6M student-days</td><td>64</td></tr>
-                <tr><td>Spring Break</td><td>814K student-days</td><td>66</td></tr>
+                <tr><td>Spring Break</td><td>835K student-days</td><td>66</td></tr>
                 <tr><td>Thanksgiving Break</td><td>418K student-days</td><td>53</td></tr>
                 <tr><td>February Break</td><td>169K student-days</td><td>1</td></tr>
                 <tr><td>April Break</td><td>169K student-days</td><td>1</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

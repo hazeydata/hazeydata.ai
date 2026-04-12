@@ -23,7 +23,7 @@
   "name": "Worcester, MA School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 53 districts in the Worcester, MA metro area covering 119K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/metros/worcester-ma/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "spatialCoverage": "Worcester, MA, United States",
   "temporalCoverage": "2025-2026",
@@ -89,7 +89,7 @@
                 <tr><td>Worcester</td><td>24,350</td><td>Sep 2</td><td>Jun 5</td><td>199</td></tr>
                 <tr><td>Wachusett</td><td>6,676</td><td>Aug 26</td><td>Jun 22</td><td>185</td></tr>
                 <tr><td>Leominster</td><td>6,012</td><td>Aug 25</td><td>Jun 10</td><td>180</td></tr>
-                <tr><td>Shrewsbury</td><td>5,921</td><td>Aug 27</td><td>Jun 12</td><td>183</td></tr>
+                <tr><td>Shrewsbury</td><td>5,921</td><td>Aug 27</td><td>Jun 12</td><td>182</td></tr>
                 <tr><td>Fitchburg</td><td>5,124</td><td>Aug 25</td><td>Jun 10</td><td>180</td></tr>
                 <tr><td>Milford</td><td>4,413</td><td>Aug 28</td><td>Jun 11</td><td>189</td></tr>
                 <tr><td>Westborough</td><td>3,887</td><td>Aug 27</td><td>Jun 17</td><td>180</td></tr>
@@ -107,7 +107,7 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>399K student-days</td><td>31</td></tr>
+                <tr><td>Winter Break</td><td>448K student-days</td><td>33</td></tr>
                 <tr><td>Spring Break</td><td>176K student-days</td><td>24</td></tr>
                 <tr><td>Thanksgiving Break</td><td>143K student-days</td><td>31</td></tr>
                 <tr><td>December Break - No School</td><td>111K student-days</td><td>2</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

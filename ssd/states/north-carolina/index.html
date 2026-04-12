@@ -23,7 +23,7 @@
   "name": "North Carolina School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 117 North Carolina districts covering 1.4M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/north-carolina/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=NC"}],
   "spatialCoverage": "North Carolina, United States",
@@ -101,15 +101,15 @@
         </table>
 
         <h2>Spring Break in North Carolina</h2>
-        <p>The peak spring break day in North Carolina is <strong>April 6, 2026</strong>, when 29 districts (431K students) are on break.</p>
+        <p>The peak spring break day in North Carolina is <strong>April 6, 2026</strong>, when 31 districts (461K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all North Carolina districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>8.5M student-days</td><td>60</td></tr>
-                <tr><td>Spring Break</td><td>4.2M student-days</td><td>65</td></tr>
+                <tr><td>Winter Break</td><td>8.7M student-days</td><td>62</td></tr>
+                <tr><td>Spring Break</td><td>4.3M student-days</td><td>67</td></tr>
                 <tr><td>Teacher Workday</td><td>3.9M student-days</td><td>15</td></tr>
                 <tr><td>Thanksgiving Break</td><td>1.4M student-days</td><td>44</td></tr>
                 <tr><td>Teacher Workdays</td><td>1.1M student-days</td><td>3</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

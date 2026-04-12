@@ -23,7 +23,7 @@
   "name": "West Virginia School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 55 West Virginia districts covering 246K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/west-virginia/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=WV"}],
   "spatialCoverage": "West Virginia, United States",
@@ -62,7 +62,7 @@
             <div class="key-dates-grid">
                 <div class="kd-item"><div class="kd-label">Earliest First Day</div><div class="kd-value">August 1, 2025</div></div>
                 <div class="kd-item"><div class="kd-label">Latest Last Day</div><div class="kd-value">June 17, 2026</div></div>
-                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">April 6, 2026</div></div>
+                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">April 10, 2026</div></div>
                 <div class="kd-item"><div class="kd-label">School Year</div><div class="kd-value">2025-2026</div></div>
             </div>
         </div>
@@ -101,15 +101,15 @@
         </table>
 
         <h2>Spring Break in West Virginia</h2>
-        <p>The peak spring break day in West Virginia is <strong>April 6, 2026</strong>, when 12 districts (70K students) are on break.</p>
+        <p>The peak spring break day in West Virginia is <strong>April 10, 2026</strong>, when 12 districts (70K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all West Virginia districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>1.5M student-days</td><td>30</td></tr>
-                <tr><td>Spring Break</td><td>669K student-days</td><td>32</td></tr>
+                <tr><td>Winter Break</td><td>1.6M student-days</td><td>30</td></tr>
+                <tr><td>Spring Break</td><td>688K student-days</td><td>32</td></tr>
                 <tr><td>Fall Break</td><td>275K student-days</td><td>18</td></tr>
                 <tr><td>Winter</td><td>177K student-days</td><td>2</td></tr>
                 <tr><td>Thanksgiving Break</td><td>155K student-days</td><td>16</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

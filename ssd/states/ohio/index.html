@@ -23,7 +23,7 @@
   "name": "Ohio School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 614 Ohio districts covering 1.5M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/ohio/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=OH"}],
   "spatialCoverage": "Ohio, United States",
@@ -101,15 +101,15 @@
         </table>
 
         <h2>Spring Break in Ohio</h2>
-        <p>The peak spring break day in Ohio is <strong>April 3, 2026</strong>, when 196 districts (544K students) are on break.</p>
+        <p>The peak spring break day in Ohio is <strong>April 3, 2026</strong>, when 204 districts (560K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Ohio districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>10.5M student-days</td><td>459</td></tr>
-                <tr><td>Spring Break</td><td>7.6M student-days</td><td>433</td></tr>
+                <tr><td>Winter Break</td><td>10.9M student-days</td><td>464</td></tr>
+                <tr><td>Spring Break</td><td>7.7M student-days</td><td>439</td></tr>
                 <tr><td>Thanksgiving Break</td><td>2.6M student-days</td><td>384</td></tr>
                 <tr><td>Fall Break</td><td>742K student-days</td><td>118</td></tr>
                 <tr><td>No School</td><td>548K student-days</td><td>87</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

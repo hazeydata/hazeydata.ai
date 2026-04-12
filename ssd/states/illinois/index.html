@@ -23,7 +23,7 @@
   "name": "Illinois School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 854 Illinois districts covering 1.8M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/illinois/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=IL"}],
   "spatialCoverage": "Illinois, United States",
@@ -62,7 +62,7 @@
             <div class="key-dates-grid">
                 <div class="kd-item"><div class="kd-label">Earliest First Day</div><div class="kd-value">August 1, 2025</div></div>
                 <div class="kd-item"><div class="kd-label">Latest Last Day</div><div class="kd-value">June 30, 2026</div></div>
-                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">March 23, 2026</div></div>
+                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">March 27, 2026</div></div>
                 <div class="kd-item"><div class="kd-label">School Year</div><div class="kd-value">2025-2026</div></div>
             </div>
         </div>
@@ -88,7 +88,7 @@
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
                 <tr><td>Chicago Public Schools Dist 299</td><td>322,809</td><td>Aug 1</td><td>Jun 4</td><td>192</td></tr>
-                <tr><td>SD U-46</td><td>35,082</td><td>Aug 14</td><td>Jun 1</td><td>193</td></tr>
+                <tr><td>SD U-46</td><td>35,082</td><td>Aug 14</td><td>Jun 1</td><td>180</td></tr>
                 <tr><td>Rockford SD 205</td><td>27,661</td><td>Aug 21</td><td>May 22</td><td>197</td></tr>
                 <tr><td>Indian Prairie CUSD 204</td><td>25,950</td><td>Aug 19</td><td>May 28</td><td>172</td></tr>
                 <tr><td>Plainfield SD 202</td><td>24,856</td><td>Aug 1</td><td>May 19</td><td>186</td></tr>
@@ -96,20 +96,20 @@
                 <tr><td>CUSD 308</td><td>16,851</td><td>Aug 21</td><td>May 22</td><td>185</td></tr>
                 <tr><td>Naperville CUSD 203</td><td>16,073</td><td>Aug 14</td><td>May 22</td><td>174</td></tr>
                 <tr><td>Schaumburg CCSD 54</td><td>15,074</td><td>Aug 11</td><td>May 22</td><td>190</td></tr>
-                <tr><td>Valley View CUSD 365U</td><td>14,847</td><td>Aug 18</td><td>May 22</td><td>189</td></tr>
+                <tr><td>Valley View CUSD 365U</td><td>14,847</td><td>Aug 18</td><td>May 22</td><td>184</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Illinois</h2>
-        <p>The peak spring break day in Illinois is <strong>March 23, 2026</strong>, when 150 districts (648K students) are on break.</p>
+        <p>The peak spring break day in Illinois is <strong>March 27, 2026</strong>, when 168 districts (652K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Illinois districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>11.9M student-days</td><td>642</td></tr>
-                <tr><td>Spring Break</td><td>6.9M student-days</td><td>661</td></tr>
+                <tr><td>Winter Break</td><td>12.6M student-days</td><td>647</td></tr>
+                <tr><td>Spring Break</td><td>7.0M student-days</td><td>666</td></tr>
                 <tr><td>Thanksgiving Break</td><td>2.0M student-days</td><td>383</td></tr>
                 <tr><td>Labor Day</td><td>788K student-days</td><td>257</td></tr>
                 <tr><td>Memorial Day</td><td>748K student-days</td><td>234</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

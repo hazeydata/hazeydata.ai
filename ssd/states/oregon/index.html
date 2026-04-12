@@ -23,7 +23,7 @@
   "name": "Oregon School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 177 Oregon districts covering 533K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/oregon/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=OR"}],
   "spatialCoverage": "Oregon, United States",
@@ -108,8 +108,8 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>2.4M student-days</td><td>129</td></tr>
-                <tr><td>Spring Break</td><td>1.5M student-days</td><td>125</td></tr>
+                <tr><td>Winter Break</td><td>2.5M student-days</td><td>129</td></tr>
+                <tr><td>Spring Break</td><td>1.5M student-days</td><td>126</td></tr>
                 <tr><td>Non-Work/Non-Paid Day</td><td>685K student-days</td><td>1</td></tr>
                 <tr><td>Thanksgiving Break</td><td>531K student-days</td><td>72</td></tr>
                 <tr><td>Paid Holiday</td><td>512K student-days</td><td>2</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

@@ -23,7 +23,7 @@
   "name": "Pennsylvania School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 498 Pennsylvania districts covering 1.3M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/pennsylvania/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=PA"}],
   "spatialCoverage": "Pennsylvania, United States",
@@ -89,27 +89,27 @@
             <tbody>
                 <tr><td>Pittsburgh SD</td><td>19,719</td><td>Aug 25</td><td>Jun 12</td><td>210</td></tr>
                 <tr><td>Central Bucks SD</td><td>17,482</td><td>Aug 25</td><td>May 28</td><td>199</td></tr>
-                <tr><td>Reading SD</td><td>17,185</td><td>Aug 27</td><td>Jun 23</td><td>191</td></tr>
+                <tr><td>Reading SD</td><td>17,185</td><td>Aug 27</td><td>Jun 23</td><td>185</td></tr>
                 <tr><td>Allentown City SD</td><td>15,928</td><td>Aug 25</td><td>Jun 10</td><td>182</td></tr>
                 <tr><td>Downingtown Area SD</td><td>13,201</td><td>Aug 25</td><td>Jun 5</td><td>178</td></tr>
                 <tr><td>Bethlehem Area SD</td><td>12,939</td><td>Aug 25</td><td>Jun 8</td><td>182</td></tr>
                 <tr><td>North Penn SD</td><td>12,859</td><td>Aug 27</td><td>Jun 12</td><td>179</td></tr>
                 <tr><td>Upper Darby SD</td><td>12,427</td><td>Aug 25</td><td>Jun 10</td><td>185</td></tr>
-                <tr><td>Central Dauphin SD</td><td>12,393</td><td>Sep 2</td><td>Jun 9</td><td>183</td></tr>
+                <tr><td>Central Dauphin SD</td><td>12,393</td><td>Sep 2</td><td>Jun 9</td><td>177</td></tr>
                 <tr><td>Hazleton Area SD</td><td>12,187</td><td>Sep 2</td><td>Jun 5</td><td>182</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Pennsylvania</h2>
-        <p>The peak spring break day in Pennsylvania is <strong>April 3, 2026</strong>, when 238 districts (658K students) are on break.</p>
+        <p>The peak spring break day in Pennsylvania is <strong>April 3, 2026</strong>, when 242 districts (672K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Pennsylvania districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>6.6M student-days</td><td>377</td></tr>
-                <tr><td>Spring Break</td><td>2.7M student-days</td><td>285</td></tr>
+                <tr><td>Winter Break</td><td>6.9M student-days</td><td>381</td></tr>
+                <tr><td>Spring Break</td><td>2.8M student-days</td><td>287</td></tr>
                 <tr><td>weekend</td><td>1.6M student-days</td><td>2</td></tr>
                 <tr><td>Thanksgiving Break</td><td>1.5M student-days</td><td>198</td></tr>
                 <tr><td>Summer Break</td><td>1.0M student-days</td><td>2</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';

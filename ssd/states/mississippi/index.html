@@ -23,7 +23,7 @@
   "name": "Mississippi School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 138 Mississippi districts covering 417K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/mississippi/",
-  "dateModified": "2026-04-08",
+  "dateModified": "2026-04-12",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=MS"}],
   "spatialCoverage": "Mississippi, United States",
@@ -62,7 +62,7 @@
             <div class="key-dates-grid">
                 <div class="kd-item"><div class="kd-label">Earliest First Day</div><div class="kd-value">August 1, 2025</div></div>
                 <div class="kd-item"><div class="kd-label">Latest Last Day</div><div class="kd-value">June 26, 2026</div></div>
-                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">March 9, 2026</div></div>
+                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">March 13, 2026</div></div>
                 <div class="kd-item"><div class="kd-label">School Year</div><div class="kd-value">2025-2026</div></div>
             </div>
         </div>
@@ -101,15 +101,15 @@
         </table>
 
         <h2>Spring Break in Mississippi</h2>
-        <p>The peak spring break day in Mississippi is <strong>March 9, 2026</strong>, when 26 districts (147K students) are on break.</p>
+        <p>The peak spring break day in Mississippi is <strong>March 13, 2026</strong>, when 29 districts (152K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Mississippi districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>2.5M student-days</td><td>94</td></tr>
-                <tr><td>Spring Break</td><td>1.7M student-days</td><td>93</td></tr>
+                <tr><td>Winter Break</td><td>2.6M student-days</td><td>95</td></tr>
+                <tr><td>Spring Break</td><td>1.8M student-days</td><td>93</td></tr>
                 <tr><td>Thanksgiving Break</td><td>1.1M student-days</td><td>66</td></tr>
                 <tr><td>Fall Break</td><td>710K student-days</td><td>52</td></tr>
                 <tr><td>Labor Day</td><td>153K student-days</td><td>44</td></tr>
@@ -194,7 +194,7 @@
     function renderMapDay(dayData, instant) {
         if (!districts) return;
         updateCounter(dayData);
-        document.querySelectorAll('.day-btn').forEach(function(btn, i) { var a = i === heatmapDayIndex; btn.style.borderColor = a ? 'var(--accent)' : 'var(--border-card)'; btn.style.color = a ? 'var(--accent)' : 'var(--text-muted)'; btn.style.background = a ? 'rgba(74,144,164,0.1)' : 'var(--bg-glass)'; });
+        document.querySelectorAll('.day-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === heatmapDayIndex); });
         if (instant) {
             drawToCanvas(ctxA, pathA, dayData);
             canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';
