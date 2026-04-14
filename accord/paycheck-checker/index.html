@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federal Paycheque Checker — Verify Your Statutory Deductions | ACCORD</title>
+    <meta name="description" content="Independent biweekly paycheque validator for federal public servants. Verify CPP, EI, federal income tax, PSSA pension, and union dues against the CRA T4127 — bilingual, with citations.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/icon-180.png">
+    <meta name="theme-color" content="#26374A">
+    <link rel="canonical" href="https://hazeydata.ai/accord/paycheck-checker/">
+    <link rel="alternate" hreflang="en" href="https://hazeydata.ai/accord/paycheck-checker/">
+    <link rel="alternate" hreflang="fr" href="https://hazeydata.ai/accord/paycheck-checker/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hazeydata.ai/accord/paycheck-checker/">
+    <meta property="og:title" content="Federal Paycheque Checker — Verify Your Statutory Deductions">
+    <meta property="og:description" content="Independent biweekly paycheque validator for federal public servants. CPP, EI, federal tax, PSSA pension, union dues — with citations.">
+    <meta property="og:image" content="https://hazeydata.ai/assets/accord-og.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Federal Paycheque Checker — Verify Your Statutory Deductions">
+    <meta name="twitter:description" content="Independent biweekly paycheque validator. CPP, EI, federal tax, PSSA, union dues.">
+    <meta name="twitter:image" content="https://hazeydata.ai/assets/accord-og.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --gc-blue: #26374A; --gc-blue-light: #335075; --gc-blue-lighter: #4a6fa5;
+            --gc-red: #AF3C43; --gc-red-dark: #8B1E2F; --gc-white: #FFFFFF;
+            --gc-grey-light: #F8F9FA; --gc-grey: #E5E5E5; --gc-grey-mid: #6C757D;
+            --gc-grey-dark: #333; --green: #1a7a4c; --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--gc-grey-dark); background: var(--gc-grey-light);
+            -webkit-font-smoothing: antialiased; line-height: 1.6;
+        }
+        .gc-bar { height: 4px; background: var(--gc-red); }
+
+        .info-banner { background: #fff9e6; text-align: center; padding: 0.5rem 1rem; font-size: 0.75rem; color: #5a5a5a; line-height: 1.4; }
+        .info-banner a { color: #335075; text-decoration: underline; }
+
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; max-width: 1100px; margin: 0 auto; position: relative; }
+        .nav-brand { font-weight: 800; font-size: 1rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; color: var(--gc-blue); }
+        .nav-brand .logo-mark { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.12em; background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: logo-shimmer 6s linear infinite; }
+        .nav-brand .logo-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4a90a4; margin-left: 2px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; }
+        @keyframes logo-shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+        .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
+        .hamburger-btn, .lang-btn { padding: 0.3rem 0.75rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: white; color: var(--gc-grey-dark); cursor: pointer; transition: all 0.2s; }
+        .hamburger-btn:hover, .lang-btn:hover { border-color: var(--gc-blue); color: var(--gc-blue); }
+        .hamburger-menu { display: none; position: absolute; top: 100%; right: 2rem; background: white; border: 1px solid var(--gc-grey); border-radius: 8px; box-shadow: var(--shadow); min-width: 200px; z-index: 1000; }
+        .hamburger-menu.show { display: block; animation: slideDown 0.2s ease-out; }
+        .hamburger-menu a { display: block; padding: 0.75rem 1rem; text-decoration: none; color: var(--gc-grey-dark); font-size: 0.9rem; border-bottom: 1px solid var(--gc-grey); transition: background 0.2s; }
+        .hamburger-menu a:last-child { border-bottom: none; }
+        .hamburger-menu a:hover { background: var(--gc-grey-light); }
+        .hamburger-menu a.current { color: var(--gc-blue); font-weight: 600; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .checker-wrap { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+        .header { margin-bottom: 2rem; text-align: center; }
+        .free-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--green); color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; }
+        .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.8); animation: pulse 1.5s infinite; }
+        .header h1 { font-size: clamp(1.6rem, 4vw, 2.1rem); font-weight: 800; color: var(--gc-blue); margin-bottom: 0.6rem; line-height: 1.25; letter-spacing: -0.01em; }
+        .header .subtitle { font-size: 1rem; color: var(--gc-grey-mid); max-width: 640px; margin: 0 auto 1rem; line-height: 1.55; }
+        .header .subtitle a { color: var(--gc-blue); text-decoration: underline; }
+
+        .form-card { background: white; border: 1px solid var(--gc-grey); border-radius: 12px; padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; }
+        .form-section-label { font-size: 0.7rem; font-weight: 700; color: var(--gc-blue); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--gc-grey); }
+        .form-section-label:not(:first-child) { margin-top: 1.75rem; }
+
+        .ctrl-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }
+        .ctrl-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+        .ctrl-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+        label.ctrl-label { display: block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gc-grey-mid); margin-bottom: 0.35rem; }
+        label.ctrl-label .hint { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--gc-grey-mid); font-size: 0.7rem; opacity: 0.8; }
+        select, input[type=number], input[type=text] { width: 100%; padding: 0.6rem 0.75rem; border: 1.5px solid var(--gc-grey); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.92rem; background: var(--gc-grey-light); color: var(--gc-grey-dark); }
+        select:focus, input:focus { outline: none; border-color: var(--gc-blue); background: white; }
+
+        .gross-helper { background: rgba(38,55,74,0.05); border: 1px solid rgba(38,55,74,0.12); border-radius: 8px; padding: 0.85rem 1.1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--gc-grey-dark); }
+        .gross-helper strong { color: var(--gc-blue); font-weight: 700; }
+        .gross-helper a { color: var(--gc-blue); text-decoration: underline; cursor: pointer; }
+
+        .calculate-btn { display: block; width: 100%; padding: 0.9rem; background: var(--gc-blue); color: white; border: none; border-radius: 8px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s; margin-top: 1.75rem; }
+        .calculate-btn:hover { background: var(--gc-blue-light); }
+        .calculate-btn:disabled { background: var(--gc-grey-mid); cursor: not-allowed; }
+
+        .results { display: none; margin-top: 2rem; }
+        .results.show { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .summary-card { background: white; border: 1px solid var(--gc-grey); border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 1.5rem; overflow: hidden; }
+        .summary-header { background: var(--gc-blue); color: white; padding: 1rem 1.5rem; }
+        .summary-header h2 { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
+        .summary-header .summary-sub { font-size: 0.78rem; color: rgba(255,255,255,0.7); margin-top: 0.15rem; }
+
+        table.deductions { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+        table.deductions th, table.deductions td { padding: 0.85rem 1rem; text-align: left; border-bottom: 1px solid var(--gc-grey); }
+        table.deductions th { background: var(--gc-grey-light); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gc-grey-mid); }
+        table.deductions th.amount, table.deductions td.amount { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        table.deductions td.label { font-weight: 600; color: var(--gc-grey-dark); }
+        table.deductions td.citation { font-size: 0.78rem; color: var(--gc-grey-mid); }
+        table.deductions td.citation code { background: rgba(38,55,74,0.08); color: var(--gc-blue); padding: 0.15rem 0.45rem; border-radius: 3px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.78rem; }
+        table.deductions tr.gross-row { background: rgba(26,122,76,0.06); }
+        table.deductions tr.gross-row td { font-weight: 700; color: var(--gc-grey-dark); border-bottom: 2px solid var(--gc-grey); }
+        table.deductions tr.net-row { background: var(--green); color: white; }
+        table.deductions tr.net-row td { font-weight: 800; font-size: 1rem; color: white; border-bottom: none; }
+        table.deductions tr.net-row td.citation { color: rgba(255,255,255,0.85); font-weight: 500; }
+        table.deductions tr.error-row td { color: var(--gc-red-dark); font-style: italic; }
+        table.deductions tr.skipped-row td { color: var(--gc-grey-mid); font-style: italic; }
+
+        .explain-box { background: var(--gc-grey-light); border: 1px solid var(--gc-grey); border-radius: 8px; padding: 1.25rem 1.5rem; font-size: 0.88rem; line-height: 1.65; color: var(--gc-grey-dark); margin-bottom: 1.5rem; }
+        .explain-box h3 { font-size: 0.85rem; font-weight: 700; color: var(--gc-blue); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6rem; }
+        .explain-box ul { margin: 0 0 0 1.25rem; }
+        .explain-box li { margin-bottom: 0.4rem; }
+
+        .api-status { font-size: 0.78rem; color: var(--gc-grey-mid); padding: 0.6rem 1rem; background: rgba(38,55,74,0.04); border-top: 1px solid var(--gc-grey); }
+        .api-status code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.78rem; color: var(--gc-blue); }
+        .api-status .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 0.4rem; vertical-align: middle; }
+        .api-status .status-dot.ok { background: var(--green); }
+        .api-status .status-dot.err { background: var(--gc-red); }
+
+        .scope-note { background: #fff8e1; border-left: 4px solid #e6a817; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: 0.85rem; color: #6a5418; }
+        .scope-note strong { color: #6a5418; }
+
+        .related { background: white; border: 1px solid var(--gc-grey); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .related h3 { font-size: 0.95rem; font-weight: 700; color: var(--gc-blue); margin-bottom: 0.85rem; }
+        .related-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+        .related-card { display: block; padding: 0.85rem 1rem; background: var(--gc-grey-light); border: 1px solid var(--gc-grey); border-radius: 6px; text-decoration: none; color: var(--gc-grey-dark); transition: all 0.15s; }
+        .related-card:hover { background: white; border-color: var(--gc-blue-lighter); transform: translateY(-1px); }
+        .related-card-title { font-weight: 700; color: var(--gc-blue); font-size: 0.88rem; margin-bottom: 0.2rem; }
+        .related-card-desc { font-size: 0.78rem; color: var(--gc-grey-mid); line-height: 1.4; }
+
+        .sources { background: white; border: 1px solid var(--gc-grey); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .sources h3 { font-size: 0.85rem; font-weight: 700; color: var(--gc-grey-mid); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.85rem; }
+        .sources ol { margin-left: 1.25rem; }
+        .sources li { font-size: 0.83rem; line-height: 1.6; color: var(--gc-grey-mid); margin-bottom: 0.5rem; }
+        .sources a { color: var(--gc-blue); text-decoration: none; border-bottom: 1px solid rgba(38,55,74,0.3); }
+        .sources a:hover { border-color: var(--gc-blue); }
+
+        .footer { background: var(--gc-blue); color: rgba(255,255,255,0.5); text-align: center; padding: 2rem; font-size: 0.8rem; margin-top: 3rem; }
+        .footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+        .footer a:hover { color: white; }
+        .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+        .disclaimer { font-size: 0.7rem; color: rgba(255,255,255,0.35); max-width: 720px; margin: 1rem auto 0; line-height: 1.5; }
+        .disclaimer a { color: rgba(255,255,255,0.5); text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .nav { padding: 1.25rem 1rem; }
+            .checker-wrap { padding: 1.5rem 1rem; }
+            .form-card { padding: 1.5rem; }
+            .ctrl-grid, .ctrl-grid.cols-2, .ctrl-grid.cols-4 { grid-template-columns: 1fr; }
+            .related-grid { grid-template-columns: 1fr; }
+            table.deductions th, table.deductions td { padding: 0.7rem 0.75rem; font-size: 0.85rem; }
+            .hamburger-menu { right: 1rem; min-width: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gc-bar"></div>
+    <div class="info-banner" data-en="&#x2139;&#xFE0F; For information purposes only. Not affiliated with the Government of Canada or the CRA. Always verify with your pay stub and the <a href='https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4127-payroll-deductions-formulas.html'>CRA T4127</a>." data-fr="&#x2139;&#xFE0F; &Agrave; titre informatif seulement. Non affili&eacute; au gouvernement du Canada ni &agrave; l'ARC. V&eacute;rifiez toujours avec votre talon de paie et le <a href='https://www.canada.ca/fr/agence-revenu/services/formulaires-publications/feuillets-paye/t4127-formules-pour-paye.html'>T4127 de l'ARC</a>.">&#x2139;&#xFE0F; For information purposes only. Not affiliated with the Government of Canada or the CRA. Always verify with your pay stub and the <a href="https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4127-payroll-deductions-formulas.html">CRA T4127</a>.</div>
+
+    <nav class="nav">
+        <a href="/" class="nav-brand"><span class="logo-mark">HAZEYDATA</span><span class="logo-dot"></span></a>
+        <div class="nav-actions">
+            <button class="hamburger-btn" onclick="toggleMenu()">&#9776;</button>
+            <button class="lang-btn" onclick="toggleLang()">FR</button>
+        </div>
+        <div class="hamburger-menu" id="hamburger-menu">
+            <a href="/" data-en="Home" data-fr="Accueil">Home</a>
+            <a href="/accord/" data-en="ACCORD" data-fr="ACCORD">ACCORD</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
+            <a href="/accord/paycheck-checker/" class="current" data-en="Paycheque Checker" data-fr="V&eacute;rificateur de paye">Paycheque Checker</a>
+            <a href="/accord/wfa-calculator/" data-en="WFA Calculator" data-fr="Calculateur RAE">WFA Calculator</a>
+            <a href="/accord/guides/" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="/accord/blog/" data-en="Blog" data-fr="Blog">Blog</a>
+            <a href="mailto:fred@hazeydata.ai" data-en="Contact" data-fr="Contact">Contact</a>
+        </div>
+    </nav>
+
+    <div class="checker-wrap">
+        <div class="header">
+            <div class="free-badge">
+                <span class="pulse-dot"></span>
+                <span data-en="Free Tool &middot; Live API" data-fr="Outil gratuit &middot; API en direct">Free Tool &middot; Live API</span>
+            </div>
+            <h1 data-en="Federal Paycheque Checker" data-fr="V&eacute;rificateur de paye f&eacute;d&eacute;rale">Federal Paycheque Checker</h1>
+            <p class="subtitle" data-en="Plug in your biweekly pay-stub inputs. ACCORD calls its live rules engine to compute what your CPP, EI, federal income tax, PSSA pension, and union dues <em>should</em> be &mdash; with the CRA T4127 and PSSA citations on every line. Independent of Phoenix. Independent of Dayforce." data-fr="Saisissez les donn&eacute;es de votre talon de paie aux deux semaines. ACCORD appelle son moteur de r&egrave;gles en direct pour calculer ce que votre RPC, AE, imp&ocirc;t f&eacute;d&eacute;ral sur le revenu, pension AFPC et cotisations syndicales <em>devraient</em> &ecirc;tre &mdash; avec les citations du T4127 de l'ARC et de la LPFP sur chaque ligne. Ind&eacute;pendant de Ph&eacute;nix. Ind&eacute;pendant de Dayforce.">Plug in your biweekly pay-stub inputs. ACCORD calls its live rules engine to compute what your CPP, EI, federal income tax, PSSA pension, and union dues <em>should</em> be &mdash; with the CRA T4127 and PSSA citations on every line. Independent of Phoenix. Independent of Dayforce.</p>
+        </div>
+
+        <div class="form-card">
+            <!-- ===== Section 1: Who you are ===== -->
+            <div class="form-section-label" data-en="1. Who you are" data-fr="1. Qui vous &ecirc;tes">1. Who you are</div>
+
+            <div class="ctrl-grid cols-4">
+                <div>
+                    <label class="ctrl-label" data-en="Classification" data-fr="Classification">Classification</label>
+                    <select id="class-group" onchange="onGroupChange()">
+                        <option value="">&mdash;</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="Level" data-fr="Niveau">Level</label>
+                    <select id="class-level" onchange="onLevelChange()" disabled>
+                        <option value="">&mdash;</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="Step" data-fr="&Eacute;chelon">Step</label>
+                    <select id="class-step" onchange="onStepChange()" disabled>
+                        <option value="">&mdash;</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="Province" data-fr="Province">Province</label>
+                    <select id="province">
+                        <option value="ON">ON &mdash; Ontario</option>
+                        <option value="QC">QC &mdash; Quebec</option>
+                        <option value="BC">BC &mdash; British Columbia</option>
+                        <option value="AB">AB &mdash; Alberta</option>
+                        <option value="MB">MB &mdash; Manitoba</option>
+                        <option value="SK">SK &mdash; Saskatchewan</option>
+                        <option value="NS">NS &mdash; Nova Scotia</option>
+                        <option value="NB">NB &mdash; New Brunswick</option>
+                        <option value="NL">NL &mdash; Newfoundland &amp; Labrador</option>
+                        <option value="PE">PE &mdash; Prince Edward Island</option>
+                        <option value="YT">YT &mdash; Yukon</option>
+                        <option value="NT">NT &mdash; Northwest Territories</option>
+                        <option value="NU">NU &mdash; Nunavut</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- ===== Section 2: This pay period ===== -->
+            <div class="form-section-label" data-en="2. This biweekly pay period" data-fr="2. Cette p&eacute;riode de paye aux deux semaines">2. This biweekly pay period</div>
+
+            <div class="ctrl-grid">
+                <div>
+                    <label class="ctrl-label" data-en="Biweekly gross ($)" data-fr="Brut aux deux semaines (&#36;)">Biweekly gross ($)</label>
+                    <input type="number" id="biweekly-gross" value="" placeholder="e.g. 2884.62" min="0" step="0.01">
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="Pay period number" data-fr="Num&eacute;ro de p&eacute;riode">Pay period number <span class="hint">(1&ndash;26)</span></label>
+                    <input type="number" id="pay-period-number" value="1" min="1" max="26" step="1">
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="Weekly hours" data-fr="Heures par semaine">Weekly hours <span class="hint">(37.5 = full-time)</span></label>
+                    <input type="number" id="weekly-hours" value="37.5" min="0" max="40" step="0.5">
+                </div>
+            </div>
+
+            <div class="gross-helper" id="gross-helper" style="display: none;">
+                <span data-en="Suggested biweekly gross from your classification:" data-fr="Brut aux deux semaines sugg&eacute;r&eacute; selon votre classification\u00a0:">Suggested biweekly gross from your classification:</span>
+                <strong id="suggested-gross">&mdash;</strong>
+                &middot; <a onclick="useSuggestedGross()" data-en="Use this value" data-fr="Utiliser cette valeur">Use this value</a>
+            </div>
+
+            <!-- ===== Section 3: Pension + tax ===== -->
+            <div class="form-section-label" data-en="3. Pension &amp; tax setup" data-fr="3. Configuration pension et imp&ocirc;t">3. Pension &amp; tax setup</div>
+
+            <div class="ctrl-grid">
+                <div>
+                    <label class="ctrl-label" data-en="PSSA pension group" data-fr="Groupe de pension LPFP">PSSA pension group</label>
+                    <select id="pension-group">
+                        <option value="2" selected>Group 2 (hired 2013+)</option>
+                        <option value="1">Group 1 (hired pre-2013)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="TD1 claim code" data-fr="Code de demande TD1">TD1 claim code <span class="hint">(1 = basic)</span></label>
+                    <input type="number" id="td1-claim-code" value="1" min="1" max="10" step="1">
+                </div>
+                <div>
+                    <label class="ctrl-label" data-en="Years of pensionable service" data-fr="Ann&eacute;es de service ouvrant droit &agrave; pension">Years of pensionable service</label>
+                    <input type="number" id="years-pensionable" value="0" min="0" max="50" step="0.5">
+                </div>
+            </div>
+
+            <button class="calculate-btn" id="calc-btn" onclick="runChecker()">
+                <span data-en="&#9654; Validate my paycheque" data-fr="&#9654; Valider ma paye">&#9654; Validate my paycheque</span>
+            </button>
+        </div>
+
+        <div class="results" id="results">
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h2 data-en="Validated paycheque breakdown" data-fr="Ventilation valid&eacute;e de la paye">Validated paycheque breakdown</h2>
+                    <div class="summary-sub" id="summary-sub">&mdash;</div>
+                </div>
+                <table class="deductions">
+                    <thead>
+                        <tr>
+                            <th data-en="Line" data-fr="Ligne">Line</th>
+                            <th data-en="Citation" data-fr="Citation">Citation</th>
+                            <th class="amount" data-en="Amount (CAD)" data-fr="Montant (CAD)">Amount (CAD)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="deductions-body">
+                        <!-- populated by JS -->
+                    </tbody>
+                </table>
+                <div class="api-status" id="api-status">&mdash;</div>
+            </div>
+
+            <div class="explain-box" id="explanation-box" style="display: none;">
+                <h3 data-en="What ACCORD did" data-fr="Ce qu'ACCORD a fait">What ACCORD did</h3>
+                <ul id="explanation-list"></ul>
+            </div>
+
+            <div class="scope-note">
+                <strong data-en="V1 scope:" data-fr="Port&eacute;e V1\u00a0:">V1 scope:</strong>
+                <span data-en="single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. If your stub differs by more than a few cents on any line, that's worth raising with your pay centre. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap." data-fr="p&eacute;riode unique aux deux semaines, imp&ocirc;t f&eacute;d&eacute;ral seulement (pas encore d'imp&ocirc;t provincial), aucun maximum annuel cumulatif, aucun ajustement r&eacute;troactif, aucune prestation suppl&eacute;mentaire ni saisie-arr&ecirc;t. Si votre talon diff&egrave;re de plus de quelques sous sur une ligne, c'est &agrave; signaler &agrave; votre centre de paye. Modules d'imp&ocirc;t provincial (Ontario d'abord) et calculs cumulatifs &agrave; venir.">single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. If your stub differs by more than a few cents on any line, that's worth raising with your pay centre. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap.</span>
+            </div>
+        </div>
+
+        <div class="related">
+            <h3 data-en="Other ACCORD tools" data-fr="Autres outils ACCORD">Other ACCORD tools</h3>
+            <div class="related-grid">
+                <a href="/accord/wfa-calculator/" class="related-card">
+                    <div class="related-card-title" data-en="WFA Calculator" data-fr="Calculateur RAE">WFA Calculator</div>
+                    <div class="related-card-desc" data-en="Verify your departure package &mdash; TSM, severance, leave cashout." data-fr="V&eacute;rifiez votre indemnit&eacute; de d&eacute;part &mdash; MST, indemnit&eacute;, rachat de cong&eacute;s.">Verify your departure package &mdash; TSM, severance, leave cashout.</div>
+                </a>
+                <a href="/accord/demo/" class="related-card">
+                    <div class="related-card-title" data-en="ACCORD Demo" data-fr="D&eacute;mo ACCORD">ACCORD Demo</div>
+                    <div class="related-card-desc" data-en="Vacation accrual and acting pay across all 27 federal CAs." data-fr="Cong&eacute; annuel et r&eacute;mun&eacute;ration d'int&eacute;rim pour les 27 CC f&eacute;d&eacute;rales.">Vacation accrual and acting pay across all 27 federal CAs.</div>
+                </a>
+                <a href="/accord/guides/" class="related-card">
+                    <div class="related-card-title" data-en="Guides" data-fr="Guides">Guides</div>
+                    <div class="related-card-desc" data-en="Plain-language explainers on vacation, acting pay, and more." data-fr="Explications en langage clair sur le cong&eacute; annuel, l'int&eacute;rim et plus.">Plain-language explainers on vacation, acting pay, and more.</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="sources">
+            <h3 data-en="Sources" data-fr="Sources">Sources</h3>
+            <ol>
+                <li data-en="Canada Revenue Agency, <em>T4127 &mdash; Payroll Deductions Formulas</em>. The authoritative formula set for federal income tax, CPP, and EI. <a href='https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4127-payroll-deductions-formulas.html' target='_blank' rel='noopener'>canada.ca</a>" data-fr="Agence du revenu du Canada, <em>T4127 &mdash; Formules pour le calcul des retenues sur la paye</em>. <a href='https://www.canada.ca/fr/agence-revenu/services/formulaires-publications/feuillets-paye/t4127-formules-pour-paye.html' target='_blank' rel='noopener'>canada.ca</a>">Canada Revenue Agency, <em>T4127 &mdash; Payroll Deductions Formulas</em>. The authoritative formula set for federal income tax, CPP, and EI. <a href="https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4127-payroll-deductions-formulas.html" target="_blank" rel="noopener">canada.ca</a></li>
+                <li data-en="Canada Revenue Agency, <em>Payroll Deductions Online Calculator (PDOC)</em> &mdash; the oracle ACCORD's statutory modules are tested against. <a href='https://www.canada.ca/en/revenue-agency/services/e-services/digital-services-businesses/payroll-deductions-online-calculator.html' target='_blank' rel='noopener'>canada.ca</a>" data-fr="Agence du revenu du Canada, <em>Calculateur en direct des retenues sur la paye (CDRP)</em>. <a href='https://www.canada.ca/fr/agence-revenu/services/services-electroniques/services-electroniques-entreprises/calculateur-direct-retenues-paye.html' target='_blank' rel='noopener'>canada.ca</a>">Canada Revenue Agency, <em>Payroll Deductions Online Calculator (PDOC)</em> &mdash; the oracle ACCORD's statutory modules are tested against. <a href="https://www.canada.ca/en/revenue-agency/services/e-services/digital-services-businesses/payroll-deductions-online-calculator.html" target="_blank" rel="noopener">canada.ca</a></li>
+                <li data-en="Treasury Board of Canada Secretariat, <em>Public Service Superannuation Act</em> contribution rates &mdash; Group 1 / Group 2, two-tier rates above and below YMPE. <a href='https://www.canada.ca/en/treasury-board-secretariat/topics/pension-plan/plan-information/contribution-rates.html' target='_blank' rel='noopener'>canada.ca</a>" data-fr="Secr&eacute;tariat du Conseil du Tr&eacute;sor, taux de cotisation de la <em>Loi sur la pension de la fonction publique</em>. <a href='https://www.canada.ca/fr/secretariat-conseil-tresor/sujets/regime-pension/information-regime/taux-cotisation.html' target='_blank' rel='noopener'>canada.ca</a>">Treasury Board of Canada Secretariat, <em>Public Service Superannuation Act</em> contribution rates &mdash; Group 1 / Group 2, two-tier rates above and below YMPE. <a href="https://www.canada.ca/en/treasury-board-secretariat/topics/pension-plan/plan-information/contribution-rates.html" target="_blank" rel="noopener">canada.ca</a></li>
+                <li data-en="ACCORD API &mdash; <code>https://api.hazeydata.ai</code>. Live rules engine for federal pay calculations. Open documentation at <code>/docs</code>." data-fr="API ACCORD &mdash; <code>https://api.hazeydata.ai</code>. Moteur de r&egrave;gles en direct. Documentation ouverte &agrave; <code>/docs</code>.">ACCORD API &mdash; <code>https://api.hazeydata.ai</code>. Live rules engine for federal pay calculations. Open documentation at <code>/docs</code>.</li>
+            </ol>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/">hazeydata.ai</a>
+            <a href="/accord/">ACCORD</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
+            <a href="/accord/wfa-calculator/" data-en="WFA Calculator" data-fr="Calculateur RAE">WFA Calculator</a>
+            <a href="/accord/guides/" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </div>
+        <p class="disclaimer" data-en="Disclaimer: This tool computes statutory deductions based on published CRA T4127 formulas and TBS PSSA contribution rates. Results are for reference only and do not constitute legal, tax, or financial advice. ACCORD is not affiliated with the Government of Canada, the Canada Revenue Agency, or the Treasury Board Secretariat. Always verify with your pay stub and your compensation advisor. Use at your own risk." data-fr="Avis juridique\u00a0: Cet outil calcule les retenues l&eacute;gales selon les formules publi&eacute;es du T4127 de l'ARC et les taux de cotisation LPFP du SCT. Les r&eacute;sultats sont &agrave; titre indicatif seulement et ne constituent pas des conseils juridiques, fiscaux ou financiers. ACCORD n'est pas affili&eacute; au gouvernement du Canada. V&eacute;rifiez toujours avec votre talon de paie et votre conseiller en r&eacute;mun&eacute;ration. Utilisation &agrave; vos propres risques.">Disclaimer: This tool computes statutory deductions based on published CRA T4127 formulas and TBS PSSA contribution rates. Results are for reference only and do not constitute legal, tax, or financial advice. ACCORD is not affiliated with the Government of Canada, the Canada Revenue Agency, or the Treasury Board Secretariat. Always verify with your pay stub and your compensation advisor. Use at your own risk.</p>
+        <p data-en="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,229+ tests passing &middot; zero engine bugs" data-fr="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1&nbsp;229+ tests r&eacute;ussis &middot; z&eacute;ro bogues du moteur">&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada &middot; 1,229+ tests passing &middot; zero engine bugs</p>
+    </footer>
+
+    <script>
+    // ============================================================
+    // ACCORD Paycheque Checker — V1
+    // Calls live api.hazeydata.ai endpoints sequentially:
+    //   /cpp-contributions  -> CPP1 + CPP2
+    //   /ei-premiums        -> EI + QPIP
+    //   /federal-tax        -> Federal income tax (uses CPP+EI as credits)
+    //   /pension-pssa       -> PSSA employee contributions
+    //   /union-dues         -> Bargaining-agent dues
+    // ============================================================
+
+    var API_BASE = 'https://api.hazeydata.ai';
+
+    // Subset of WFA calculator's verified pay tables, used for biweekly-gross
+    // suggestion. Annual salary -> biweekly = annual / 26.088
+    // Source: hazeydata.ai/accord/wfa-calculator @ fd54df3 (verified Appendix A)
+    var PAY_TABLES = {
+        AS: { name: 'Administrative Services (PA)', agent: 'PSAC', levels: { 1:[61786,64135,66572,69106], 2:[68849,71464,74180], 3:[73798,76599,79511], 4:[80612,83675,87108], 5:[96235,99892,104044], 6:[107193,111267,115642], 7:[112834,117128,121573,125225,129017], 8:[116509,137135] } },
+        PM: { name: 'Programme Administration (PA)', agent: 'PSAC', levels: { 1:[61786,64135,66572,69106], 2:[68849,71464,74180], 3:[73798,76599,79511], 4:[80612,83675,87108], 5:[96235,99892,104044], 6:[112834,117128,121573,125225,129017], 7:[116509,137135] } },
+        CR: { name: 'Clerical & Regulatory (PA)', agent: 'PSAC', levels: { 1:[41947,42820,43708,44593,45457,46342], 2:[45531,46581,47614,48654], 3:[51642,52996,54350,55707], 4:[57217,58738,60255,61761], 5:[62533,64250,65986,67699], 6:[71176,73048,74903,76779], 7:[78952,81137,83324,85533] } },
+        IS: { name: 'Information Services (PA)', agent: 'PSAC', levels: { 1:[61786,64135,66572,69106], 2:[68849,71464,74180], 3:[80612,83675,87108], 4:[96235,99892,104044], 5:[107193,111267,115642], 6:[112834,117128,121573,125225,129017] } },
+        IT: { name: 'Information Technology', agent: 'PIPSC', levels: { 1:[69361,71925,74485,77031,79574,82120,84661,89382], 2:[85854,88603,91348,94095,96844,99589,102335,105080], 3:[101343,104833,108324,111817,115306,118791,122281,125914], 4:[116037,120038,124039,128039,132039,136041,140039,144434], 5:[133582,138563,143539,148520,153503,158485,163465,168446,174076] } },
+        EC: { name: 'Economics & Social Science', agent: 'CAPE', levels: { 1:[62871,65066,67349,70647,73087], 2:[70338,72044,74567,77952,80642], 3:[77690,79904,82120,84975,87907], 4:[83862,86733,89731,93812,97051], 5:[100265,103324,106701,111558,115404], 6:[113278,117248,121465,126991,131375], 7:[127991,131855,135850,142037,146936], 8:[139155,143008,147053,153740,159046] } },
+        EX: { name: 'Executive', agent: 'NJC', levels: { 1:[137524,161773], 2:[154178,181365], 3:[172548,202918], 4:[197774,232676], 5:[221654,260719] } }
+    };
+
+    var BIWEEKLY_DIVISOR = 26.088;
+
+    // ----------------- Form cascade -----------------
+
+    function buildGroupOptions() {
+        var sel = document.getElementById('class-group');
+        var keys = Object.keys(PAY_TABLES).sort();
+        keys.forEach(function(k) {
+            var opt = document.createElement('option');
+            opt.value = k;
+            opt.textContent = k + ' — ' + PAY_TABLES[k].name;
+            sel.appendChild(opt);
+        });
+    }
+
+    function onGroupChange() {
+        var g = document.getElementById('class-group').value;
+        var lvlSel = document.getElementById('class-level');
+        var stepSel = document.getElementById('class-step');
+        lvlSel.innerHTML = '<option value="">—</option>';
+        stepSel.innerHTML = '<option value="">—</option>';
+        stepSel.disabled = true;
+        document.getElementById('gross-helper').style.display = 'none';
+        if (!g || !PAY_TABLES[g]) {
+            lvlSel.disabled = true;
+            return;
+        }
+        lvlSel.disabled = false;
+        var levels = Object.keys(PAY_TABLES[g].levels).sort(function(a,b){return parseInt(a)-parseInt(b);});
+        levels.forEach(function(lv) {
+            var opt = document.createElement('option');
+            opt.value = lv;
+            opt.textContent = g + '-' + ('0' + lv).slice(-2);
+            lvlSel.appendChild(opt);
+        });
+    }
+
+    function onLevelChange() {
+        var g = document.getElementById('class-group').value;
+        var lv = document.getElementById('class-level').value;
+        var stepSel = document.getElementById('class-step');
+        stepSel.innerHTML = '<option value="">—</option>';
+        document.getElementById('gross-helper').style.display = 'none';
+        if (!g || !lv || !PAY_TABLES[g] || !PAY_TABLES[g].levels[lv]) {
+            stepSel.disabled = true;
+            return;
+        }
+        stepSel.disabled = false;
+        var steps = PAY_TABLES[g].levels[lv];
+        steps.forEach(function(salary, idx) {
+            var n = idx + 1;
+            var opt = document.createElement('option');
+            opt.value = n;
+            opt.textContent = 'Step ' + n + ' ($' + salary.toLocaleString() + ')';
+            stepSel.appendChild(opt);
+        });
+    }
+
+    function onStepChange() {
+        var g = document.getElementById('class-group').value;
+        var lv = document.getElementById('class-level').value;
+        var st = document.getElementById('class-step').value;
+        if (!g || !lv || !st) {
+            document.getElementById('gross-helper').style.display = 'none';
+            return;
+        }
+        var annual = PAY_TABLES[g].levels[lv][parseInt(st) - 1];
+        var biweekly = annual / BIWEEKLY_DIVISOR;
+        document.getElementById('suggested-gross').textContent = '$' + biweekly.toFixed(2) + ' (annual $' + annual.toLocaleString() + ' ÷ 26.088)';
+        document.getElementById('gross-helper').style.display = 'block';
+    }
+
+    function useSuggestedGross() {
+        var g = document.getElementById('class-group').value;
+        var lv = document.getElementById('class-level').value;
+        var st = document.getElementById('class-step').value;
+        if (!g || !lv || !st) return;
+        var annual = PAY_TABLES[g].levels[lv][parseInt(st) - 1];
+        var biweekly = annual / BIWEEKLY_DIVISOR;
+        document.getElementById('biweekly-gross').value = biweekly.toFixed(2);
+    }
+
+    // ----------------- API plumbing -----------------
+
+    function postJSON(path, body) {
+        return fetch(API_BASE + path, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        }).then(function(res) {
+            if (!res.ok) {
+                return res.text().then(function(t) {
+                    throw new Error('HTTP ' + res.status + ': ' + t.slice(0, 200));
+                });
+            }
+            return res.json();
+        });
+    }
+
+    function pickNumeric(obj, keys) {
+        if (!obj) return 0;
+        for (var i = 0; i < keys.length; i++) {
+            var v = obj[keys[i]];
+            if (typeof v === 'number') return v;
+            if (typeof v === 'string') {
+                var n = parseFloat(v);
+                if (!isNaN(n)) return n;
+            }
+        }
+        return 0;
+    }
+
+    function fmtCAD(n) {
+        if (typeof n !== 'number' || isNaN(n)) return '—';
+        return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // ----------------- Main checker -----------------
+
+    function setApiStatus(html) {
+        document.getElementById('api-status').innerHTML = html;
+    }
+
+    function setBusy(on) {
+        var btn = document.getElementById('calc-btn');
+        btn.disabled = on;
+        btn.innerHTML = on
+            ? '<span data-en="Calling ACCORD…" data-fr="Appel d\'ACCORD…">Calling ACCORD…</span>'
+            : '<span data-en="▶ Validate my paycheque" data-fr="▶ Valider ma paye">▶ Validate my paycheque</span>';
+        applyLang();
+    }
+
+    function runChecker() {
+        var gross = parseFloat(document.getElementById('biweekly-gross').value);
+        if (!gross || gross <= 0) {
+            alert(currentLang === 'fr'
+                ? 'Saisissez un montant brut aux deux semaines valide.'
+                : 'Enter a valid biweekly gross amount.');
+            return;
+        }
+        var province = document.getElementById('province').value;
+        var pp = parseInt(document.getElementById('pay-period-number').value) || 1;
+        var weeklyHours = parseFloat(document.getElementById('weekly-hours').value) || 37.5;
+        var pensionGroup = parseInt(document.getElementById('pension-group').value) || 2;
+        var td1 = parseInt(document.getElementById('td1-claim-code').value) || 1;
+        var yps = parseFloat(document.getElementById('years-pensionable').value) || 0;
+
+        var groupKey = document.getElementById('class-group').value;
+        var levelKey = document.getElementById('class-level').value;
+        var classification = '';
+        if (groupKey && levelKey) {
+            classification = groupKey + '-' + ('0' + levelKey).slice(-2);
+        }
+        var bargainingAgent = (groupKey && PAY_TABLES[groupKey]) ? PAY_TABLES[groupKey].agent : '';
+
+        var taxYear = 2026;
+
+        var deductions = []; // {key, label_en, label_fr, citation, amount, error}
+        var explanations = [];
+
+        setBusy(true);
+        setApiStatus('<span class="status-dot ok"></span><span data-en="Calling api.hazeydata.ai…" data-fr="Appel de api.hazeydata.ai…">Calling api.hazeydata.ai…</span>');
+        document.getElementById('results').classList.add('show');
+        renderRows([{ key: 'pending', label_en: 'Calling ACCORD engine…', label_fr: 'Appel du moteur ACCORD…', citation: '', amount: null }], gross, null);
+
+        // --- 1. CPP ---
+        postJSON('/cpp-contributions', {
+            biweekly_gross: gross,
+            pay_period_number: pp,
+            ytd_pensionable_earnings: 0,
+            ytd_cpp1_contributions: 0,
+            ytd_cpp2_contributions: 0,
+            province: province,
+            tax_year: taxYear
+        }).then(function(cppResp) {
+            var r = cppResp.result || {};
+            var cpp1 = pickNumeric(r, ['cpp1_contribution', 'cpp1', 'cpp1_amount']);
+            var cpp2 = pickNumeric(r, ['cpp2_contribution', 'cpp2', 'cpp2_amount']);
+            deductions.push({ key: 'cpp1', label_en: 'CPP contribution (CPP1)', label_fr: 'Cotisation RPC (RPC1)', citation: 'CRA T4127 §A', amount: cpp1, source_en: cppResp.explanation_en, source_fr: cppResp.explanation_fr });
+            if (cpp2 > 0) {
+                deductions.push({ key: 'cpp2', label_en: 'CPP2 contribution (above YMPE)', label_fr: 'Cotisation RPC2 (au-dessus du MGAP)', citation: 'CRA T4127 §A', amount: cpp2 });
+            }
+            if (cppResp.explanation_en) explanations.push({ en: cppResp.explanation_en, fr: cppResp.explanation_fr || '' });
+
+            // --- 2. EI ---
+            return postJSON('/ei-premiums', {
+                biweekly_gross: gross,
+                pay_period_number: pp,
+                ytd_insurable_earnings: 0,
+                ytd_ei_contributions: 0,
+                ytd_qpip_contributions: 0,
+                province: province,
+                tax_year: taxYear
+            }).then(function(eiResp) {
+                var er = eiResp.result || {};
+                var ei = pickNumeric(er, ['ei_contribution', 'ei_premium', 'ei', 'ei_amount']);
+                var qpip = pickNumeric(er, ['qpip_contribution', 'qpip_premium', 'qpip', 'qpip_amount']);
+                deductions.push({ key: 'ei', label_en: 'EI premium', label_fr: 'Cotisation AE', citation: 'CRA T4127 §B', amount: ei });
+                if (qpip > 0) {
+                    deductions.push({ key: 'qpip', label_en: 'QPIP premium (Quebec)', label_fr: 'Cotisation RQAP (Qu&eacute;bec)', citation: 'Régie de l\'assurance parentale', amount: qpip });
+                }
+                if (eiResp.explanation_en) explanations.push({ en: eiResp.explanation_en, fr: eiResp.explanation_fr || '' });
+
+                // --- 3. Federal tax (uses CPP + EI as credits) ---
+                return postJSON('/federal-tax', {
+                    biweekly_gross: gross,
+                    province: province,
+                    td1_claim_code: td1,
+                    cpp_deduction: cpp1 + cpp2,
+                    ei_deduction: ei,
+                    tax_year: taxYear,
+                    pay_periods: 26
+                }).then(function(taxResp) {
+                    var tr = taxResp.result || {};
+                    var tax = pickNumeric(tr, ['federal_tax', 'federal_tax_withholding', 'tax', 'tax_withheld', 'tax_amount']);
+                    deductions.push({ key: 'fed_tax', label_en: 'Federal income tax', label_fr: 'Imp&ocirc;t f&eacute;d&eacute;ral sur le revenu', citation: 'CRA T4127 §T1', amount: tax });
+                    if (taxResp.explanation_en) explanations.push({ en: taxResp.explanation_en, fr: taxResp.explanation_fr || '' });
+
+                    // --- 4. PSSA pension ---
+                    return postJSON('/pension-pssa', {
+                        biweekly_gross: gross,
+                        classification: classification || 'EC-05',
+                        pension_group: pensionGroup,
+                        assigned_weekly_hours: weeklyHours,
+                        years_of_pensionable_service: yps,
+                        tax_year: taxYear
+                    }).then(function(pssaResp) {
+                        var pr = pssaResp.result || {};
+                        var pssa = pickNumeric(pr, ['pssa_contribution', 'pension_contribution', 'employee_contribution', 'amount', 'total']);
+                        deductions.push({ key: 'pssa', label_en: 'PSSA pension (employee share)', label_fr: 'Pension LPFP (part employ&eacute;)', citation: 'PSSA / TBS rates', amount: pssa });
+                        if (pssaResp.explanation_en) explanations.push({ en: pssaResp.explanation_en, fr: pssaResp.explanation_fr || '' });
+
+                        // --- 5. Union dues ---
+                        return postJSON('/union-dues', {
+                            biweekly_gross: gross,
+                            classification: classification,
+                            bargaining_agent: bargainingAgent,
+                            pay_date: '',
+                            tax_year: taxYear
+                        }).then(function(duesResp) {
+                            var dr = duesResp.result || {};
+                            var dues = pickNumeric(dr, ['dues', 'union_dues', 'amount', 'total']);
+                            var agentLabel = (duesResp.ca_code || bargainingAgent || 'Union').toString();
+                            deductions.push({ key: 'dues', label_en: agentLabel + ' union dues', label_fr: 'Cotisations syndicales ' + agentLabel, citation: agentLabel + ' constitution', amount: dues });
+                            if (duesResp.explanation_en) explanations.push({ en: duesResp.explanation_en, fr: duesResp.explanation_fr || '' });
+                        }).catch(function(e) {
+                            deductions.push({ key: 'dues', label_en: 'Union dues', label_fr: 'Cotisations syndicales', citation: '', amount: null, error: e.message });
+                        });
+                    }).catch(function(e) {
+                        deductions.push({ key: 'pssa', label_en: 'PSSA pension', label_fr: 'Pension LPFP', citation: '', amount: null, error: e.message });
+                    });
+                }).catch(function(e) {
+                    deductions.push({ key: 'fed_tax', label_en: 'Federal income tax', label_fr: 'Imp&ocirc;t f&eacute;d&eacute;ral', citation: '', amount: null, error: e.message });
+                });
+            }).catch(function(e) {
+                deductions.push({ key: 'ei', label_en: 'EI premium', label_fr: 'Cotisation AE', citation: '', amount: null, error: e.message });
+            });
+        }).catch(function(e) {
+            deductions.push({ key: 'cpp1', label_en: 'CPP contribution', label_fr: 'Cotisation RPC', citation: '', amount: null, error: e.message });
+        }).then(function() {
+            // Always render whatever we got
+            renderRows(deductions, gross, null);
+            renderExplanations(explanations);
+            setBusy(false);
+
+            var anyError = deductions.some(function(d) { return d.error; });
+            if (anyError) {
+                setApiStatus('<span class="status-dot err"></span><span data-en="One or more endpoints returned an error. Net total reflects only successful lines." data-fr="Une ou plusieurs requ&ecirc;tes ont &eacute;chou&eacute;. Le net ne refl&egrave;te que les lignes r&eacute;ussies.">One or more endpoints returned an error. Net total reflects only successful lines.</span>');
+            } else {
+                setApiStatus('<span class="status-dot ok"></span><span data-en="All 5 endpoints returned 200 from " data-fr="Les 5 requ&ecirc;tes ont retourn&eacute; 200 depuis ">All 5 endpoints returned 200 from </span><code>api.hazeydata.ai</code>');
+            }
+
+            var sub = (classification || '—') + ' · ' + province + ' · ' + (currentLang === 'fr' ? 'p&eacute;riode' : 'period') + ' ' + pp + '/26';
+            document.getElementById('summary-sub').textContent = sub;
+            applyLang();
+        });
+    }
+
+    function renderRows(deductions, gross, _) {
+        var tbody = document.getElementById('deductions-body');
+        var rows = [];
+
+        rows.push('<tr class="gross-row">' +
+            '<td class="label" data-en="Biweekly gross" data-fr="Brut aux deux semaines">Biweekly gross</td>' +
+            '<td class="citation">—</td>' +
+            '<td class="amount">' + fmtCAD(gross) + '</td>' +
+        '</tr>');
+
+        var totalDed = 0;
+        deductions.forEach(function(d) {
+            if (d.key === 'pending') {
+                rows.push('<tr><td colspan="3" style="text-align:center;color:var(--gc-grey-mid);">' + d.label_en + '</td></tr>');
+                return;
+            }
+            if (d.error) {
+                rows.push('<tr class="error-row">' +
+                    '<td class="label" data-en="' + escapeHtml(d.label_en) + '" data-fr="' + escapeHtml(d.label_fr) + '">' + d.label_en + '</td>' +
+                    '<td class="citation" data-en="error: ' + escapeHtml(d.error.slice(0, 80)) + '" data-fr="erreur\u00a0: ' + escapeHtml(d.error.slice(0, 80)) + '">error: ' + escapeHtml(d.error.slice(0, 80)) + '</td>' +
+                    '<td class="amount">—</td>' +
+                '</tr>');
+                return;
+            }
+            if (d.amount === null || d.amount === undefined) {
+                rows.push('<tr class="skipped-row">' +
+                    '<td class="label" data-en="' + escapeHtml(d.label_en) + '" data-fr="' + escapeHtml(d.label_fr) + '">' + d.label_en + '</td>' +
+                    '<td class="citation">—</td>' +
+                    '<td class="amount">—</td>' +
+                '</tr>');
+                return;
+            }
+            totalDed += d.amount;
+            rows.push('<tr>' +
+                '<td class="label" data-en="' + escapeHtml(d.label_en) + '" data-fr="' + escapeHtml(d.label_fr) + '">' + d.label_en + '</td>' +
+                '<td class="citation"><code>' + escapeHtml(d.citation || '—') + '</code></td>' +
+                '<td class="amount">−' + fmtCAD(d.amount) + '</td>' +
+            '</tr>');
+        });
+
+        if (deductions.length > 0 && deductions[0].key !== 'pending') {
+            var net = gross - totalDed;
+            rows.push('<tr class="net-row">' +
+                '<td class="label" data-en="Net deposit (estimated)" data-fr="D&eacute;p&ocirc;t net (estim&eacute;)">Net deposit (estimated)</td>' +
+                '<td class="citation" data-en="gross − sum of deductions" data-fr="brut − somme des retenues">gross − sum of deductions</td>' +
+                '<td class="amount">' + fmtCAD(net) + '</td>' +
+            '</tr>');
+        }
+
+        tbody.innerHTML = rows.join('');
+        applyLang();
+    }
+
+    function renderExplanations(explanations) {
+        var box = document.getElementById('explanation-box');
+        var list = document.getElementById('explanation-list');
+        if (!explanations || explanations.length === 0) {
+            box.style.display = 'none';
+            return;
+        }
+        list.innerHTML = explanations.map(function(e) {
+            var en = e.en || '';
+            var fr = e.fr || en;
+            return '<li data-en="' + escapeHtml(en) + '" data-fr="' + escapeHtml(fr) + '">' + escapeHtml(en) + '</li>';
+        }).join('');
+        box.style.display = 'block';
+    }
+
+    function escapeHtml(s) {
+        if (s === null || s === undefined) return '';
+        return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // ----------------- Language toggle (matches site pattern) -----------------
+
+    var currentLang = localStorage.getItem('accord-lang') || 'en';
+
+    function applyLang() {
+        document.documentElement.lang = currentLang;
+        var btn = document.querySelector('.lang-btn');
+        if (btn) btn.textContent = currentLang === 'en' ? 'FR' : 'EN';
+        document.querySelectorAll('[data-en][data-fr]').forEach(function(el) {
+            el.innerHTML = el.getAttribute('data-' + currentLang);
+        });
+    }
+
+    function toggleLang() {
+        currentLang = currentLang === 'en' ? 'fr' : 'en';
+        localStorage.setItem('accord-lang', currentLang);
+        applyLang();
+    }
+
+    function toggleMenu() {
+        document.getElementById('hamburger-menu').classList.toggle('show');
+    }
+
+    document.addEventListener('click', function(e) {
+        var menu = document.getElementById('hamburger-menu');
+        var btn = document.querySelector('.hamburger-btn');
+        if (menu && btn && !menu.contains(e.target) && !btn.contains(e.target)) {
+            menu.classList.remove('show');
+        }
+    });
+
+    // ----------------- Init -----------------
+
+    buildGroupOptions();
+    applyLang();
+    </script>
+</body>
+</html>
