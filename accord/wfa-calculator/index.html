@@ -472,50 +472,31 @@
         // TSM Table (from verified ACCORD rules)
         const TSM_TABLE = {0:10,1:22,2:24,3:26,4:28,5:30,6:32,7:34,8:36,9:38,10:40,11:42,12:44,13:46,14:48,15:50,16:52,17:52,18:52,19:52,20:52,21:52,22:52,23:52,24:52,25:52,26:52,27:52,28:52,29:52,30:49,31:46,32:43,33:40,34:37,35:34,36:31,37:28,38:25,39:22,40:19,41:16,42:13,43:10,44:7,45:4};
         
-        // Federal Classification Pay Tables (EMERGENCY REBUILD - 2024-2025 rates)
-        // ⚠️ PARTIAL DATA ONLY - REQUIRES MANUAL COMPLETION
+        // Federal Classification Pay Tables — VERIFIED from Canada.ca Appendix A
+        // PA: Effective June 21, 2024 (row Z) — canada.ca/.../pa.html
+        // IT: Effective Dec 22, 2024 (row Z) — canada.ca/.../it.html
+        // EC: Effective June 22, 2025 (row D) — canada.ca/.../ec.html
+        // EX: Effective April 1, 2025 — canada.ca/.../ex.html
+        // Rebuilt 2026-04-13 from authoritative sources. Audit trail: docs/validation/wfa-pay-tables/
         const PAY_TABLES = {
-            // PA Group (PSAC) - ⚠️ REQUIRES AUTHORITATIVE SOURCE UPDATE
-            AS: { bargainingAgent: 'PSAC', levels: { 
-                // ⚠️ PLACEHOLDER DATA - NEEDS AUTHORITATIVE APPENDIX A RATES
-                1: [37458, 39233, 41008, 42784, 44559, 46334, 48110, 49885], 
-                7: [74102, 77664, 81226, 84788, 88351, 91913, 95475, 99037] 
-            }},
-            PM: { bargainingAgent: 'PSAC', levels: { 
-                // ⚠️ PLACEHOLDER DATA - NEEDS AUTHORITATIVE APPENDIX A RATES
-                4: [74102, 77664, 81226, 84788, 88351, 91913, 95475, 99037] 
-            }},
-            
-            // IT Group (PIPSC) - ⚠️ REQUIRES AUTHORITATIVE SOURCE UPDATE
-            IT: { bargainingAgent: 'PIPSC', levels: { 
-                // ⚠️ PLACEHOLDER DATA - NEEDS AUTHORITATIVE APPENDIX A RATES
-                3: [64784, 67890, 70996, 74102, 77208, 80314, 83420, 86526] 
-            }},
-            
-            // EC Group (CAPE) - ⚠️ REQUIRES AUTHORITATIVE SOURCE UPDATE
-            EC: { bargainingAgent: 'CAPE', levels: { 
-                // ⚠️ PLACEHOLDER DATA - NEEDS AUTHORITATIVE APPENDIX A RATES
-                5: [98299, 101298, 104609, 109371, 113141] 
-            }},
-            
-            // EX Group (NJC) - ✅ VERIFIED FROM AUTHORITATIVE SOURCE
-            EX: { bargainingAgent: 'NJC', levels: { 
-                // ✅ Source: canada.ca/treasury-board-secretariat/.../ex.html#EXcurrent (2024-2025)
-                // Using midpoint of min/max ranges for calculator
-                1: [146676], // Midpoint of $134,827 - $158,601 (2024) 
-                2: [165481], // Midpoint of $151,155 - $177,809 (2024)
-                3: [184052], // Midpoint of $169,165 - $198,939 (2024)  
-                4: [211005], // Midpoint of $193,896 - $228,114 (2024)
-                5: [236458]  // Midpoint of $217,308 - $255,607 (2024)
-            }}
+            // PA Group (PSAC) — PA Collective Agreement Appendix A
+            AS: { bargainingAgent: 'PSAC', levels: { 1: [61786, 64135, 66572, 69106], 2: [68849, 71464, 74180], 3: [73798, 76599, 79511], 4: [80612, 83675, 87108], 5: [96235, 99892, 104044], 6: [107193, 111267, 115642], 7: [112834, 117128, 121573, 125225, 129017], 8: [116509, 137135] }},
+            PM: { bargainingAgent: 'PSAC', levels: { 1: [61786, 64135, 66572, 69106], 2: [68849, 71464, 74180], 3: [73798, 76599, 79511], 4: [80612, 83675, 87108], 5: [96235, 99892, 104044], 6: [112834, 117128, 121573, 125225, 129017], 7: [116509, 137135] }},
+            CR: { bargainingAgent: 'PSAC', levels: { 1: [41947, 42820, 43708, 44593, 45457, 46342], 2: [45531, 46581, 47614, 48654], 3: [51642, 52996, 54350, 55707], 4: [57217, 58738, 60255, 61761], 5: [62533, 64250, 65986, 67699], 6: [71176, 73048, 74903, 76779], 7: [78952, 81137, 83324, 85533] }},
+            IS: { bargainingAgent: 'PSAC', levels: { 1: [61786, 64135, 66572, 69106], 2: [68849, 71464, 74180], 3: [80612, 83675, 87108], 4: [96235, 99892, 104044], 5: [107193, 111267, 115642], 6: [112834, 117128, 121573, 125225, 129017] }},
+            // IT Group (PIPSC) — IT Collective Agreement Appendix A
+            IT: { bargainingAgent: 'PIPSC', levels: { 1: [69361, 71925, 74485, 77031, 79574, 82120, 84661, 89382], 2: [85854, 88603, 91348, 94095, 96844, 99589, 102335, 105080], 3: [101343, 104833, 108324, 111817, 115306, 118791, 122281, 125914], 4: [116037, 120038, 124039, 128039, 132039, 136041, 140039, 144434], 5: [133582, 138563, 143539, 148520, 153503, 158485, 163465, 168446, 174076] }},
+            // EC Group (CAPE) — EC Collective Agreement Appendix A (row D, June 22, 2025)
+            EC: { bargainingAgent: 'CAPE', levels: { 1: [62871, 65066, 67349, 70647, 73087], 2: [70338, 72044, 74567, 77952, 80642], 3: [77690, 79904, 82120, 84975, 87907], 4: [83862, 86733, 89731, 93812, 97051], 5: [100265, 103324, 106701, 111558, 115404], 6: [113278, 117248, 121465, 126991, 131375], 7: [127991, 131855, 135850, 142037, 146936], 8: [139155, 143008, 147053, 153740, 159046] }},
+            // EX Group (NJC/excluded) — TBS EX Rates (April 1, 2025, salary range min-max)
+            EX: { bargainingAgent: 'NJC', levels: { 1: [137524, 161773], 2: [154178, 181365], 3: [172548, 202918], 4: [197774, 232676], 5: [221654, 260719] }}
         };
         
-        // Searchable classification combo box - SCOPE LIMITED TO VERIFIED GROUPS
+        // Verified groups only — TC/FB/SV/CX and others deferred to follow-up ticket
         const CLASS_GROUP_NAMES = {
-            AS:'Administrative Services',
-            PM:'Programme Administration', 
-            IT:'Information Technology',
-            EC:'Economics & Social Science',
+            AS:'Administrative Services (PA)',PM:'Programme Administration (PA)',
+            CR:'Clerical & Regulatory (PA)',IS:'Information Services (PA)',
+            IT:'Information Technology',EC:'Economics & Social Science',
             EX:'Executive'
         };
 
@@ -762,35 +743,31 @@
             if (years === 0 && days === 0) {
                 return { weeks: 0, amount: 0 };
             }
-            
+
             const weeklyRate = salary / 52.176;
-            const partialYear = days / 365;
+            const additionalYears = Math.max(0, years - 1) + (days / 365);
             let totalWeeks;
-            
-            // Branch on bargaining agent as per DOMAIN_FINDINGS.md
+
             if (bargainingAgent === 'PSAC') {
-                // PSAC (PA groups, etc.): flat 2 weeks base (per DOMAIN_FINDINGS.md 2026-03-29 decision)
-                totalWeeks = 2;
-            } else if (bargainingAgent === 'PIPSC') {
-                // PIPSC (IT, SP, SH, RE): reference #83 / DOMAIN_FINDINGS
-                // TODO verify per CA - reference issue #83
-                totalWeeks = Math.min(2 + Math.max(0, years - 1) + partialYear, 30);
-            } else if (bargainingAgent === 'CAPE') {
-                // CAPE (EC, TR): reference #83
-                // TODO verify per CA - reference issue #83
-                totalWeeks = Math.min(2 + Math.max(0, years - 1) + partialYear, 30);
-            } else if (bargainingAgent === 'NJC') {
-                // NJC (EX, DM): reference #83
-                // TODO verify per CA - reference issue #83
-                totalWeeks = Math.min(2 + Math.max(0, years - 1) + partialYear, 30);
+                // PA Article 61.01 — tiered base weeks by YOS bracket
+                // DOMAIN_FINDINGS.md 2026-03-29: verified PA layoff severance formula
+                let baseWeeks;
+                if (years >= 20) { baseWeeks = 4; }
+                else if (years >= 10) { baseWeeks = 3; }
+                else { baseWeeks = 2; }
+                totalWeeks = Math.min(baseWeeks + additionalYears, 30);
             } else {
-                // Unknown agents → keep current formula with TODO
-                // TODO verify per CA
-                totalWeeks = Math.min(2 + Math.max(0, years - 1) + partialYear, 30);
+                // TODO: PIPSC, CAPE, NJC severance formulas not yet verified
+                // from authoritative CA text per #83. Using PA tiered formula
+                // as fallback — Barney to file follow-up for per-CA verification.
+                let baseWeeks;
+                if (years >= 20) { baseWeeks = 4; }
+                else if (years >= 10) { baseWeeks = 3; }
+                else { baseWeeks = 2; }
+                totalWeeks = Math.min(baseWeeks + additionalYears, 30);
             }
-            
+
             const amount = totalWeeks * weeklyRate;
-            
             return { weeks: totalWeeks, amount, weeklyRate };
         }
         
