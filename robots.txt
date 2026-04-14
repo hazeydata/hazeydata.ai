@@ -4,3 +4,4 @@ Disallow: /theme-park-crowd-report/blog/drafts/
 Disallow: /blog/drafts/
 
 Sitemap: https://hazeydata.ai/sitemap.xml
+Sitemap: https://hazeydata.ai/ssd/sitemap.xml

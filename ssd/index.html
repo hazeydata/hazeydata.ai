@@ -187,6 +187,20 @@
         </div>
         <div style="text-align:center;margin:40px auto;max-width:500px;">
             <button onclick="subscribe()" class="price-cta primary" style="margin-bottom:12px;width:100%;">Get API Access &mdash; $99/mo</button>
+            <div id="trial-cta" style="margin-bottom:12px;">
+                <button onclick="document.getElementById('trial-cta').innerHTML=document.getElementById('trial-form-tpl').innerHTML" style="display:block;width:100%;font-family:var(--font-mono);font-size:12px;color:var(--accent-green);background:none;border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:10px;cursor:pointer;transition:border-color 0.2s;">Free Trial &mdash; 1 State, 90 Days, No Card Required</button>
+            </div>
+            <template id="trial-form-tpl">
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                    <input id="trial-email" type="email" placeholder="Your email" style="flex:2;min-width:160px;font-family:var(--font-mono);font-size:12px;padding:10px 12px;border-radius:8px;border:1px solid var(--border-card);background:var(--bg-glass);color:var(--text-primary);outline:none;" />
+                    <select id="trial-state" style="flex:1;min-width:80px;font-family:var(--font-mono);font-size:12px;padding:10px 8px;border-radius:8px;border:1px solid var(--border-card);background:var(--bg-glass);color:var(--text-primary);">
+                        <option value="">State</option>
+                        <option value="AL">AL</option><option value="AK">AK</option><option value="AZ">AZ</option><option value="AR">AR</option><option value="CA">CA</option><option value="CO">CO</option><option value="CT">CT</option><option value="DE">DE</option><option value="DC">DC</option><option value="FL">FL</option><option value="GA">GA</option><option value="HI">HI</option><option value="ID">ID</option><option value="IL">IL</option><option value="IN">IN</option><option value="IA">IA</option><option value="KS">KS</option><option value="KY">KY</option><option value="LA">LA</option><option value="ME">ME</option><option value="MD">MD</option><option value="MA">MA</option><option value="MI">MI</option><option value="MN">MN</option><option value="MS">MS</option><option value="MO">MO</option><option value="MT">MT</option><option value="NE">NE</option><option value="NV">NV</option><option value="NH">NH</option><option value="NJ">NJ</option><option value="NM">NM</option><option value="NY">NY</option><option value="NC">NC</option><option value="ND">ND</option><option value="OH">OH</option><option value="OK">OK</option><option value="OR">OR</option><option value="PA">PA</option><option value="RI">RI</option><option value="SC">SC</option><option value="SD">SD</option><option value="TN">TN</option><option value="TX">TX</option><option value="UT">UT</option><option value="VT">VT</option><option value="VA">VA</option><option value="WA">WA</option><option value="WV">WV</option><option value="WI">WI</option><option value="WY">WY</option>
+                    </select>
+                    <button onclick="submitTrial()" id="trial-btn" style="font-family:var(--font-mono);font-size:12px;font-weight:600;padding:10px 18px;border-radius:8px;border:none;background:var(--accent-green);color:var(--bg-primary);cursor:pointer;white-space:nowrap;">Start Free Trial</button>
+                </div>
+                <div id="trial-status" style="font-size:11px;color:var(--text-muted);margin-top:6px;text-align:center;"></div>
+            </template>
             <div id="sample-cta">
                 <button onclick="document.getElementById('sample-cta').innerHTML=document.getElementById('sample-form-tpl').innerHTML" style="display:block;width:100%;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);background:none;border:1px solid var(--border-card);border-radius:8px;padding:10px;cursor:pointer;transition:border-color 0.2s;">Download Free Sample &mdash; Top 100 Districts, Last 30 Days</button>
             </div>
@@ -341,36 +355,38 @@
     </footer>
 
     <script>
-        // ═══ D3.js Heatmap — Weekday Nav + Slow Crossfade ═══
+        // ═══ D3.js Heatmap — Weekday Nav + Instant Redraw ═══
         var heatmapData = null, heatmapDayIndex = 0, heatmapInterval = null, heatmapPaused = false;
         var districts = null, stateBorders = null, nationBorder = null;
-        var canvasA = null, canvasB = null, ctxA = null, ctxB = null, pathA = null, pathB = null;
-        var activeCanvas = 'A', canvasW = 960, canvasH = 600, FADE_MS = 1200;
+        var canvas = null, ctx = null, pathFn = null;
+        var canvasW = 960, canvasH = 600;
 
         function getDistrictColor(geoid, dayData) {
-            if (!dayData || !dayData.districts) return 'transparent';
+            if (!dayData || !dayData.districts) return null;
             var d = dayData.districts[geoid];
-            if (!d) return 'transparent';
-            if (d.s > 0) return 'transparent';
+            if (!d) return null;
+            if (d.s > 0) return null; // in session: transparent — page bg shows through
             if (d.s === -1) return 'rgba(128,128,128,0.15)';
             var e = d.e || 0;
             if (e >= 100000) return '#A00000';
-            if (e >= 50000)  return '#C41030';
             if (e >= 20000)  return '#E02020';
-            if (e >= 10000)  return '#E84040';
             if (e >= 5000)   return '#F06060';
-            if (e >= 1000)   return '#FFB0B0';
-            return '#FFE0E0';
+            if (e >= 1000)   return '#FFE0E0';
+            return null;
         }
 
-        function drawToCanvas(ctx, pathFn, dayData) {
+        function drawMap(dayData, fillAlpha) {
+            if (!ctx || !districts) return;
             ctx.clearRect(0, 0, canvasW, canvasH);
-            if (!districts) return;
+            ctx.globalAlpha = fillAlpha === undefined ? 1 : fillAlpha;
             districts.forEach(function(dist) {
+                var color = getDistrictColor(dist.properties ? (dist.properties.GEOID || dist.properties.geoid) : dist.id, dayData);
+                if (!color) return;
                 ctx.beginPath(); pathFn(dist);
-                ctx.fillStyle = getDistrictColor(dist.properties ? (dist.properties.GEOID || dist.properties.geoid) : dist.id, dayData);
+                ctx.fillStyle = color;
                 ctx.fill();
             });
+            ctx.globalAlpha = 1;
             if (stateBorders) { ctx.beginPath(); pathFn(stateBorders); ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 0.8; ctx.stroke(); }
             if (nationBorder) { ctx.beginPath(); pathFn(nationBorder); ctx.strokeStyle = 'rgba(74,144,164,0.4)'; ctx.lineWidth = 1.2; ctx.stroke(); }
         }
@@ -405,22 +421,23 @@
             }
         }
 
-        function renderMapDay(dayData, instant) {
+        var _fadeAnim = null;
+        function renderMapDay(dayData, skipFade) {
             if (!districts) return;
             updateCounter(dayData);
             updateActiveButton(heatmapDayIndex);
-            if (instant) {
-                drawToCanvas(ctxA, pathA, dayData);
-                canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';
-                return;
+            if (skipFade) { drawMap(dayData); return; }
+            if (_fadeAnim) cancelAnimationFrame(_fadeAnim);
+            var start = null, dur = 500;
+            function step(ts) {
+                if (!start) start = ts;
+                var t = Math.min((ts - start) / dur, 1);
+                drawMap(dayData, t * t);
+                if (t < 1) _fadeAnim = requestAnimationFrame(step);
+                else _fadeAnim = null;
             }
-            if (activeCanvas === 'A') {
-                drawToCanvas(ctxB, pathB, dayData);
-                canvasB.style.opacity = '1'; canvasA.style.opacity = '0'; activeCanvas = 'B';
-            } else {
-                drawToCanvas(ctxA, pathA, dayData);
-                canvasA.style.opacity = '1'; canvasB.style.opacity = '0'; activeCanvas = 'A';
-            }
+            drawMap(dayData, 0);
+            _fadeAnim = requestAnimationFrame(step);
         }
 
         function updateActiveButton(index) {
@@ -464,7 +481,6 @@
             });
         }
 
-        // ═══ State zoom via dropdown ═══
         var currentZoomState = null;
         var nationalProjection = null;
         var FIPS_TO_NAME = {'01':'Alabama','02':'Alaska','04':'Arizona','05':'Arkansas','06':'California','08':'Colorado','09':'Connecticut','10':'Delaware','11':'DC','12':'Florida','13':'Georgia','15':'Hawaii','16':'Idaho','17':'Illinois','18':'Indiana','19':'Iowa','20':'Kansas','21':'Kentucky','22':'Louisiana','23':'Maine','24':'Maryland','25':'Massachusetts','26':'Michigan','27':'Minnesota','28':'Mississippi','29':'Missouri','30':'Montana','31':'Nebraska','32':'Nevada','33':'New Hampshire','34':'New Jersey','35':'New Mexico','36':'New York','37':'North Carolina','38':'North Dakota','39':'Ohio','40':'Oklahoma','41':'Oregon','42':'Pennsylvania','44':'Rhode Island','45':'South Carolina','46':'South Dakota','47':'Tennessee','48':'Texas','49':'Utah','50':'Vermont','51':'Virginia','53':'Washington','54':'West Virginia','55':'Wisconsin','56':'Wyoming','72':'Puerto Rico'};
@@ -475,18 +491,16 @@
             if (stateFeatures.length === 0) return;
             var sc = { type: 'FeatureCollection', features: stateFeatures };
             var sp = d3.geoAlbersUsa().fitSize([canvasW, canvasH], sc);
-            pathA = d3.geoPath(sp, ctxA);
-            pathB = d3.geoPath(sp, ctxB);
+            pathFn = d3.geoPath(sp, ctx);
             document.querySelector('.heatmap-title').textContent = 'Schools on Break — ' + (FIPS_TO_NAME[statefp] || statefp);
-            renderMapDay(heatmapData.days[heatmapDayIndex], true);
+            renderMapDay(heatmapData.days[heatmapDayIndex]);
         }
 
         function zoomToUS() {
             currentZoomState = null;
-            pathA = d3.geoPath(nationalProjection, ctxA);
-            pathB = d3.geoPath(nationalProjection, ctxB);
+            pathFn = d3.geoPath(nationalProjection, ctx);
             document.querySelector('.heatmap-title').textContent = 'Schools on Break This Week';
-            renderMapDay(heatmapData.days[heatmapDayIndex], true);
+            renderMapDay(heatmapData.days[heatmapDayIndex]);
         }
 
         var FIPS_TO_SLUG = {'01':'alabama','02':'alaska','04':'arizona','05':'arkansas','06':'california','08':'colorado','09':'connecticut','10':'delaware','11':'district-of-columbia','12':'florida','13':'georgia','15':'hawaii','16':'idaho','17':'illinois','18':'indiana','19':'iowa','20':'kansas','21':'kentucky','22':'louisiana','23':'maine','24':'maryland','25':'massachusetts','26':'michigan','27':'minnesota','28':'mississippi','29':'missouri','30':'montana','31':'nebraska','32':'nevada','33':'new-hampshire','34':'new-jersey','35':'new-mexico','36':'new-york','37':'north-carolina','38':'north-dakota','39':'ohio','40':'oklahoma','41':'oregon','42':'pennsylvania','44':'rhode-island','45':'south-carolina','46':'south-dakota','47':'tennessee','48':'texas','49':'utah','50':'vermont','51':'virginia','53':'washington','54':'west-virginia','55':'wisconsin','56':'wyoming'};
@@ -512,24 +526,15 @@
             canvasW = Math.min(960, container.clientWidth || 960);
             canvasH = canvasW * 0.625;
             container.style.height = canvasH + 'px';
-            function makeCanvas() {
-                var c = document.createElement('canvas');
-                c.width = canvasW * dpr; c.height = canvasH * dpr;
-                c.style.width = canvasW + 'px'; c.style.height = canvasH + 'px';
-                c.style.position = 'absolute'; c.style.top = '0';
-                c.style.left = '50%'; c.style.transform = 'translateX(-50%)';
-                c.style.transition = 'opacity ' + FADE_MS + 'ms ease-in-out';
-                container.appendChild(c);
-                var cx = c.getContext('2d'); cx.scale(dpr, dpr);
-                return { canvas: c, ctx: cx };
-            }
-            var a = makeCanvas(), b = makeCanvas();
-            canvasA = a.canvas; ctxA = a.ctx; canvasB = b.canvas; ctxB = b.ctx;
-            canvasA.style.opacity = '1'; canvasB.style.opacity = '0';
+            canvas = document.createElement('canvas');
+            canvas.width = canvasW * dpr; canvas.height = canvasH * dpr;
+            canvas.style.width = canvasW + 'px'; canvas.style.height = canvasH + 'px';
+            canvas.style.display = 'block';
+            container.appendChild(canvas);
+            ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
             var fc = topojson.feature(us, us.objects[objKey]);
             nationalProjection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], fc);
-            pathA = d3.geoPath(nationalProjection, ctxA);
-            pathB = d3.geoPath(nationalProjection, ctxB);
+            pathFn = d3.geoPath(nationalProjection, ctx);
             buildWeekdayNav();
             if (heatmapData.days && heatmapData.days.length > 0) {
                 renderMapDay(heatmapData.days[0], true);
@@ -540,36 +545,37 @@
             document.getElementById('heatmap-map').innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px;">Map loading failed. Refresh to retry.</p>';
         });
 
-        // ═══ Lead Capture ═══
         async function submitLead() {
             var email = document.getElementById('lead-email').value.trim();
             var status = document.getElementById('lead-status');
             var btn = document.getElementById('lead-btn');
             if (!email || !email.includes('@')) { status.textContent = 'Please enter a valid email'; return; }
-            btn.textContent = '...';
-            btn.disabled = true;
+            btn.textContent = '...'; btn.disabled = true;
             try {
-                var res = await fetch('https://api.hazeydata.ai/ssd/leads', {
-                    method: 'POST', headers: {'Content-Type':'application/json'},
-                    body: JSON.stringify({email: email})
-                });
+                var res = await fetch('https://api.hazeydata.ai/ssd/leads', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({email: email}) });
                 var data = await res.json();
-                if (data.download_url || data.success) {
-                    window.location.href = data.download_url || '/ssd/ssd_sample_top100.csv';
-                    status.innerHTML = '\u2713 Check your downloads!';
-                    status.style.color = 'var(--accent-green)';
-                } else {
-                    status.textContent = data.error || 'Please check your email';
-                    btn.textContent = 'Download'; btn.disabled = false;
-                }
-            } catch(e) {
-                window.location.href = '/ssd/ssd_sample_top100.csv';
-                status.innerHTML = '\u2713 Check your downloads!';
-                status.style.color = 'var(--accent-green)';
-            }
+                if (data.download_url || data.success) { window.location.href = data.download_url || '/ssd/ssd_sample_top100.csv'; status.innerHTML = '\u2713 Check your downloads!'; status.style.color = 'var(--accent-green)'; }
+                else { status.textContent = data.error || 'Please check your email'; btn.textContent = 'Download'; btn.disabled = false; }
+            } catch(e) { window.location.href = '/ssd/ssd_sample_top100.csv'; status.innerHTML = '\u2713 Check your downloads!'; status.style.color = 'var(--accent-green)'; }
         }
 
-        // ═══ Stripe Checkout ═══
+        async function submitTrial() {
+            var email = document.getElementById('trial-email').value.trim();
+            var state = document.getElementById('trial-state').value;
+            var status = document.getElementById('trial-status');
+            var btn = document.getElementById('trial-btn');
+            if (!email || !email.includes('@')) { status.textContent = 'Please enter a valid email'; return; }
+            if (!state) { status.textContent = 'Please select a state'; return; }
+            btn.textContent = 'Creating...'; btn.disabled = true;
+            try {
+                var res = await fetch('https://api.hazeydata.ai/ssd/create-trial', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({email: email, state: state}) });
+                var data = await res.json();
+                if (data.api_key) {
+                    document.getElementById('trial-cta').innerHTML = '<div style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:16px;text-align:left;"><div style="font-family:var(--font-mono);font-size:11px;color:var(--accent-green);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Your API Key</div><div style="font-family:var(--font-mono);font-size:13px;color:var(--text-primary);word-break:break-all;cursor:pointer;padding:8px;background:rgba(0,0,0,0.3);border-radius:4px;" onclick="navigator.clipboard.writeText(this.textContent).then(function(){document.getElementById(\'trial-copied\').style.display=\'inline\'})">' + data.api_key + '</div><div style="margin-top:8px;font-size:11px;color:var(--text-muted);">Click to copy &middot; <span id="trial-copied" style="display:none;color:var(--accent-green);">Copied!</span> Save this key — it won\'t be shown again.<br>Trial: <strong style="color:var(--text-secondary);">' + state + '</strong> districts, 90 days, 10K calls/mo. <a href="/ssd/docs.html">API docs &rarr;</a></div></div>';
+                } else { status.textContent = data.error || 'Something went wrong'; btn.textContent = 'Start Free Trial'; btn.disabled = false; }
+            } catch(e) { status.textContent = 'Network error — please try again'; btn.textContent = 'Start Free Trial'; btn.disabled = false; }
+        }
+
         var selectedInterval = 'month';
         function setInterval_(iv) {
             selectedInterval = iv;
@@ -578,27 +584,13 @@
         }
         async function subscribe() {
             var btn = document.getElementById('subscribe-btn');
-            btn.textContent = 'Redirecting to checkout...';
-            btn.disabled = true;
+            btn.textContent = 'Redirecting to checkout...'; btn.disabled = true;
             try {
-                var res = await fetch('https://api.hazeydata.ai/ssd/checkout', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ interval: selectedInterval }),
-                });
+                var res = await fetch('https://api.hazeydata.ai/ssd/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ interval: selectedInterval }) });
                 var data = await res.json();
-                if (data.url) {
-                    window.location.href = data.url;
-                } else {
-                    alert('Error creating checkout session. Please try again.');
-                    btn.textContent = 'Get Started';
-                    btn.disabled = false;
-                }
-            } catch(e) {
-                alert('Error connecting to payment system. Please try again.');
-                btn.textContent = 'Get Started';
-                btn.disabled = false;
-            }
+                if (data.url) { window.location.href = data.url; }
+                else { alert('Error creating checkout session. Please try again.'); btn.textContent = 'Get Started'; btn.disabled = false; }
+            } catch(e) { alert('Error connecting to payment system. Please try again.'); btn.textContent = 'Get Started'; btn.disabled = false; }
         }
     </script>
 </body>
