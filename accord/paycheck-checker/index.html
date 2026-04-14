@@ -317,7 +317,7 @@
 
             <div class="scope-note">
                 <strong data-en="V1 scope:" data-fr="Port&eacute;e V1\u00a0:">V1 scope:</strong>
-                <span data-en="single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. If your stub differs by more than a few cents on any line, that's worth raising with your pay centre. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap." data-fr="p&eacute;riode unique aux deux semaines, imp&ocirc;t f&eacute;d&eacute;ral seulement (pas encore d'imp&ocirc;t provincial), aucun maximum annuel cumulatif, aucun ajustement r&eacute;troactif, aucune prestation suppl&eacute;mentaire ni saisie-arr&ecirc;t. Si votre talon diff&egrave;re de plus de quelques sous sur une ligne, c'est &agrave; signaler &agrave; votre centre de paye. Modules d'imp&ocirc;t provincial (Ontario d'abord) et calculs cumulatifs &agrave; venir.">single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. If your stub differs by more than a few cents on any line, that's worth raising with your pay centre. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap.</span>
+                <span data-en="single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. Real pay stubs may also include adjustments (e.g. LWOP, bilingual bonus, leave-with-income-averaging) that change the pensionable / insurable / taxable bases. If your stub differs by more than a few cents on any line, that's a finding worth raising with your pay centre &mdash; or telling us about. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap." data-fr="p&eacute;riode unique aux deux semaines, imp&ocirc;t f&eacute;d&eacute;ral seulement (pas encore d'imp&ocirc;t provincial), aucun maximum annuel cumulatif, aucun ajustement r&eacute;troactif, aucune prestation suppl&eacute;mentaire ni saisie-arr&ecirc;t. Les talons r&eacute;els peuvent inclure des ajustements (CSRP, prime de bilinguisme, etc.) qui modifient les bases. Si votre talon diff&egrave;re de plus de quelques sous, c'est une observation &agrave; signaler &agrave; votre centre de paye &mdash; ou &agrave; nous. Modules d'imp&ocirc;t provincial (Ontario d'abord) et calculs cumulatifs &agrave; venir.">single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. Real pay stubs may also include adjustments (e.g. LWOP, bilingual bonus, leave-with-income-averaging) that change the pensionable / insurable / taxable bases. If your stub differs by more than a few cents on any line, that's a finding worth raising with your pay centre &mdash; or telling us about. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap.</span>
             </div>
         </div>
 
@@ -365,20 +365,25 @@
 
     <script>
     // ============================================================
-    // ACCORD Paycheque Checker — V1
+    // ACCORD Paycheque Checker — V1.1
     // Calls live api.hazeydata.ai endpoints sequentially:
-    //   /cpp-contributions  -> CPP1 + CPP2
-    //   /ei-premiums        -> EI + QPIP
+    //   /cpp-contributions  -> CPP1 + CPP2 + total_deduction
+    //   /ei-premiums        -> EI + QPIP + total_deduction
     //   /federal-tax        -> Federal income tax (uses CPP+EI as credits)
     //   /pension-pssa       -> PSSA employee contributions
     //   /union-dues         -> Bargaining-agent dues
+    //
+    // V1.1 fixes (vs initial commit 70b2a52):
+    //  - Field-key map widened to match actual rule dataclass field names
+    //    (cpp1_deduction, cpp2_deduction, ei_deduction, qpip_deduction,
+    //     pension_deduction, union_dues). V1 was returning $0.00 because
+    //     it guessed wrong key names (cpp1_contribution etc.).
+    //  - CPP row now uses total_deduction (CPP1 + CPP2 combined) rather
+    //    than splitting into two rows; matches how stubs report it.
     // ============================================================
 
     var API_BASE = 'https://api.hazeydata.ai';
 
-    // Subset of WFA calculator's verified pay tables, used for biweekly-gross
-    // suggestion. Annual salary -> biweekly = annual / 26.088
-    // Source: hazeydata.ai/accord/wfa-calculator @ fd54df3 (verified Appendix A)
     var PAY_TABLES = {
         AS: { name: 'Administrative Services (PA)', agent: 'PSAC', levels: { 1:[61786,64135,66572,69106], 2:[68849,71464,74180], 3:[73798,76599,79511], 4:[80612,83675,87108], 5:[96235,99892,104044], 6:[107193,111267,115642], 7:[112834,117128,121573,125225,129017], 8:[116509,137135] } },
         PM: { name: 'Programme Administration (PA)', agent: 'PSAC', levels: { 1:[61786,64135,66572,69106], 2:[68849,71464,74180], 3:[73798,76599,79511], 4:[80612,83675,87108], 5:[96235,99892,104044], 6:[112834,117128,121573,125225,129017], 7:[116509,137135] } },
@@ -554,7 +559,7 @@
         document.getElementById('results').classList.add('show');
         renderRows([{ key: 'pending', label_en: 'Calling ACCORD engine…', label_fr: 'Appel du moteur ACCORD…', citation: '', amount: null }], gross, null);
 
-        // --- 1. CPP ---
+        // --- 1. CPP (CPP1 + CPP2 combined into single line, matches stub layout) ---
         postJSON('/cpp-contributions', {
             biweekly_gross: gross,
             pay_period_number: pp,
@@ -565,12 +570,19 @@
             tax_year: taxYear
         }).then(function(cppResp) {
             var r = cppResp.result || {};
-            var cpp1 = pickNumeric(r, ['cpp1_contribution', 'cpp1', 'cpp1_amount']);
-            var cpp2 = pickNumeric(r, ['cpp2_contribution', 'cpp2', 'cpp2_amount']);
-            deductions.push({ key: 'cpp1', label_en: 'CPP contribution (CPP1)', label_fr: 'Cotisation RPC (RPC1)', citation: 'CRA T4127 §A', amount: cpp1, source_en: cppResp.explanation_en, source_fr: cppResp.explanation_fr });
-            if (cpp2 > 0) {
-                deductions.push({ key: 'cpp2', label_en: 'CPP2 contribution (above YMPE)', label_fr: 'Cotisation RPC2 (au-dessus du MGAP)', citation: 'CRA T4127 §A', amount: cpp2 });
-            }
+            // Real field names: cpp1_deduction, cpp2_deduction, total_deduction
+            var cppTotal = pickNumeric(r, ['total_deduction', 'cpp_total', 'total']);
+            var cpp1 = pickNumeric(r, ['cpp1_deduction', 'cpp1_contribution', 'cpp1']);
+            var cpp2 = pickNumeric(r, ['cpp2_deduction', 'cpp2_contribution', 'cpp2']);
+            // Prefer total_deduction; fall back to sum if for some reason it's missing
+            if (!cppTotal && (cpp1 || cpp2)) cppTotal = cpp1 + cpp2;
+            var cppLabelEn = cpp2 > 0
+                ? 'CPP contribution (CPP1 $' + cpp1.toFixed(2) + ' + CPP2 $' + cpp2.toFixed(2) + ')'
+                : 'CPP contribution';
+            var cppLabelFr = cpp2 > 0
+                ? 'Cotisation RPC (RPC1 ' + cpp1.toFixed(2) + ' $ + RPC2 ' + cpp2.toFixed(2) + ' $)'
+                : 'Cotisation RPC';
+            deductions.push({ key: 'cpp', label_en: cppLabelEn, label_fr: cppLabelFr, citation: 'CRA T4127 §A', amount: cppTotal });
             if (cppResp.explanation_en) explanations.push({ en: cppResp.explanation_en, fr: cppResp.explanation_fr || '' });
 
             // --- 2. EI ---
@@ -584,8 +596,9 @@
                 tax_year: taxYear
             }).then(function(eiResp) {
                 var er = eiResp.result || {};
-                var ei = pickNumeric(er, ['ei_contribution', 'ei_premium', 'ei', 'ei_amount']);
-                var qpip = pickNumeric(er, ['qpip_contribution', 'qpip_premium', 'qpip', 'qpip_amount']);
+                // Real field names: ei_deduction, qpip_deduction, total_deduction
+                var ei = pickNumeric(er, ['ei_deduction', 'ei_contribution', 'ei_premium', 'ei']);
+                var qpip = pickNumeric(er, ['qpip_deduction', 'qpip_contribution', 'qpip_premium', 'qpip']);
                 deductions.push({ key: 'ei', label_en: 'EI premium', label_fr: 'Cotisation AE', citation: 'CRA T4127 §B', amount: ei });
                 if (qpip > 0) {
                     deductions.push({ key: 'qpip', label_en: 'QPIP premium (Quebec)', label_fr: 'Cotisation RQAP (Qu&eacute;bec)', citation: 'Régie de l\'assurance parentale', amount: qpip });
@@ -597,13 +610,14 @@
                     biweekly_gross: gross,
                     province: province,
                     td1_claim_code: td1,
-                    cpp_deduction: cpp1 + cpp2,
+                    cpp_deduction: cppTotal,
                     ei_deduction: ei,
                     tax_year: taxYear,
                     pay_periods: 26
                 }).then(function(taxResp) {
                     var tr = taxResp.result || {};
-                    var tax = pickNumeric(tr, ['federal_tax', 'federal_tax_withholding', 'tax', 'tax_withheld', 'tax_amount']);
+                    // Federal tax fields: federal_tax, per_period_tax — keep wide
+                    var tax = pickNumeric(tr, ['federal_tax', 'per_period_tax', 'tax_withheld', 'tax_amount', 'tax']);
                     deductions.push({ key: 'fed_tax', label_en: 'Federal income tax', label_fr: 'Imp&ocirc;t f&eacute;d&eacute;ral sur le revenu', citation: 'CRA T4127 §T1', amount: tax });
                     if (taxResp.explanation_en) explanations.push({ en: taxResp.explanation_en, fr: taxResp.explanation_fr || '' });
 
@@ -617,7 +631,8 @@
                         tax_year: taxYear
                     }).then(function(pssaResp) {
                         var pr = pssaResp.result || {};
-                        var pssa = pickNumeric(pr, ['pssa_contribution', 'pension_contribution', 'employee_contribution', 'amount', 'total']);
+                        // Real field name: pension_deduction
+                        var pssa = pickNumeric(pr, ['pension_deduction', 'pssa_contribution', 'pension_contribution', 'employee_contribution', 'amount']);
                         deductions.push({ key: 'pssa', label_en: 'PSSA pension (employee share)', label_fr: 'Pension LPFP (part employ&eacute;)', citation: 'PSSA / TBS rates', amount: pssa });
                         if (pssaResp.explanation_en) explanations.push({ en: pssaResp.explanation_en, fr: pssaResp.explanation_fr || '' });
 
@@ -630,7 +645,8 @@
                             tax_year: taxYear
                         }).then(function(duesResp) {
                             var dr = duesResp.result || {};
-                            var dues = pickNumeric(dr, ['dues', 'union_dues', 'amount', 'total']);
+                            // Real field name: union_dues
+                            var dues = pickNumeric(dr, ['union_dues', 'dues', 'amount', 'total']);
                             var agentLabel = (duesResp.ca_code || bargainingAgent || 'Union').toString();
                             deductions.push({ key: 'dues', label_en: agentLabel + ' union dues', label_fr: 'Cotisations syndicales ' + agentLabel, citation: agentLabel + ' constitution', amount: dues });
                             if (duesResp.explanation_en) explanations.push({ en: duesResp.explanation_en, fr: duesResp.explanation_fr || '' });
@@ -647,9 +663,8 @@
                 deductions.push({ key: 'ei', label_en: 'EI premium', label_fr: 'Cotisation AE', citation: '', amount: null, error: e.message });
             });
         }).catch(function(e) {
-            deductions.push({ key: 'cpp1', label_en: 'CPP contribution', label_fr: 'Cotisation RPC', citation: '', amount: null, error: e.message });
+            deductions.push({ key: 'cpp', label_en: 'CPP contribution', label_fr: 'Cotisation RPC', citation: '', amount: null, error: e.message });
         }).then(function() {
-            // Always render whatever we got
             renderRows(deductions, gross, null);
             renderExplanations(explanations);
             setBusy(false);
@@ -658,7 +673,7 @@
             if (anyError) {
                 setApiStatus('<span class="status-dot err"></span><span data-en="One or more endpoints returned an error. Net total reflects only successful lines." data-fr="Une ou plusieurs requ&ecirc;tes ont &eacute;chou&eacute;. Le net ne refl&egrave;te que les lignes r&eacute;ussies.">One or more endpoints returned an error. Net total reflects only successful lines.</span>');
             } else {
-                setApiStatus('<span class="status-dot ok"></span><span data-en="All 5 endpoints returned 200 from " data-fr="Les 5 requ&ecirc;tes ont retourn&eacute; 200 depuis ">All 5 endpoints returned 200 from </span><code>api.hazeydata.ai</code>');
+                setApiStatus('<span class="status-dot ok"></span><span data-en="All endpoints returned 200 from " data-fr="Toutes les requ&ecirc;tes ont retourn&eacute; 200 depuis ">All endpoints returned 200 from </span><code>api.hazeydata.ai</code>');
             }
 
             var sub = (classification || '—') + ' · ' + province + ' · ' + (currentLang === 'fr' ? 'p&eacute;riode' : 'period') + ' ' + pp + '/26';
@@ -740,8 +755,6 @@
         return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    // ----------------- Language toggle (matches site pattern) -----------------
-
     var currentLang = localStorage.getItem('accord-lang') || 'en';
 
     function applyLang() {
@@ -770,8 +783,6 @@
             menu.classList.remove('show');
         }
     });
-
-    // ----------------- Init -----------------
 
     buildGroupOptions();
     applyLang();
