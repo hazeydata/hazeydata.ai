@@ -58,31 +58,31 @@
         @keyframes logo-shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
         @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
         .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
-        
-        .hamburger-btn, .lang-btn { 
-            padding: 0.3rem 0.75rem; border: 1.5px solid var(--gc-grey); border-radius: 4px; 
-            font-size: 0.75rem; font-weight: 600; background: white; color: var(--gc-grey-dark); 
+
+        .hamburger-btn, .lang-btn {
+            padding: 0.3rem 0.75rem; border: 1.5px solid var(--gc-grey); border-radius: 4px;
+            font-size: 0.75rem; font-weight: 600; background: white; color: var(--gc-grey-dark);
             cursor: pointer; transition: all 0.2s;
         }
-        .hamburger-btn:hover, .lang-btn:hover { 
-            border-color: var(--gc-blue); color: var(--gc-blue); 
+        .hamburger-btn:hover, .lang-btn:hover {
+            border-color: var(--gc-blue); color: var(--gc-blue);
         }
-        
-        .hamburger-menu { 
-            display: none; position: absolute; top: 100%; right: 2rem; 
-            background: white; border: 1px solid var(--gc-grey); border-radius: 8px; 
-            box-shadow: var(--shadow); min-width: 200px; z-index: 1000; 
+
+        .hamburger-menu {
+            display: none; position: absolute; top: 100%; right: 2rem;
+            background: white; border: 1px solid var(--gc-grey); border-radius: 8px;
+            box-shadow: var(--shadow); min-width: 200px; z-index: 1000;
         }
         .hamburger-menu.show { display: block; animation: slideDown 0.2s ease-out; }
-        .hamburger-menu a { 
-            display: block; padding: 0.75rem 1rem; text-decoration: none; 
-            color: var(--gc-grey-dark); font-size: 0.9rem; border-bottom: 1px solid var(--gc-grey); 
-            transition: background 0.2s; 
+        .hamburger-menu a {
+            display: block; padding: 0.75rem 1rem; text-decoration: none;
+            color: var(--gc-grey-dark); font-size: 0.9rem; border-bottom: 1px solid var(--gc-grey);
+            transition: background 0.2s;
         }
         .hamburger-menu a:last-child { border-bottom: none; }
         .hamburger-menu a:hover { background: var(--gc-grey-light); }
         .hamburger-menu a.current { color: var(--gc-blue); font-weight: 600; }
-        
+
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .gc-bar { height: 4px; background: var(--gc-red); }
         .page-header { background: var(--gc-grey-light); padding: 3.5rem 2rem 3rem; text-align: center; }
@@ -115,13 +115,13 @@
     <nav class="nav">
         <a href="/" class="nav-brand"><span class="logo-mark">HAZEYDATA</span><span class="logo-dot"></span></a>
         <div class="nav-actions">
-            <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
+            <button class="hamburger-btn" onclick="toggleMenu()">&#9776;</button>
             <button class="lang-btn" onclick="toggleLang()">FR</button>
         </div>
         <div class="hamburger-menu" id="hamburger-menu">
             <a href="/" data-en="Home" data-fr="Accueil">Home</a>
             <a href="/accord/" data-en="ACCORD" data-fr="ACCORD">ACCORD</a>
-            <a href="/accord/demo/" data-en="Demo" data-fr="Démo">Demo</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
             <a href="/accord/wfa-calculator/" data-en="WFA Calculator" data-fr="Calculateur RAE">WFA Calculator</a>
             <a href="/accord/guides/" class="current" data-en="Guides" data-fr="Guides">Guides</a>
             <a href="/accord/blog/" data-en="Blog" data-fr="Blog">Blog</a>
@@ -142,7 +142,13 @@
             <div class="meta" data-en="8 min read" data-fr="8 min de lecture">8 min read</div>
         </a>
 
-        <!-- More guides coming soon — cards added as pages are published -->
+        <a href="/accord/guides/acting-pay-qualifying-period/" class="guide-card">
+            <h2 data-en="Acting Pay: When Does It Start? The Qualifying Period Explained" data-fr="R&eacute;mun&eacute;ration d'int&eacute;rim&nbsp;: quand commence-t-elle&nbsp;? Le d&eacute;lai d'admissibilit&eacute; expliqu&eacute;">Acting Pay: When Does It Start? The Qualifying Period Explained</h2>
+            <p class="desc" data-en="The 22.5-hour qualifying period, step placement, overtime rates, and how the Correctional Service Specific Duty Allowance interacts with acting assignments." data-fr="Le d&eacute;lai d'admissibilit&eacute; de 22,5 heures, le classement &agrave; l'&eacute;chelon, les taux d'heures suppl&eacute;mentaires et la fa&ccedil;on dont l'indemnit&eacute; de service correctionnel interagit avec les affectations int&eacute;rimaires.">The 22.5-hour qualifying period, step placement, overtime rates, and how the Correctional Service Specific Duty Allowance interacts with acting assignments.</p>
+            <div class="meta" data-en="9 min read" data-fr="9 min de lecture">9 min read</div>
+        </a>
+
+        <!-- More guides coming soon &mdash; cards added as pages are published -->
     </div>
 
     <footer class="footer">
@@ -154,7 +160,7 @@
             <a href="/accord/blog/" data-en="Blog" data-fr="Blogue">Blog</a>
             <a href="mailto:fred@hazeydata.ai">Contact</a>
         </div>
-        <p class="disclaimer" data-en="Disclaimer: The information provided on this site is for reference purposes only and does not constitute legal or professional advice. ACCORD is not affiliated with the Government of Canada, the Treasury Board Secretariat, or any federal bargaining agent. Always consult the official collective agreement text on <a href='https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html'>Canada.ca</a> for authoritative information. Use at your own risk." data-fr="Avis juridique : Les renseignements fournis sur ce site le sont &agrave; titre informatif seulement et ne constituent pas des conseils juridiques ou professionnels. ACCORD n'est pas affili&eacute; au gouvernement du Canada. Consultez toujours le texte officiel sur <a href='https://www.canada.ca/fr/secretariat-conseil-tresor/services/conventions-collectives.html'>Canada.ca</a>. Utilisation &agrave; vos propres risques.">Disclaimer: The information provided on this site is for reference purposes only and does not constitute legal or professional advice. ACCORD is not affiliated with the Government of Canada, the Treasury Board Secretariat, or any federal bargaining agent. Always consult the official collective agreement text on <a href="https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html">Canada.ca</a> for authoritative information. Use at your own risk.</p>
+        <p class="disclaimer" data-en="Disclaimer: The information provided on this site is for reference purposes only and does not constitute legal or professional advice. ACCORD is not affiliated with the Government of Canada, the Treasury Board Secretariat, or any federal bargaining agent. Always consult the official collective agreement text on <a href='https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html'>Canada.ca</a> for authoritative information. Use at your own risk." data-fr="Avis juridique : Les renseignements fournis sur ce site le sont &agrave; titre informatif seulement et ne constituent pas des conseils juridiques ou professionnels. ACCORD n'est pas affili&eacute; au gouvernement du Canada. Consultez toujours le texte officiel sur <a href='https://www.canada.ca/fr/secretariat-conseil-tresor/services/conventions-collectives.html'>Canada.ca</a>. Utilisation &agrave; vos propres risques.">Disclaimer: The information provided on this site is for reference purposes only and does not constitute legal or professional advice. ACCORD is not affiliated with the Government of Canada, the Treasury Board Secretariat, or any federal bargaining agent. Always consult the official collective agreement text on <a href="https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html">Canada.ca</a> for authoritative information. Use at your own risk.</p>
         <p data-en="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada" data-fr="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada">&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada</p>
     </footer>
 
@@ -172,22 +178,21 @@
         localStorage.setItem('accord-lang', currentLang);
         applyLang();
     }
-    
+
     function toggleMenu() {
         const menu = document.getElementById('hamburger-menu');
         menu.classList.toggle('show');
     }
-    
-    // Close menu when clicking outside
+
     document.addEventListener('click', function(e) {
         const menu = document.getElementById('hamburger-menu');
         const hamburgerBtn = document.querySelector('.hamburger-btn');
-        
+
         if (!menu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
             menu.classList.remove('show');
         }
     });
-    
+
     applyLang();
     </script>
 </body>
