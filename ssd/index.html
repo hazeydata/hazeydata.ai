@@ -513,14 +513,16 @@
 
         Promise.all([
             d3.json('/ssd/us-districts.json'),
-            fetch('/ssd/heatmap_data.json').then(function(r) { return r.json(); })
+            fetch('/ssd/heatmap_data.json').then(function(r) { return r.json(); }),
+            d3.json('/ssd/us-states-10m.json')
         ]).then(function(results) {
             var us = results[0];
             heatmapData = results[1];
+            var statesTopo = results[2];
             var objKey = Object.keys(us.objects)[0];
             districts = topojson.feature(us, us.objects[objKey]).features;
-            try { stateBorders = topojson.mesh(us, us.objects[objKey], function(a, b) { return a.properties.STATEFP !== b.properties.STATEFP; }); } catch(e) {}
-            try { nationBorder = topojson.mesh(us, us.objects[objKey], function(a, b) { return a === b; }); } catch(e) {}
+            try { stateBorders = topojson.mesh(statesTopo, statesTopo.objects.states, function(a, b) { return a !== b; }); } catch(e) {}
+            try { nationBorder = topojson.feature(statesTopo, statesTopo.objects.nation); } catch(e) {}
             var container = document.getElementById('heatmap-map');
             var dpr = window.devicePixelRatio || 1;
             canvasW = Math.min(960, container.clientWidth || 960);
