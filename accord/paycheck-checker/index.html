@@ -89,6 +89,10 @@
         .gross-helper strong { color: var(--gc-blue); font-weight: 700; }
         .gross-helper a { color: var(--gc-blue); text-decoration: underline; cursor: pointer; }
 
+        .pensionable-tip { background: rgba(232, 168, 23, 0.08); border: 1px solid rgba(232, 168, 23, 0.35); border-radius: 8px; padding: 0.85rem 1.1rem; margin-top: 1rem; font-size: 0.83rem; color: #6a5418; line-height: 1.55; }
+        .pensionable-tip strong { color: #6a5418; font-weight: 700; }
+        .pensionable-tip .tip-label { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: #e6a817; color: white; padding: 0.1rem 0.45rem; border-radius: 3px; margin-right: 0.4rem; vertical-align: 2px; }
+
         .calculate-btn { display: block; width: 100%; padding: 0.9rem; background: var(--gc-blue); color: white; border: none; border-radius: 8px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s; margin-top: 1.75rem; }
         .calculate-btn:hover { background: var(--gc-blue-light); }
         .calculate-btn:disabled { background: var(--gc-grey-mid); cursor: not-allowed; }
@@ -121,6 +125,9 @@
         .explain-box h3 { font-size: 0.85rem; font-weight: 700; color: var(--gc-blue); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6rem; }
         .explain-box ul { margin: 0 0 0 1.25rem; }
         .explain-box li { margin-bottom: 0.4rem; }
+
+        .pensionable-results-note { background: rgba(232, 168, 23, 0.06); border: 1px solid rgba(232, 168, 23, 0.3); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: 0.84rem; line-height: 1.6; color: #6a5418; }
+        .pensionable-results-note strong { color: #6a5418; font-weight: 700; }
 
         .api-status { font-size: 0.78rem; color: var(--gc-grey-mid); padding: 0.6rem 1rem; background: rgba(38,55,74,0.04); border-top: 1px solid var(--gc-grey); }
         .api-status code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.78rem; color: var(--gc-blue); }
@@ -263,6 +270,11 @@
                 &middot; <a onclick="useSuggestedGross()" data-en="Use this value" data-fr="Utiliser cette valeur">Use this value</a>
             </div>
 
+            <div class="pensionable-tip">
+                <span class="tip-label" data-en="For exact match" data-fr="Pour une correspondance exacte">For exact match</span>
+                <span data-en="If you're comparing to a real pay stub, enter your <strong>pensionable / insurable earnings</strong> (the \&quot;Gross Earnings\&quot; figure on your stub), not your basic pay. They differ when you have LWOP, leave-with-income-averaging (LIA), non-pensionable allowances, or bilingual bonus adjustments. CPP, EI, and PSSA are calculated on pensionable/insurable earnings &mdash; federal income tax is calculated on taxable gross, which may differ again." data-fr="Si vous comparez &agrave; un vrai talon de paie, saisissez vos <strong>gains ouvrant droit &agrave; pension / assurables</strong> (la valeur &laquo;\u00a0Gains bruts\u00a0&raquo; de votre talon), non pas votre salaire de base. Ils diff&egrave;rent lorsque vous avez un cong&eacute; sans solde (CSS), un cong&eacute; &agrave; salaire diff&eacute;r&eacute; (CSD), des indemnit&eacute;s non ouvrant droit &agrave; pension, ou des ajustements de prime de bilinguisme. Le RPC, l'AE et la LPFP sont calcul&eacute;s sur les gains ouvrant droit &agrave; pension/assurables &mdash; l'imp&ocirc;t f&eacute;d&eacute;ral est calcul&eacute; sur le brut imposable, qui peut encore diff&eacute;rer.">If you're comparing to a real pay stub, enter your <strong>pensionable / insurable earnings</strong> (the "Gross Earnings" figure on your stub), not your basic pay. They differ when you have LWOP, leave-with-income-averaging (LIA), non-pensionable allowances, or bilingual bonus adjustments. CPP, EI, and PSSA are calculated on pensionable/insurable earnings &mdash; federal income tax is calculated on taxable gross, which may differ again.</span>
+            </div>
+
             <!-- ===== Section 3: Pension + tax ===== -->
             <div class="form-section-label" data-en="3. Pension &amp; tax setup" data-fr="3. Configuration pension et imp&ocirc;t">3. Pension &amp; tax setup</div>
 
@@ -310,6 +322,11 @@
                 <div class="api-status" id="api-status">&mdash;</div>
             </div>
 
+            <div class="pensionable-results-note" id="pensionable-note">
+                <strong data-en="Not matching your stub?" data-fr="Pas d'accord avec votre talon\u00a0?">Not matching your stub?</strong>
+                <span data-en=" The three deductions most sensitive to the difference between <strong>basic pay</strong> and <strong>pensionable/insurable earnings</strong> are CPP, EI, and PSSA. If any of these diverge by more than a few cents, it's likely because your stub computes them on a different base (after LWOP, LIA, or bilingual-bonus adjustments). Enter your stub's <strong>pensionable earnings</strong> (not basic pay) above for an exact match. Federal income tax and union dues are less sensitive." data-fr="\u00a0Les trois retenues les plus sensibles &agrave; la diff&eacute;rence entre le <strong>salaire de base</strong> et les <strong>gains ouvrant droit &agrave; pension/assurables</strong> sont le RPC, l'AE et la LPFP. Si l'une de celles-ci diverge de plus de quelques sous, c'est probablement parce que votre talon les calcule sur une base diff&eacute;rente (apr&egrave;s CSS, CSD, ou ajustements de prime de bilinguisme). Saisissez les <strong>gains ouvrant droit &agrave; pension</strong> de votre talon (non le salaire de base) ci-dessus pour une correspondance exacte. L'imp&ocirc;t f&eacute;d&eacute;ral et les cotisations syndicales sont moins sensibles."> The three deductions most sensitive to the difference between <strong>basic pay</strong> and <strong>pensionable/insurable earnings</strong> are CPP, EI, and PSSA. If any of these diverge by more than a few cents, it's likely because your stub computes them on a different base (after LWOP, LIA, or bilingual-bonus adjustments). Enter your stub's <strong>pensionable earnings</strong> (not basic pay) above for an exact match. Federal income tax and union dues are less sensitive.</span>
+            </div>
+
             <div class="explain-box" id="explanation-box" style="display: none;">
                 <h3 data-en="What ACCORD did" data-fr="Ce qu'ACCORD a fait">What ACCORD did</h3>
                 <ul id="explanation-list"></ul>
@@ -317,7 +334,7 @@
 
             <div class="scope-note">
                 <strong data-en="V1 scope:" data-fr="Port&eacute;e V1\u00a0:">V1 scope:</strong>
-                <span data-en="single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. Real pay stubs may also include adjustments (e.g. LWOP, bilingual bonus, leave-with-income-averaging) that change the pensionable / insurable / taxable bases. If your stub differs by more than a few cents on any line, that's a finding worth raising with your pay centre &mdash; or telling us about. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap." data-fr="p&eacute;riode unique aux deux semaines, imp&ocirc;t f&eacute;d&eacute;ral seulement (pas encore d'imp&ocirc;t provincial), aucun maximum annuel cumulatif, aucun ajustement r&eacute;troactif, aucune prestation suppl&eacute;mentaire ni saisie-arr&ecirc;t. Les talons r&eacute;els peuvent inclure des ajustements (CSRP, prime de bilinguisme, etc.) qui modifient les bases. Si votre talon diff&egrave;re de plus de quelques sous, c'est une observation &agrave; signaler &agrave; votre centre de paye &mdash; ou &agrave; nous. Modules d'imp&ocirc;t provincial (Ontario d'abord) et calculs cumulatifs &agrave; venir.">single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. Real pay stubs may also include adjustments (e.g. LWOP, bilingual bonus, leave-with-income-averaging) that change the pensionable / insurable / taxable bases. If your stub differs by more than a few cents on any line, that's a finding worth raising with your pay centre &mdash; or telling us about. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap.</span>
+                <span data-en="single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. The gross input is used as both the pay base and the pensionable/insurable base &mdash; real stubs may split these (LWOP, LIA, bilingual bonus). Separate pensionable/insurable inputs coming in V2. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap." data-fr="p&eacute;riode unique aux deux semaines, imp&ocirc;t f&eacute;d&eacute;ral seulement (pas encore d'imp&ocirc;t provincial), aucun maximum annuel cumulatif, aucun ajustement r&eacute;troactif, aucune prestation suppl&eacute;mentaire ni saisie-arr&ecirc;t. Le brut saisi sert &agrave; la fois de base de paye et de base ouvrant droit &agrave; pension/assurable &mdash; les talons r&eacute;els peuvent distinguer ces bases (CSS, CSD, prime de bilinguisme). Des champs s&eacute;par&eacute;s pour les gains ouvrant droit &agrave; pension/assurables arrivent en V2. Modules d'imp&ocirc;t provincial (Ontario d'abord) et calculs cumulatifs &agrave; venir.">single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. The gross input is used as both the pay base and the pensionable/insurable base &mdash; real stubs may split these (LWOP, LIA, bilingual bonus). Separate pensionable/insurable inputs coming in V2. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap.</span>
             </div>
         </div>
 
@@ -365,7 +382,7 @@
 
     <script>
     // ============================================================
-    // ACCORD Paycheque Checker — V1.1
+    // ACCORD Paycheque Checker — V1.2 (Session 36, 2026-04-17)
     // Calls live api.hazeydata.ai endpoints sequentially:
     //   /cpp-contributions  -> CPP1 + CPP2 + total_deduction
     //   /ei-premiums        -> EI + QPIP + total_deduction
@@ -373,13 +390,17 @@
     //   /pension-pssa       -> PSSA employee contributions
     //   /union-dues         -> Bargaining-agent dues
     //
+    // V1.2 changes (vs V1.1 commit 6f7cc5d):
+    //  - Added pensionable-earnings guidance before gross input (#102 Phase 1)
+    //  - Added "Not matching your stub?" panel in results (#102 Phase 1)
+    //  - Updated scope note to reflect gross vs pensionable distinction
+    //  - Rationale: real-stub test (EC-05, Apr 2026) showed CPP and PSSA
+    //    gaps are driven by pensionable-earnings vs basic-pay conflation,
+    //    not engine bugs. See #103 (CPP wontfix) and #102 (root cause).
+    //
     // V1.1 fixes (vs initial commit 70b2a52):
     //  - Field-key map widened to match actual rule dataclass field names
-    //    (cpp1_deduction, cpp2_deduction, ei_deduction, qpip_deduction,
-    //     pension_deduction, union_dues). V1 was returning $0.00 because
-    //     it guessed wrong key names (cpp1_contribution etc.).
-    //  - CPP row now uses total_deduction (CPP1 + CPP2 combined) rather
-    //    than splitting into two rows; matches how stubs report it.
+    //  - CPP row renders as single combined CPP1+CPP2 line
     // ============================================================
 
     var API_BASE = 'https://api.hazeydata.ai';
@@ -570,11 +591,9 @@
             tax_year: taxYear
         }).then(function(cppResp) {
             var r = cppResp.result || {};
-            // Real field names: cpp1_deduction, cpp2_deduction, total_deduction
             var cppTotal = pickNumeric(r, ['total_deduction', 'cpp_total', 'total']);
             var cpp1 = pickNumeric(r, ['cpp1_deduction', 'cpp1_contribution', 'cpp1']);
             var cpp2 = pickNumeric(r, ['cpp2_deduction', 'cpp2_contribution', 'cpp2']);
-            // Prefer total_deduction; fall back to sum if for some reason it's missing
             if (!cppTotal && (cpp1 || cpp2)) cppTotal = cpp1 + cpp2;
             var cppLabelEn = cpp2 > 0
                 ? 'CPP contribution (CPP1 $' + cpp1.toFixed(2) + ' + CPP2 $' + cpp2.toFixed(2) + ')'
@@ -585,7 +604,6 @@
             deductions.push({ key: 'cpp', label_en: cppLabelEn, label_fr: cppLabelFr, citation: 'CRA T4127 §A', amount: cppTotal });
             if (cppResp.explanation_en) explanations.push({ en: cppResp.explanation_en, fr: cppResp.explanation_fr || '' });
 
-            // --- 2. EI ---
             return postJSON('/ei-premiums', {
                 biweekly_gross: gross,
                 pay_period_number: pp,
@@ -596,7 +614,6 @@
                 tax_year: taxYear
             }).then(function(eiResp) {
                 var er = eiResp.result || {};
-                // Real field names: ei_deduction, qpip_deduction, total_deduction
                 var ei = pickNumeric(er, ['ei_deduction', 'ei_contribution', 'ei_premium', 'ei']);
                 var qpip = pickNumeric(er, ['qpip_deduction', 'qpip_contribution', 'qpip_premium', 'qpip']);
                 deductions.push({ key: 'ei', label_en: 'EI premium', label_fr: 'Cotisation AE', citation: 'CRA T4127 §B', amount: ei });
@@ -605,7 +622,6 @@
                 }
                 if (eiResp.explanation_en) explanations.push({ en: eiResp.explanation_en, fr: eiResp.explanation_fr || '' });
 
-                // --- 3. Federal tax (uses CPP + EI as credits) ---
                 return postJSON('/federal-tax', {
                     biweekly_gross: gross,
                     province: province,
@@ -616,12 +632,10 @@
                     pay_periods: 26
                 }).then(function(taxResp) {
                     var tr = taxResp.result || {};
-                    // Federal tax fields: federal_tax, per_period_tax — keep wide
                     var tax = pickNumeric(tr, ['federal_tax', 'per_period_tax', 'tax_withheld', 'tax_amount', 'tax']);
                     deductions.push({ key: 'fed_tax', label_en: 'Federal income tax', label_fr: 'Imp&ocirc;t f&eacute;d&eacute;ral sur le revenu', citation: 'CRA T4127 §T1', amount: tax });
                     if (taxResp.explanation_en) explanations.push({ en: taxResp.explanation_en, fr: taxResp.explanation_fr || '' });
 
-                    // --- 4. PSSA pension ---
                     return postJSON('/pension-pssa', {
                         biweekly_gross: gross,
                         classification: classification || 'EC-05',
@@ -631,12 +645,10 @@
                         tax_year: taxYear
                     }).then(function(pssaResp) {
                         var pr = pssaResp.result || {};
-                        // Real field name: pension_deduction
                         var pssa = pickNumeric(pr, ['pension_deduction', 'pssa_contribution', 'pension_contribution', 'employee_contribution', 'amount']);
                         deductions.push({ key: 'pssa', label_en: 'PSSA pension (employee share)', label_fr: 'Pension LPFP (part employ&eacute;)', citation: 'PSSA / TBS rates', amount: pssa });
                         if (pssaResp.explanation_en) explanations.push({ en: pssaResp.explanation_en, fr: pssaResp.explanation_fr || '' });
 
-                        // --- 5. Union dues ---
                         return postJSON('/union-dues', {
                             biweekly_gross: gross,
                             classification: classification,
@@ -645,7 +657,6 @@
                             tax_year: taxYear
                         }).then(function(duesResp) {
                             var dr = duesResp.result || {};
-                            // Real field name: union_dues
                             var dues = pickNumeric(dr, ['union_dues', 'dues', 'amount', 'total']);
                             var agentLabel = (duesResp.ca_code || bargainingAgent || 'Union').toString();
                             deductions.push({ key: 'dues', label_en: agentLabel + ' union dues', label_fr: 'Cotisations syndicales ' + agentLabel, citation: agentLabel + ' constitution', amount: dues });
