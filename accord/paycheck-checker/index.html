@@ -85,6 +85,10 @@
         select, input[type=number], input[type=text] { width: 100%; padding: 0.6rem 0.75rem; border: 1.5px solid var(--gc-grey); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.92rem; background: var(--gc-grey-light); color: var(--gc-grey-dark); }
         select:focus, input:focus { outline: none; border-color: var(--gc-blue); background: white; }
 
+        .bonus-toggle { margin-top: 1rem; font-size: 0.85rem; color: var(--gc-grey-dark); }
+        .bonus-toggle label { display: flex; align-items: baseline; gap: 0.5rem; cursor: pointer; flex-wrap: wrap; }
+        .bonus-toggle input[type="checkbox"] { flex: 0 0 auto; cursor: pointer; accent-color: var(--gc-blue); transform: translateY(2px); }
+        .bonus-toggle .hint { font-size: 0.75rem; color: var(--gc-grey-mid); font-weight: 400; flex: 1 1 100%; margin-left: 1.5rem; }
         .gross-helper { background: rgba(38,55,74,0.05); border: 1px solid rgba(38,55,74,0.12); border-radius: 8px; padding: 0.85rem 1.1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--gc-grey-dark); }
         .gross-helper strong { color: var(--gc-blue); font-weight: 700; }
         .gross-helper a { color: var(--gc-blue); text-decoration: underline; cursor: pointer; }
@@ -246,6 +250,14 @@
                 </div>
             </div>
 
+            <div class="bonus-toggle">
+                <label>
+                    <input type="checkbox" id="bilingual-bonus" onchange="onBonusChange()">
+                    <span data-en="Bilingual bonus position" data-fr="Poste avec prime au bilinguisme">Bilingual bonus position</span>
+                    <span class="hint" data-en="Adds $800/yr ($30.66 biweekly) to suggested gross &mdash; Treasury Board Bilingualism Bonus Directive" data-fr="Ajoute 800&nbsp;$/an (30,66&nbsp;$ aux deux semaines) au brut sugg&eacute;r&eacute; &mdash; Directive sur la prime au bilinguisme du Conseil du Tr&eacute;sor">Adds $800/yr ($30.66 biweekly) to suggested gross — Treasury Board Bilingualism Bonus Directive</span>
+                </label>
+            </div>
+
             <!-- ===== Section 2: This pay period ===== -->
             <div class="form-section-label" data-en="2. This biweekly pay period" data-fr="2. Cette p&eacute;riode de paye aux deux semaines">2. This biweekly pay period</div>
 
@@ -334,7 +346,7 @@
 
             <div class="scope-note">
                 <strong data-en="V1 scope:" data-fr="Port&eacute;e V1\u00a0:">V1 scope:</strong>
-                <span data-en="single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. The gross input is used as both the pay base and the pensionable/insurable base &mdash; real stubs may split these (LWOP, LIA, bilingual bonus). Separate pensionable/insurable inputs coming in V2. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap." data-fr="p&eacute;riode unique aux deux semaines, imp&ocirc;t f&eacute;d&eacute;ral seulement (pas encore d'imp&ocirc;t provincial), aucun maximum annuel cumulatif, aucun ajustement r&eacute;troactif, aucune prestation suppl&eacute;mentaire ni saisie-arr&ecirc;t. Le brut saisi sert &agrave; la fois de base de paye et de base ouvrant droit &agrave; pension/assurable &mdash; les talons r&eacute;els peuvent distinguer ces bases (CSS, CSD, prime de bilinguisme). Des champs s&eacute;par&eacute;s pour les gains ouvrant droit &agrave; pension/assurables arrivent en V2. Modules d'imp&ocirc;t provincial (Ontario d'abord) et calculs cumulatifs &agrave; venir.">single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. The gross input is used as both the pay base and the pensionable/insurable base &mdash; real stubs may split these (LWOP, LIA, bilingual bonus). Separate pensionable/insurable inputs coming in V2. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap.</span>
+                <span data-en="single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. The gross input is used as both the pay base and the pensionable/insurable base &mdash; real stubs may split these (LWOP, LIA, acting pay). Separate pensionable/insurable inputs coming in V2. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap." data-fr="p&eacute;riode unique aux deux semaines, imp&ocirc;t f&eacute;d&eacute;ral seulement (pas encore d'imp&ocirc;t provincial), aucun maximum annuel cumulatif, aucun ajustement r&eacute;troactif, aucune prestation suppl&eacute;mentaire ni saisie-arr&ecirc;t. Le brut saisi sert &agrave; la fois de base de paye et de base ouvrant droit &agrave; pension/assurable &mdash; les talons r&eacute;els peuvent distinguer ces bases (CSS, CSD, int&eacute;rimaire). Des champs s&eacute;par&eacute;s pour les gains ouvrant droit &agrave; pension/assurables arrivent en V2. Modules d'imp&ocirc;t provincial (Ontario d'abord) et calculs cumulatifs &agrave; venir.">single biweekly period, federal income tax only (no provincial income tax yet), no YTD-aware annual maximums, no retro adjustments, no supplementary benefits or garnishments. The gross input is used as both the pay base and the pensionable/insurable base &mdash; real stubs may split these (LWOP, LIA, acting pay). Separate pensionable/insurable inputs coming in V2. Provincial tax modules (starting with Ontario) and YTD-aware calculations are on the roadmap.</span>
             </div>
         </div>
 
@@ -416,6 +428,7 @@
     };
 
     var BIWEEKLY_DIVISOR = 26.088;
+    var BILINGUAL_BONUS_ANNUAL = 800;
 
     // ----------------- Form cascade -----------------
 
@@ -482,9 +495,18 @@
             return;
         }
         var annual = PAY_TABLES[g].levels[lv][parseInt(st) - 1];
-        var biweekly = annual / BIWEEKLY_DIVISOR;
-        document.getElementById('suggested-gross').textContent = '$' + biweekly.toFixed(2) + ' (annual $' + annual.toLocaleString() + ' ÷ 26.088)';
+        var baseBiweekly = annual / BIWEEKLY_DIVISOR;
+        var bonusOn = document.getElementById('bilingual-bonus').checked;
+        var bonusBiweekly = bonusOn ? (BILINGUAL_BONUS_ANNUAL / BIWEEKLY_DIVISOR) : 0;
+        var biweekly = baseBiweekly + bonusBiweekly;
+        var detail = 'annual $' + annual.toLocaleString() + ' ÷ 26.088';
+        if (bonusOn) detail += ' + bilingual bonus $' + bonusBiweekly.toFixed(2);
+        document.getElementById('suggested-gross').textContent = '$' + biweekly.toFixed(2) + ' (' + detail + ')';
         document.getElementById('gross-helper').style.display = 'block';
+    }
+
+    function onBonusChange() {
+        onStepChange();
     }
 
     function useSuggestedGross() {
@@ -493,8 +515,10 @@
         var st = document.getElementById('class-step').value;
         if (!g || !lv || !st) return;
         var annual = PAY_TABLES[g].levels[lv][parseInt(st) - 1];
-        var biweekly = annual / BIWEEKLY_DIVISOR;
-        document.getElementById('biweekly-gross').value = biweekly.toFixed(2);
+        var baseBiweekly = annual / BIWEEKLY_DIVISOR;
+        var bonusOn = document.getElementById('bilingual-bonus').checked;
+        var bonusBiweekly = bonusOn ? (BILINGUAL_BONUS_ANNUAL / BIWEEKLY_DIVISOR) : 0;
+        document.getElementById('biweekly-gross').value = (baseBiweekly + bonusBiweekly).toFixed(2);
     }
 
     // ----------------- API plumbing -----------------
