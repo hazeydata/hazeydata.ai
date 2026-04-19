@@ -23,7 +23,7 @@
   "name": "Nebraska School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 244 Nebraska districts covering 317K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/nebraska/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=NE"}],
   "spatialCoverage": "Nebraska, United States",
@@ -90,30 +90,30 @@
                 <tr><td>Omaha Public Schools</td><td>51,693</td><td>Jun 1</td><td>Jul 31</td><td>43</td></tr>
                 <tr><td>Lincoln Public Schools</td><td>41,654</td><td>Aug 13</td><td>Jun 12</td><td>190</td></tr>
                 <tr><td>Millard Public Schools</td><td>23,300</td><td>Aug 12</td><td>May 27</td><td>174</td></tr>
-                <tr><td>Papillion La Vista Community Schools</td><td>12,031</td><td>Aug 25</td><td>May 21</td><td>194</td></tr>
+                <tr><td>Papillion La Vista Community Schools</td><td>12,031</td><td>Aug 25</td><td>May 21</td><td>192</td></tr>
                 <tr><td>Elkhorn Public Schools</td><td>11,319</td><td>Sep 2</td><td>Jun 4</td><td>180</td></tr>
-                <tr><td>Grand Island Public Schools</td><td>9,990</td><td>Sep 4</td><td>Jun 25</td><td>199</td></tr>
-                <tr><td>Bellevue Public Schools</td><td>9,444</td><td>Aug 21</td><td>May 29</td><td>174</td></tr>
-                <tr><td>Gretna Public Schools</td><td>6,529</td><td>Aug 25</td><td>May 21</td><td>194</td></tr>
-                <tr><td>Westside Community Schools</td><td>6,271</td><td>Aug 7</td><td>May 22</td><td>176</td></tr>
-                <tr><td>Kearney Public Schools</td><td>6,152</td><td>Aug 25</td><td>May 21</td><td>194</td></tr>
+                <tr><td>Grand Island Public Schools</td><td>9,990</td><td>Sep 4</td><td>Jun 25</td><td>195</td></tr>
+                <tr><td>Bellevue Public Schools</td><td>9,444</td><td>Aug 21</td><td>May 29</td><td>172</td></tr>
+                <tr><td>Gretna Public Schools</td><td>6,529</td><td>Aug 25</td><td>May 21</td><td>167</td></tr>
+                <tr><td>Westside Community Schools</td><td>6,271</td><td>Aug 7</td><td>May 22</td><td>174</td></tr>
+                <tr><td>Kearney Public Schools</td><td>6,152</td><td>Aug 25</td><td>May 21</td><td>192</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Nebraska</h2>
-        <p>The peak spring break day in Nebraska is <strong>April 3, 2026</strong>, when 47 districts (86K students) are on break.</p>
+        <p>The peak spring break day in Nebraska is <strong>April 3, 2026</strong>, when 52 districts (88K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Nebraska districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>2.3M student-days</td><td>162</td></tr>
-                <tr><td>Spring Break</td><td>1.1M student-days</td><td>156</td></tr>
-                <tr><td>Thanksgiving Break</td><td>273K student-days</td><td>100</td></tr>
-                <tr><td>Teachers In-Service</td><td>250K student-days</td><td>1</td></tr>
-                <tr><td>No School</td><td>145K student-days</td><td>33</td></tr>
-                <tr><td>Conferences / Work Day / Prof Development</td><td>140K student-days</td><td>1</td></tr>
+                <tr><td>Winter Break</td><td>2.7M student-days</td><td>176</td></tr>
+                <tr><td>Spring Break</td><td>1.2M student-days</td><td>169</td></tr>
+                <tr><td>Thanksgiving Break</td><td>608K student-days</td><td>155</td></tr>
+                <tr><td>Winter Recess</td><td>517K student-days</td><td>1</td></tr>
+                <tr><td>Spring Recess</td><td>261K student-days</td><td>2</td></tr>
+                <tr><td>Thanksgiving Recess</td><td>260K student-days</td><td>5</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

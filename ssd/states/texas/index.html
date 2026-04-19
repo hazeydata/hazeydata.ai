@@ -23,7 +23,7 @@
   "name": "Texas School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 1,022 Texas districts covering 4.8M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/texas/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=TX"}],
   "spatialCoverage": "Texas, United States",
@@ -101,19 +101,19 @@
         </table>
 
         <h2>Spring Break in Texas</h2>
-        <p>The peak spring break day in Texas is <strong>March 16, 2026</strong>, when 314 districts (2.0M students) are on break.</p>
+        <p>The peak spring break day in Texas is <strong>March 16, 2026</strong>, when 378 districts (2.3M students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Texas districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>41.7M student-days</td><td>789</td></tr>
-                <tr><td>Spring Break</td><td>18.5M student-days</td><td>753</td></tr>
-                <tr><td>Thanksgiving Break</td><td>12.0M student-days</td><td>587</td></tr>
-                <tr><td>Fall Break</td><td>4.5M student-days</td><td>166</td></tr>
-                <tr><td>Holiday</td><td>2.5M student-days</td><td>66</td></tr>
-                <tr><td>Staff Development</td><td>2.1M student-days</td><td>72</td></tr>
+                <tr><td>Winter Break</td><td>47.5M student-days</td><td>831</td></tr>
+                <tr><td>Spring Break</td><td>21.1M student-days</td><td>835</td></tr>
+                <tr><td>Thanksgiving Break</td><td>15.1M student-days</td><td>735</td></tr>
+                <tr><td>Fall Break</td><td>4.8M student-days</td><td>186</td></tr>
+                <tr><td>Staff Development</td><td>3.0M student-days</td><td>112</td></tr>
+                <tr><td>Holiday</td><td>2.5M student-days</td><td>65</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

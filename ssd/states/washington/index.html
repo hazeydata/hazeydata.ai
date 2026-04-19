@@ -23,7 +23,7 @@
   "name": "Washington School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 299 Washington districts covering 1.1M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/washington/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=WA"}],
   "spatialCoverage": "Washington, United States",
@@ -92,28 +92,28 @@
                 <tr><td>Spokane School District</td><td>28,714</td><td>Sep 2</td><td>Jun 16</td><td>177</td></tr>
                 <tr><td>Tacoma School District</td><td>28,272</td><td>Sep 3</td><td>Jun 17</td><td>174</td></tr>
                 <tr><td>Kent School District</td><td>25,700</td><td>Aug 25</td><td>Jun 15</td><td>187</td></tr>
-                <tr><td>Northshore School District</td><td>22,944</td><td>Sep 2</td><td>Jun 26</td><td>192</td></tr>
-                <tr><td>Puyallup School District</td><td>22,905</td><td>Sep 3</td><td>Jun 16</td><td>190</td></tr>
-                <tr><td>Evergreen School District</td><td>22,591</td><td>Aug 26</td><td>Jun 11</td><td>180</td></tr>
-                <tr><td>Vancouver School District</td><td>21,949</td><td>Aug 27</td><td>Jun 5</td><td>178</td></tr>
-                <tr><td>Federal Way School District</td><td>21,606</td><td>Sep 2</td><td>Jun 16</td><td>180</td></tr>
+                <tr><td>Northshore School District</td><td>22,944</td><td>Sep 2</td><td>Jun 26</td><td>189</td></tr>
+                <tr><td>Puyallup School District</td><td>22,905</td><td>Sep 3</td><td>Jun 16</td><td>180</td></tr>
+                <tr><td>Evergreen School District</td><td>22,591</td><td>Aug 26</td><td>Jun 11</td><td>178</td></tr>
+                <tr><td>Vancouver School District</td><td>21,949</td><td>Aug 27</td><td>Jun 5</td><td>176</td></tr>
+                <tr><td>Federal Way School District</td><td>21,606</td><td>Sep 2</td><td>Jun 16</td><td>177</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Washington</h2>
-        <p>The peak spring break day in Washington is <strong>April 10, 2026</strong>, when 137 districts (622K students) are on break.</p>
+        <p>The peak spring break day in Washington is <strong>April 10, 2026</strong>, when 151 districts (707K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Washington districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>7.8M student-days</td><td>251</td></tr>
-                <tr><td>Spring Break</td><td>4.7M student-days</td><td>234</td></tr>
-                <tr><td>Thanksgiving Break</td><td>1.9M student-days</td><td>188</td></tr>
-                <tr><td>Labor Day</td><td>490K student-days</td><td>122</td></tr>
-                <tr><td>Juneteenth</td><td>408K student-days</td><td>81</td></tr>
-                <tr><td>Memorial Day</td><td>372K student-days</td><td>86</td></tr>
+                <tr><td>Winter Break</td><td>9.4M student-days</td><td>269</td></tr>
+                <tr><td>Spring Break</td><td>5.3M student-days</td><td>251</td></tr>
+                <tr><td>Thanksgiving Break</td><td>3.7M student-days</td><td>252</td></tr>
+                <tr><td>Labor Day</td><td>558K student-days</td><td>138</td></tr>
+                <tr><td>Memorial Day</td><td>457K student-days</td><td>103</td></tr>
+                <tr><td>Juneteenth</td><td>432K student-days</td><td>89</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

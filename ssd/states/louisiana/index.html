@@ -23,7 +23,7 @@
   "name": "Louisiana School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 70 Louisiana districts covering 631K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/louisiana/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=LA"}],
   "spatialCoverage": "Louisiana, United States",
@@ -89,31 +89,31 @@
             <tbody>
                 <tr><td>Jefferson Parish</td><td>50,628</td><td>Aug 11</td><td>May 22</td><td>169</td></tr>
                 <tr><td>East Baton Rouge Parish</td><td>42,590</td><td>Aug 7</td><td>May 20</td><td>172</td></tr>
-                <tr><td>St. Tammany Parish</td><td>38,794</td><td>Aug 6</td><td>May 21</td><td>188</td></tr>
-                <tr><td>Caddo Parish</td><td>35,044</td><td>Aug 13</td><td>May 21</td><td>188</td></tr>
+                <tr><td>St. Tammany Parish</td><td>38,794</td><td>Aug 8</td><td>May 21</td><td>169</td></tr>
+                <tr><td>Caddo Parish</td><td>35,044</td><td>Aug 13</td><td>May 21</td><td>162</td></tr>
                 <tr><td>Lafayette Parish</td><td>30,991</td><td>Aug 5</td><td>May 21</td><td>178</td></tr>
                 <tr><td>Calcasieu Parish</td><td>29,523</td><td>Aug 8</td><td>May 20</td><td>172</td></tr>
-                <tr><td>Livingston Parish</td><td>27,843</td><td>Aug 8</td><td>May 22</td><td>182</td></tr>
+                <tr><td>Livingston Parish</td><td>27,843</td><td>Aug 8</td><td>May 22</td><td>173</td></tr>
                 <tr><td>Ascension Parish</td><td>24,683</td><td>Aug 7</td><td>May 21</td><td>179</td></tr>
                 <tr><td>Bossier Parish</td><td>23,587</td><td>Aug 7</td><td>May 19</td><td>166</td></tr>
-                <tr><td>Rapides Parish</td><td>22,546</td><td>Aug 11</td><td>May 21</td><td>182</td></tr>
+                <tr><td>Rapides Parish</td><td>22,546</td><td>Aug 11</td><td>May 21</td><td>158</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Louisiana</h2>
-        <p>The peak spring break day in Louisiana is <strong>April 6, 2026</strong>, when 25 districts (284K students) are on break.</p>
+        <p>The peak spring break day in Louisiana is <strong>April 6, 2026</strong>, when 28 districts (292K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Louisiana districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>4.4M student-days</td><td>52</td></tr>
-                <tr><td>Spring Break</td><td>2.7M student-days</td><td>44</td></tr>
-                <tr><td>Thanksgiving Break</td><td>1.5M student-days</td><td>32</td></tr>
-                <tr><td>Fall Break</td><td>958K student-days</td><td>32</td></tr>
-                <tr><td>Mardi Gras Break</td><td>527K student-days</td><td>4</td></tr>
-                <tr><td>Easter Break</td><td>466K student-days</td><td>8</td></tr>
+                <tr><td>Winter Break</td><td>4.8M student-days</td><td>51</td></tr>
+                <tr><td>Spring Break</td><td>2.8M student-days</td><td>48</td></tr>
+                <tr><td>Thanksgiving Break</td><td>2.1M student-days</td><td>47</td></tr>
+                <tr><td>Fall Break</td><td>1.3M student-days</td><td>38</td></tr>
+                <tr><td>Mardi Gras Break</td><td>661K student-days</td><td>9</td></tr>
+                <tr><td>Christmas Holiday</td><td>561K student-days</td><td>1</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

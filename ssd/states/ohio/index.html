@@ -23,7 +23,7 @@
   "name": "Ohio School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 614 Ohio districts covering 1.5M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/ohio/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=OH"}],
   "spatialCoverage": "Ohio, United States",
@@ -89,31 +89,31 @@
             <tbody>
                 <tr><td>Columbus City School District</td><td>45,337</td><td>Aug 25</td><td>May 28</td><td>164</td></tr>
                 <tr><td>Cincinnati Public Schools</td><td>35,582</td><td>Aug 20</td><td>May 28</td><td>171</td></tr>
-                <tr><td>Cleveland Municipal</td><td>33,866</td><td>Aug 1</td><td>Jun 24</td><td>208</td></tr>
-                <tr><td>Olentangy Local</td><td>23,281</td><td>Aug 20</td><td>May 28</td><td>174</td></tr>
-                <tr><td>South-Western City</td><td>21,873</td><td>Aug 20</td><td>Jun 1</td><td>177</td></tr>
+                <tr><td>Cleveland Municipal</td><td>33,866</td><td>Aug 1</td><td>Jun 24</td><td>206</td></tr>
+                <tr><td>Olentangy Local</td><td>23,281</td><td>Aug 20</td><td>May 28</td><td>171</td></tr>
+                <tr><td>South-Western City</td><td>21,873</td><td>Aug 20</td><td>Jun 1</td><td>175</td></tr>
                 <tr><td>Toledo City</td><td>21,745</td><td>Aug 25</td><td>Jun 1</td><td>169</td></tr>
                 <tr><td>Akron City</td><td>20,481</td><td>Aug 21</td><td>May 29</td><td>176</td></tr>
-                <tr><td>Lakota Local</td><td>17,699</td><td>Aug 14</td><td>May 21</td><td>173</td></tr>
-                <tr><td>Dublin City</td><td>16,736</td><td>Aug 20</td><td>May 27</td><td>171</td></tr>
-                <tr><td>Hilliard City</td><td>16,082</td><td>Aug 21</td><td>May 22</td><td>197</td></tr>
+                <tr><td>Lakota Local</td><td>17,699</td><td>Aug 14</td><td>May 21</td><td>171</td></tr>
+                <tr><td>Dublin City</td><td>16,736</td><td>Aug 20</td><td>May 27</td><td>169</td></tr>
+                <tr><td>Hilliard City</td><td>16,082</td><td>Aug 21</td><td>May 22</td><td>171</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Ohio</h2>
-        <p>The peak spring break day in Ohio is <strong>April 3, 2026</strong>, when 204 districts (560K students) are on break.</p>
+        <p>The peak spring break day in Ohio is <strong>April 3, 2026</strong>, when 237 districts (654K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Ohio districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>10.9M student-days</td><td>464</td></tr>
-                <tr><td>Spring Break</td><td>7.7M student-days</td><td>439</td></tr>
-                <tr><td>Thanksgiving Break</td><td>2.6M student-days</td><td>384</td></tr>
-                <tr><td>Fall Break</td><td>742K student-days</td><td>118</td></tr>
-                <tr><td>No School</td><td>548K student-days</td><td>87</td></tr>
-                <tr><td>Professional Development Day</td><td>490K student-days</td><td>25</td></tr>
+                <tr><td>Winter Break</td><td>14.3M student-days</td><td>493</td></tr>
+                <tr><td>Spring Break</td><td>8.3M student-days</td><td>481</td></tr>
+                <tr><td>Thanksgiving Break</td><td>4.7M student-days</td><td>451</td></tr>
+                <tr><td>Fall Break</td><td>821K student-days</td><td>123</td></tr>
+                <tr><td>No School</td><td>625K student-days</td><td>97</td></tr>
+                <tr><td>Professional Development Day</td><td>533K student-days</td><td>34</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

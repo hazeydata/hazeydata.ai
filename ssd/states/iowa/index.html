@@ -23,7 +23,7 @@
   "name": "Iowa School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 329 Iowa districts covering 488K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/iowa/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=IA"}],
   "spatialCoverage": "Iowa, United States",
@@ -88,31 +88,31 @@
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
                 <tr><td>Des Moines Independent Community School District</td><td>30,278</td><td>Aug 25</td><td>Jun 4</td><td>168</td></tr>
-                <tr><td>Cedar Rapids Comm School District</td><td>15,289</td><td>Aug 26</td><td>Jun 3</td><td>172</td></tr>
+                <tr><td>Cedar Rapids Comm School District</td><td>15,289</td><td>Aug 26</td><td>Jun 3</td><td>170</td></tr>
                 <tr><td>Sioux City Comm School District</td><td>14,718</td><td>N/A</td><td>N/A</td><td>0</td></tr>
-                <tr><td>Iowa City Comm School District</td><td>14,701</td><td>Aug 25</td><td>Jun 5</td><td>175</td></tr>
+                <tr><td>Iowa City Comm School District</td><td>14,701</td><td>Aug 25</td><td>Jun 5</td><td>172</td></tr>
                 <tr><td>Davenport Comm School District</td><td>13,744</td><td>Aug 26</td><td>May 29</td><td>165</td></tr>
-                <tr><td>Waukee Community School District</td><td>13,082</td><td>Aug 25</td><td>May 29</td><td>174</td></tr>
+                <tr><td>Waukee Community School District</td><td>13,082</td><td>Aug 25</td><td>May 29</td><td>172</td></tr>
                 <tr><td>Ankeny Community School District</td><td>12,750</td><td>Aug 25</td><td>May 29</td><td>170</td></tr>
-                <tr><td>Waterloo Comm School District</td><td>10,527</td><td>Aug 25</td><td>May 22</td><td>195</td></tr>
-                <tr><td>Dubuque Comm School District</td><td>10,024</td><td>Aug 15</td><td>May 21</td><td>177</td></tr>
-                <tr><td>West Des Moines Comm School District</td><td>9,120</td><td>Aug 25</td><td>Jun 4</td><td>169</td></tr>
+                <tr><td>Waterloo Comm School District</td><td>10,527</td><td>Aug 25</td><td>May 22</td><td>194</td></tr>
+                <tr><td>Dubuque Comm School District</td><td>10,024</td><td>Aug 15</td><td>May 21</td><td>172</td></tr>
+                <tr><td>West Des Moines Comm School District</td><td>9,120</td><td>Aug 25</td><td>Jun 4</td><td>166</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Iowa</h2>
-        <p>The peak spring break day in Iowa is <strong>March 19, 2026</strong>, when 61 districts (167K students) are on break.</p>
+        <p>The peak spring break day in Iowa is <strong>March 19, 2026</strong>, when 86 districts (223K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Iowa districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>2.7M student-days</td><td>225</td></tr>
-                <tr><td>Spring Break</td><td>1.4M student-days</td><td>202</td></tr>
-                <tr><td>Thanksgiving Break</td><td>548K student-days</td><td>144</td></tr>
-                <tr><td>No School</td><td>381K student-days</td><td>57</td></tr>
-                <tr><td>No School/District Closed</td><td>291K student-days</td><td>12</td></tr>
+                <tr><td>Winter Break</td><td>3.8M student-days</td><td>254</td></tr>
+                <tr><td>Spring Break</td><td>1.7M student-days</td><td>222</td></tr>
+                <tr><td>Thanksgiving Break</td><td>1.3M student-days</td><td>252</td></tr>
+                <tr><td>No School</td><td>395K student-days</td><td>63</td></tr>
+                <tr><td>No School/District Closed</td><td>294K student-days</td><td>13</td></tr>
                 <tr><td>Pd Day (No Classes)</td><td>291K student-days</td><td>7</td></tr>
             </tbody>
         </table>
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

@@ -23,7 +23,7 @@
   "name": "Nevada School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 18 Nevada districts covering 424K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/nevada/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=NV"}],
   "spatialCoverage": "Nevada, United States",
@@ -62,7 +62,7 @@
             <div class="key-dates-grid">
                 <div class="kd-item"><div class="kd-label">Earliest First Day</div><div class="kd-value">August 1, 2025</div></div>
                 <div class="kd-item"><div class="kd-label">Latest Last Day</div><div class="kd-value">June 22, 2026</div></div>
-                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">March 13, 2026</div></div>
+                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">April 2, 2026</div></div>
                 <div class="kd-item"><div class="kd-label">School Year</div><div class="kd-value">2025-2026</div></div>
             </div>
         </div>
@@ -87,33 +87,33 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>Clark County School District</td><td>309,394</td><td>Aug 11</td><td>May 22</td><td>188</td></tr>
-                <tr><td>Washoe County School District</td><td>64,442</td><td>Sep 2</td><td>May 22</td><td>189</td></tr>
-                <tr><td>Elko County School District</td><td>10,161</td><td>Aug 18</td><td>May 29</td><td>183</td></tr>
-                <tr><td>Lyon County School District</td><td>9,085</td><td>Sep 2</td><td>Jun 12</td><td>188</td></tr>
+                <tr><td>Clark County School District</td><td>309,394</td><td>Aug 11</td><td>May 22</td><td>172</td></tr>
+                <tr><td>Washoe County School District</td><td>64,442</td><td>Sep 2</td><td>May 22</td><td>165</td></tr>
+                <tr><td>Elko County School District</td><td>10,161</td><td>Aug 18</td><td>May 29</td><td>179</td></tr>
+                <tr><td>Lyon County School District</td><td>9,085</td><td>Sep 2</td><td>Jun 12</td><td>182</td></tr>
                 <tr><td>Carson City School District</td><td>7,522</td><td>Aug 18</td><td>Jun 4</td><td>159</td></tr>
                 <tr><td>Nye County School District</td><td>5,682</td><td>Aug 6</td><td>May 21</td><td>176</td></tr>
-                <tr><td>Douglas County School District</td><td>5,312</td><td>Aug 1</td><td>Jun 22</td><td>223</td></tr>
+                <tr><td>Douglas County School District</td><td>5,312</td><td>Aug 1</td><td>Jun 22</td><td>219</td></tr>
                 <tr><td>Churchill County School District</td><td>3,342</td><td>Aug 25</td><td>Jun 5</td><td>175</td></tr>
                 <tr><td>Humboldt County School District</td><td>3,311</td><td>Aug 25</td><td>Jun 12</td><td>181</td></tr>
-                <tr><td>White Pine County School District</td><td>1,290</td><td>Sep 4</td><td>May 29</td><td>190</td></tr>
+                <tr><td>White Pine County School District</td><td>1,290</td><td>Sep 4</td><td>May 29</td><td>186</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Nevada</h2>
-        <p>The peak spring break day in Nevada is <strong>March 13, 2026</strong>, when 2 districts (310K students) are on break.</p>
+        <p>The peak spring break day in Nevada is <strong>April 2, 2026</strong>, when 3 districts (320K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Nevada districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
+                <tr><td>Winter Break</td><td>3.8M student-days</td><td>15</td></tr>
+                <tr><td>Spring Break</td><td>2.4M student-days</td><td>16</td></tr>
+                <tr><td>Thanksgiving Break</td><td>1.7M student-days</td><td>17</td></tr>
                 <tr><td>Staff Development Day (No School For Students)</td><td>1.2M student-days</td><td>1</td></tr>
-                <tr><td>Winter Break</td><td>761K student-days</td><td>12</td></tr>
-                <tr><td>No School For Students</td><td>619K student-days</td><td>1</td></tr>
-                <tr><td>Spring Break</td><td>478K student-days</td><td>13</td></tr>
-                <tr><td>Veterans Day (No School)</td><td>309K student-days</td><td>1</td></tr>
-                <tr><td>Thanksgiving Day (No School)</td><td>309K student-days</td><td>1</td></tr>
+                <tr><td>Labor Day</td><td>417K student-days</td><td>15</td></tr>
+                <tr><td>Memorial Day</td><td>409K student-days</td><td>11</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

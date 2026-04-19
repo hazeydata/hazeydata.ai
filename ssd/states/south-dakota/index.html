@@ -23,7 +23,7 @@
   "name": "South Dakota School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 149 South Dakota districts covering 136K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/south-dakota/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=SD"}],
   "spatialCoverage": "South Dakota, United States",
@@ -62,7 +62,7 @@
             <div class="key-dates-grid">
                 <div class="kd-item"><div class="kd-label">Earliest First Day</div><div class="kd-value">August 1, 2025</div></div>
                 <div class="kd-item"><div class="kd-label">Latest Last Day</div><div class="kd-value">June 30, 2026</div></div>
-                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">April 6, 2026</div></div>
+                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">April 3, 2026</div></div>
                 <div class="kd-item"><div class="kd-label">School Year</div><div class="kd-value">2025-2026</div></div>
             </div>
         </div>
@@ -87,31 +87,31 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>Sioux Falls School District 49-5</td><td>25,122</td><td>Aug 21</td><td>May 20</td><td>178</td></tr>
+                <tr><td>Sioux Falls School District 49-5</td><td>25,122</td><td>Aug 21</td><td>May 20</td><td>169</td></tr>
                 <tr><td>Rapid City Area School District 51-4</td><td>12,743</td><td>Sep 22</td><td>May 22</td><td>148</td></tr>
-                <tr><td>Harrisburg School District 41-2</td><td>5,912</td><td>Aug 20</td><td>May 28</td><td>187</td></tr>
-                <tr><td>Brandon Valley School District 49-2</td><td>4,949</td><td>Aug 25</td><td>May 20</td><td>167</td></tr>
+                <tr><td>Harrisburg School District 41-2</td><td>5,912</td><td>Aug 20</td><td>May 28</td><td>182</td></tr>
+                <tr><td>Brandon Valley School District 49-2</td><td>4,949</td><td>Aug 25</td><td>May 20</td><td>164</td></tr>
                 <tr><td>Aberdeen School District 06-1</td><td>4,326</td><td>Aug 27</td><td>Jun 10</td><td>181</td></tr>
-                <tr><td>Watertown School District 14-4</td><td>3,803</td><td>Aug 21</td><td>May 22</td><td>176</td></tr>
-                <tr><td>Brookings School District 05-1</td><td>3,431</td><td>Aug 25</td><td>May 22</td><td>195</td></tr>
-                <tr><td>Meade School District 46-1</td><td>3,068</td><td>Sep 2</td><td>Jun 16</td><td>176</td></tr>
+                <tr><td>Watertown School District 14-4</td><td>3,803</td><td>Aug 21</td><td>May 22</td><td>173</td></tr>
+                <tr><td>Brookings School District 05-1</td><td>3,431</td><td>Aug 25</td><td>May 22</td><td>168</td></tr>
+                <tr><td>Meade School District 46-1</td><td>3,068</td><td>Sep 2</td><td>Jun 16</td><td>174</td></tr>
                 <tr><td>Yankton School District 63-3</td><td>3,036</td><td>N/A</td><td>N/A</td><td>0</td></tr>
-                <tr><td>Huron School District 02-2</td><td>2,917</td><td>Aug 6</td><td>May 28</td><td>184</td></tr>
+                <tr><td>Huron School District 02-2</td><td>2,917</td><td>Aug 6</td><td>May 28</td><td>182</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in South Dakota</h2>
-        <p>The peak spring break day in South Dakota is <strong>April 6, 2026</strong>, when 28 districts (50K students) are on break.</p>
+        <p>The peak spring break day in South Dakota is <strong>April 3, 2026</strong>, when 27 districts (52K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all South Dakota districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>985K student-days</td><td>115</td></tr>
-                <tr><td>Spring Break</td><td>385K student-days</td><td>78</td></tr>
-                <tr><td>Thanksgiving Break</td><td>218K student-days</td><td>81</td></tr>
-                <tr><td>Fall Break</td><td>81K student-days</td><td>19</td></tr>
+                <tr><td>Winter Break</td><td>1.3M student-days</td><td>126</td></tr>
+                <tr><td>Thanksgiving Break</td><td>423K student-days</td><td>118</td></tr>
+                <tr><td>Spring Break</td><td>420K student-days</td><td>84</td></tr>
+                <tr><td>Fall Break</td><td>83K student-days</td><td>21</td></tr>
                 <tr><td>Inservice</td><td>63K student-days</td><td>3</td></tr>
                 <tr><td>Presidents&#x27; Day Break</td><td>50K student-days</td><td>1</td></tr>
             </tbody>
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

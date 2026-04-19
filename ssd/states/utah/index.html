@@ -23,7 +23,7 @@
   "name": "Utah School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 41 Utah districts covering 612K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/utah/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=UT"}],
   "spatialCoverage": "Utah, United States",
@@ -88,15 +88,15 @@
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
                 <tr><td>Alpine School District</td><td>87,136</td><td>Aug 13</td><td>May 22</td><td>173</td></tr>
-                <tr><td>Davis School District</td><td>73,000</td><td>Aug 18</td><td>May 28</td><td>204</td></tr>
+                <tr><td>Davis School District</td><td>73,000</td><td>Aug 20</td><td>May 27</td><td>164</td></tr>
                 <tr><td>Granite School District</td><td>61,197</td><td>Aug 13</td><td>May 29</td><td>188</td></tr>
                 <tr><td>Jordan School District</td><td>59,421</td><td>Sep 3</td><td>May 28</td><td>165</td></tr>
                 <tr><td>Washington County School District</td><td>37,572</td><td>Aug 11</td><td>May 21</td><td>173</td></tr>
                 <tr><td>Nebo School District</td><td>37,044</td><td>Aug 13</td><td>May 21</td><td>176</td></tr>
                 <tr><td>Canyons District</td><td>33,386</td><td>Aug 18</td><td>May 28</td><td>178</td></tr>
-                <tr><td>Weber District</td><td>32,888</td><td>Aug 18</td><td>May 28</td><td>204</td></tr>
-                <tr><td>Tooele District</td><td>24,055</td><td>Aug 18</td><td>Jun 4</td><td>184</td></tr>
-                <tr><td>Cache District</td><td>20,227</td><td>Aug 19</td><td>May 29</td><td>180</td></tr>
+                <tr><td>Weber District</td><td>32,888</td><td>Aug 18</td><td>May 28</td><td>197</td></tr>
+                <tr><td>Tooele District</td><td>24,055</td><td>Aug 18</td><td>Jun 4</td><td>181</td></tr>
+                <tr><td>Cache District</td><td>20,227</td><td>Aug 19</td><td>May 29</td><td>177</td></tr>
             </tbody>
         </table>
 
@@ -108,12 +108,12 @@
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>5.3M student-days</td><td>33</td></tr>
-                <tr><td>Spring Break</td><td>1.7M student-days</td><td>32</td></tr>
-                <tr><td>Thanksgiving Break</td><td>1.1M student-days</td><td>28</td></tr>
-                <tr><td>Fall Break</td><td>948K student-days</td><td>23</td></tr>
+                <tr><td>Winter Break</td><td>6.2M student-days</td><td>35</td></tr>
+                <tr><td>Spring Break</td><td>2.7M student-days</td><td>36</td></tr>
+                <tr><td>Thanksgiving Break</td><td>1.8M student-days</td><td>34</td></tr>
+                <tr><td>Fall Break</td><td>1.3M student-days</td><td>26</td></tr>
+                <tr><td>Labor Day</td><td>389K student-days</td><td>17</td></tr>
                 <tr><td>Teacher/Contrd Emp Work Day</td><td>349K student-days</td><td>1</td></tr>
-                <tr><td>Labor Day</td><td>309K student-days</td><td>14</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

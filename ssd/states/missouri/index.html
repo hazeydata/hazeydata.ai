@@ -23,7 +23,7 @@
   "name": "Missouri School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 518 Missouri districts covering 843K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/missouri/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=MO"}],
   "spatialCoverage": "Missouri, United States",
@@ -87,33 +87,33 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>Springfield Public Schools</td><td>22,937</td><td>Aug 25</td><td>May 21</td><td>181</td></tr>
-                <tr><td>North Kansas City 74</td><td>20,561</td><td>Aug 19</td><td>May 22</td><td>181</td></tr>
-                <tr><td>Rockwood R-Vi</td><td>20,088</td><td>Aug 18</td><td>May 22</td><td>179</td></tr>
-                <tr><td>Columbia 93</td><td>18,769</td><td>Aug 19</td><td>Jun 26</td><td>194</td></tr>
-                <tr><td>St. Louis City</td><td>18,321</td><td>Aug 18</td><td>May 21</td><td>184</td></tr>
-                <tr><td>Wentzville R-Iv</td><td>17,944</td><td>Aug 18</td><td>May 29</td><td>178</td></tr>
-                <tr><td>Lee&#x27;S Summit R-Vii</td><td>17,775</td><td>Aug 20</td><td>May 22</td><td>167</td></tr>
-                <tr><td>Francis Howell R-Iii</td><td>17,124</td><td>Aug 18</td><td>May 22</td><td>169</td></tr>
+                <tr><td>Springfield Public Schools</td><td>22,937</td><td>Aug 25</td><td>May 21</td><td>175</td></tr>
+                <tr><td>North Kansas City 74</td><td>20,561</td><td>Aug 19</td><td>May 22</td><td>172</td></tr>
+                <tr><td>Rockwood R-Vi</td><td>20,088</td><td>Aug 18</td><td>May 22</td><td>170</td></tr>
+                <tr><td>Columbia 93</td><td>18,769</td><td>Aug 19</td><td>Jun 26</td><td>192</td></tr>
+                <tr><td>St. Louis City</td><td>18,321</td><td>Aug 18</td><td>May 21</td><td>174</td></tr>
+                <tr><td>Wentzville R-Iv</td><td>17,944</td><td>Aug 18</td><td>May 29</td><td>176</td></tr>
+                <tr><td>Lee&#x27;S Summit R-Vii</td><td>17,775</td><td>Aug 20</td><td>May 22</td><td>165</td></tr>
+                <tr><td>Francis Howell R-Iii</td><td>17,124</td><td>Aug 18</td><td>May 22</td><td>167</td></tr>
                 <tr><td>Ft. Zumwalt R-Ii</td><td>17,060</td><td>Aug 25</td><td>May 21</td><td>194</td></tr>
-                <tr><td>Parkway C-2</td><td>16,924</td><td>Aug 18</td><td>May 20</td><td>181</td></tr>
+                <tr><td>Parkway C-2</td><td>16,924</td><td>Aug 18</td><td>May 20</td><td>171</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Missouri</h2>
-        <p>The peak spring break day in Missouri is <strong>April 3, 2026</strong>, when 94 districts (238K students) are on break.</p>
+        <p>The peak spring break day in Missouri is <strong>April 3, 2026</strong>, when 108 districts (239K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Missouri districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>4.6M student-days</td><td>382</td></tr>
-                <tr><td>Spring Break</td><td>3.5M student-days</td><td>342</td></tr>
-                <tr><td>Thanksgiving Break</td><td>1.4M student-days</td><td>253</td></tr>
-                <tr><td>Fall Break</td><td>568K student-days</td><td>106</td></tr>
-                <tr><td>No School</td><td>352K student-days</td><td>68</td></tr>
-                <tr><td>District Closed</td><td>195K student-days</td><td>7</td></tr>
+                <tr><td>Winter Break</td><td>6.9M student-days</td><td>418</td></tr>
+                <tr><td>Spring Break</td><td>3.7M student-days</td><td>367</td></tr>
+                <tr><td>Thanksgiving Break</td><td>2.7M student-days</td><td>354</td></tr>
+                <tr><td>Fall Break</td><td>595K student-days</td><td>115</td></tr>
+                <tr><td>No School</td><td>327K student-days</td><td>79</td></tr>
+                <tr><td>Christmas Break</td><td>247K student-days</td><td>24</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

@@ -23,7 +23,7 @@
   "name": "California School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 993 California districts covering 4.7M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/california/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=CA"}],
   "spatialCoverage": "California, United States",
@@ -90,30 +90,30 @@
                 <tr><td>San Diego Unified School District</td><td>93,694</td><td>Aug 1</td><td>May 29</td><td>188</td></tr>
                 <tr><td>Fresno Unified</td><td>68,568</td><td>Aug 18</td><td>Jun 11</td><td>180</td></tr>
                 <tr><td>Los Angeles Unified</td><td>65,500</td><td>Aug 14</td><td>Jun 10</td><td>181</td></tr>
-                <tr><td>Long Beach Unified School District</td><td>65,129</td><td>Sep 3</td><td>Jun 26</td><td>181</td></tr>
+                <tr><td>Long Beach Unified School District</td><td>65,129</td><td>Sep 3</td><td>Jun 26</td><td>179</td></tr>
                 <tr><td>Elk Grove Unified</td><td>62,603</td><td>Aug 1</td><td>Jun 26</td><td>200</td></tr>
                 <tr><td>Corona-Norco Unified</td><td>50,256</td><td>Aug 20</td><td>Jun 10</td><td>183</td></tr>
                 <tr><td>San Bernardino City Unified</td><td>44,712</td><td>Aug 4</td><td>Jun 4</td><td>183</td></tr>
                 <tr><td>Kern High School District</td><td>43,000</td><td>Aug 25</td><td>May 29</td><td>178</td></tr>
                 <tr><td>Clovis Unified School District</td><td>43,000</td><td>Aug 18</td><td>Jun 5</td><td>182</td></tr>
-                <tr><td>Capistrano Unified</td><td>40,836</td><td>Aug 19</td><td>May 29</td><td>188</td></tr>
+                <tr><td>Capistrano Unified</td><td>40,836</td><td>Aug 19</td><td>May 29</td><td>169</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in California</h2>
-        <p>The peak spring break day in California is <strong>April 3, 2026</strong>, when 249 districts (1.7M students) are on break.</p>
+        <p>The peak spring break day in California is <strong>April 3, 2026</strong>, when 327 districts (2.2M students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all California districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>42.5M student-days</td><td>665</td></tr>
-                <tr><td>Spring Break</td><td>21.2M student-days</td><td>651</td></tr>
-                <tr><td>Thanksgiving Break</td><td>10.0M student-days</td><td>492</td></tr>
-                <tr><td>Fall Break</td><td>5.2M student-days</td><td>167</td></tr>
-                <tr><td>Labor Day</td><td>2.5M student-days</td><td>439</td></tr>
-                <tr><td>Memorial Day</td><td>2.3M student-days</td><td>431</td></tr>
+                <tr><td>Winter Break</td><td>52.3M student-days</td><td>764</td></tr>
+                <tr><td>Spring Break</td><td>24.0M student-days</td><td>747</td></tr>
+                <tr><td>Thanksgiving Break</td><td>13.7M student-days</td><td>637</td></tr>
+                <tr><td>Fall Break</td><td>5.5M student-days</td><td>179</td></tr>
+                <tr><td>Labor Day</td><td>2.9M student-days</td><td>513</td></tr>
+                <tr><td>Memorial Day</td><td>2.8M student-days</td><td>510</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

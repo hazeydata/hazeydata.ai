@@ -23,7 +23,7 @@
   "name": "Michigan School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 537 Michigan districts covering 1.2M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/michigan/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=MI"}],
   "spatialCoverage": "Michigan, United States",
@@ -87,33 +87,33 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>Detroit Public Schools Community District</td><td>48,251</td><td>Aug 25</td><td>Jun 9</td><td>203</td></tr>
-                <tr><td>Utica Community Schools</td><td>25,628</td><td>Aug 19</td><td>Jun 3</td><td>184</td></tr>
+                <tr><td>Detroit Public Schools Community District</td><td>48,251</td><td>Aug 25</td><td>Jun 5</td><td>165</td></tr>
+                <tr><td>Utica Community Schools</td><td>25,628</td><td>Aug 19</td><td>Jun 3</td><td>177</td></tr>
                 <tr><td>Dearborn City School District</td><td>19,874</td><td>Aug 26</td><td>Jul 31</td><td>227</td></tr>
-                <tr><td>Ann Arbor Public Schools</td><td>16,978</td><td>Aug 25</td><td>Jun 9</td><td>191</td></tr>
-                <tr><td>Plymouth-Canton Community Schools</td><td>16,228</td><td>Aug 20</td><td>Jun 10</td><td>187</td></tr>
-                <tr><td>Chippewa Valley Schools</td><td>14,903</td><td>Sep 2</td><td>Jun 11</td><td>183</td></tr>
-                <tr><td>Rochester Community School District</td><td>14,723</td><td>Aug 27</td><td>May 28</td><td>197</td></tr>
-                <tr><td>Grand Rapids Public Schools</td><td>13,657</td><td>Sep 2</td><td>Jun 3</td><td>171</td></tr>
-                <tr><td>Livonia Public Schools School District</td><td>13,045</td><td>Aug 25</td><td>Jun 4</td><td>181</td></tr>
-                <tr><td>Warren Consolidated Schools</td><td>12,685</td><td>Aug 20</td><td>Jun 9</td><td>210</td></tr>
+                <tr><td>Ann Arbor Public Schools</td><td>16,978</td><td>Aug 25</td><td>Jun 9</td><td>175</td></tr>
+                <tr><td>Plymouth-Canton Community Schools</td><td>16,228</td><td>Aug 20</td><td>Jun 10</td><td>179</td></tr>
+                <tr><td>Chippewa Valley Schools</td><td>14,903</td><td>Sep 2</td><td>Jun 11</td><td>170</td></tr>
+                <tr><td>Rochester Community School District</td><td>14,723</td><td>Aug 27</td><td>May 28</td><td>190</td></tr>
+                <tr><td>Grand Rapids Public Schools</td><td>13,657</td><td>Sep 2</td><td>Jun 3</td><td>168</td></tr>
+                <tr><td>Livonia Public Schools School District</td><td>13,045</td><td>Aug 25</td><td>Jun 4</td><td>179</td></tr>
+                <tr><td>Warren Consolidated Schools</td><td>12,685</td><td>Aug 20</td><td>Jun 9</td><td>183</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Michigan</h2>
-        <p>The peak spring break day in Michigan is <strong>April 3, 2026</strong>, when 185 districts (467K students) are on break.</p>
+        <p>The peak spring break day in Michigan is <strong>April 3, 2026</strong>, when 255 districts (636K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Michigan districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>6.2M student-days</td><td>360</td></tr>
-                <tr><td>Spring Break</td><td>4.2M student-days</td><td>354</td></tr>
-                <tr><td>Thanksgiving Break</td><td>1.7M student-days</td><td>275</td></tr>
-                <tr><td>Fall Break</td><td>554K student-days</td><td>86</td></tr>
-                <tr><td>No School</td><td>553K student-days</td><td>78</td></tr>
-                <tr><td>Winter</td><td>298K student-days</td><td>25</td></tr>
+                <tr><td>Winter Break</td><td>8.8M student-days</td><td>386</td></tr>
+                <tr><td>Spring Break</td><td>5.3M student-days</td><td>411</td></tr>
+                <tr><td>Thanksgiving Break</td><td>3.6M student-days</td><td>368</td></tr>
+                <tr><td>No School</td><td>598K student-days</td><td>94</td></tr>
+                <tr><td>Fall Break</td><td>549K student-days</td><td>93</td></tr>
+                <tr><td>Mid-Winter Break</td><td>458K student-days</td><td>23</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

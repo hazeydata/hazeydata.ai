@@ -23,7 +23,7 @@
   "name": "Florida School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 67 Florida districts covering 2.4M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/florida/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=FL"}],
   "spatialCoverage": "Florida, United States",
@@ -62,7 +62,7 @@
             <div class="key-dates-grid">
                 <div class="kd-item"><div class="kd-label">Earliest First Day</div><div class="kd-value">August 1, 2025</div></div>
                 <div class="kd-item"><div class="kd-label">Latest Last Day</div><div class="kd-value">June 25, 2026</div></div>
-                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">March 18, 2026</div></div>
+                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">March 20, 2026</div></div>
                 <div class="kd-item"><div class="kd-label">School Year</div><div class="kd-value">2025-2026</div></div>
             </div>
         </div>
@@ -89,31 +89,31 @@
             <tbody>
                 <tr><td>Hillsborough County Public Schools</td><td>224,504</td><td>Aug 1</td><td>May 29</td><td>188</td></tr>
                 <tr><td>Orange</td><td>206,815</td><td>Aug 11</td><td>May 27</td><td>180</td></tr>
-                <tr><td>Broward</td><td>129,000</td><td>Aug 11</td><td>May 21</td><td>201</td></tr>
+                <tr><td>Broward</td><td>129,000</td><td>Aug 11</td><td>May 21</td><td>173</td></tr>
                 <tr><td>Duval</td><td>127,971</td><td>Aug 11</td><td>May 28</td><td>185</td></tr>
-                <tr><td>Polk</td><td>111,041</td><td>Aug 11</td><td>May 22</td><td>182</td></tr>
+                <tr><td>Polk</td><td>111,041</td><td>Aug 11</td><td>May 22</td><td>161</td></tr>
                 <tr><td>Lee County</td><td>99,354</td><td>Aug 11</td><td>May 22</td><td>176</td></tr>
-                <tr><td>Pinellas</td><td>91,021</td><td>Aug 11</td><td>May 22</td><td>205</td></tr>
+                <tr><td>Pinellas</td><td>91,021</td><td>Aug 11</td><td>May 22</td><td>177</td></tr>
                 <tr><td>Pasco</td><td>85,855</td><td>Aug 26</td><td>Jun 11</td><td>176</td></tr>
-                <tr><td>Palm Beach</td><td>75,000</td><td>Aug 11</td><td>May 22</td><td>175</td></tr>
+                <tr><td>Palm Beach</td><td>75,000</td><td>Aug 11</td><td>May 22</td><td>166</td></tr>
                 <tr><td>Miami-Dade</td><td>74,300</td><td>Aug 14</td><td>Jun 4</td><td>180</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Florida</h2>
-        <p>The peak spring break day in Florida is <strong>March 18, 2026</strong>, when 22 districts (999K students) are on break.</p>
+        <p>The peak spring break day in Florida is <strong>March 20, 2026</strong>, when 31 districts (1.5M students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Florida districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>15.0M student-days</td><td>45</td></tr>
-                <tr><td>Spring Break</td><td>7.5M student-days</td><td>45</td></tr>
+                <tr><td>Winter Break</td><td>18.3M student-days</td><td>50</td></tr>
+                <tr><td>Spring Break</td><td>9.8M student-days</td><td>52</td></tr>
+                <tr><td>Thanksgiving Break</td><td>5.5M student-days</td><td>36</td></tr>
                 <tr><td>Weekend</td><td>5.2M student-days</td><td>1</td></tr>
-                <tr><td>Thanksgiving Break</td><td>3.7M student-days</td><td>29</td></tr>
+                <tr><td>Christmas Break</td><td>1.8M student-days</td><td>3</td></tr>
                 <tr><td>Schools/Admin Offices Closed</td><td>1.8M student-days</td><td>1</td></tr>
-                <tr><td>Employee Planning/Inservice (No School For Students)</td><td>1.7M student-days</td><td>1</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

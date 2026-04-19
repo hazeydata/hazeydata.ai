@@ -23,7 +23,7 @@
   "name": "Oregon School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 177 Oregon districts covering 533K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/oregon/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=OR"}],
   "spatialCoverage": "Oregon, United States",
@@ -88,31 +88,31 @@
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
                 <tr><td>Portland Public Schools</td><td>43,049</td><td>Aug 26</td><td>Jun 9</td><td>196</td></tr>
-                <tr><td>Salem-Keizer SD 24J</td><td>39,000</td><td>Sep 2</td><td>Jun 11</td><td>203</td></tr>
+                <tr><td>Salem-Keizer SD 24J</td><td>39,000</td><td>Sep 2</td><td>Jun 11</td><td>201</td></tr>
                 <tr><td>Beaverton SD 48J</td><td>38,049</td><td>Aug 26</td><td>Jun 11</td><td>183</td></tr>
-                <tr><td>Hillsboro SD 1J</td><td>18,576</td><td>Aug 18</td><td>May 22</td><td>182</td></tr>
-                <tr><td>Bend-LaPine Administrative SD 1</td><td>17,007</td><td>Sep 2</td><td>May 27</td><td>192</td></tr>
-                <tr><td>Eugene SD 4J</td><td>16,417</td><td>Sep 2</td><td>May 27</td><td>192</td></tr>
-                <tr><td>North Clackamas SD 12</td><td>16,378</td><td>Sep 2</td><td>May 27</td><td>185</td></tr>
-                <tr><td>Medford SD 549C</td><td>13,812</td><td>Sep 2</td><td>Jun 26</td><td>187</td></tr>
+                <tr><td>Hillsboro SD 1J</td><td>18,576</td><td>Aug 18</td><td>May 22</td><td>170</td></tr>
+                <tr><td>Bend-LaPine Administrative SD 1</td><td>17,007</td><td>Sep 2</td><td>May 27</td><td>168</td></tr>
+                <tr><td>Eugene SD 4J</td><td>16,417</td><td>Sep 3</td><td>May 27</td><td>165</td></tr>
+                <tr><td>North Clackamas SD 12</td><td>16,378</td><td>Sep 2</td><td>May 27</td><td>157</td></tr>
+                <tr><td>Medford SD 549C</td><td>13,812</td><td>Sep 2</td><td>Jun 26</td><td>185</td></tr>
                 <tr><td>Tigard-Tualatin School District 23J</td><td>11,558</td><td>Sep 2</td><td>Jun 11</td><td>174</td></tr>
-                <tr><td>Gresham-Barlow SD 10J</td><td>11,335</td><td>Sep 2</td><td>Jun 11</td><td>174</td></tr>
+                <tr><td>Gresham-Barlow SD 10J</td><td>11,335</td><td>Sep 2</td><td>Jun 11</td><td>173</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Oregon</h2>
-        <p>The peak spring break day in Oregon is <strong>March 23, 2026</strong>, when 47 districts (124K students) are on break.</p>
+        <p>The peak spring break day in Oregon is <strong>March 23, 2026</strong>, when 65 districts (214K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Oregon districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>2.5M student-days</td><td>129</td></tr>
-                <tr><td>Spring Break</td><td>1.5M student-days</td><td>126</td></tr>
+                <tr><td>Winter Break</td><td>3.8M student-days</td><td>149</td></tr>
+                <tr><td>Spring Break</td><td>2.0M student-days</td><td>142</td></tr>
+                <tr><td>Thanksgiving Break</td><td>1.1M student-days</td><td>117</td></tr>
                 <tr><td>Non-Work/Non-Paid Day</td><td>685K student-days</td><td>1</td></tr>
-                <tr><td>Thanksgiving Break</td><td>531K student-days</td><td>72</td></tr>
-                <tr><td>Paid Holiday</td><td>512K student-days</td><td>2</td></tr>
+                <tr><td>Paid Holiday</td><td>397K student-days</td><td>2</td></tr>
                 <tr><td>Grading Day</td><td>227K student-days</td><td>7</td></tr>
             </tbody>
         </table>
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

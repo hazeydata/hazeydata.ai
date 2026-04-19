@@ -23,7 +23,7 @@
   "name": "Hawaii School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 1 Hawaii districts covering 0 students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/hawaii/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=HI"}],
   "spatialCoverage": "Hawaii, United States",
@@ -87,7 +87,7 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>Hawaii Department of Education</td><td>0</td><td>Aug 1</td><td>May 29</td><td>185</td></tr>
+                <tr><td>Hawaii Department of Education</td><td>0</td><td>Aug 1</td><td>May 29</td><td>182</td></tr>
             </tbody>
         </table>
 
@@ -223,7 +223,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

@@ -23,7 +23,7 @@
   "name": "New Mexico School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 89 New Mexico districts covering 290K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/new-mexico/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=NM"}],
   "spatialCoverage": "New Mexico, United States",
@@ -62,7 +62,7 @@
             <div class="key-dates-grid">
                 <div class="kd-item"><div class="kd-label">Earliest First Day</div><div class="kd-value">August 1, 2025</div></div>
                 <div class="kd-item"><div class="kd-label">Latest Last Day</div><div class="kd-value">June 26, 2026</div></div>
-                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">April 6, 2026</div></div>
+                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">April 7, 2026</div></div>
                 <div class="kd-item"><div class="kd-label">School Year</div><div class="kd-value">2025-2026</div></div>
             </div>
         </div>
@@ -88,30 +88,30 @@
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
                 <tr><td>Albuquerque Public Schools</td><td>76,756</td><td>Aug 18</td><td>May 29</td><td>177</td></tr>
-                <tr><td>Las Cruces Public Schools</td><td>23,075</td><td>Aug 14</td><td>May 29</td><td>135</td></tr>
+                <tr><td>Las Cruces Public Schools</td><td>23,075</td><td>Aug 14</td><td>May 29</td><td>126</td></tr>
                 <tr><td>Rio Rancho Public Schools</td><td>16,725</td><td>Aug 4</td><td>May 28</td><td>181</td></tr>
                 <tr><td>Gadsden Independent Schools</td><td>12,551</td><td>Aug 1</td><td>May 21</td><td>177</td></tr>
-                <tr><td>Gallup-Mckinley Cty Schools</td><td>11,709</td><td>Aug 18</td><td>May 22</td><td>200</td></tr>
-                <tr><td>Santa Fe Public Schools</td><td>11,490</td><td>Aug 8</td><td>May 21</td><td>180</td></tr>
-                <tr><td>Farmington Municipal Schools</td><td>11,201</td><td>Sep 2</td><td>Jun 18</td><td>180</td></tr>
+                <tr><td>Gallup-Mckinley Cty Schools</td><td>11,709</td><td>Aug 18</td><td>May 22</td><td>199</td></tr>
+                <tr><td>Santa Fe Public Schools</td><td>11,490</td><td>Aug 8</td><td>May 21</td><td>172</td></tr>
+                <tr><td>Farmington Municipal Schools</td><td>11,201</td><td>Sep 2</td><td>Jun 18</td><td>176</td></tr>
                 <tr><td>Hobbs Municipal Schools</td><td>10,226</td><td>Aug 6</td><td>May 29</td><td>184</td></tr>
-                <tr><td>Roswell Independent Schools</td><td>9,701</td><td>Aug 4</td><td>May 27</td><td>194</td></tr>
-                <tr><td>Los Lunas Public Schools</td><td>8,242</td><td>Aug 1</td><td>May 21</td><td>181</td></tr>
+                <tr><td>Roswell Independent Schools</td><td>9,701</td><td>Aug 4</td><td>May 27</td><td>191</td></tr>
+                <tr><td>Los Lunas Public Schools</td><td>8,242</td><td>Aug 1</td><td>May 21</td><td>179</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in New Mexico</h2>
-        <p>The peak spring break day in New Mexico is <strong>April 6, 2026</strong>, when 27 districts (101K students) are on break.</p>
+        <p>The peak spring break day in New Mexico is <strong>April 7, 2026</strong>, when 25 districts (102K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all New Mexico districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>2.0M student-days</td><td>54</td></tr>
-                <tr><td>Fall Break</td><td>1.8M student-days</td><td>16</td></tr>
-                <tr><td>Spring Break</td><td>1.2M student-days</td><td>60</td></tr>
-                <tr><td>Thanksgiving Break</td><td>439K student-days</td><td>32</td></tr>
+                <tr><td>Winter Break</td><td>2.6M student-days</td><td>62</td></tr>
+                <tr><td>Fall Break</td><td>1.8M student-days</td><td>18</td></tr>
+                <tr><td>Spring Break</td><td>1.2M student-days</td><td>66</td></tr>
+                <tr><td>Thanksgiving Break</td><td>651K student-days</td><td>50</td></tr>
                 <tr><td>Teacher Workday/Professional Development Day</td><td>418K student-days</td><td>14</td></tr>
                 <tr><td>Flex Teacher Workday</td><td>251K student-days</td><td>13</td></tr>
             </tbody>
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

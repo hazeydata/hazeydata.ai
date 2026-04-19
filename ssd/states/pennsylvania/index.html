@@ -23,7 +23,7 @@
   "name": "Pennsylvania School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 498 Pennsylvania districts covering 1.3M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/pennsylvania/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=PA"}],
   "spatialCoverage": "Pennsylvania, United States",
@@ -87,33 +87,33 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>Pittsburgh SD</td><td>19,719</td><td>Aug 25</td><td>Jun 12</td><td>210</td></tr>
-                <tr><td>Central Bucks SD</td><td>17,482</td><td>Aug 25</td><td>May 28</td><td>199</td></tr>
-                <tr><td>Reading SD</td><td>17,185</td><td>Aug 27</td><td>Jun 23</td><td>185</td></tr>
+                <tr><td>Pittsburgh SD</td><td>19,719</td><td>Aug 25</td><td>Jun 12</td><td>175</td></tr>
+                <tr><td>Central Bucks SD</td><td>17,482</td><td>Aug 25</td><td>May 28</td><td>174</td></tr>
+                <tr><td>Reading SD</td><td>17,185</td><td>Aug 27</td><td>Jun 23</td><td>182</td></tr>
                 <tr><td>Allentown City SD</td><td>15,928</td><td>Aug 25</td><td>Jun 10</td><td>182</td></tr>
-                <tr><td>Downingtown Area SD</td><td>13,201</td><td>Aug 25</td><td>Jun 5</td><td>178</td></tr>
-                <tr><td>Bethlehem Area SD</td><td>12,939</td><td>Aug 25</td><td>Jun 8</td><td>182</td></tr>
-                <tr><td>North Penn SD</td><td>12,859</td><td>Aug 27</td><td>Jun 12</td><td>179</td></tr>
-                <tr><td>Upper Darby SD</td><td>12,427</td><td>Aug 25</td><td>Jun 10</td><td>185</td></tr>
-                <tr><td>Central Dauphin SD</td><td>12,393</td><td>Sep 2</td><td>Jun 9</td><td>177</td></tr>
-                <tr><td>Hazleton Area SD</td><td>12,187</td><td>Sep 2</td><td>Jun 5</td><td>182</td></tr>
+                <tr><td>Downingtown Area SD</td><td>13,201</td><td>Aug 25</td><td>Jun 5</td><td>176</td></tr>
+                <tr><td>Bethlehem Area SD</td><td>12,939</td><td>Aug 25</td><td>Jun 8</td><td>180</td></tr>
+                <tr><td>North Penn SD</td><td>12,859</td><td>Aug 27</td><td>Jun 12</td><td>178</td></tr>
+                <tr><td>Upper Darby SD</td><td>12,427</td><td>Aug 25</td><td>Jun 10</td><td>183</td></tr>
+                <tr><td>Central Dauphin SD</td><td>12,393</td><td>Sep 2</td><td>Jun 9</td><td>173</td></tr>
+                <tr><td>Hazleton Area SD</td><td>12,187</td><td>Sep 2</td><td>Jun 5</td><td>166</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Pennsylvania</h2>
-        <p>The peak spring break day in Pennsylvania is <strong>April 3, 2026</strong>, when 242 districts (672K students) are on break.</p>
+        <p>The peak spring break day in Pennsylvania is <strong>April 3, 2026</strong>, when 254 districts (728K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Pennsylvania districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>6.9M student-days</td><td>381</td></tr>
-                <tr><td>Spring Break</td><td>2.8M student-days</td><td>287</td></tr>
+                <tr><td>Winter Break</td><td>10.8M student-days</td><td>436</td></tr>
+                <tr><td>Thanksgiving Break</td><td>3.9M student-days</td><td>388</td></tr>
+                <tr><td>Spring Break</td><td>3.5M student-days</td><td>316</td></tr>
                 <tr><td>weekend</td><td>1.6M student-days</td><td>2</td></tr>
-                <tr><td>Thanksgiving Break</td><td>1.5M student-days</td><td>198</td></tr>
                 <tr><td>Summer Break</td><td>1.0M student-days</td><td>2</td></tr>
-                <tr><td>No School</td><td>849K student-days</td><td>47</td></tr>
+                <tr><td>No School</td><td>837K student-days</td><td>50</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

@@ -23,7 +23,7 @@
   "name": "Kentucky School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 172 Kentucky districts covering 653K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/kentucky/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=KY"}],
   "spatialCoverage": "Kentucky, United States",
@@ -89,31 +89,31 @@
             <tbody>
                 <tr><td>Jefferson County</td><td>94,793</td><td>Aug 18</td><td>May 21</td><td>167</td></tr>
                 <tr><td>Fayette County</td><td>41,697</td><td>Aug 4</td><td>May 22</td><td>180</td></tr>
-                <tr><td>Boone County</td><td>20,200</td><td>Aug 13</td><td>May 21</td><td>179</td></tr>
-                <tr><td>Warren County</td><td>18,164</td><td>Aug 18</td><td>May 21</td><td>196</td></tr>
-                <tr><td>Hardin County</td><td>14,714</td><td>Aug 7</td><td>May 21</td><td>173</td></tr>
-                <tr><td>Kenton County</td><td>13,945</td><td>Aug 7</td><td>May 22</td><td>181</td></tr>
+                <tr><td>Boone County</td><td>20,200</td><td>Aug 13</td><td>May 21</td><td>170</td></tr>
+                <tr><td>Warren County</td><td>18,164</td><td>Aug 18</td><td>May 21</td><td>162</td></tr>
+                <tr><td>Hardin County</td><td>14,714</td><td>Aug 7</td><td>May 21</td><td>171</td></tr>
+                <tr><td>Kenton County</td><td>13,945</td><td>Aug 7</td><td>May 22</td><td>172</td></tr>
                 <tr><td>Bullitt County</td><td>12,954</td><td>Aug 12</td><td>May 22</td><td>171</td></tr>
-                <tr><td>Oldham County</td><td>12,135</td><td>Aug 13</td><td>May 22</td><td>177</td></tr>
-                <tr><td>Madison County</td><td>11,198</td><td>Aug 13</td><td>May 19</td><td>170</td></tr>
-                <tr><td>Daviess County</td><td>11,005</td><td>Aug 13</td><td>May 21</td><td>176</td></tr>
+                <tr><td>Oldham County</td><td>12,135</td><td>Aug 13</td><td>May 22</td><td>174</td></tr>
+                <tr><td>Madison County</td><td>11,198</td><td>Aug 13</td><td>May 19</td><td>168</td></tr>
+                <tr><td>Daviess County</td><td>11,005</td><td>Aug 13</td><td>May 21</td><td>174</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Kentucky</h2>
-        <p>The peak spring break day in Kentucky is <strong>April 6, 2026</strong>, when 62 districts (364K students) are on break.</p>
+        <p>The peak spring break day in Kentucky is <strong>April 6, 2026</strong>, when 73 districts (413K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Kentucky districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>4.7M student-days</td><td>121</td></tr>
-                <tr><td>Spring Break</td><td>2.6M student-days</td><td>125</td></tr>
-                <tr><td>Fall Break</td><td>1.3M student-days</td><td>81</td></tr>
-                <tr><td>Thanksgiving Break</td><td>1.2M student-days</td><td>82</td></tr>
+                <tr><td>Winter Break</td><td>5.9M student-days</td><td>134</td></tr>
+                <tr><td>Spring Break</td><td>3.0M student-days</td><td>140</td></tr>
+                <tr><td>Thanksgiving Break</td><td>2.1M student-days</td><td>130</td></tr>
+                <tr><td>Fall Break</td><td>1.7M student-days</td><td>97</td></tr>
                 <tr><td>Semester Break</td><td>502K student-days</td><td>2</td></tr>
-                <tr><td>Holiday</td><td>297K student-days</td><td>9</td></tr>
+                <tr><td>Labor Day</td><td>332K student-days</td><td>59</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

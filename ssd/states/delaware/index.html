@@ -23,7 +23,7 @@
   "name": "Delaware School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 19 Delaware districts covering 123K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/delaware/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=DE"}],
   "spatialCoverage": "Delaware, United States",
@@ -88,20 +88,20 @@
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
                 <tr><td>Red Clay Consolidated School District</td><td>14,771</td><td>Aug 25</td><td>Jun 10</td><td>182</td></tr>
-                <tr><td>Christina School District</td><td>13,092</td><td>Sep 4</td><td>Jun 25</td><td>181</td></tr>
-                <tr><td>Appoquinimink School District</td><td>12,804</td><td>Sep 3</td><td>Jun 4</td><td>197</td></tr>
-                <tr><td>Indian River School District</td><td>10,799</td><td>Sep 3</td><td>Jun 4</td><td>196</td></tr>
-                <tr><td>Brandywine School District</td><td>10,350</td><td>Sep 3</td><td>Jun 4</td><td>195</td></tr>
+                <tr><td>Christina School District</td><td>13,092</td><td>Sep 4</td><td>Jun 25</td><td>177</td></tr>
+                <tr><td>Appoquinimink School District</td><td>12,804</td><td>Sep 3</td><td>Jun 4</td><td>195</td></tr>
+                <tr><td>Indian River School District</td><td>10,799</td><td>Sep 3</td><td>Jun 4</td><td>189</td></tr>
+                <tr><td>Brandywine School District</td><td>10,350</td><td>Sep 3</td><td>Jun 4</td><td>188</td></tr>
                 <tr><td>Colonial School District</td><td>8,778</td><td>Aug 25</td><td>Jun 5</td><td>168</td></tr>
-                <tr><td>Caesar Rodney School District</td><td>8,286</td><td>Sep 2</td><td>Jun 10</td><td>180</td></tr>
-                <tr><td>Capital School District</td><td>6,396</td><td>Sep 3</td><td>Jun 4</td><td>196</td></tr>
+                <tr><td>Caesar Rodney School District</td><td>8,286</td><td>Sep 2</td><td>Jun 10</td><td>178</td></tr>
+                <tr><td>Capital School District</td><td>6,396</td><td>Sep 3</td><td>Jun 4</td><td>189</td></tr>
                 <tr><td>Cape Henlopen School District</td><td>6,336</td><td>Sep 3</td><td>Jun 11</td><td>172</td></tr>
-                <tr><td>Smyrna School District</td><td>6,067</td><td>Sep 2</td><td>May 29</td><td>190</td></tr>
+                <tr><td>Smyrna School District</td><td>6,067</td><td>Sep 2</td><td>May 29</td><td>187</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Delaware</h2>
-        <p>The peak spring break day in Delaware is <strong>April 10, 2026</strong>, when 7 districts (50K students) are on break.</p>
+        <p>The peak spring break day in Delaware is <strong>April 10, 2026</strong>, when 9 districts (66K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Delaware districts (excludes weekends and summer):</p>
@@ -110,9 +110,9 @@
             <tbody>
                 <tr><td>weekend</td><td>1.2M student-days</td><td>1</td></tr>
                 <tr><td>Summer Break</td><td>812K student-days</td><td>1</td></tr>
-                <tr><td>Winter Break</td><td>450K student-days</td><td>10</td></tr>
-                <tr><td>Spring Break</td><td>289K student-days</td><td>11</td></tr>
-                <tr><td>Thanksgiving Break</td><td>158K student-days</td><td>9</td></tr>
+                <tr><td>Winter Break</td><td>485K student-days</td><td>10</td></tr>
+                <tr><td>Spring Break</td><td>373K student-days</td><td>13</td></tr>
+                <tr><td>Thanksgiving Break</td><td>264K student-days</td><td>13</td></tr>
                 <tr><td>Schools Closed</td><td>114K student-days</td><td>2</td></tr>
             </tbody>
         </table>
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

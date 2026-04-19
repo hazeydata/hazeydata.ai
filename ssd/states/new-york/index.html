@@ -23,7 +23,7 @@
   "name": "New York School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 721 New York districts covering 2.2M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/new-york/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=NY"}],
   "spatialCoverage": "New York, United States",
@@ -95,25 +95,25 @@
                 <tr><td>NYC Geographic District #27 (Queens)</td><td>38,000</td><td>Sep 5</td><td>Jun 10</td><td>168</td></tr>
                 <tr><td>NYC Geographic District #30 (Queens)</td><td>35,000</td><td>Sep 8</td><td>Jun 12</td><td>169</td></tr>
                 <tr><td>NYC Geographic District #28 (Queens)</td><td>35,000</td><td>Sep 5</td><td>Jun 10</td><td>168</td></tr>
-                <tr><td>New York City Geographic District #21</td><td>34,525</td><td>Sep 5</td><td>Jun 19</td><td>169</td></tr>
+                <tr><td>New York City Geographic District #21</td><td>34,525</td><td>Sep 5</td><td>Jun 19</td><td>167</td></tr>
                 <tr><td>NYC Geographic District #25 (Queens)</td><td>33,000</td><td>Sep 5</td><td>Jun 10</td><td>169</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in New York</h2>
-        <p>The peak spring break day in New York is <strong>April 6, 2026</strong>, when 271 districts (1.2M students) are on break.</p>
+        <p>The peak spring break day in New York is <strong>April 6, 2026</strong>, when 343 districts (1.4M students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all New York districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>12.7M student-days</td><td>511</td></tr>
-                <tr><td>Spring Break</td><td>11.2M student-days</td><td>457</td></tr>
+                <tr><td>Winter Break</td><td>16.8M student-days</td><td>530</td></tr>
+                <tr><td>Spring Break</td><td>11.2M student-days</td><td>474</td></tr>
+                <tr><td>Thanksgiving Break</td><td>5.5M student-days</td><td>480</td></tr>
                 <tr><td>Staff Pls</td><td>3.3M student-days</td><td>17</td></tr>
-                <tr><td>Thanksgiving Break</td><td>3.2M student-days</td><td>433</td></tr>
-                <tr><td>Memorial Day</td><td>1.0M student-days</td><td>283</td></tr>
-                <tr><td>Presidents Recess (Inclusive Of Lincoln&#x27;S &amp; Washington&#x27;S Birthday)</td><td>811K student-days</td><td>10</td></tr>
+                <tr><td>Spring Recess</td><td>2.7M student-days</td><td>111</td></tr>
+                <tr><td>Winter Recess</td><td>2.4M student-days</td><td>77</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

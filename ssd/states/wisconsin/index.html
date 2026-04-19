@@ -23,7 +23,7 @@
   "name": "Wisconsin School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 419 Wisconsin districts covering 785K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/wisconsin/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=WI"}],
   "spatialCoverage": "Wisconsin, United States",
@@ -87,33 +87,33 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>Milwaukee School District</td><td>67,500</td><td>Sep 2</td><td>Jun 15</td><td>186</td></tr>
-                <tr><td>Madison Metropolitan School District</td><td>25,247</td><td>Sep 2</td><td>Jun 16</td><td>181</td></tr>
-                <tr><td>Kenosha School District</td><td>19,069</td><td>Aug 27</td><td>May 22</td><td>166</td></tr>
-                <tr><td>Green Bay Area Public School District</td><td>18,579</td><td>Sep 2</td><td>Jun 5</td><td>177</td></tr>
-                <tr><td>Racine Unified School District</td><td>16,182</td><td>Sep 2</td><td>May 29</td><td>194</td></tr>
-                <tr><td>Appleton Area School District</td><td>15,230</td><td>Sep 2</td><td>Jun 5</td><td>170</td></tr>
-                <tr><td>Waukesha School District</td><td>11,855</td><td>Sep 2</td><td>Jun 11</td><td>170</td></tr>
-                <tr><td>Eau Claire Area School District</td><td>10,871</td><td>Sep 2</td><td>Jun 4</td><td>170</td></tr>
-                <tr><td>Janesville School District</td><td>9,537</td><td>Aug 29</td><td>Jun 10</td><td>185</td></tr>
-                <tr><td>Sheboygan Area School District</td><td>9,427</td><td>Sep 2</td><td>Jun 4</td><td>165</td></tr>
+                <tr><td>Milwaukee School District</td><td>67,500</td><td>Sep 2</td><td>Jun 15</td><td>180</td></tr>
+                <tr><td>Madison Metropolitan School District</td><td>25,247</td><td>Sep 2</td><td>Jun 16</td><td>178</td></tr>
+                <tr><td>Kenosha School District</td><td>19,069</td><td>Aug 27</td><td>May 22</td><td>162</td></tr>
+                <tr><td>Green Bay Area Public School District</td><td>18,579</td><td>Sep 2</td><td>Jun 5</td><td>173</td></tr>
+                <tr><td>Racine Unified School District</td><td>16,182</td><td>Sep 2</td><td>May 29</td><td>187</td></tr>
+                <tr><td>Appleton Area School District</td><td>15,230</td><td>Sep 2</td><td>Jun 5</td><td>166</td></tr>
+                <tr><td>Waukesha School District</td><td>11,855</td><td>Sep 2</td><td>Jun 11</td><td>166</td></tr>
+                <tr><td>Eau Claire Area School District</td><td>10,871</td><td>Sep 2</td><td>Jun 4</td><td>168</td></tr>
+                <tr><td>Janesville School District</td><td>9,537</td><td>Aug 29</td><td>Jun 10</td><td>172</td></tr>
+                <tr><td>Sheboygan Area School District</td><td>9,427</td><td>Sep 2</td><td>Jun 4</td><td>163</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Wisconsin</h2>
-        <p>The peak spring break day in Wisconsin is <strong>April 3, 2026</strong>, when 121 districts (311K students) are on break.</p>
+        <p>The peak spring break day in Wisconsin is <strong>April 3, 2026</strong>, when 135 districts (368K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Wisconsin districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>4.9M student-days</td><td>289</td></tr>
-                <tr><td>Spring Break</td><td>2.6M student-days</td><td>268</td></tr>
-                <tr><td>Thanksgiving Break</td><td>988K student-days</td><td>224</td></tr>
-                <tr><td>No School</td><td>773K student-days</td><td>98</td></tr>
-                <tr><td>Professional Development Day</td><td>402K student-days</td><td>14</td></tr>
-                <tr><td>Professional Development</td><td>269K student-days</td><td>16</td></tr>
+                <tr><td>Winter Break</td><td>6.7M student-days</td><td>321</td></tr>
+                <tr><td>Spring Break</td><td>2.9M student-days</td><td>287</td></tr>
+                <tr><td>Thanksgiving Break</td><td>2.3M student-days</td><td>303</td></tr>
+                <tr><td>No School</td><td>805K student-days</td><td>110</td></tr>
+                <tr><td>Professional Development Day</td><td>450K student-days</td><td>23</td></tr>
+                <tr><td>Professional Development</td><td>270K student-days</td><td>17</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

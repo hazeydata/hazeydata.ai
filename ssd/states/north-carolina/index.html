@@ -23,7 +23,7 @@
   "name": "North Carolina School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 117 North Carolina districts covering 1.4M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/north-carolina/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=NC"}],
   "spatialCoverage": "North Carolina, United States",
@@ -91,7 +91,7 @@
                 <tr><td>Charlotte-Mecklenburg Schools</td><td>144,116</td><td>Aug 25</td><td>May 22</td><td>165</td></tr>
                 <tr><td>Guilford County Schools</td><td>67,832</td><td>Aug 25</td><td>Jun 10</td><td>187</td></tr>
                 <tr><td>Winston Salem / Forsyth County Schools</td><td>52,157</td><td>Aug 5</td><td>May 22</td><td>188</td></tr>
-                <tr><td>Cumberland County Schools</td><td>49,661</td><td>Aug 25</td><td>May 22</td><td>195</td></tr>
+                <tr><td>Cumberland County Schools</td><td>49,661</td><td>Aug 25</td><td>May 22</td><td>166</td></tr>
                 <tr><td>Union County Public Schools</td><td>41,687</td><td>Aug 25</td><td>May 22</td><td>171</td></tr>
                 <tr><td>Johnston County Public Schools</td><td>37,289</td><td>Aug 25</td><td>May 28</td><td>169</td></tr>
                 <tr><td>Cabarrus County Schools</td><td>34,810</td><td>Aug 11</td><td>May 20</td><td>175</td></tr>
@@ -101,19 +101,19 @@
         </table>
 
         <h2>Spring Break in North Carolina</h2>
-        <p>The peak spring break day in North Carolina is <strong>April 6, 2026</strong>, when 31 districts (461K students) are on break.</p>
+        <p>The peak spring break day in North Carolina is <strong>April 6, 2026</strong>, when 38 districts (568K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all North Carolina districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>8.7M student-days</td><td>62</td></tr>
-                <tr><td>Spring Break</td><td>4.3M student-days</td><td>67</td></tr>
-                <tr><td>Teacher Workday</td><td>3.9M student-days</td><td>15</td></tr>
-                <tr><td>Thanksgiving Break</td><td>1.4M student-days</td><td>44</td></tr>
+                <tr><td>Winter Break</td><td>11.1M student-days</td><td>95</td></tr>
+                <tr><td>Spring Break</td><td>5.2M student-days</td><td>82</td></tr>
+                <tr><td>Teacher Workday</td><td>4.2M student-days</td><td>19</td></tr>
+                <tr><td>Thanksgiving Break</td><td>2.4M student-days</td><td>84</td></tr>
                 <tr><td>Teacher Workdays</td><td>1.1M student-days</td><td>3</td></tr>
-                <tr><td>Holiday</td><td>959K student-days</td><td>14</td></tr>
+                <tr><td>Holiday</td><td>948K student-days</td><td>15</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

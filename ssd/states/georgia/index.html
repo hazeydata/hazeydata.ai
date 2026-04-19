@@ -23,7 +23,7 @@
   "name": "Georgia School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 177 Georgia districts covering 1.5M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/georgia/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=GA"}],
   "spatialCoverage": "Georgia, United States",
@@ -88,32 +88,32 @@
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
                 <tr><td>Gwinnett County</td><td>182,214</td><td>Aug 4</td><td>May 20</td><td>185</td></tr>
-                <tr><td>DeKalb County</td><td>91,398</td><td>Aug 4</td><td>May 28</td><td>189</td></tr>
+                <tr><td>DeKalb County</td><td>91,398</td><td>Aug 4</td><td>May 28</td><td>169</td></tr>
                 <tr><td>Fulton County</td><td>88,043</td><td>Aug 4</td><td>May 21</td><td>176</td></tr>
                 <tr><td>Forsyth County</td><td>54,984</td><td>Aug 5</td><td>May 22</td><td>196</td></tr>
                 <tr><td>Clayton County</td><td>50,832</td><td>Aug 4</td><td>May 21</td><td>188</td></tr>
                 <tr><td>Atlanta Public Schools</td><td>49,660</td><td>Aug 1</td><td>May 28</td><td>181</td></tr>
-                <tr><td>Henry County Schools</td><td>43,417</td><td>Aug 1</td><td>May 22</td><td>187</td></tr>
-                <tr><td>Henry County Schools</td><td>42,000</td><td>Aug 1</td><td>May 22</td><td>179</td></tr>
-                <tr><td>Savannah-Chatham County</td><td>35,781</td><td>Aug 4</td><td>May 21</td><td>199</td></tr>
+                <tr><td>Henry County Schools</td><td>43,417</td><td>Aug 1</td><td>May 21</td><td>174</td></tr>
+                <tr><td>Henry County Schools</td><td>42,000</td><td>Aug 1</td><td>May 21</td><td>174</td></tr>
+                <tr><td>Savannah-Chatham County</td><td>35,781</td><td>Aug 4</td><td>May 21</td><td>180</td></tr>
                 <tr><td>Paulding County School District</td><td>31,518</td><td>Aug 1</td><td>May 20</td><td>190</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Georgia</h2>
-        <p>The peak spring break day in Georgia is <strong>April 6, 2026</strong>, when 88 districts (939K students) are on break.</p>
+        <p>The peak spring break day in Georgia is <strong>April 6, 2026</strong>, when 103 districts (1.0M students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Georgia districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>8.6M student-days</td><td>135</td></tr>
-                <tr><td>Spring Break</td><td>6.6M student-days</td><td>147</td></tr>
-                <tr><td>Thanksgiving Break</td><td>4.7M student-days</td><td>98</td></tr>
-                <tr><td>Fall Break</td><td>4.5M student-days</td><td>96</td></tr>
-                <tr><td>Semester Break</td><td>1.7M student-days</td><td>11</td></tr>
-                <tr><td>Labor Day</td><td>617K student-days</td><td>66</td></tr>
+                <tr><td>Winter Break</td><td>11.0M student-days</td><td>153</td></tr>
+                <tr><td>Spring Break</td><td>7.5M student-days</td><td>158</td></tr>
+                <tr><td>Thanksgiving Break</td><td>5.5M student-days</td><td>130</td></tr>
+                <tr><td>Fall Break</td><td>5.0M student-days</td><td>109</td></tr>
+                <tr><td>Semester Break</td><td>2.2M student-days</td><td>10</td></tr>
+                <tr><td>Labor Day</td><td>749K student-days</td><td>84</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

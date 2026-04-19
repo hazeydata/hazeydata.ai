@@ -23,7 +23,7 @@
   "name": "Massachusetts School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 324 Massachusetts districts covering 846K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/massachusetts/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=MA"}],
   "spatialCoverage": "Massachusetts, United States",
@@ -88,32 +88,32 @@
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
                 <tr><td>Boston</td><td>45,742</td><td>Aug 28</td><td>Jun 26</td><td>198</td></tr>
-                <tr><td>Worcester</td><td>24,350</td><td>Sep 2</td><td>Jun 5</td><td>199</td></tr>
-                <tr><td>Springfield</td><td>23,693</td><td>Sep 2</td><td>Jun 25</td><td>173</td></tr>
+                <tr><td>Worcester</td><td>24,350</td><td>Sep 2</td><td>Jun 5</td><td>165</td></tr>
+                <tr><td>Springfield</td><td>23,693</td><td>Sep 2</td><td>Jun 25</td><td>163</td></tr>
                 <tr><td>Lynn</td><td>15,433</td><td>Aug 20</td><td>Jun 18</td><td>186</td></tr>
-                <tr><td>Brockton</td><td>14,906</td><td>Aug 27</td><td>Jun 10</td><td>174</td></tr>
-                <tr><td>Lowell</td><td>14,273</td><td>Aug 26</td><td>Jun 16</td><td>192</td></tr>
-                <tr><td>Lawrence</td><td>12,867</td><td>Aug 6</td><td>May 27</td><td>202</td></tr>
+                <tr><td>Brockton</td><td>14,906</td><td>Aug 27</td><td>Jun 10</td><td>172</td></tr>
+                <tr><td>Lowell</td><td>14,273</td><td>Aug 26</td><td>Jun 16</td><td>184</td></tr>
+                <tr><td>Lawrence</td><td>12,867</td><td>Aug 6</td><td>May 27</td><td>189</td></tr>
                 <tr><td>New Bedford</td><td>12,522</td><td>Aug 21</td><td>Jun 3</td><td>173</td></tr>
                 <tr><td>Newton</td><td>11,882</td><td>Aug 4</td><td>May 22</td><td>182</td></tr>
-                <tr><td>Fall River</td><td>10,656</td><td>Aug 27</td><td>Jun 17</td><td>187</td></tr>
+                <tr><td>Fall River</td><td>10,656</td><td>Aug 27</td><td>Jun 17</td><td>172</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Massachusetts</h2>
-        <p>The peak spring break day in Massachusetts is <strong>April 21, 2026</strong>, when 73 districts (233K students) are on break.</p>
+        <p>The peak spring break day in Massachusetts is <strong>April 21, 2026</strong>, when 83 districts (272K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Massachusetts districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>4.2M student-days</td><td>212</td></tr>
-                <tr><td>Spring Break</td><td>2.2M student-days</td><td>177</td></tr>
-                <tr><td>Thanksgiving Break</td><td>1.3M student-days</td><td>203</td></tr>
-                <tr><td>Fall Break</td><td>363K student-days</td><td>38</td></tr>
-                <tr><td>Memorial Day</td><td>313K student-days</td><td>112</td></tr>
-                <tr><td>Labor Day</td><td>294K student-days</td><td>106</td></tr>
+                <tr><td>Winter Break</td><td>6.3M student-days</td><td>266</td></tr>
+                <tr><td>Thanksgiving Break</td><td>2.6M student-days</td><td>257</td></tr>
+                <tr><td>Spring Break</td><td>2.1M student-days</td><td>178</td></tr>
+                <tr><td>Memorial Day</td><td>424K student-days</td><td>142</td></tr>
+                <tr><td>Labor Day</td><td>403K student-days</td><td>134</td></tr>
+                <tr><td>Fall Break</td><td>394K student-days</td><td>38</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

@@ -23,7 +23,7 @@
   "name": "Maryland School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 24 Maryland districts covering 725K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/maryland/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=MD"}],
   "spatialCoverage": "Maryland, United States",
@@ -62,7 +62,7 @@
             <div class="key-dates-grid">
                 <div class="kd-item"><div class="kd-label">Earliest First Day</div><div class="kd-value">August 6, 2025</div></div>
                 <div class="kd-item"><div class="kd-label">Latest Last Day</div><div class="kd-value">June 18, 2026</div></div>
-                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">April 6, 2026</div></div>
+                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">April 3, 2026</div></div>
                 <div class="kd-item"><div class="kd-label">School Year</div><div class="kd-value">2025-2026</div></div>
             </div>
         </div>
@@ -87,33 +87,33 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>Prince George&#x27;s County Public Schools</td><td>131,310</td><td>Aug 18</td><td>Jun 16</td><td>195</td></tr>
-                <tr><td>Baltimore County Public Schools</td><td>110,275</td><td>Aug 26</td><td>Jun 5</td><td>193</td></tr>
+                <tr><td>Prince George&#x27;s County Public Schools</td><td>131,310</td><td>Aug 26</td><td>Jun 16</td><td>180</td></tr>
+                <tr><td>Baltimore County Public Schools</td><td>110,275</td><td>Aug 26</td><td>Jun 5</td><td>173</td></tr>
                 <tr><td>Anne Arundel County Public Schools</td><td>84,346</td><td>Aug 25</td><td>Jun 18</td><td>196</td></tr>
                 <tr><td>Baltimore City Public Schools</td><td>75,811</td><td>Aug 25</td><td>Jun 11</td><td>172</td></tr>
-                <tr><td>Howard County Public Schools</td><td>57,633</td><td>Sep 2</td><td>Jun 5</td><td>199</td></tr>
+                <tr><td>Howard County Public Schools</td><td>57,633</td><td>Sep 2</td><td>Jun 5</td><td>165</td></tr>
                 <tr><td>Frederick County Public Schools</td><td>47,681</td><td>Aug 14</td><td>May 28</td><td>174</td></tr>
                 <tr><td>Harford County Public Schools</td><td>38,105</td><td>Sep 2</td><td>Jun 18</td><td>184</td></tr>
                 <tr><td>Charles County Public Schools</td><td>27,765</td><td>Aug 25</td><td>May 18</td><td>166</td></tr>
-                <tr><td>Carroll County Public Schools</td><td>26,123</td><td>Sep 2</td><td>Jun 12</td><td>184</td></tr>
-                <tr><td>Washington County Public Schools</td><td>22,297</td><td>Aug 25</td><td>Jun 10</td><td>193</td></tr>
+                <tr><td>Carroll County Public Schools</td><td>26,123</td><td>Sep 2</td><td>Jun 12</td><td>183</td></tr>
+                <tr><td>Washington County Public Schools</td><td>22,297</td><td>Aug 25</td><td>Jun 10</td><td>184</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Maryland</h2>
-        <p>The peak spring break day in Maryland is <strong>April 6, 2026</strong>, when 14 districts (447K students) are on break.</p>
+        <p>The peak spring break day in Maryland is <strong>April 3, 2026</strong>, when 18 districts (597K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Maryland districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>3.9M student-days</td><td>17</td></tr>
-                <tr><td>Spring Break</td><td>2.9M student-days</td><td>17</td></tr>
+                <tr><td>Winter Break</td><td>4.5M student-days</td><td>19</td></tr>
+                <tr><td>Spring Break</td><td>3.9M student-days</td><td>20</td></tr>
+                <tr><td>Thanksgiving Break</td><td>1.8M student-days</td><td>15</td></tr>
+                <tr><td>Winter Break &amp; Christmas Holiday</td><td>1.3M student-days</td><td>1</td></tr>
                 <tr><td>Observance Day</td><td>910K student-days</td><td>1</td></tr>
-                <tr><td>Schools Closed For Students; Professional Development Day</td><td>455K student-days</td><td>1</td></tr>
-                <tr><td>Thanksgiving Break</td><td>447K student-days</td><td>8</td></tr>
-                <tr><td>Professional Development Day (No School For Students)</td><td>394K student-days</td><td>1</td></tr>
+                <tr><td>Professional Duty Days for All Teachers</td><td>657K student-days</td><td>1</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

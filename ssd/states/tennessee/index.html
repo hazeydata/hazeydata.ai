@@ -23,7 +23,7 @@
   "name": "Tennessee School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 145 Tennessee districts covering 1.0M students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/tennessee/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=TN"}],
   "spatialCoverage": "Tennessee, United States",
@@ -96,24 +96,24 @@
                 <tr><td>Williamson County</td><td>41,909</td><td>Aug 1</td><td>Jun 17</td><td>207</td></tr>
                 <tr><td>Clarksville-Montgomery County School System</td><td>39,345</td><td>Aug 5</td><td>May 21</td><td>178</td></tr>
                 <tr><td>Sumner County</td><td>30,732</td><td>Aug 4</td><td>May 22</td><td>173</td></tr>
-                <tr><td>Wilson County</td><td>20,308</td><td>Aug 25</td><td>Jun 3</td><td>182</td></tr>
+                <tr><td>Wilson County</td><td>20,308</td><td>Aug 25</td><td>Jun 3</td><td>178</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in Tennessee</h2>
-        <p>The peak spring break day in Tennessee is <strong>April 3, 2026</strong>, when 29 districts (342K students) are on break.</p>
+        <p>The peak spring break day in Tennessee is <strong>April 3, 2026</strong>, when 32 districts (356K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all Tennessee districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>10.6M student-days</td><td>113</td></tr>
-                <tr><td>Spring Break</td><td>4.5M student-days</td><td>114</td></tr>
-                <tr><td>Fall Break</td><td>4.1M student-days</td><td>89</td></tr>
-                <tr><td>Thanksgiving Break</td><td>2.9M student-days</td><td>97</td></tr>
+                <tr><td>Winter Break</td><td>11.3M student-days</td><td>121</td></tr>
+                <tr><td>Spring Break</td><td>4.7M student-days</td><td>123</td></tr>
+                <tr><td>Fall Break</td><td>4.3M student-days</td><td>95</td></tr>
+                <tr><td>Thanksgiving Break</td><td>3.5M student-days</td><td>117</td></tr>
                 <tr><td>School Closed For Students - Professional Development Day</td><td>726K student-days</td><td>1</td></tr>
-                <tr><td>Labor Day</td><td>474K student-days</td><td>59</td></tr>
+                <tr><td>Labor Day</td><td>512K student-days</td><td>69</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

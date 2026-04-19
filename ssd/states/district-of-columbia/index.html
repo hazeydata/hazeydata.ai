@@ -23,7 +23,7 @@
   "name": "District of Columbia School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 1 District of Columbia districts covering 51K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/district-of-columbia/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=DC"}],
   "spatialCoverage": "District of Columbia, United States",
@@ -62,7 +62,7 @@
             <div class="key-dates-grid">
                 <div class="kd-item"><div class="kd-label">Earliest First Day</div><div class="kd-value">August 22, 2025</div></div>
                 <div class="kd-item"><div class="kd-label">Latest Last Day</div><div class="kd-value">June 16, 2026</div></div>
-                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">Varies</div></div>
+                <div class="kd-item"><div class="kd-label">Peak Spring Break</div><div class="kd-value">April 3, 2026</div></div>
                 <div class="kd-item"><div class="kd-label">School Year</div><div class="kd-value">2025-2026</div></div>
             </div>
         </div>
@@ -87,21 +87,24 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>District of Columbia Public Schools</td><td>51,294</td><td>Aug 22</td><td>Jun 16</td><td>200</td></tr>
+                <tr><td>District of Columbia Public Schools</td><td>51,294</td><td>Aug 22</td><td>Jun 16</td><td>175</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in District of Columbia</h2>
-        <p>Spring break data is still being collected for District of Columbia districts.</p>
+        <p>The peak spring break day in District of Columbia is <strong>April 3, 2026</strong>, when 1 districts (51K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all District of Columbia districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Holiday</td><td>513K student-days</td><td>1</td></tr>
-                <tr><td>Pd For Staff</td><td>103K student-days</td><td>1</td></tr>
-                <tr><td>Parent Teacher Conference Day</td><td>51K student-days</td><td>1</td></tr>
+                <tr><td>Winter Break</td><td>410K student-days</td><td>1</td></tr>
+                <tr><td>Spring Break</td><td>256K student-days</td><td>1</td></tr>
+                <tr><td>Thanksgiving Break</td><td>205K student-days</td><td>1</td></tr>
+                <tr><td>Wellness Day</td><td>103K student-days</td><td>1</td></tr>
+                <tr><td>Holiday</td><td>103K student-days</td><td>1</td></tr>
+                <tr><td>Veterans Day</td><td>51K student-days</td><td>1</td></tr>
             </tbody>
         </table>
 
@@ -220,7 +223,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

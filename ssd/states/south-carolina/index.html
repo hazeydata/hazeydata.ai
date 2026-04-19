@@ -23,7 +23,7 @@
   "name": "South Carolina School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 84 South Carolina districts covering 724K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/south-carolina/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=SC"}],
   "spatialCoverage": "South Carolina, United States",
@@ -87,33 +87,33 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>Greenville County Schools</td><td>77,978</td><td>Aug 11</td><td>May 22</td><td>181</td></tr>
+                <tr><td>Greenville County Schools</td><td>77,978</td><td>Aug 11</td><td>May 22</td><td>176</td></tr>
                 <tr><td>Charleston County School District</td><td>49,929</td><td>Aug 12</td><td>May 28</td><td>184</td></tr>
-                <tr><td>Horry County Schools</td><td>47,000</td><td>Aug 18</td><td>Jun 12</td><td>210</td></tr>
+                <tr><td>Horry County Schools</td><td>47,000</td><td>Aug 18</td><td>Jun 12</td><td>204</td></tr>
                 <tr><td>Berkeley County School District</td><td>38,000</td><td>Aug 13</td><td>Jun 1</td><td>186</td></tr>
                 <tr><td>Richland 02</td><td>28,510</td><td>Aug 11</td><td>May 27</td><td>183</td></tr>
                 <tr><td>Lexington 01</td><td>27,105</td><td>Aug 4</td><td>May 22</td><td>177</td></tr>
-                <tr><td>Dorchester 02</td><td>26,135</td><td>Aug 6</td><td>May 28</td><td>190</td></tr>
-                <tr><td>Aiken 01</td><td>23,181</td><td>Aug 1</td><td>May 28</td><td>175</td></tr>
+                <tr><td>Dorchester 02</td><td>26,135</td><td>Aug 6</td><td>May 28</td><td>182</td></tr>
+                <tr><td>Aiken 01</td><td>23,181</td><td>Aug 1</td><td>May 28</td><td>171</td></tr>
                 <tr><td>Richland 01</td><td>22,037</td><td>Aug 11</td><td>May 27</td><td>180</td></tr>
-                <tr><td>Beaufort 01</td><td>21,439</td><td>Aug 6</td><td>May 29</td><td>183</td></tr>
+                <tr><td>Beaufort 01</td><td>21,439</td><td>Aug 6</td><td>May 29</td><td>172</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in South Carolina</h2>
-        <p>The peak spring break day in South Carolina is <strong>April 10, 2026</strong>, when 34 districts (336K students) are on break.</p>
+        <p>The peak spring break day in South Carolina is <strong>April 10, 2026</strong>, when 42 districts (426K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all South Carolina districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>6.0M student-days</td><td>65</td></tr>
-                <tr><td>Spring Break</td><td>2.8M student-days</td><td>59</td></tr>
-                <tr><td>Thanksgiving Break</td><td>1.1M student-days</td><td>39</td></tr>
-                <tr><td>Fall Break</td><td>836K student-days</td><td>26</td></tr>
+                <tr><td>Winter Break</td><td>7.2M student-days</td><td>66</td></tr>
+                <tr><td>Spring Break</td><td>3.6M student-days</td><td>66</td></tr>
+                <tr><td>Thanksgiving Break</td><td>2.0M student-days</td><td>56</td></tr>
+                <tr><td>Fall Break</td><td>904K student-days</td><td>27</td></tr>
                 <tr><td>Teacher Workday</td><td>624K student-days</td><td>17</td></tr>
-                <tr><td>Teacher Professional Dev.</td><td>234K student-days</td><td>1</td></tr>
+                <tr><td>Labor Day</td><td>234K student-days</td><td>22</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);

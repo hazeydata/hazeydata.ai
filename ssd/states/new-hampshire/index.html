@@ -23,7 +23,7 @@
   "name": "New Hampshire School Calendar Data 2025-2026",
   "description": "Complete school calendar data for 180 New Hampshire districts covering 157K students. Spring break, winter break, first/last day, and every school day.",
   "url": "https://hazeydata.ai/ssd/states/new-hampshire/",
-  "dateModified": "2026-04-12",
+  "dateModified": "2026-04-19",
   "creator": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
   "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://api.hazeydata.ai/ssd/v1/districts?state=NH"}],
   "spatialCoverage": "New Hampshire, United States",
@@ -87,33 +87,33 @@
         <table class="data-table">
             <thead><tr><th>District</th><th>Enrollment</th><th>First Day</th><th>Last Day</th><th>School Days</th></tr></thead>
             <tbody>
-                <tr><td>Manchester School District</td><td>12,063</td><td>Aug 25</td><td>Jun 5</td><td>180</td></tr>
-                <tr><td>Nashua School District</td><td>9,863</td><td>Aug 26</td><td>Jun 17</td><td>202</td></tr>
-                <tr><td>Bedford School District</td><td>4,161</td><td>Aug 18</td><td>Jun 4</td><td>180</td></tr>
-                <tr><td>Londonderry School District</td><td>4,024</td><td>Sep 4</td><td>Jun 25</td><td>181</td></tr>
-                <tr><td>Concord School District</td><td>3,949</td><td>Aug 27</td><td>Jun 12</td><td>180</td></tr>
-                <tr><td>Rochester School District</td><td>3,891</td><td>Sep 2</td><td>Jun 5</td><td>199</td></tr>
-                <tr><td>Dover School District</td><td>3,644</td><td>Aug 18</td><td>May 29</td><td>180</td></tr>
+                <tr><td>Manchester School District</td><td>12,063</td><td>Aug 25</td><td>Jun 5</td><td>178</td></tr>
+                <tr><td>Nashua School District</td><td>9,863</td><td>Aug 26</td><td>Jun 17</td><td>178</td></tr>
+                <tr><td>Bedford School District</td><td>4,161</td><td>Aug 18</td><td>Jun 4</td><td>179</td></tr>
+                <tr><td>Londonderry School District</td><td>4,024</td><td>Sep 4</td><td>Jun 25</td><td>177</td></tr>
+                <tr><td>Concord School District</td><td>3,949</td><td>Aug 27</td><td>Jun 12</td><td>177</td></tr>
+                <tr><td>Rochester School District</td><td>3,891</td><td>Sep 2</td><td>Jun 5</td><td>171</td></tr>
+                <tr><td>Dover School District</td><td>3,644</td><td>Aug 18</td><td>May 29</td><td>176</td></tr>
                 <tr><td>Merrimack School District</td><td>3,561</td><td>N/A</td><td>N/A</td><td>0</td></tr>
-                <tr><td>Salem School District</td><td>3,558</td><td>Sep 4</td><td>Jun 16</td><td>177</td></tr>
-                <tr><td>Timberlane Regional School District</td><td>3,302</td><td>Sep 2</td><td>Jun 5</td><td>198</td></tr>
+                <tr><td>Salem School District</td><td>3,558</td><td>Sep 4</td><td>Jun 16</td><td>168</td></tr>
+                <tr><td>Timberlane Regional School District</td><td>3,302</td><td>Sep 2</td><td>Jun 5</td><td>169</td></tr>
             </tbody>
         </table>
 
         <h2>Spring Break in New Hampshire</h2>
-        <p>The peak spring break day in New Hampshire is <strong>April 27, 2026</strong>, when 28 districts (42K students) are on break.</p>
+        <p>The peak spring break day in New Hampshire is <strong>April 27, 2026</strong>, when 37 districts (53K students) are on break.</p>
 
         <h2>Break Types</h2>
         <p>Breakdown of non-school days across all New Hampshire districts (excludes weekends and summer):</p>
         <table class="data-table">
             <thead><tr><th>Break Type</th><th>Student-Days</th><th>Districts</th></tr></thead>
             <tbody>
-                <tr><td>Winter Break</td><td>964K student-days</td><td>103</td></tr>
-                <tr><td>Spring Break</td><td>405K student-days</td><td>85</td></tr>
-                <tr><td>Thanksgiving Break</td><td>263K student-days</td><td>106</td></tr>
-                <tr><td>Winter</td><td>187K student-days</td><td>28</td></tr>
-                <tr><td>Spring</td><td>100K student-days</td><td>28</td></tr>
-                <tr><td>Memorial Day</td><td>69K student-days</td><td>67</td></tr>
+                <tr><td>Winter Break</td><td>1.3M student-days</td><td>117</td></tr>
+                <tr><td>Thanksgiving Break</td><td>502K student-days</td><td>123</td></tr>
+                <tr><td>Spring Break</td><td>446K student-days</td><td>92</td></tr>
+                <tr><td>Winter</td><td>177K student-days</td><td>28</td></tr>
+                <tr><td>Spring</td><td>98K student-days</td><td>27</td></tr>
+                <tr><td>Holiday Break</td><td>88K student-days</td><td>11</td></tr>
             </tbody>
         </table>
 
@@ -232,7 +232,7 @@
             var d = new Date(day.date + 'T12:00:00');
             var btn = document.createElement('button');
             btn.className = 'day-btn' + (i === 0 ? ' active' : '');
-                        btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
+            btn.innerHTML = dayNames[d.getDay()] + '<br><span style="font-size:10px;">' + monthNames[d.getMonth()] + ' ' + d.getDate() + '</span>';
             btn.onclick = function() {
                 heatmapDayIndex = i;
                 renderMapDay(heatmapData.days[i]);
