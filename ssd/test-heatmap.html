@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heatmap Test</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+</head>
+<body>
+    <h1>Heatmap Test Page</h1>
+    <div id="test-status"></div>
+    <div id="weekday-nav" style="margin: 20px 0;"></div>
+    <div id="heatmap-map" style="width:100%;max-width:600px;margin:0 auto;position:relative;border:1px solid #ccc;height:400px;"></div>
+    
+    <script>
+        console.log('Test page loaded');
+        document.getElementById('test-status').innerHTML = 'Loading data files...';
+        
+        // Test if the data files are accessible
+        Promise.all([
+            d3.json('/ssd/us-districts.json'),
+            fetch('/ssd/heatmap_data.json').then(r => r.json()),
+            d3.json('/ssd/us-states-10m.json')
+        ]).then(function(results) {
+            console.log('All data loaded successfully:', {
+                districts: !!results[0],
+                heatmapData: !!results[1], 
+                states: !!results[2]
+            });
+            
+            document.getElementById('test-status').innerHTML = 
+                '✅ All data files loaded successfully!<br>' +
+                '• US Districts: ' + (results[0] ? 'OK' : 'FAILED') + '<br>' +
+                '• Heatmap Data: ' + (results[1] && results[1].days ? results[1].days.length + ' days found' : 'FAILED') + '<br>' +
+                '• US States: ' + (results[2] ? 'OK' : 'FAILED');
+                
+            // Test weekday nav
+            if (results[1] && results[1].days) {
+                const nav = document.getElementById('weekday-nav');
+                const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+                const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                
+                results[1].days.forEach(function(day, i) {
+                    if (i >= 7) return; // Only show first 7 days
+                    const d = new Date(day.date + 'T12:00:00');
+                    const btn = document.createElement('button');
+                    btn.textContent = dayNames[d.getDay()] + ' ' + monthNames[d.getMonth()] + ' ' + d.getDate();
+                    btn.style.margin = '5px';
+                    btn.style.padding = '10px';
+                    nav.appendChild(btn);
+                });
+            }
+            
+        }).catch(function(err) {
+            console.error('Data loading failed:', err);
+            document.getElementById('test-status').innerHTML = '❌ Data loading failed: ' + err.message;
+        });
+    </script>
+</body>
+</html>
