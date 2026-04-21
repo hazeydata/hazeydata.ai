@@ -155,7 +155,7 @@
     </section>
 
     <section class="heatmap-section" id="heatmap" style="padding-top:10px;">
-        <h1 class="heatmap-title">Schools on Break This Week</h1>
+        <p class="heatmap-sub" style="margin-bottom:16px;font-size:13px;color:var(--text-muted);">Schools on Break This Week</p>
         <div class="weekday-nav" id="weekday-nav"></div>
         <div class="state-selector"><select id="state-select">
             <option value="US">All United States</option>
@@ -355,8 +355,6 @@
     </footer>
 
     <script>
-        console.log('Heatmap initialization starting...');
-        
         // ═══ D3.js Heatmap — Weekday Nav + Instant Redraw ═══
         var heatmapData = null, heatmapDayIndex = 0, heatmapInterval = null, heatmapPaused = false;
         var districts = null, stateBorders = null, nationBorder = null;
@@ -461,16 +459,8 @@
         }
 
         function buildWeekdayNav() {
-            console.log('Building weekday navigation...', heatmapData);
             var nav = document.getElementById('weekday-nav');
-            if (!nav || !heatmapData || !heatmapData.days) {
-                console.error('Cannot build weekday nav - missing elements:', {
-                    nav: !!nav,
-                    heatmapData: !!heatmapData,
-                    days: heatmapData && heatmapData.days ? heatmapData.days.length : 0
-                });
-                return;
-            }
+            if (!nav || !heatmapData || !heatmapData.days) return;
             nav.innerHTML = '';
             var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
             var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -489,7 +479,6 @@
                 };
                 nav.appendChild(btn);
             });
-            console.log('Weekday navigation built with', heatmapData.days.length, 'days');
         }
 
         var currentZoomState = null;
@@ -522,35 +511,18 @@
             if (slug) window.location.href = '/ssd/states/' + slug + '/';
         });
 
-        console.log('Starting data load...');
         Promise.all([
             d3.json('/ssd/us-districts.json'),
             fetch('/ssd/heatmap_data.json').then(function(r) { return r.json(); }),
             d3.json('/ssd/us-states-10m.json')
         ]).then(function(results) {
-            console.log('Data loaded successfully', {
-                districts: !!results[0],
-                heatmapData: !!results[1],
-                states: !!results[2]
-            });
-            
             var us = results[0];
             heatmapData = results[1];
             var statesTopo = results[2];
-            
-            console.log('Heatmap data structure:', {
-                hasData: !!heatmapData,
-                hasDays: !!(heatmapData && heatmapData.days),
-                dayCount: heatmapData && heatmapData.days ? heatmapData.days.length : 0
-            });
-            
             var objKey = Object.keys(us.objects)[0];
             districts = topojson.feature(us, us.objects[objKey]).features;
-            console.log('Districts loaded:', districts.length);
-            
-            try { stateBorders = topojson.mesh(statesTopo, statesTopo.objects.states, function(a, b) { return a !== b; }); } catch(e) { console.error('State borders error:', e); }
-            try { nationBorder = topojson.feature(statesTopo, statesTopo.objects.nation); } catch(e) { console.error('Nation border error:', e); }
-            
+            try { stateBorders = topojson.mesh(statesTopo, statesTopo.objects.states, function(a, b) { return a !== b; }); } catch(e) {}
+            try { nationBorder = topojson.feature(statesTopo, statesTopo.objects.nation); } catch(e) {}
             var container = document.getElementById('heatmap-map');
             var dpr = window.devicePixelRatio || 1;
             canvasW = Math.min(960, container.clientWidth || 960);
@@ -562,26 +534,17 @@
             canvas.style.display = 'block';
             container.appendChild(canvas);
             ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
-            
             var fc = topojson.feature(us, us.objects[objKey]);
             nationalProjection = d3.geoAlbersUsa().fitSize([canvasW, canvasH], fc);
             pathFn = d3.geoPath(nationalProjection, ctx);
-            
-            console.log('Canvas and projections set up');
-            
             buildWeekdayNav();
-            if (heatmapData && heatmapData.days && heatmapData.days.length > 0) {
-                console.log('Rendering first map day...');
+            if (heatmapData.days && heatmapData.days.length > 0) {
                 renderMapDay(heatmapData.days[0], true);
                 heatmapInterval = setInterval(advanceHeatmap, 3500);
-                console.log('Heatmap initialization complete');
-            } else {
-                console.error('No heatmap days data available');
-                document.getElementById('heatmap-map').innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px;">No heatmap data available.</p>';
             }
         }).catch(function(err) {
             console.error('Map load error:', err);
-            document.getElementById('heatmap-map').innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px;">Map loading failed. Check console for details.</p>';
+            document.getElementById('heatmap-map').innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);padding:40px;">Map loading failed. Refresh to retry.</p>';
         });
 
         async function submitLead() {
