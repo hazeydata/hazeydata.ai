@@ -492,14 +492,14 @@
             var sc = { type: 'FeatureCollection', features: stateFeatures };
             var sp = d3.geoAlbersUsa().fitSize([canvasW, canvasH], sc);
             pathFn = d3.geoPath(sp, ctx);
-            document.querySelector('.heatmap-title').textContent = 'Schools on Break — ' + (FIPS_TO_NAME[statefp] || statefp);
+            document.querySelector('.heatmap-sub').textContent = 'Schools on Break — ' + (FIPS_TO_NAME[statefp] || statefp);
             renderMapDay(heatmapData.days[heatmapDayIndex]);
         }
 
         function zoomToUS() {
             currentZoomState = null;
             pathFn = d3.geoPath(nationalProjection, ctx);
-            document.querySelector('.heatmap-title').textContent = 'Schools on Break This Week';
+            document.querySelector('.heatmap-sub').textContent = 'Schools on Break This Week';
             renderMapDay(heatmapData.days[heatmapDayIndex]);
         }
 
