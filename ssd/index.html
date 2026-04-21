@@ -13,12 +13,12 @@
     <meta property="og:url" content="https://hazeydata.ai/ssd/">
     <meta property="og:title" content="US School Calendar Database — 13,700 Districts, Day-Level Data | HazeyData">
     <meta property="og:description" content="Complete US school calendar dataset. 13,700+ districts, 44M+ students. Day-level data with confidence scoring. API access $99/mo.">
-    <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
+    <meta property="og:image" content="https://hazeydata.ai/assets/ssd-og-card.svg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@disneystatswhiz">
     <meta name="twitter:title" content="US School Calendar Database — 13,700 Districts, Day-Level Data | HazeyData">
     <meta name="twitter:description" content="Complete US school calendar dataset. 13,700+ districts, 44M+ students. Day-level data with confidence scoring. API access $99/mo.">
-    <meta name="twitter:image" content="https://hazeydata.ai/assets/banner.jpg">
+    <meta name="twitter:image" content="https://hazeydata.ai/assets/ssd-og-card.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -573,7 +573,7 @@
                 var res = await fetch('https://api.hazeydata.ai/ssd/create-trial', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({email: email, state: state}) });
                 var data = await res.json();
                 if (data.api_key) {
-                    document.getElementById('trial-cta').innerHTML = '<div style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:16px;text-align:left;"><div style="font-family:var(--font-mono);font-size:11px;color:var(--accent-green);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Your API Key</div><div style="font-family:var(--font-mono);font-size:13px;color:var(--text-primary);word-break:break-all;cursor:pointer;padding:8px;background:rgba(0,0,0,0.3);border-radius:4px;" onclick="navigator.clipboard.writeText(this.textContent).then(function(){document.getElementById(\\'trial-copied\\').style.display=\\'inline\\'})\">' + data.api_key + '</div><div style="margin-top:8px;font-size:11px;color:var(--text-muted);">Click to copy &middot; <span id="trial-copied" style="display:none;color:var(--accent-green);">Copied!</span> Save this key — it won\\'t be shown again.<br>Trial: <strong style="color:var(--text-secondary);">' + state + '</strong> districts, 90 days, 10K calls/mo. <a href="/ssd/docs.html">API docs &rarr;</a></div></div>';
+                    document.getElementById('trial-cta').innerHTML = '<div style="background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:16px;text-align:left;"><div style="font-family:var(--font-mono);font-size:11px;color:var(--accent-green);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Your API Key</div><div style="font-family:var(--font-mono);font-size:13px;color:var(--text-primary);word-break:break-all;cursor:pointer;padding:8px;background:rgba(0,0,0,0.3);border-radius:4px;" onclick="navigator.clipboard.writeText(this.textContent).then(function(){document.getElementById(\\'trial-copied\\').style.display=\\'inline\\'})">' + data.api_key + '</div><div style="margin-top:8px;font-size:11px;color:var(--text-muted);">Click to copy &middot; <span id="trial-copied" style="display:none;color:var(--accent-green);">Copied!</span> Save this key — it won\\'t be shown again.<br>Trial: <strong style="color:var(--text-secondary);">' + state + '</strong> districts, 90 days, 10K calls/mo. <a href="/ssd/docs.html">API docs &rarr;</a></div></div>';
                 } else { status.textContent = data.error || 'Something went wrong'; btn.textContent = 'Start Free Trial'; btn.disabled = false; }
             } catch(e) { status.textContent = 'Network error — please try again'; btn.textContent = 'Start Free Trial'; btn.disabled = false; }
         }
