@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WDW Daily Recap: Monday, May 4 | Theme Park Crowd Report</title>
+    <meta name="description" content="How accurate were our WTI predictions for May 4? Overall MAE: 3.0. Animal Kingdom was the biggest miss at -3.9 WTI points.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/icon-180.png">
+    <meta name="theme-color" content="#0a1628">
+    <link rel="canonical" href="https://hazeydata.ai/theme-park-crowd-report/blog/wdw-daily-recap-2026-05-04.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://hazeydata.ai/theme-park-crowd-report/blog/wdw-daily-recap-2026-05-04.html">
+    <meta property="og:title" content="WDW Daily Recap: Monday, May 4">
+    <meta property="og:description" content="How accurate were our WTI predictions for May 4? Overall MAE: 3.0. Animal Kingdom was the biggest miss at -3.9 WTI points.">
+    <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@disneystatswhiz">
+    <meta name="twitter:title" content="WDW Daily Recap: Monday, May 4">
+    <meta name="twitter:description" content="How accurate were our WTI predictions for May 4? Overall MAE: 3.0. Animal Kingdom was the biggest miss at -3.9 WTI points.">
+    <meta name="twitter:image" content="https://hazeydata.ai/assets/banner.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css?v=20260504">
+    <link rel="stylesheet" href="blog.css?v=20260504">
+    <style>
+        .wti-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        .wti-table th {
+            background: rgba(60, 120, 210, 0.15);
+            color: var(--mid-blue);
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+        .wti-table td {
+            padding: 0.65rem 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+        .wti-table tr:last-child td {
+            border-bottom: none;
+        }
+        .wti-table tr:hover td {
+            background: rgba(60, 120, 210, 0.05);
+        }
+        .wti-table .peak {
+            color: var(--hot-pink);
+            font-weight: 600;
+        }
+        .wti-table .light {
+            color: #22c55e;
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            .wti-table {
+                font-size: 0.8rem;
+            }
+            .wti-table th, .wti-table td {
+                padding: 0.5rem 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero blog-hero">
+        <div class="hero-bg"></div>
+        <nav class="nav">
+            <div class="nav-logo">
+                <a href="/theme-park-crowd-report/"><img src="../../assets/icon.jpg" alt="Theme Park Crowd Report" class="nav-icon"></a>
+            </div>
+            <button class="nav-hamburger" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links">
+                <a href="/theme-park-crowd-report/">Home</a>
+                <a href="/theme-park-crowd-report/blog/">Blog</a>
+                <a href="/theme-park-crowd-report/pricing.html">Pricing</a>
+                <a href="https://discord.gg/2Estr7sbP7" class="btn btn-sm" target="_blank">Join Discord</a>
+            </div>
+        </nav>
+        <div class="hero-content">
+            <h1>Blog</h1>
+            <p>Data-driven insights on theme park crowds, wait times, and trip planning.</p>
+        </div>
+    </section>
+
+    <div class="blog-container">
+        <a href="/theme-park-crowd-report/blog/" class="blog-back">&larr; All posts</a>
+
+        <article class="blog-post">
+            <div class="blog-post-meta">
+                <span>May 4, 2026</span>
+                <span class="tag">Daily Recap</span>
+                <span class="tag">WTI</span>
+                <span class="tag">Walt Disney World</span>
+            </div>
+            <h2>WDW Daily Recap: Monday, May 4</h2>
+
+            <p>Excellent day for the model — predictions were tight across all four parks. Here's how our WTI predictions compared to what actually happened at Walt Disney World on Monday, May 4.</p>
+
+            <h3>Park-by-Park: Predicted vs. Observed WTI</h3>
+
+            <table class="wti-table">
+                <thead>
+                    <tr>
+                        <th>Park</th>
+                        <th>Predicted</th>
+                        <th>Observed</th>
+                        <th>Delta</th>
+                        <th>Verdict</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Magic Kingdom</td>
+                        <td>20.3</td>
+                        <td>17.4</td>
+                        <td class="light">-2.9</td>
+                        <td class="light">Close</td>
+                    </tr>
+                    <tr>
+                        <td>EPCOT</td>
+                        <td>24.3</td>
+                        <td>22.8</td>
+                        <td class="light">-1.5</td>
+                        <td class="light">Nailed it</td>
+                    </tr>
+                    <tr>
+                        <td>Hollywood Studios</td>
+                        <td>30.3</td>
+                        <td>26.8</td>
+                        <td>-3.5</td>
+                        <td>Close</td>
+                    </tr>
+                    <tr>
+                        <td>Animal Kingdom</td>
+                        <td>38.6</td>
+                        <td>34.7</td>
+                        <td>-3.9</td>
+                        <td>Close</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Overall MAE: 3.0</strong> &mdash; the average absolute error across all four parks.</p>
+
+            <h3>Spotlight: Animal Kingdom</h3>
+
+            <p><strong>Animal Kingdom</strong> was the biggest miss of the day. We predicted a WTI of 38.6, but the observed value came in at 34.7 &mdash; 3.9 points lighter than expected.</p>
+            <p>The error was concentrated in one attraction: <strong>Na'vi River</strong> (MAE 51.6), which drove most of the park-level miss.</p>
+
+            <h4>Attraction-Level Breakdown</h4>
+
+            <table class="wti-table">
+                <thead>
+                    <tr>
+                        <th>Attraction</th>
+                        <th>Predicted</th>
+                        <th>Actual</th>
+                        <th>Error</th>
+                        <th>MAE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Na'vi River</td>
+                        <td>86</td>
+                        <td>34</td>
+                        <td class="peak">-51.6</td>
+                        <td class="peak">51.6</td>
+                    </tr>
+                    <tr>
+                        <td>Flight of Passage</td>
+                        <td>54</td>
+                        <td>60</td>
+                        <td>+5.7</td>
+                        <td>12.6</td>
+                    </tr>
+                    <tr>
+                        <td>Kali River Rapids</td>
+                        <td>27</td>
+                        <td>38</td>
+                        <td>+11.8</td>
+                        <td>12.3</td>
+                    </tr>
+                    <tr>
+                        <td>Kilimanjaro Safaris</td>
+                        <td>28</td>
+                        <td>28</td>
+                        <td>-0.3</td>
+                        <td>9.0</td>
+                    </tr>
+                    <tr>
+                        <td>Adventurers Outpost</td>
+                        <td>18</td>
+                        <td>26</td>
+                        <td>+8.1</td>
+                        <td>8.2</td>
+                    </tr>
+                    <tr>
+                        <td>Expedition Everest</td>
+                        <td>24</td>
+                        <td>24</td>
+                        <td>+1.0</td>
+                        <td>5.3</td>
+                    </tr>
+                    <tr>
+                        <td>Zootopia</td>
+                        <td>16</td>
+                        <td>12</td>
+                        <td class="light">-3.4</td>
+                        <td class="light">3.6</td>
+                    </tr>
+                    <tr>
+                        <td>Gorilla Falls Trail</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td class="light">+0.9</td>
+                        <td class="light">0.9</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Detected Closures / Downtime at Animal Kingdom</h3>
+            <p>These rides had gaps of 60+ minutes in posted wait times during operating hours, suggesting temporary closures or extended downtime:</p>
+            <ul>
+                <li><strong>Character Landing</strong> — no data from 12:15 PM to 1:55 PM (100 min gap)</li>
+            </ul>
+
+            <div class="blog-cta-box">
+                <p><strong>Get daily WTI forecasts for all 12 parks.</strong> Just type <code>/today</code> or <code>/crowd</code> in the Discord &mdash; free during beta.</p>
+                <a href="https://discord.gg/2Estr7sbP7" class="btn btn-primary" target="_blank" style="margin-top: 0.5rem;">Join the Discord &mdash; It's Free</a>
+            </div>
+
+            <p class="data-sources" style="font-size:0.85rem;color:var(--text-muted);margin-top:2rem;padding-top:1.25rem;border-top:1px solid var(--border);">&#128225; <strong style="color:var(--text-secondary);">Data Sources</strong> &mdash; Our models are trained on data from <a href="https://touringplans.com" target="_blank" style="color:var(--mid-blue);">TouringPlans</a>, <a href="https://queue-times.com" target="_blank" style="color:var(--mid-blue);">Queue-Times</a>, and <a href="https://www.thrill-data.com" target="_blank" style="color:var(--mid-blue);">Thrill-Data</a>. The models, techniques, and predictions are entirely our own.</p>
+            <p class="author-sig">Generated by the <a href="https://hazeydata.ai">Theme Park Crowd Report</a> team &mdash; data-driven crowd forecasts for 12 parks across Walt Disney World, Universal Orlando, and more.</p>
+        </article>
+    </div>
+
+    <footer class="blog-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="../../assets/icon.jpg" alt="" class="footer-icon">
+                <span>Theme Park Crowd Report</span>
+            </div>
+            <div class="footer-links">
+                <a href="/">HazeyData Hub</a>
+                <a href="/theme-park-crowd-report/">Home</a>
+                <a href="/theme-park-crowd-report/blog/">Blog</a>
+                <a href="/theme-park-crowd-report/pricing.html">Pricing</a>
+                <a href="/theme-park-crowd-report/bio.html">About</a>
+                <a href="https://discord.gg/2Estr7sbP7" target="_blank">Discord</a>
+                <a href="https://twitter.com/disneystatswhiz" target="_blank">Twitter</a>
+                <a href="mailto:fred@hazeydata.ai">Contact</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 hazeydata.ai</p>
+        </div>
+    </footer>
+</body>
+</html>
