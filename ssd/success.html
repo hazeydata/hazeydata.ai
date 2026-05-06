@@ -40,9 +40,9 @@
         <h1>Welcome to the School Schedule Database!</h1>
         <p>Your subscription is active and your API key is ready.</p>
 
-        <div class="key-box" id="key-display" onclick="navigator.clipboard.writeText(this.textContent).then(function(){document.querySelector('.copy-hint').textContent='Copied!'})">
+        <div class="key-box" id="key-display" onclick="copyKey()">
             <span class="copy-hint">Click to copy</span>
-            Loading your API key...
+            <span id="key-text">Loading your API key...</span>
         </div>
         <p><strong>Save this key now — it's shown only once.</strong> We store only a hash and cannot recover it for you.</p>
 
@@ -69,16 +69,25 @@
         </div>
     </div>
     <script>
+        function copyKey() {
+            var keyText = document.getElementById('key-text').textContent;
+            // Don't copy the loading placeholder or the fallback message
+            if (keyText.indexOf('ssd_live_') !== 0 && keyText.indexOf('ssd_trial_') !== 0) return;
+            navigator.clipboard.writeText(keyText).then(function () {
+                document.querySelector('.copy-hint').textContent = 'Copied!';
+            });
+        }
+
         (function () {
             var params = new URLSearchParams(window.location.search);
             var sessionId = params.get('session_id');
-            var keyDisplay = document.getElementById('key-display');
+            var keyTextEl = document.getElementById('key-text');
             var settled = false;
 
             function setKeyText(text) {
                 if (settled) return;
                 settled = true;
-                keyDisplay.childNodes[1].textContent = text;
+                keyTextEl.textContent = text;
             }
             function showFallback() {
                 setKeyText("We're processing your purchase. Your key will arrive by email within 2 minutes. If you don't see it, email fred@hazeydata.ai with your Stripe receipt and I'll send it directly.");
