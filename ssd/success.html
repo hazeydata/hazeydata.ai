@@ -69,24 +69,40 @@
         </div>
     </div>
     <script>
-        var params = new URLSearchParams(window.location.search);
-        var sessionId = params.get('session_id');
-        if (sessionId) {
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var sessionId = params.get('session_id');
+            var keyDisplay = document.getElementById('key-display');
+            var settled = false;
+
+            function setKeyText(text) {
+                if (settled) return;
+                settled = true;
+                keyDisplay.childNodes[1].textContent = text;
+            }
+            function showFallback() {
+                setKeyText("We're processing your purchase. Your key will arrive by email within 2 minutes. If you don't see it, email fred@hazeydata.ai with your Stripe receipt and I'll send it directly.");
+            }
+
+            if (!sessionId) { showFallback(); return; }
+
+            var timeoutId = setTimeout(showFallback, 10000);
+
             fetch('https://api.hazeydata.ai/ssd/key-reveal?session_id=' + encodeURIComponent(sessionId))
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    if (data.api_key) {
-                        document.getElementById('key-display').childNodes[1].textContent = data.api_key;
+                .then(function (r) { return r.json().then(function (data) { return { status: r.status, data: data }; }); })
+                .then(function (resp) {
+                    clearTimeout(timeoutId);
+                    if (resp.data && resp.data.api_key) {
+                        setKeyText(resp.data.api_key);
                     } else {
-                        document.getElementById('key-display').childNodes[1].textContent = 'Your key will be emailed to you shortly.';
+                        showFallback();
                     }
                 })
-                .catch(function() {
-                    document.getElementById('key-display').childNodes[1].textContent = 'Your key will be emailed to you shortly.';
+                .catch(function () {
+                    clearTimeout(timeoutId);
+                    showFallback();
                 });
-        } else {
-            document.getElementById('key-display').childNodes[1].textContent = 'Your key will be emailed to you shortly.';
-        }
+        })();
     </script>
 </body>
 </html>
