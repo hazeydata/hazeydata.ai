@@ -90,7 +90,7 @@
 <div class="wrap">
   <nav>
     <div class="brand">Hazey<b>Data</b></div>
-    <div class="navlinks"><a>Home</a><a style="color:var(--fg)">SSD</a><a>Blog</a><a>Docs</a><a class="navbtn">Get API access</a></div>
+    <div class="navlinks"><a href="/">Home</a><a href="/ssd/" style="color:var(--fg)">SSD</a><a href="/ssd/blog/">Blog</a><a href="/ssd/docs.html">Docs</a><a class="navbtn" href="#p" onclick="document.getElementById('p').scrollIntoView({behavior:'smooth'});return false;">Get API access</a></div>
   </nav>
 
   <section class="hero">
@@ -178,7 +178,7 @@
       <div class="pright">
         <div class="amt"><sup>$</sup>99</div>
         <div class="per mono">per month · cancel anytime</div>
-        <button class="btn primary" style="width:100%" data-ab="checkout">Get started →</button>
+        <button class="btn primary" style="width:100%" id="subscribe-btn" data-ab="checkout" onclick="subscribe()">Get started →</button>
         <div style="margin-top:14px;font-size:12px;color:var(--muted)">or $990/yr — save 2 months</div>
       </div>
     </div>
@@ -198,6 +198,17 @@
   </footer>
 </div>
 <script>
+  async function subscribe() {
+    var btn = document.getElementById('subscribe-btn');
+    btn.textContent = 'Redirecting to checkout...'; btn.disabled = true;
+    try {
+      var res = await fetch('https://api.hazeydata.ai/ssd/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ interval: 'month' }) });
+      var data = await res.json();
+      if (data.url) { window.location.href = data.url; }
+      else { alert('Error creating checkout session. Please try again.'); btn.textContent = 'Get started →'; btn.disabled = false; }
+    } catch(e) { alert('Error creating checkout session. Please try again.'); btn.textContent = 'Get started →'; btn.disabled = false; }
+  }
+
   const svg=document.getElementById('map');
   const NS='http://www.w3.org/2000/svg';
   const cols=['#3fe0a5','#3fe0a5','#3fe0a5','#3fe0a5','#ffcc55','#ff6b5b','#ff6b5b'];
