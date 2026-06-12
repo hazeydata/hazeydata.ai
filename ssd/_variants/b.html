@@ -109,7 +109,7 @@
         <span class="label mono">breaks_this_week.live</span>
         <span class="live"><span class="dot"></span> streaming</span>
       </div>
-      <div class="mapbox"><svg id="map" viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet"></svg></div>
+      <div class="mapbox"><svg id="map" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet"></svg></div>
       <div class="legend">
         <span><i style="background:#3fe0a5"></i>In session</span>
         <span><i style="background:#ffcc55"></i>Partial</span>
@@ -208,31 +208,53 @@
       else { alert('Error creating checkout session. Please try again.'); btn.textContent = 'Get started →'; btn.disabled = false; }
     } catch(e) { alert('Error creating checkout session. Please try again.'); btn.textContent = 'Get started →'; btn.disabled = false; }
   }
-
-  const svg=document.getElementById('map');
-  const NS='http://www.w3.org/2000/svg';
-  const cols=['#3fe0a5','#3fe0a5','#3fe0a5','#3fe0a5','#ffcc55','#ff6b5b','#ff6b5b'];
-  const nodes=[];
-  for(let i=0;i<320;i++){
-    const x=8+Math.random()*184, y=10+Math.random()*108;
-    const cx=(x-100)/96, cy=(y-62)/54;
-    if(cx*cx+cy*cy>1.02) continue;            // rough US blob
-    if(x<30&&y<40) continue;                    // carve NW pacific
-    const c=cols[Math.floor(Math.random()*cols.length)];
-    const r=.9+Math.random()*1.2;
-    const d=document.createElementNS(NS,'circle');
-    d.setAttribute('cx',x);d.setAttribute('cy',y);d.setAttribute('r',r);
-    d.setAttribute('fill',c);d.setAttribute('opacity',0.9);
-    svg.appendChild(d);nodes.push({el:d,base:c});
-  }
-  // subtle "breaks spreading" shimmer
-  setInterval(()=>{
-    for(let i=0;i<14;i++){
-      const n=nodes[Math.floor(Math.random()*nodes.length)];
-      if(!n)continue;
-      n.el.setAttribute('fill',Math.random()>.5?'#ff6b5b':n.base);
+</script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://d3js.org/topojson.v3.min.js"></script>
+<script>
+(function() {
+    // pct_confirmed per FIPS — baked in from dashboard-data.json
+    const coverage = {"02":75.5,"01":99.3,"05":92.3,"04":91.9,"06":92.6,"08":84.3,"09":94.1,"11":100.0,"10":94.7,"12":100.0,"13":95.6,"15":100.0,"19":82.7,"16":85.2,"17":81.7,"18":94.6,"20":88.6,"21":82.1,"22":94.3,"25":94.4,"24":100.0,"23":76.0,"26":89.9,"27":84.9,"29":83.8,"28":95.0,"30":73.5,"37":100.0,"38":71.9,"31":91.4,"33":82.8,"34":94.1,"35":82.0,"32":100.0,"36":94.9,"39":94.8,"40":92.6,"41":87.0,"42":94.8,"44":96.9,"45":94.0,"46":83.9,"47":94.6,"48":97.7,"49":92.7,"51":84.1,"50":78.0,"53":92.6,"55":90.2,"54":89.1,"56":85.4};
+    function stateColor(fips) {
+      const v = coverage[fips] || 0;
+      if (v >= 95) return '#3fe0a5';
+      if (v >= 85) return '#29b884';
+      if (v >= 75) return '#ffcc55';
+      return '#ff6b5b';
     }
-  },900);
+    const svgSel = d3.select('#map');
+    const projection = d3.geoAlbersUsa().scale(1280).translate([480, 300]);
+    const path = d3.geoPath().projection(projection);
+    d3.json('/ssd/us-states-10m.json').then(function(us) {
+      const states = topojson.feature(us, us.objects.states).features;
+      const paths = svgSel.selectAll('path.state')
+        .data(states)
+        .enter().append('path')
+          .attr('class', 'state')
+          .attr('d', path)
+          .attr('fill', d => stateColor(d.id))
+          .attr('stroke', '#0a0e14')
+          .attr('stroke-width', 1.0)
+          .attr('opacity', 0.9);
+      svgSel.append('path')
+        .datum(topojson.mesh(us, us.objects.states, (a, b) => a !== b))
+        .attr('d', path)
+        .attr('fill', 'none')
+        .attr('stroke', '#0a0e14')
+        .attr('stroke-width', 0.6)
+        .attr('opacity', 0.6);
+      const allPaths = paths.nodes();
+      setInterval(function() {
+        for (let i = 0; i < 4; i++) {
+          const el = allPaths[Math.floor(Math.random() * allPaths.length)];
+          if (!el) continue;
+          const orig = el.getAttribute('fill');
+          d3.select(el).transition().duration(300).attr('opacity', 1).attr('fill', '#ff6b5b')
+            .transition().duration(700).attr('opacity', 0.9).attr('fill', orig);
+        }
+      }, 1800);
+    });
+  })();
 </script>
 </body>
 </html>

@@ -94,16 +94,7 @@
     <div class="mapcard">
       <h4>Schools on break this week <span style="color:var(--accent2)">● live</span></h4>
       <div class="usmap">
-        <svg viewBox="0 0 200 125" preserveAspectRatio="xMidYMid meet">
-          <!-- stylized abstract US dot-grid -->
-          <g fill="#e9ddcb">
-            <!-- base scatter -->
-          </g>
-          <g>
-            <!-- generate a soft dotted map silhouette -->
-          </g>
-          <g id="dots"></g>
-        </svg>
+        <svg id="usmap-svg" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
       <div class="legend">
         <span><i style="background:#1f7a5c"></i>In session</span>
@@ -164,21 +155,56 @@
 </div>
 <script>
   // scatter dots to suggest a US map + live break coloring
-  const g=document.getElementById('dots');
-  const cols=['#1f7a5c','#1f7a5c','#1f7a5c','#e9b949','#c8553d'];
-  // rough US bounding silhouette via random points weighted to a wide blob
-  for(let i=0;i<260;i++){
-    const x=10+Math.random()*180, y=12+Math.random()*100;
-    // carve a rough US shape: skip corners
-    const cx=(x-100)/100, cy=(y-60)/55;
-    if(cx*cx+cy*cy>1.05) {continue;}
-    const c=cols[Math.floor(Math.random()*cols.length)];
-    const r=1+Math.random()*1.3;
-    const d=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    d.setAttribute('cx',x);d.setAttribute('cy',y);d.setAttribute('r',r);
-    d.setAttribute('fill',c);d.setAttribute('opacity',0.85);
-    g.appendChild(d);
+  // REPLACED: real D3 choropleth below
+</script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://d3js.org/topojson.v3.min.js"></script>
+<script>
+(function() {
+  // pct_confirmed per FIPS — baked in from dashboard-data.json
+  const coverage = {"02":75.5,"01":99.3,"05":92.3,"04":91.9,"06":92.6,"08":84.3,"09":94.1,"11":100.0,"10":94.7,"12":100.0,"13":95.6,"15":100.0,"19":82.7,"16":85.2,"17":81.7,"18":94.6,"20":88.6,"21":82.1,"22":94.3,"25":94.4,"24":100.0,"23":76.0,"26":89.9,"27":84.9,"29":83.8,"28":95.0,"30":73.5,"37":100.0,"38":71.9,"31":91.4,"33":82.8,"34":94.1,"35":82.0,"32":100.0,"36":94.9,"39":94.8,"40":92.6,"41":87.0,"42":94.8,"44":96.9,"45":94.0,"46":83.9,"47":94.6,"48":97.7,"49":92.7,"51":84.1,"50":78.0,"53":92.6,"55":90.2,"54":89.1,"56":85.4};
+  // colour: warm greens for high coverage, amber for partial
+  function stateColor(fips) {
+    const v = coverage[fips] || 0;
+    if (v >= 95) return '#1f7a5c';
+    if (v >= 85) return '#2d9970';
+    if (v >= 75) return '#e9b949';
+    return '#c8553d';
   }
+  const svg = d3.select('#usmap-svg');
+  const projection = d3.geoAlbersUsa().scale(1280).translate([480, 300]);
+  const path = d3.geoPath().projection(projection);
+  d3.json('/ssd/us-states-10m.json').then(function(us) {
+    const states = topojson.feature(us, us.objects.states).features;
+    const paths = svg.selectAll('path')
+      .data(states)
+      .enter().append('path')
+        .attr('d', path)
+        .attr('fill', d => stateColor(d.id))
+        .attr('stroke', '#fff')
+        .attr('stroke-width', 1.2)
+        .attr('opacity', 0.88);
+    // border mesh
+    svg.append('path')
+      .datum(topojson.mesh(us, us.objects.states, (a, b) => a !== b))
+      .attr('d', path)
+      .attr('fill', 'none')
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 0.8)
+      .attr('opacity', 0.5);
+    // shimmer: pulse random states to simulate live data
+    const allPaths = paths.nodes();
+    setInterval(function() {
+      for (let i = 0; i < 4; i++) {
+        const el = allPaths[Math.floor(Math.random() * allPaths.length)];
+        if (!el) continue;
+        const orig = el.getAttribute('fill');
+        d3.select(el).transition().duration(300).attr('opacity', 1).attr('fill', '#c8553d')
+          .transition().duration(700).attr('opacity', 0.88).attr('fill', orig);
+      }
+    }, 1800);
+  });
+})();
 </script>
 <script>
   async function subscribe() {
