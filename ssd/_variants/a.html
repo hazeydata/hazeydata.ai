@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SSD — Editorial</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ink:#16130f; --paper:#faf7f2; --paper2:#f1ece3;
+    --accent:#c8553d; --accent2:#1f7a5c; --line:#e3dccf; --muted:#6f675b;
+  }
+  body{font-family:"Inter",sans-serif;color:var(--ink);background:var(--paper);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+  h1,h2,h3{font-family:"Fraunces",serif;letter-spacing:-.01em;line-height:1.05}
+  a{color:inherit}
+  /* nav */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:26px 0;border-bottom:1px solid var(--line)}
+  .brand{font-family:"Fraunces",serif;font-weight:900;font-size:22px;letter-spacing:-.02em}
+  .brand span{color:var(--accent)}
+  .navlinks{display:flex;gap:30px;font-size:14px;font-weight:500;color:var(--muted)}
+  .navlinks a:hover{color:var(--ink)}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--accent2);background:#e7f1ec;padding:7px 14px;border-radius:100px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);box-shadow:0 0 0 0 rgba(31,122,92,.5);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(31,122,92,.5)}70%{box-shadow:0 0 0 8px rgba(31,122,92,0)}100%{box-shadow:0 0 0 0 rgba(31,122,92,0)}}
+  /* hero */
+  .hero{padding:72px 0 40px;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  .hero h1{font-size:62px;font-weight:900;margin:20px 0 22px}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .lede{font-size:19px;color:var(--muted);max-width:38ch;margin-bottom:30px}
+  .cta{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{font-family:"Inter";font-weight:600;font-size:15px;padding:14px 24px;border-radius:10px;border:1px solid var(--ink);cursor:pointer;background:var(--ink);color:var(--paper);transition:.15s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--paper2)}
+  /* map card */
+  .mapcard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 30px 60px -30px rgba(40,30,15,.25)}
+  .mapcard h4{font-family:"Inter";font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .usmap{position:relative;aspect-ratio:1.6/1;border-radius:12px;background:radial-gradient(120% 120% at 30% 20%,#fdf6ef,#f3eadd 60%,#efe6d8);overflow:hidden}
+  .usmap svg{width:100%;height:100%}
+  .legend{display:flex;gap:18px;margin-top:14px;font-size:12px;color:var(--muted)}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
+  /* metrics */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:30px 0 0}
+  .metric{padding:30px 24px;border-right:1px solid var(--line)}
+  .metric:last-child{border-right:0}
+  .metric .n{font-family:"Fraunces",serif;font-weight:900;font-size:40px;letter-spacing:-.02em}
+  .metric .n.a{color:var(--accent)}
+  .metric .l{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:6px}
+  /* section */
+  section{padding:80px 0}
+  .eyebrow{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--accent);margin-bottom:14px}
+  .h2{font-size:40px;font-weight:900;max-width:18ch;margin-bottom:14px}
+  .sub{color:var(--muted);font-size:18px;max-width:54ch;margin-bottom:44px}
+  .who{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .who .cell{background:var(--paper);padding:34px 28px}
+  .who .cell:hover{background:#fff}
+  .who .ic{font-size:26px;margin-bottom:14px}
+  .who h3{font-family:"Inter";font-size:18px;font-weight:700;margin-bottom:8px}
+  .who p{font-size:14.5px;color:var(--muted)}
+  /* pricing band */
+  .price{background:var(--ink);color:var(--paper);border-radius:22px;padding:56px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px}
+  .price h2{font-size:38px;font-weight:900;color:#fff;max-width:16ch}
+  .price p{color:#b8b0a3;margin-top:12px;max-width:40ch}
+  .pbox{text-align:center;background:#221d17;border:1px solid #342c22;border-radius:16px;padding:30px 40px}
+  .pbox .amt{font-family:"Fraunces",serif;font-weight:900;font-size:56px;color:#fff}
+  .pbox .amt sup{font-size:24px;vertical-align:super;color:var(--accent)}
+  .pbox .per{color:#b8b0a3;font-size:13px;margin-bottom:18px}
+  footer{border-top:1px solid var(--line);padding:40px 0;color:var(--muted);font-size:13px;display:flex;justify-content:space-between}
+  @media(max-width:900px){.hero{grid-template-columns:1fr}.metrics,.who{grid-template-columns:1fr 1fr}.price{grid-template-columns:1fr;text-align:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="brand">Hazey<span>Data</span></div>
+    <div class="navlinks"><a>Home</a><a>SSD</a><a>Blog</a><a>Docs</a><a>Contact</a></div>
+  </nav>
+
+  <section class="hero" style="padding-top:64px">
+    <div>
+      <span class="pill"><span class="dot"></span> Updated daily · 13,400+ districts</span>
+      <h1>Know when <em>every</em> school in America is on break.</h1>
+      <p class="lede">Day-level calendar data for all 50 states + DC. Spring break, winter break, summer — structured, scored, and ready for your demand model.</p>
+      <div class="cta">
+        <button class="btn" onclick="document.getElementById('p').scrollIntoView({behavior:'smooth'})" data-ab="api">Get API access — $99/mo</button>
+        <button class="btn ghost" data-ab="sample">Download free sample</button>
+      </div>
+    </div>
+    <div class="mapcard">
+      <h4>Schools on break this week <span style="color:var(--accent2)">● live</span></h4>
+      <div class="usmap">
+        <svg viewBox="0 0 200 125" preserveAspectRatio="xMidYMid meet">
+          <!-- stylized abstract US dot-grid -->
+          <g fill="#e9ddcb">
+            <!-- base scatter -->
+          </g>
+          <g>
+            <!-- generate a soft dotted map silhouette -->
+          </g>
+          <g id="dots"></g>
+        </svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#1f7a5c"></i>In session</span>
+        <span><i style="background:#e9b949"></i>Partial break</span>
+        <span><i style="background:#c8553d"></i>On break</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="metrics">
+    <div class="metric"><div class="n a">13,400+</div><div class="l">Districts</div></div>
+    <div class="metric"><div class="n">46M+</div><div class="l">Students</div></div>
+    <div class="metric"><div class="n">50 + DC</div><div class="l">States</div></div>
+    <div class="metric"><div class="n">3 yrs</div><div class="l">2024–2027</div></div>
+  </div>
+
+  <section>
+    <div class="eyebrow">Who uses this</div>
+    <h2 class="h2">School schedules are one of the strongest demand signals in America.</h2>
+    <p class="sub">When 46 million kids go on break, families move. Parks fill, flights book, hotels surge. We turn that into a clean feature for your pipeline.</p>
+    <div class="who">
+      <div class="cell"><div class="ic">🎢</div><h3>Theme parks</h3><p>Predict crowd spikes by knowing exactly when breaks start across every feeder market.</p></div>
+      <div class="cell"><div class="ic">🏨</div><h3>Hotels & travel</h3><p>Dynamic pricing tied to school calendars. See family surges before competitors do.</p></div>
+      <div class="cell"><div class="ic">📊</div><h3>Demand forecasting</h3><p>Airlines, rental cars, retail — anything that moves when families travel.</p></div>
+      <div class="cell"><div class="ic">🏛️</div><h3>Government & research</h3><p>Transportation planning, public health, education policy analysis.</p></div>
+      <div class="cell"><div class="ic">🔬</div><h3>Market research</h3><p>Regional seasonality at the district level. Which states start late? Unusual breaks?</p></div>
+      <div class="cell"><div class="ic">🧠</div><h3>ML features</h3><p>Drop school schedules straight into your model. A strong predictor for time-series.</p></div>
+    </div>
+  </section>
+
+  <section id="p" style="padding-top:0">
+    <div class="price">
+      <div>
+        <div class="eyebrow" style="color:#e9b949">One plan. Everything included.</div>
+        <h2>Plug every US school calendar into your pipeline.</h2>
+        <p>All districts. All three school years. Full API access (JSON + CSV). Confidence scores and NCES IDs for joining. Cancel anytime.</p>
+      </div>
+      <div class="pbox">
+        <div class="amt"><sup>$</sup>99</div>
+        <div class="per">per month</div>
+        <button class="btn" style="background:var(--accent);border-color:var(--accent);width:100%" data-ab="checkout">Get started →</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 HazeyData — School Schedule Database</span>
+    <span>Built from public data, verified by AI</span>
+  </footer>
+</div>
+<script>
+  // scatter dots to suggest a US map + live break coloring
+  const g=document.getElementById('dots');
+  const cols=['#1f7a5c','#1f7a5c','#1f7a5c','#e9b949','#c8553d'];
+  // rough US bounding silhouette via random points weighted to a wide blob
+  for(let i=0;i<260;i++){
+    const x=10+Math.random()*180, y=12+Math.random()*100;
+    // carve a rough US shape: skip corners
+    const cx=(x-100)/100, cy=(y-60)/55;
+    if(cx*cx+cy*cy>1.05) {continue;}
+    const c=cols[Math.floor(Math.random()*cols.length)];
+    const r=1+Math.random()*1.3;
+    const d=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    d.setAttribute('cx',x);d.setAttribute('cy',y);d.setAttribute('r',r);
+    d.setAttribute('fill',c);d.setAttribute('opacity',0.85);
+    g.appendChild(d);
+  }
+</script>
+</body>
+</html>

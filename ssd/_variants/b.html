@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SSD — Data Terminal</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0e14; --bg2:#0f141c; --panel:#121925; --line:#1e2836;
+    --fg:#e6edf3; --muted:#7d8aa0; --accent:#3fe0a5; --accent2:#5b9dff; --hot:#ff6b5b; --warn:#ffcc55;
+  }
+  body{font-family:"Space Grotesk",sans-serif;background:var(--bg);color:var(--fg);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .mono{font-family:"JetBrains Mono",monospace}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:1px solid var(--line)}
+  .brand{font-weight:700;font-size:18px;letter-spacing:-.01em}
+  .brand b{color:var(--accent)}
+  .navlinks{display:flex;gap:26px;font-size:13.5px;color:var(--muted);font-weight:500}
+  .navlinks a:hover{color:var(--fg)}
+  .navbtn{border:1px solid var(--line);padding:8px 16px;border-radius:8px;font-size:13px;color:var(--fg)}
+  .navbtn:hover{border-color:var(--accent);color:var(--accent)}
+  /* hero */
+  .hero{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:60px 0}
+  .tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--accent);border:1px solid rgba(63,224,165,.3);background:rgba(63,224,165,.07);padding:6px 12px;border-radius:100px}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.6s infinite}
+  @keyframes blink{50%{opacity:.3}}
+  h1{font-size:54px;font-weight:700;line-height:1.04;letter-spacing:-.025em;margin:18px 0 18px}
+  h1 .g{background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .lede{color:var(--muted);font-size:18px;max-width:42ch;margin-bottom:26px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .btn{font-family:"Space Grotesk";font-weight:600;font-size:14.5px;padding:13px 22px;border-radius:9px;cursor:pointer;border:1px solid transparent;transition:.15s}
+  .btn.primary{background:var(--accent);color:#04140d}
+  .btn.primary:hover{box-shadow:0 0 0 4px rgba(63,224,165,.18);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;border-color:var(--line);color:var(--fg)}
+  .btn.ghost:hover{border-color:var(--muted)}
+  /* terminal map panel */
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 40px 80px -40px rgba(0,0,0,.7)}
+  .panelhead{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--bg2)}
+  .tdot{width:11px;height:11px;border-radius:50%}
+  .panelhead .label{margin-left:10px;font-size:12px;color:var(--muted)}
+  .panelhead .live{margin-left:auto;font-size:11px;color:var(--accent);display:flex;align-items:center;gap:6px}
+  .mapbox{position:relative;aspect-ratio:1.55/1;background:radial-gradient(140% 120% at 50% 0%,#0e1722,#0a0e14)}
+  .mapbox svg{width:100%;height:100%}
+  .statline{display:flex;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+  .statline b{color:var(--fg)}
+  .legend{display:flex;gap:16px;padding:0 16px 14px;font-size:11.5px;color:var(--muted)}
+  .legend i{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:5px;vertical-align:middle}
+  /* metrics strip */
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:8px}
+  .strip .m{background:var(--bg2);padding:22px 20px}
+  .strip .m .n{font-size:30px;font-weight:700;letter-spacing:-.02em}
+  .strip .m .n.a{color:var(--accent)}
+  .strip .m .l{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:4px}
+  section{padding:72px 0}
+  .eyebrow{font-family:"JetBrains Mono";font-size:12px;color:var(--accent);letter-spacing:.05em;margin-bottom:12px}
+  h2{font-size:34px;font-weight:700;letter-spacing:-.02em;margin-bottom:12px}
+  .sub{color:var(--muted);font-size:17px;max-width:56ch;margin-bottom:38px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:26px 22px;transition:.15s}
+  .card:hover{border-color:rgba(63,224,165,.4);transform:translateY(-3px)}
+  .card .ic{font-size:22px;margin-bottom:12px}
+  .card h3{font-size:16.5px;font-weight:600;margin-bottom:7px}
+  .card p{font-size:14px;color:var(--muted)}
+  /* code sample */
+  .codewrap{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .codewrap .ch{padding:10px 16px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted);background:var(--bg2)}
+  pre{padding:20px;font-family:"JetBrains Mono";font-size:13px;line-height:1.7;overflow:auto;color:#c8d3e0}
+  .k{color:var(--accent2)} .s{color:var(--accent)} .c{color:#5a6678}
+  /* pricing */
+  .pricewrap{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .pleft{padding:40px;background:var(--panel)}
+  .pleft ul{list-style:none;margin-top:18px}
+  .pleft li{padding:7px 0;font-size:14.5px;color:var(--muted);display:flex;gap:10px}
+  .pleft li::before{content:"✓";color:var(--accent);font-weight:700}
+  .pright{padding:40px;background:linear-gradient(160deg,#10241c,#0c1a14);display:flex;flex-direction:column;justify-content:center;text-align:center;border-left:1px solid var(--line)}
+  .pright .amt{font-size:60px;font-weight:700;letter-spacing:-.03em}
+  .pright .amt sup{font-size:24px;color:var(--accent);vertical-align:super}
+  .pright .per{color:var(--muted);font-size:13px;margin-bottom:22px}
+  footer{border-top:1px solid var(--line);padding:34px 0;color:var(--muted);font-size:13px;display:flex;justify-content:space-between}
+  @media(max-width:900px){.hero,.pricewrap{grid-template-columns:1fr}.strip,.grid3{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="brand">Hazey<b>Data</b></div>
+    <div class="navlinks"><a>Home</a><a style="color:var(--fg)">SSD</a><a>Blog</a><a>Docs</a><a class="navbtn">Get API access</a></div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <span class="tag"><span class="dot"></span> Live · updated daily</span>
+      <h1>Know when <span class="g">every school</span> in America is on break.</h1>
+      <p class="lede">Day-level calendar data for 13,400+ districts. Every day classified, every cell confidence-scored. Built for demand models that move with families.</p>
+      <div class="cta">
+        <button class="btn primary" onclick="document.getElementById('p').scrollIntoView({behavior:'smooth'})" data-ab="api">Get API access — $99/mo</button>
+        <button class="btn ghost" data-ab="sample">Download free sample →</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panelhead">
+        <span class="tdot" style="background:#ff5f56"></span><span class="tdot" style="background:#ffbd2e"></span><span class="tdot" style="background:#27c93f"></span>
+        <span class="label mono">breaks_this_week.live</span>
+        <span class="live"><span class="dot"></span> streaming</span>
+      </div>
+      <div class="mapbox"><svg id="map" viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet"></svg></div>
+      <div class="legend">
+        <span><i style="background:#3fe0a5"></i>In session</span>
+        <span><i style="background:#ffcc55"></i>Partial</span>
+        <span><i style="background:#ff6b5b"></i>On break</span>
+      </div>
+      <div class="statline mono"><span><b id="pct">38%</b> of students off this week</span><span><b id="cnt">4,127</b> districts on break</span></div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="m"><div class="n a">13,400+</div><div class="l">Districts</div></div>
+    <div class="m"><div class="n">46M+</div><div class="l">Students</div></div>
+    <div class="m"><div class="n">50 + DC</div><div class="l">States covered</div></div>
+    <div class="m"><div class="n">365×3</div><div class="l">Days × school years</div></div>
+  </div>
+
+  <section>
+    <div class="eyebrow">// who_uses_this</div>
+    <h2>One of the strongest demand signals in America.</h2>
+    <p class="sub">When 46 million kids go on break, families move — parks fill, flights book, hotels surge. We turn that into a clean, joinable feature for your pipeline.</p>
+    <div class="grid3">
+      <div class="card"><div class="ic">🎢</div><h3>Theme parks</h3><p>Predict crowd spikes by knowing exactly when breaks start across every feeder market.</p></div>
+      <div class="card"><div class="ic">🏨</div><h3>Hotels & travel</h3><p>Dynamic pricing tied to school calendars. See family surges before competitors do.</p></div>
+      <div class="card"><div class="ic">📊</div><h3>Demand forecasting</h3><p>Airlines, rental cars, retail — anything that moves when families travel.</p></div>
+      <div class="card"><div class="ic">🏛️</div><h3>Government & research</h3><p>Transportation planning, public health, and education policy analysis.</p></div>
+      <div class="card"><div class="ic">🔬</div><h3>Market research</h3><p>Regional seasonality at the district level. Which states start late?</p></div>
+      <div class="card"><div class="ic">🧠</div><h3>ML features</h3><p>Drop schedules straight into your model. A strong time-series predictor.</p></div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="eyebrow">// api_access</div>
+    <h2>RESTful JSON or CSV. Dead simple.</h2>
+    <p class="sub">Query by district, date, or state. Every row carries a confidence score and source method.</p>
+    <div class="codewrap">
+      <div class="ch mono">GET /api/v1/days?district_id=FL_12000306&date=2026-03-27</div>
+      <pre class="mono">{
+  <span class="k">"district"</span>: <span class="s">"Alachua County"</span>,
+  <span class="k">"state"</span>: <span class="s">"FL"</span>,
+  <span class="k">"date"</span>: <span class="s">"2026-03-27"</span>,
+  <span class="k">"is_in_session"</span>: <span class="s">0.0</span>,
+  <span class="k">"day_type"</span>: <span class="s">"BREAK"</span>,
+  <span class="k">"break_name"</span>: <span class="s">"Spring Break"</span>,
+  <span class="k">"confidence"</span>: <span class="s">0.95</span>,
+  <span class="k">"source_method"</span>: <span class="s">"observed"</span>
+}</pre>
+    </div>
+  </section>
+
+  <section id="p" style="padding-top:0">
+    <div class="eyebrow">// pricing</div>
+    <h2>One plan. Everything included.</h2>
+    <p class="sub">No tiers, no upsells. All districts, all three school years, full API.</p>
+    <div class="pricewrap">
+      <div class="pleft">
+        <div style="font-weight:600;font-size:17px">Full access</div>
+        <ul>
+          <li>All 13,400+ districts nationwide</li>
+          <li>All 3 school years (2024–2027)</li>
+          <li>Day-level rows (365 per district / year)</li>
+          <li>Full API access — JSON + CSV</li>
+          <li>Confidence scores + source methods</li>
+          <li>NCES IDs for clean data joining</li>
+        </ul>
+      </div>
+      <div class="pright">
+        <div class="amt"><sup>$</sup>99</div>
+        <div class="per mono">per month · cancel anytime</div>
+        <button class="btn primary" style="width:100%" data-ab="checkout">Get started →</button>
+        <div style="margin-top:14px;font-size:12px;color:var(--muted)">or $990/yr — save 2 months</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 HazeyData — School Schedule Database</span>
+    <span class="mono">built from public data · verified by AI</span>
+  </footer>
+</div>
+<script>
+  const svg=document.getElementById('map');
+  const NS='http://www.w3.org/2000/svg';
+  const cols=['#3fe0a5','#3fe0a5','#3fe0a5','#3fe0a5','#ffcc55','#ff6b5b','#ff6b5b'];
+  const nodes=[];
+  for(let i=0;i<320;i++){
+    const x=8+Math.random()*184, y=10+Math.random()*108;
+    const cx=(x-100)/96, cy=(y-62)/54;
+    if(cx*cx+cy*cy>1.02) continue;            // rough US blob
+    if(x<30&&y<40) continue;                    // carve NW pacific
+    const c=cols[Math.floor(Math.random()*cols.length)];
+    const r=.9+Math.random()*1.2;
+    const d=document.createElementNS(NS,'circle');
+    d.setAttribute('cx',x);d.setAttribute('cy',y);d.setAttribute('r',r);
+    d.setAttribute('fill',c);d.setAttribute('opacity',0.9);
+    svg.appendChild(d);nodes.push({el:d,base:c});
+  }
+  // subtle "breaks spreading" shimmer
+  setInterval(()=>{
+    for(let i=0;i<14;i++){
+      const n=nodes[Math.floor(Math.random()*nodes.length)];
+      if(!n)continue;
+      n.el.setAttribute('fill',Math.random()>.5?'#ff6b5b':n.base);
+    }
+  },900);
+</script>
+</body>
+</html>
