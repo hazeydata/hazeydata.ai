@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>US School Calendar Database — 13,700 Districts, Day-Level Data | HazeyData</title>
-    <meta name="description" content="Complete US school calendar dataset. 13,700+ districts, 44M+ students. Day-level data with confidence scoring. API access $99/mo.">
+    <title>US School Calendar Database — 13,400 Districts, Day-Level Data | HazeyData</title>
+    <meta name="description" content="Complete US school calendar dataset. 13,400+ districts, 46M+ students. Day-level data with confidence scoring. API access $99/mo.">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/icon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icon-180.png">
     <meta name="theme-color" content="#0a1628">
     <link rel="canonical" href="https://hazeydata.ai/ssd/">
     <meta property="og:type" content="product">
     <meta property="og:url" content="https://hazeydata.ai/ssd/">
-    <meta property="og:title" content="US School Calendar Database — 13,700 Districts, Day-Level Data | HazeyData">
-    <meta property="og:description" content="Complete US school calendar dataset. 13,700+ districts, 44M+ students. Day-level data with confidence scoring. API access $99/mo.">
+    <meta property="og:title" content="US School Calendar Database — 13,400 Districts, Day-Level Data | HazeyData">
+    <meta property="og:description" content="Complete US school calendar dataset. 13,400+ districts, 46M+ students. Day-level data with confidence scoring. API access $99/mo.">
     <meta property="og:image" content="https://hazeydata.ai/assets/ssd-og-card.svg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@disneystatswhiz">
-    <meta name="twitter:title" content="US School Calendar Database — 13,700 Districts, Day-Level Data | HazeyData">
-    <meta name="twitter:description" content="Complete US school calendar dataset. 13,700+ districts, 44M+ students. Day-level data with confidence scoring. API access $99/mo.">
+    <meta name="twitter:title" content="US School Calendar Database — 13,400 Districts, Day-Level Data | HazeyData">
+    <meta name="twitter:description" content="Complete US school calendar dataset. 13,400+ districts, 46M+ students. Day-level data with confidence scoring. API access $99/mo.">
     <meta name="twitter:image" content="https://hazeydata.ai/assets/ssd-og-card.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -151,7 +151,7 @@
     <section class="hero" style="padding-bottom:20px;">
         <div class="hero-badge"><span class="dot"></span> Actively Growing -- Updated Daily</div>
         <h1>Know When Every School in America Is on Break</h1>
-        <p>Day-level school calendar data for 13,700+ districts, 44M+ students. API access for demand forecasting, travel planning, and market research.</p>
+        <p>Day-level school calendar data for 13,400+ districts, 46M+ students. API access for demand forecasting, travel planning, and market research.</p>
     </section>
 
     <section class="heatmap-section" id="heatmap" style="padding-top:10px;">
@@ -213,8 +213,8 @@
             </template>
         </div>
         <div class="hero-stats" style="margin-bottom:0;">
-            <div class="hero-stat"><div class="val">13,700+</div><div class="lbl">Districts</div></div>
-            <div class="hero-stat"><div class="val">44M+</div><div class="lbl">Students</div></div>
+            <div class="hero-stat"><div class="val">13,400+</div><div class="lbl">Districts</div></div>
+            <div class="hero-stat"><div class="val">46M+</div><div class="lbl">Students</div></div>
             <div class="hero-stat"><div class="val">50</div><div class="lbl">States + DC</div></div>
             <div class="hero-stat"><div class="val">3 Years</div><div class="lbl">2024-2027</div></div>
         </div>
@@ -257,8 +257,8 @@
         <p class="section-sub">Day-level rows for every public school district in the United States.</p>
         <div class="coverage-summary">
             <div class="coverage-stats">
-                <div class="coverage-stat"><div class="val">13,700+</div><div class="lbl">Districts</div></div>
-                <div class="coverage-stat"><div class="val">44M+</div><div class="lbl">Students</div></div>
+                <div class="coverage-stat"><div class="val">13,400+</div><div class="lbl">Districts</div></div>
+                <div class="coverage-stat"><div class="val">46M+</div><div class="lbl">Students</div></div>
                 <div class="coverage-stat"><div class="val">50 + DC</div><div class="lbl">States</div></div>
             </div>
             <p class="coverage-note">Every public school district in the US is represented with day-level rows across three school years. NCES IDs on every row for easy joins to Census, NCES, and other federal datasets. Confidence scores on every cell let you filter to high-quality rows for your use case.</p>
@@ -319,7 +319,7 @@
                 </div>
                 <button onclick="subscribe()" class="price-cta primary" id="subscribe-btn">Get Started</button>
                 <ul class="price-features">
-                    <li><span class="check">&#10003;</span> All 13,700+ districts nationwide</li>
+                    <li><span class="check">&#10003;</span> All 13,400+ districts nationwide</li>
                     <li><span class="check">&#10003;</span> All 3 school years (2024-2027)</li>
                     <li><span class="check">&#10003;</span> Day-level data (365 rows per district per year)</li>
                     <li><span class="check">&#10003;</span> Full API access (JSON + CSV)</li>
@@ -415,9 +415,9 @@
             var notIn = dayData.not_in_session_students || 0;
             var pct = dayData.national_pct || 0;
             if (notIn > 0) {
-                pctLabel.textContent = (notIn / 1000000).toFixed(1) + 'M students not in session (' + Math.round(100 - pct) + '% of 44M)';
+                pctLabel.textContent = (notIn / 1000000).toFixed(1) + 'M students not in session (' + Math.round(100 - pct) + '% of 46M)';
             } else {
-                pctLabel.textContent = Math.round(pct) + '% of 44M students in session';
+                pctLabel.textContent = Math.round(pct) + '% of 46M students in session';
             }
         }
 
