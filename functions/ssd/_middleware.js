@@ -51,6 +51,10 @@ export async function onRequest(context) {
   if (!res.ok) return next(); // fail open to the existing page if a variant is missing
 
   let html = await res.text();
+  // Strip the variant files' noindex when serving at the canonical /ssd/ URL.
+  // The raw variant files keep noindex (so direct hits aren't indexed as dupes),
+  // but /ssd/ itself MUST stay indexable. Remove any robots-noindex meta tag.
+  html = html.replace(/<meta[^>]*name=["']robots["'][^>]*>/gi, "");
   html = html.replace("</body>", beacon(variant, isBot) + "</body>");
 
   const headers = new Headers(res.headers);
