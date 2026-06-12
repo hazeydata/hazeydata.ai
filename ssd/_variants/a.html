@@ -144,7 +144,7 @@
       <div class="pbox">
         <div class="amt"><sup>$</sup>99</div>
         <div class="per">per month</div>
-        <button class="btn" style="background:var(--accent);border-color:var(--accent);width:100%" data-ab="checkout">Get started →</button>
+        <button class="btn" style="background:var(--accent);border-color:var(--accent);width:100%" data-ab="checkout" id="subscribe-btn" onclick="subscribe()">Get started →</button>
       </div>
     </div>
   </section>
@@ -178,6 +178,18 @@
     d.setAttribute('cx',x);d.setAttribute('cy',y);d.setAttribute('r',r);
     d.setAttribute('fill',c);d.setAttribute('opacity',0.85);
     g.appendChild(d);
+  }
+</script>
+<script>
+  async function subscribe() {
+    var btn = document.getElementById('subscribe-btn');
+    btn.textContent = 'Redirecting to checkout...'; btn.disabled = true;
+    try {
+      var res = await fetch('https://api.hazeydata.ai/ssd/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ interval: 'month' }) });
+      var data = await res.json();
+      if (data.url) { window.location.href = data.url; }
+      else { alert('Error creating checkout session. Please try again.'); btn.textContent = 'Get started →'; btn.disabled = false; }
+    } catch(e) { alert('Error creating checkout session. Please try again.'); btn.textContent = 'Get started →'; btn.disabled = false; }
   }
 </script>
 </body>
