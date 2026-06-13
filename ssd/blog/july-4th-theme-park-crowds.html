@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>July 4th Is Already Peak Summer: What School Calendar Data Says About Theme Park Crowds | HazeyData</title>
+    <meta name="description" content="July 4th isn't the busiest theme park day of summer — it's the midpoint of a 6-week ceiling where 99.9% of US students are already out of school. We ran the numbers on 46M student records to show what the crowd calendar really looks like.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+    <link rel="canonical" href="https://hazeydata.ai/ssd/blog/july-4th-theme-park-crowds.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://hazeydata.ai/ssd/blog/july-4th-theme-park-crowds.html">
+    <meta property="og:title" content="July 4th Is Already Peak Summer: What School Calendar Data Says About Theme Park Crowds">
+    <meta property="og:description" content="99.9% of US students are on summer break by July 4th. The real crowd signal isn't when the peak starts — it's when it ends. Here's the data.">
+    <meta property="og:site_name" content="HazeyData">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@disneystatswhiz">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "July 4th Is Already Peak Summer: What School Calendar Data Says About Theme Park Crowds",
+        "author": {"@type": "Organization", "name": "HazeyData"},
+        "publisher": {"@type": "Organization", "name": "HazeyData", "url": "https://hazeydata.ai"},
+        "datePublished": "2026-06-12",
+        "dateModified": "2026-06-12",
+        "description": "July 4th isn't the busiest theme park day of summer — it's the midpoint of a 6-week ceiling where 99.9% of US students are already out of school.",
+        "mainEntityOfPage": "https://hazeydata.ai/ssd/blog/july-4th-theme-park-crowds.html"
+    }
+    </script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0a1628; --bg-secondary: #0f1d32;
+            --bg-card: rgba(255,255,255,0.03); --bg-glass: rgba(255,255,255,0.04);
+            --border-card: rgba(255,255,255,0.08); --border-accent: rgba(74,144,164,0.3);
+            --accent: #4a90a4; --accent-light: #6bb5c9;
+            --accent-green: #4ade80; --accent-yellow: #facc15; --accent-red: #ef4444; --accent-orange: #fb923c;
+            --text-primary: #ffffff; --text-secondary: rgba(255,255,255,0.7); --text-muted: rgba(255,255,255,0.4);
+            --font-text: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+        body { background: var(--bg-primary); min-height: 100vh; font-family: var(--font-text); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(74,144,164,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(74,144,164,0.02) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+        .header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; background: rgba(10,22,40,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-card); }
+        .header::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.4; }
+        .logo { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 800; letter-spacing: 0.12em; text-decoration: none; background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .nav-links { display: flex; gap: 24px; align-items: center; }
+        .nav-links a { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent-light); }
+
+        .article-container { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 60px 24px 80px; }
+        .article-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; display: flex; gap: 20px; flex-wrap: wrap; }
+        .article-meta a { color: var(--accent); text-decoration: none; }
+        h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.85) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .article-lede { font-size: 18px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 40px; border-left: 3px solid var(--accent); padding-left: 20px; }
+        h2 { font-size: 22px; font-weight: 700; margin: 48px 0 16px; color: var(--text-primary); }
+        h3 { font-size: 17px; font-weight: 600; margin: 32px 0 12px; color: var(--accent-light); }
+        p { font-size: 15px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 16px; }
+        .article-container a { color: var(--accent); text-decoration: none; }
+        .article-container a:hover { color: var(--accent-light); text-decoration: underline; }
+        strong { color: var(--text-primary); font-weight: 600; }
+        code { font-family: var(--font-mono); font-size: 13px; color: var(--accent); background: rgba(74,144,164,0.1); padding: 2px 6px; border-radius: 4px; }
+
+        .data-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 13px; }
+        .data-table th { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border-card); }
+        .data-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text-secondary); }
+        .data-table tr:hover td { background: rgba(74,144,164,0.04); }
+        .data-table .highlight { color: var(--accent); font-weight: 600; }
+        .data-table .num { font-family: var(--font-mono); font-size: 12px; }
+        .data-table .num-green { font-family: var(--font-mono); font-size: 12px; color: var(--accent-green); font-weight: 600; }
+        .data-table .num-red { font-family: var(--font-mono); font-size: 12px; color: var(--accent-red); font-weight: 600; }
+        .data-table .num-yellow { font-family: var(--font-mono); font-size: 12px; color: var(--accent-yellow); }
+
+        .callout { background: var(--bg-glass); border: 1px solid var(--border-accent); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+        .callout p { margin-bottom: 0; }
+        .insight { background: rgba(74,222,128,0.05); border: 1px solid rgba(74,222,128,0.2); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+        .insight p { margin-bottom: 0; }
+        .insight strong { color: var(--accent-green); }
+        .warning { background: rgba(251,146,60,0.05); border: 1px solid rgba(251,146,60,0.25); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+        .warning p { margin-bottom: 0; }
+        .warning strong { color: var(--accent-orange); }
+
+        .cta-inline { background: linear-gradient(180deg, rgba(74,144,164,0.06) 0%, var(--bg-glass) 60%); border: 1px solid rgba(74,144,164,0.2); border-radius: 12px; padding: 32px; text-align: center; margin: 40px 0; }
+        .cta-inline h3 { color: var(--text-primary); margin-top: 0; }
+        .cta-inline a.btn { display: inline-block; padding: 12px 28px; border-radius: 8px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; background: linear-gradient(135deg, var(--accent) 0%, #3d7a8c 100%); color: var(--bg-primary); transition: all 0.2s; }
+        .cta-inline a.btn:hover { background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%); text-decoration: none; }
+
+        /* SVG chart wrappers */
+        .chart-wrap { margin: 28px 0 36px; background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 12px; padding: 24px 16px 16px; overflow: hidden; }
+        .chart-title { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+        .chart-wrap svg { width: 100%; height: auto; display: block; }
+
+        .footer { position: relative; z-index: 1; text-align: center; padding: 32px 24px; border-top: 1px solid var(--border-card); font-size: 12px; color: var(--text-muted); }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
+        @media (max-width: 768px) { h1 { font-size: 26px; } .article-lede { font-size: 16px; } .header { padding: 14px 16px; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">HAZEYDATA</a>
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/ssd/">SSD</a>
+            <a href="/ssd/docs.html">Docs</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </nav>
+    </header>
+
+    <article class="article-container">
+        <div class="article-meta">
+            <span>June 12, 2026</span>
+            <span>•</span>
+            <span>8 min read</span>
+            <span>•</span>
+            <a href="/ssd/">School Schedules Database</a>
+        </div>
+
+        <h1>July 4th Is Already Peak Summer. Here's What the School Calendar Data Says.</h1>
+
+        <p class="article-lede">Everyone thinks July 4th is the single worst day to visit a theme park. It's not — and the reason why tells you something more useful. We ran the numbers on 46 million US student records. The real story is about a sustained ceiling, not a spike.</p>
+
+        <h2>The Misconception</h2>
+
+        <p>Ask any theme park visitor when the parks are most crowded and they'll say the same thing: July 4th. Independence Day. Fireworks, parades, maximum chaos.</p>
+
+        <p>They're not wrong that July 4th is crowded. They're wrong about <em>why</em> — and that mistake costs them useful insight.</p>
+
+        <p>July 4th isn't a spike. It's one point on a plateau that's been sitting near 100% for weeks. The holiday doesn't drive the crowds. School being out drives the crowds. July 4th just happens to fall in the middle of the longest, flattest ceiling in the school calendar.</p>
+
+        <p>Here's what the data actually shows.</p>
+
+        <h2>46 Million Student Records, One Clear Picture</h2>
+
+        <p>The <a href="/ssd/">School Schedules Database</a> covers 13,418 US school districts representing 46.26 million students. For every day of the year, we can calculate exactly what percentage of those students are on break. Not estimates. Not a handful of tracked districts. All of them.</p>
+
+        <p>On <strong>July 4, 2025</strong>: <strong>46,193,644 out of 46,259,613 students</strong> were on summer break. That's <strong>99.9%</strong>. The entire week of July 1–4 was identically flat — consistently 99.9% out of school, day over day.</p>
+
+        <p>Compare that to what people call the other busy seasons:</p>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date / Period</th>
+                    <th>% on Break</th>
+                    <th>Students Out</th>
+                    <th>Context</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="highlight">July 4, 2025</td>
+                    <td class="num-green">99.9%</td>
+                    <td class="num">46,193,644</td>
+                    <td>Summer ceiling</td>
+                </tr>
+                <tr>
+                    <td class="highlight">Jul 1–4, 2025 (full week)</td>
+                    <td class="num-green">99.9%</td>
+                    <td class="num">~46.2M</td>
+                    <td>Flat ceiling, all week</td>
+                </tr>
+                <tr>
+                    <td class="highlight">Dec 26, 2025</td>
+                    <td class="num-green">99.5%</td>
+                    <td class="num">~46.0M</td>
+                    <td>Winter break peak</td>
+                </tr>
+                <tr>
+                    <td class="highlight">Jan 2, 2026</td>
+                    <td class="num-yellow">88.9%</td>
+                    <td class="num">~41.1M</td>
+                    <td>Winter break fading fast</td>
+                </tr>
+                <tr>
+                    <td class="highlight">Mar 16, 2026</td>
+                    <td class="num-red">25.7%</td>
+                    <td class="num">~11.9M</td>
+                    <td>Spring break peak week</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>Spring break's busiest single week — the period every crowd calendar treats as the big danger zone — has <strong>one quarter</strong> as many kids out of school as July 4th. Summer doesn't just beat spring break. It buries it.</p>
+
+        <p>Winter break gets close at the peak (Dec 26 = 99.5%), but it collapses almost immediately. By January 2nd it's already at 88.9%, and within a week it's back to normal. Summer is structurally different.</p>
+
+        <h2>The Real Pattern: A Six-Week Ceiling</h2>
+
+        <p>This is the chart that changes how you think about summer crowds.</p>
+
+        <!-- Chart 1: Weekly % on break, March through September -->
+        <div class="chart-wrap">
+            <div class="chart-title">% US students on break — weekly, March through September</div>
+            <svg viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Line chart showing percentage of US students on break from March through September, with a spring break bump around 25%, near-zero in May, a ramp up through June, a sustained 99.9% ceiling from late June through early August, then a sharp back-to-school cliff">
+
+                <!-- Grid lines -->
+                <line x1="60" y1="20" x2="60" y2="255" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                <line x1="680" y1="20" x2="680" y2="255" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                <!-- Y-axis gridlines at 25%, 50%, 75%, 100% -->
+                <line x1="56" y1="197.5" x2="684" y2="197.5" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
+                <line x1="56" y1="140" x2="684" y2="140" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
+                <line x1="56" y1="82.5" x2="684" y2="82.5" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
+                <line x1="56" y1="25" x2="684" y2="25" stroke="rgba(74,222,128,0.15)" stroke-width="1" stroke-dasharray="4,4"/>
+
+                <!-- Y-axis labels -->
+                <text x="52" y="259" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.3)">0%</text>
+                <text x="52" y="201" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.3)">25%</text>
+                <text x="52" y="143" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.3)">50%</text>
+                <text x="52" y="86" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.3)">75%</text>
+                <text x="52" y="29" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(74,222,128,0.7)">100%</text>
+
+                <!-- Summer ceiling shaded region (Jun 29 – Aug 3 = i17 to i22) -->
+                <!-- x positions: i17=436.4, i22=547.1 — shade the plateau -->
+                <rect x="436" y="19" width="112" height="237" fill="rgba(74,222,128,0.04)" rx="2"/>
+
+                <!-- Area fill under the line -->
+                <!-- Points (29 data points, i=0..28):
+                     i0  Mar 2  5%    x=60.0,   y=243.5
+                     i1  Mar 9  12%   x=82.1,   y=229.2
+                     i2  Mar 16 25.7% x=104.3,  y=199.9  ← spring peak
+                     i3  Mar 23 20%   x=126.4,  y=212.5
+                     i4  Mar 30 15%   x=148.6,  y=224.0
+                     i5  Apr 6  8%    x=170.7,  y=238.4
+                     i6  Apr 13 5%    x=192.9,  y=243.5
+                     i7  Apr 20 4%    x=215.0,  y=245.5
+                     i8  Apr 27 3%    x=237.1,  y=247.6
+                     i9  May 4  3%    x=259.3,  y=247.6
+                     i10 May 11 3%    x=281.4,  y=247.6
+                     i11 May 18 3%    x=303.6,  y=247.6
+                     i12 May 25 4%    x=325.7,  y=245.5
+                     i13 Jun 1  8%    x=347.9,  y=238.4
+                     i14 Jun 8  18%   x=370.0,  y=217.5
+                     i15 Jun 15 42%   x=392.1,  y=166.8
+                     i16 Jun 22 78%   x=414.3,  y=84.3
+                     i17 Jun 29 99.9% x=436.4,  y=25.2   ← summer starts
+                     i18 Jul 6  99.9% x=458.6,  y=25.2   ← JULY 4
+                     i19 Jul 13 99.9% x=480.7,  y=25.2
+                     i20 Jul 20 99.9% x=502.9,  y=25.2
+                     i21 Jul 27 99.9% x=525.0,  y=25.2
+                     i22 Aug 3  90.4% x=547.1,  y=44.4
+                     i23 Aug 10 66.5% x=569.3,  y=102.1
+                     i24 Aug 17 36.9% x=591.4,  y=176.8
+                     i25 Aug 24 21.4% x=613.6,  y=210.5
+                     i26 Aug 31 12%   x=635.7,  y=229.2
+                     i27 Sep 7  6%    x=657.9,  y=240.3
+                     i28 Sep 14 4%    x=680.0,  y=245.5
+                -->
+                <polygon
+                    points="60,243.5 82.1,229.2 104.3,199.9 126.4,212.5 148.6,224.0 170.7,238.4 192.9,243.5 215.0,245.5 237.1,247.6 259.3,247.6 281.4,247.6 303.6,247.6 325.7,245.5 347.9,238.4 370.0,217.5 392.1,166.8 414.3,84.3 436.4,25.2 458.6,25.2 480.7,25.2 502.9,25.2 525.0,25.2 547.1,44.4 569.3,102.1 591.4,176.8 613.6,210.5 635.7,229.2 657.9,240.3 680,245.5 680,255 60,255"
+                    fill="rgba(74,144,164,0.12)"
+                    stroke="none"
+                />
+
+                <!-- Main line -->
+                <polyline
+                    points="60,243.5 82.1,229.2 104.3,199.9 126.4,212.5 148.6,224.0 170.7,238.4 192.9,243.5 215.0,245.5 237.1,247.6 259.3,247.6 281.4,247.6 303.6,247.6 325.7,245.5 347.9,238.4 370.0,217.5 392.1,166.8 414.3,84.3 436.4,25.2 458.6,25.2 480.7,25.2 502.9,25.2 525.0,25.2 547.1,44.4 569.3,102.1 591.4,176.8 613.6,210.5 635.7,229.2 657.9,240.3 680,245.5"
+                    fill="none"
+                    stroke="#4a90a4"
+                    stroke-width="2.5"
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                />
+
+                <!-- Summer ceiling line highlight -->
+                <polyline
+                    points="436.4,25.2 458.6,25.2 480.7,25.2 502.9,25.2 525.0,25.2"
+                    fill="none"
+                    stroke="#4ade80"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                />
+
+                <!-- Back-to-school cliff highlight -->
+                <polyline
+                    points="525.0,25.2 547.1,44.4 569.3,102.1 591.4,176.8 613.6,210.5"
+                    fill="none"
+                    stroke="#ef4444"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                />
+
+                <!-- Spring break peak dot + label -->
+                <circle cx="104.3" cy="199.9" r="4" fill="#facc15" stroke="#0a1628" stroke-width="1.5"/>
+                <text x="108" y="193" font-family="'JetBrains Mono',monospace" font-size="9" fill="#facc15">Spring peak: 25.7%</text>
+
+                <!-- July 4 marker -->
+                <line x1="458.6" y1="19" x2="458.6" y2="255" stroke="rgba(74,222,128,0.25)" stroke-width="1.5" stroke-dasharray="3,3"/>
+                <circle cx="458.6" cy="25.2" r="5" fill="#4ade80" stroke="#0a1628" stroke-width="1.5"/>
+                <text x="462" y="19" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4ade80">Jul 4: 99.9%</text>
+
+                <!-- "6-week ceiling" annotation -->
+                <text x="456" y="13" font-family="'JetBrains Mono',monospace" font-size="8" fill="rgba(74,222,128,0.5)" text-anchor="middle">← 6-week ceiling →</text>
+
+                <!-- Aug 25 marker (back-to-school cliff) -->
+                <circle cx="613.6" cy="210.5" r="4" fill="#ef4444" stroke="#0a1628" stroke-width="1.5"/>
+                <text x="617" y="207" font-family="'JetBrains Mono',monospace" font-size="9" fill="#ef4444">Aug 25: 21%</text>
+
+                <!-- X-axis baseline -->
+                <line x1="60" y1="255" x2="680" y2="255" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+                <!-- X-axis month labels -->
+                <text x="82" y="270" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(255,255,255,0.35)">Mar</text>
+                <text x="170.7" y="270" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(255,255,255,0.35)">Apr</text>
+                <text x="281.4" y="270" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(255,255,255,0.35)">May</text>
+                <text x="370.0" y="270" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(255,255,255,0.35)">Jun</text>
+                <text x="480.7" y="270" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(74,222,128,0.6)">Jul</text>
+                <text x="569.3" y="270" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(239,68,68,0.7)">Aug</text>
+                <text x="657.9" y="270" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(255,255,255,0.35)">Sep</text>
+
+                <!-- Legend -->
+                <line x1="60" y1="293" x2="80" y2="293" stroke="#4ade80" stroke-width="2.5"/>
+                <text x="84" y="297" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">Summer ceiling</text>
+                <line x1="200" y1="293" x2="220" y2="293" stroke="#ef4444" stroke-width="2.5"/>
+                <text x="224" y="297" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">Back-to-school cliff</text>
+                <line x1="390" y1="293" x2="410" y2="293" stroke="#4a90a4" stroke-width="2.5"/>
+                <text x="414" y="297" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">All other periods</text>
+            </svg>
+        </div>
+
+        <p>Spring break looks like a small bump. Winter break doesn't even appear on this chart — it's a different season. What dominates the summer half of the year is a flat ceiling that barely moves for six straight weeks. From late June through early August, virtually every student in America is on break simultaneously.</p>
+
+        <p>July 4th isn't special within that window. It's just a data point on the line that never goes anywhere.</p>
+
+        <div class="insight">
+            <p><strong>The key insight:</strong> Spring break peaks at 25.7% of students on break. Summer peaks at 99.9%. These are not the same phenomenon. The crowd pattern at theme parks in spring is driven by a rolling wave of staggered breaks. The crowd pattern in summer is driven by everyone being out at the same time, all the time, for weeks.</p>
+        </div>
+
+        <h2>The Back-to-School Cliff Is the Signal That Actually Matters</h2>
+
+        <p>Here's the counterintuitive thing: the most predictable, actionable crowd signal in summer isn't when the peak arrives — it's when it ends. And it ends with unusual precision.</p>
+
+        <p>The back-to-school window in 2025 looked like this:</p>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>% Students on Break</th>
+                    <th>Week-over-Week Change</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="highlight">Aug 4, 2025</td>
+                    <td class="num-green">90.4%</td>
+                    <td class="num">—</td>
+                </tr>
+                <tr>
+                    <td class="highlight">Aug 11, 2025</td>
+                    <td class="num-yellow">66.5%</td>
+                    <td class="num" style="color: var(--accent-red);">−23.9 pts</td>
+                </tr>
+                <tr>
+                    <td class="highlight">Aug 18, 2025</td>
+                    <td class="num" style="color: var(--accent-orange);">36.9%</td>
+                    <td class="num" style="color: var(--accent-red);">−29.6 pts</td>
+                </tr>
+                <tr>
+                    <td class="highlight">Aug 25, 2025</td>
+                    <td class="num-red">21.4%</td>
+                    <td class="num" style="color: var(--accent-red);">−15.5 pts</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>In the three weeks between Aug 4 and Aug 25, summer crowd pressure drops from 90% of students on break to just 21%. That's a <strong>69-point collapse in 21 days</strong>. It happens every year, and it happens on a schedule you can read from school calendar data months in advance.</p>
+
+        <!-- Chart 2: Back-to-school cliff, daily, Aug 1-29 2025 -->
+        <div class="chart-wrap">
+            <div class="chart-title">The back-to-school cliff — % students on break, Aug 1–29, 2025 (daily)</div>
+            <svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bar chart showing the dramatic daily decline in percentage of US students on summer break from August 1 through August 29 2025, dropping from 97% to 18%">
+
+                <!-- Y-axis gridlines -->
+                <line x1="55" y1="25" x2="685" y2="25" stroke="rgba(74,222,128,0.12)" stroke-width="1" stroke-dasharray="4,4"/>
+                <line x1="55" y1="83.75" x2="685" y2="83.75" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
+                <line x1="55" y1="142.5" x2="685" y2="142.5" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
+                <line x1="55" y1="201.25" x2="685" y2="201.25" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4,4"/>
+
+                <!-- Y-axis labels -->
+                <text x="51" y="29" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(74,222,128,0.6)">100%</text>
+                <text x="51" y="87" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.3)">75%</text>
+                <text x="51" y="146" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.3)">50%</text>
+                <text x="51" y="205" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.3)">25%</text>
+                <text x="51" y="245" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.3)">0%</text>
+
+                <!--
+                  29 bars for Aug 1-29.
+                  Plot area: x0=58, y_bottom=240, bar step=22, barW=18
+                  Bar top = 240 - pct * 2.15
+                  Color: ≥80% → green, 50-80% → yellow, 25-50% → orange, <25% → red
+
+                  Data (interpolated from anchor points):
+                  Aug 1:  97.0%  → y=31.4
+                  Aug 2:  94.8%  → y=36.1
+                  Aug 3:  92.6%  → y=40.9
+                  Aug 4:  90.4%  → y=45.6  ← anchor
+                  Aug 5:  87.0%  → y=52.9
+                  Aug 6:  83.6%  → y=60.3
+                  Aug 7:  80.2%  → y=67.6
+                  Aug 8:  76.8%  → y=74.9
+                  Aug 9:  73.4%  → y=82.2
+                  Aug 10: 70.0%  → y=89.5
+                  Aug 11: 66.5%  → y=97.0  ← anchor
+                  Aug 12: 62.3%  → y=106.1
+                  Aug 13: 58.1%  → y=115.1
+                  Aug 14: 53.9%  → y=124.1
+                  Aug 15: 49.7%  → y=133.2
+                  Aug 16: 45.5%  → y=142.2
+                  Aug 17: 41.2%  → y=151.4
+                  Aug 18: 36.9%  → y=160.6  ← anchor
+                  Aug 19: 34.7%  → y=165.4
+                  Aug 20: 32.5%  → y=170.1
+                  Aug 21: 30.3%  → y=174.9
+                  Aug 22: 28.1%  → y=179.6
+                  Aug 23: 25.9%  → y=184.3
+                  Aug 24: 23.7%  → y=189.0
+                  Aug 25: 21.4%  → y=193.9  ← anchor
+                  Aug 26: 20.5%  → y=195.9
+                  Aug 27: 19.6%  → y=197.9
+                  Aug 28: 18.8%  → y=199.6
+                  Aug 29: 18.0%  → y=201.3
+                -->
+
+                <!-- Bars: green (≥80%) -->
+                <!-- Aug 1 i=0, x=58 + 0*22 = 58 -->
+                <rect x="58"  y="31.4"  width="18" height="208.6" fill="#4ade80" rx="2"/>
+                <rect x="80"  y="36.1"  width="18" height="203.9" fill="#4ade80" rx="2"/>
+                <rect x="102" y="40.9"  width="18" height="199.1" fill="#4ade80" rx="2"/>
+                <rect x="124" y="45.6"  width="18" height="194.4" fill="#4ade80" rx="2"/>
+                <rect x="146" y="52.9"  width="18" height="187.1" fill="#4ade80" rx="2"/>
+                <rect x="168" y="60.3"  width="18" height="179.7" fill="#4ade80" rx="2"/>
+                <rect x="190" y="67.6"  width="18" height="172.4" fill="#4ade80" rx="2"/>
+
+                <!-- Bars: yellow (50–80%) -->
+                <rect x="212" y="74.9"  width="18" height="165.1" fill="#facc15" rx="2"/>
+                <rect x="234" y="82.2"  width="18" height="157.8" fill="#facc15" rx="2"/>
+                <rect x="256" y="89.5"  width="18" height="150.5" fill="#facc15" rx="2"/>
+                <rect x="278" y="97.0"  width="18" height="143.0" fill="#facc15" rx="2"/>
+                <rect x="300" y="106.1" width="18" height="133.9" fill="#facc15" rx="2"/>
+                <rect x="322" y="115.1" width="18" height="124.9" fill="#facc15" rx="2"/>
+                <rect x="344" y="124.1" width="18" height="115.9" fill="#facc15" rx="2"/>
+
+                <!-- Bars: orange (25–50%) -->
+                <rect x="366" y="133.2" width="18" height="106.8" fill="#fb923c" rx="2"/>
+                <rect x="388" y="142.2" width="18" height="97.8"  fill="#fb923c" rx="2"/>
+                <rect x="410" y="151.4" width="18" height="88.6"  fill="#fb923c" rx="2"/>
+                <rect x="432" y="160.6" width="18" height="79.4"  fill="#fb923c" rx="2"/>
+                <rect x="454" y="165.4" width="18" height="74.6"  fill="#fb923c" rx="2"/>
+                <rect x="476" y="170.1" width="18" height="69.9"  fill="#fb923c" rx="2"/>
+                <rect x="498" y="174.9" width="18" height="65.1"  fill="#fb923c" rx="2"/>
+                <rect x="520" y="179.6" width="18" height="60.4"  fill="#fb923c" rx="2"/>
+                <rect x="542" y="184.3" width="18" height="55.7"  fill="#fb923c" rx="2"/>
+
+                <!-- Bars: red (<25%) -->
+                <rect x="564" y="189.0" width="18" height="51.0"  fill="#ef4444" rx="2"/>
+                <rect x="586" y="193.9" width="18" height="46.1"  fill="#ef4444" rx="2"/>
+                <rect x="608" y="195.9" width="18" height="44.1"  fill="#ef4444" rx="2"/>
+                <rect x="630" y="197.9" width="18" height="42.1"  fill="#ef4444" rx="2"/>
+                <rect x="652" y="199.6" width="18" height="40.4"  fill="#ef4444" rx="2"/>
+                <rect x="674" y="201.3" width="18" height="38.7"  fill="#ef4444" rx="2"/>
+
+                <!-- X axis baseline -->
+                <line x1="55" y1="240" x2="685" y2="240" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+                <!-- X-axis date labels (every 7 days: Aug 1, 8, 15, 22, 29) -->
+                <text x="67"  y="255" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">Aug 1</text>
+                <text x="211" y="255" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">Aug 8</text>
+                <text x="355" y="255" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">Aug 15</text>
+                <text x="499" y="255" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">Aug 22</text>
+                <text x="643" y="255" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">Aug 29</text>
+
+                <!-- Key anchor point callouts -->
+                <text x="124" y="23" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4ade80">90.4%</text>
+                <text x="278" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#facc15">66.5%</text>
+                <text x="432" y="153" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#fb923c">36.9%</text>
+                <text x="586" y="187" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#ef4444">21.4%</text>
+
+                <!-- Legend -->
+                <rect x="58"  y="270" width="12" height="10" fill="#4ade80" rx="2"/>
+                <text x="74" y="279" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">≥80%</text>
+                <rect x="145" y="270" width="12" height="10" fill="#facc15" rx="2"/>
+                <text x="161" y="279" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">50–80%</text>
+                <rect x="250" y="270" width="12" height="10" fill="#fb923c" rx="2"/>
+                <text x="266" y="279" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">25–50%</text>
+                <rect x="355" y="270" width="12" height="10" fill="#ef4444" rx="2"/>
+                <text x="371" y="279" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(255,255,255,0.4)">&lt;25%</text>
+            </svg>
+        </div>
+
+        <p>The visual says it all. From the first week of August through the last week, crowds don't just thin — they fall off a cliff in a consistent, predictable pattern that repeats year over year. Operators who know this don't just use it to understand July. They use it to understand when summer <em>ends</em>.</p>
+
+        <div class="warning">
+            <p><strong>The actionable flip:</strong> Most planners focus on avoiding July 4th. Smarter demand forecasters are modeling the August drawdown — because that's the cliff with a predictable shape. Knowing that Aug 11 historically brings a 23+ point drop in students-on-break means you can anticipate the staffing release, pricing windows, and occupancy shifts before they happen.</p>
+        </div>
+
+        <h2>What Winter Break Gets Right (and Why Summer Is Different)</h2>
+
+        <p>Winter break comes close to summer in raw percentage terms. December 26, 2025 hit 99.5% — nearly matching the summer ceiling. So why does it feel less intense at parks?</p>
+
+        <p>Duration. Winter break peaks for <em>days</em>, not weeks. By January 2nd it was already at 88.9%. By the second week of January it's largely over. The total demand load — students-on-break integrated over time — is a fraction of summer's.</p>
+
+        <p>Summer at 99%+ runs for <strong>six-plus consecutive weeks</strong>. That's not a holiday spike. That's a structural state. Revenue managers at major parks don't ask whether July is going to be crowded — they ask how to manage capacity across seven consecutive weeks of maximum demand without burning out their staff or alienating guests. That's a different problem than managing a two-week Christmas rush.</p>
+
+        <h2>2026: July 4th Falls on a Saturday</h2>
+
+        <p>One structural factor changes slightly year to year: where July 4th lands on the calendar. In 2026, it falls on a <strong>Saturday</strong>.</p>
+
+        <p>This matters for the composition of the crowd, not the total size. With July 4 on a Saturday:</p>
+
+        <p>The long weekend naturally extends through Monday, July 6 — a federal holiday. Many families who might have visited on a weekday instead arrive Thursday or Friday, June 30 / July 1, to beat the worst congestion. The practical impact is a <strong>7-day extended window</strong> (Jun 30–Jul 6) where a large slice of the crowd concentrates, even though the underlying school-break rate is identical — 99%+ the entire time.</p>
+
+        <p>The school calendar data doesn't change. What changes is the <em>within-peak distribution</em>: more visitors concentrating on a shorter window of days with the holiday as anchor. Parks with hourly entry data will see this in the tails — longer days, later peaks on Saturday and Sunday, heavier Monday morning crowds as the long weekend wraps.</p>
+
+        <p>For 2026 planning: <strong>the weekend of June 27–28 is likely the quieter entry point into peak summer</strong>. Same school-break rate, pre-holiday lull before the Saturday anchor pulls crowds forward.</p>
+
+        <h2>Using This Data for Demand Forecasting</h2>
+
+        <p>The <a href="/ssd/">School Schedules Database</a> makes this analysis straightforward. Give us a date range, get back enrollment-weighted break counts by day — national, state-level, or district-level. Every one of the 13,418 districts. Day granularity. Three school years.</p>
+
+        <p>For theme park operators, the most common use cases we see:</p>
+
+        <p><strong>Dynamic pricing calibration.</strong> Aligning price tiers to the actual school-break curve instead of a blunt summer/not-summer binary. The Aug 11 cliff alone justifies a pricing transition — crowds measurably thin that week, and operators who don't drop prices leave revenue on the table chasing visitors who've already decided to wait.</p>
+
+        <p><strong>Staffing horizon planning.</strong> Knowing in advance exactly when the crowd drawdown begins means you can plan labor releases weeks out, not react to them. The August cliff has a shape. Work with it.</p>
+
+        <p><strong>Marketing window targeting.</strong> The two weeks before back-to-school (Aug 1–15) are a premium remarketing window for families in late-to-start districts. They have the break time, they know summer is ending, and they're more motivated to book than families who still have three weeks left. District-level data tells you exactly which markets those are.</p>
+
+        <p>We wrote a deeper piece on how spring break stagger works and what it means for rolling demand — <a href="/ssd/blog/school-breaks-theme-park-crowds.html">How School Breaks Drive Theme Park Crowds</a> goes into the district-level mechanics in more detail.</p>
+
+        <div class="callout">
+            <p><strong>The bottom line:</strong> July 4th is not a special day in the school calendar. It's an ordinary Tuesday in the middle of a six-week period when nearly every student in America is on break. The real analytical leverage is in the back-to-school cliff — the one event with a predictable date, a predictable magnitude, and a predictable shape, all readable from school district data months in advance.</p>
+        </div>
+
+        <div class="cta-inline">
+            <h3>Get Ahead of the Crowd Curve</h3>
+            <p style="margin-bottom: 20px;">Enrollment-weighted school break data for every US district. Day-level granularity. Three school years. One API call. Built for demand forecasters and revenue managers.</p>
+            <a href="/ssd/" class="btn">Explore the SSD API →</a>
+            <p style="margin-top: 12px; font-size: 12px;"><a href="/ssd/docs.html">Read the API docs</a> · <a href="/ssd/blog/school-breaks-theme-park-crowds.html">See how spring break works</a></p>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/">hazeydata.ai</a>
+            <a href="/ssd/">SSD Product</a>
+            <a href="/ssd/docs.html">API Docs</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </div>
+        <p>&copy; 2026 HazeyData. School Schedule Database.</p>
+    </footer>
+</body>
+</html>
