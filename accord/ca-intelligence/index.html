@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CA Change Intelligence Reports | ACCORD</title>
+    <meta name="description" content="Structured intelligence on collective agreement changes for LR officers and departmental leadership. Article-level diffs, pay analysis, MOU review, and cross-CA comparison.">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/icon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/icon-180.png">
+    <meta name="theme-color" content="#26374A">
+    <link rel="canonical" href="https://hazeydata.ai/accord/ca-intelligence/">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hazeydata.ai/accord/ca-intelligence/">
+    <meta property="og:title" content="CA Change Intelligence Reports | ACCORD">
+    <meta property="og:description" content="Structured intelligence on collective agreement changes for LR officers and departmental leadership.">
+    <meta property="og:image" content="https://hazeydata.ai/assets/accord-og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CA Change Intelligence Reports | ACCORD">
+    <meta name="twitter:description" content="Structured intelligence on collective agreement changes for LR officers and departmental leadership.">
+    <meta name="twitter:image" content="https://hazeydata.ai/assets/accord-og.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "CA Change Intelligence Reports",
+        "description": "Structured collective agreement change analysis for LR officers and departmental leadership. Covers article-level diffs, pay rate analysis, MOU review, and cross-CA comparison.",
+        "url": "https://hazeydata.ai/accord/ca-intelligence/",
+        "provider": {
+            "@type": "Organization",
+            "name": "HazeyData",
+            "url": "https://hazeydata.ai/"
+        },
+        "serviceType": "Labour Relations Intelligence",
+        "areaServed": "CA",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "hazeydata.ai",
+            "url": "https://hazeydata.ai/"
+        }
+    }
+    </script>
+    <style>
+        :root {
+            --gc-blue: #26374A; --gc-blue-light: #335075; --gc-blue-lighter: #4a6fa5;
+            --gc-red: #AF3C43; --gc-red-dark: #8B1E2F; --gc-white: #FFFFFF;
+            --gc-grey-light: #F8F9FA; --gc-grey: #E5E5E5; --gc-grey-mid: #6C757D;
+            --gc-grey-dark: #333333; --accent-gold: #C8A951; --accent-teal: #2A7F8E;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--gc-grey-dark); line-height: 1.6; -webkit-font-smoothing: antialiased; background: var(--gc-white); }
+
+        /* ── Nav ── */
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; max-width: 1100px; margin: 0 auto; }
+        .nav-brand { font-weight: 800; font-size: 1rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+        .nav-brand .logo-mark { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.12em; background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: logo-shimmer 6s linear infinite; }
+        .nav-brand .logo-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #4a90a4; margin-left: 2px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; }
+        @keyframes logo-shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+        .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
+        .hamburger-btn, .lang-btn {
+            padding: 0.3rem 0.75rem; border: 1.5px solid var(--gc-grey); border-radius: 4px;
+            font-size: 0.75rem; font-weight: 600; background: white; color: var(--gc-grey-dark);
+            cursor: pointer; transition: all 0.2s;
+        }
+        .hamburger-btn:hover, .lang-btn:hover { border-color: var(--gc-blue); color: var(--gc-blue); }
+        .hamburger-menu {
+            display: none; position: absolute; top: 100%; right: 2rem;
+            background: white; border: 1px solid var(--gc-grey); border-radius: 8px;
+            box-shadow: var(--shadow); min-width: 200px; z-index: 1000;
+        }
+        .hamburger-menu.show { display: block; animation: slideDown 0.2s ease-out; }
+        .hamburger-menu a {
+            display: block; padding: 0.75rem 1rem; text-decoration: none;
+            color: var(--gc-grey-dark); font-size: 0.9rem; border-bottom: 1px solid var(--gc-grey);
+            transition: background 0.2s;
+        }
+        .hamburger-menu a:last-child { border-bottom: none; }
+        .hamburger-menu a:hover { background: var(--gc-grey-light); }
+        .hamburger-menu a.current { color: var(--gc-blue); font-weight: 600; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ── Structural ── */
+        .gc-bar { height: 4px; background: var(--gc-red); }
+        .info-banner { background: #fff9e6; text-align: center; padding: 0.5rem 1rem; font-size: 0.75rem; color: #5a5a5a; line-height: 1.4; }
+        .info-banner a { color: #335075; text-decoration: underline; }
+
+        /* ── Hero ── */
+        .hero {
+            background: var(--gc-blue);
+            color: var(--gc-white);
+            padding: 4rem 2rem 3.5rem;
+            text-align: center;
+        }
+        .hero .eyebrow {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.55);
+            margin-bottom: 1rem;
+        }
+        .hero h1 {
+            font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            max-width: 760px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero .tagline {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.75);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.65;
+        }
+        .hero-audiences {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        .audience-pill {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 20px;
+            padding: 0.35rem 0.9rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* ── Section scaffolding ── */
+        .section { padding: 3.5rem 2rem; max-width: 900px; margin: 0 auto; }
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--gc-red);
+            margin-bottom: 0.6rem;
+        }
+        .section h2 {
+            font-size: clamp(1.3rem, 3vw, 1.75rem);
+            font-weight: 800;
+            color: var(--gc-blue);
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+        .section p { color: var(--gc-grey-mid); line-height: 1.7; margin-bottom: 1rem; }
+        .section p:last-child { margin-bottom: 0; }
+
+        /* ── Problem section ── */
+        .problem-section { background: var(--gc-grey-light); }
+        .problem-section .inner { max-width: 900px; margin: 0 auto; padding: 3.5rem 2rem; }
+        .problem-bullets { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.85rem; }
+        .problem-bullet {
+            display: flex;
+            gap: 0.85rem;
+            align-items: flex-start;
+        }
+        .problem-bullet .icon {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            background: var(--gc-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.1rem;
+        }
+        .problem-bullet .icon svg { width: 14px; height: 14px; fill: white; }
+        .problem-bullet p { color: var(--gc-grey-dark); margin: 0; font-size: 0.95rem; line-height: 1.6; }
+
+        /* ── Components grid ── */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2rem;
+        }
+        .component-card {
+            background: var(--gc-white);
+            border: 1px solid var(--gc-grey);
+            border-radius: 10px;
+            padding: 1.5rem 1.75rem;
+            box-shadow: var(--shadow);
+        }
+        .component-card .card-number {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gc-red);
+            margin-bottom: 0.5rem;
+        }
+        .component-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gc-blue);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        .component-card p {
+            font-size: 0.875rem;
+            color: var(--gc-grey-mid);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ── Sample report preview ── */
+        .report-preview-wrap {
+            background: var(--gc-grey-light);
+            border: 1px solid var(--gc-grey);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow);
+        }
+        .report-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 2px solid var(--gc-blue);
+        }
+        .report-preview-header .report-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gc-blue);
+        }
+        .report-preview-header .report-meta {
+            font-size: 0.7rem;
+            color: var(--gc-grey-mid);
+            line-height: 1.6;
+            text-align: right;
+        }
+        .preview-label {
+            display: inline-block;
+            background: var(--gc-blue);
+            color: white;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.55rem;
+            border-radius: 3px;
+            margin-bottom: 1rem;
+        }
+        .report-section-heading {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gc-grey-mid);
+            margin-bottom: 0.6rem;
+        }
+        .diff-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            margin-bottom: 1.5rem;
+        }
+        .diff-table th {
+            background: var(--gc-blue);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.55rem 0.75rem;
+            text-align: left;
+        }
+        .diff-table td {
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid var(--gc-grey);
+            vertical-align: top;
+            color: var(--gc-grey-dark);
+            line-height: 1.5;
+        }
+        .diff-table tr:last-child td { border-bottom: none; }
+        .diff-table tr:nth-child(even) td { background: #f8f9fa; }
+
+        /* Change type badges */
+        .badge {
+            display: inline-block;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.55rem;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+        .badge-admin { background: #e8f0fe; color: #1a56db; }
+        .badge-modified { background: #fef3c7; color: #92400e; }
+        .badge-new-provision { background: #d1fae5; color: #065f46; }
+        .badge-new-article { background: #ede9fe; color: #5b21b6; }
+        .badge-new-mou { background: #e0f2fe; color: #0c4a6e; }
+
+        /* Cross-CA flags */
+        .flag { display: inline-block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 3px; white-space: nowrap; }
+        .flag-standard { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .flag-trend { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+        .flag-novel { background: #fef2f2; color: var(--gc-red-dark); border: 1px solid #fecaca; }
+
+        .report-footnote {
+            font-size: 0.7rem;
+            color: var(--gc-grey-mid);
+            border-top: 1px solid var(--gc-grey);
+            padding-top: 0.75rem;
+            font-style: italic;
+        }
+
+        /* ── Audience cards ── */
+        .audience-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .audience-card {
+            border: 1px solid var(--gc-grey);
+            border-radius: 10px;
+            padding: 2rem;
+            background: var(--gc-white);
+            box-shadow: var(--shadow);
+        }
+        .audience-card .aud-icon {
+            font-size: 1.6rem;
+            margin-bottom: 0.75rem;
+        }
+        .audience-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gc-blue);
+            margin-bottom: 0.75rem;
+        }
+        .audience-card ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+        .audience-card ul li {
+            font-size: 0.88rem;
+            color: var(--gc-grey-mid);
+            padding-left: 1.25rem;
+            position: relative;
+            line-height: 1.55;
+        }
+        .audience-card ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--gc-red);
+            font-weight: 700;
+        }
+
+        /* ── CTA section ── */
+        .cta-section {
+            background: var(--gc-blue);
+            color: var(--gc-white);
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .cta-section h2 {
+            font-size: clamp(1.4rem, 3vw, 1.9rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+        .cta-section p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.95rem;
+            max-width: 540px;
+            margin: 0 auto 2rem;
+            line-height: 1.65;
+        }
+        .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-primary {
+            display: inline-block;
+            background: var(--gc-red);
+            color: white;
+            font-weight: 700;
+            font-size: 0.92rem;
+            padding: 0.85rem 1.75rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s;
+            letter-spacing: 0.01em;
+        }
+        .btn-primary:hover { background: var(--gc-red-dark); }
+        .btn-secondary {
+            display: inline-block;
+            background: transparent;
+            color: rgba(255,255,255,0.85);
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 0.85rem 1.75rem;
+            border-radius: 6px;
+            border: 1.5px solid rgba(255,255,255,0.35);
+            text-decoration: none;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .btn-secondary:hover { border-color: white; color: white; }
+
+        /* ── Availability note ── */
+        .availability-section { background: var(--gc-grey-light); }
+        .availability-section .inner {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .availability-section .avail-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+        .availability-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gc-blue);
+            margin-bottom: 0.3rem;
+        }
+        .availability-section p {
+            font-size: 0.875rem;
+            color: var(--gc-grey-mid);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ── Footer ── */
+        .footer { background: var(--gc-blue); color: rgba(255,255,255,0.5); text-align: center; padding: 2rem; font-size: 0.8rem; }
+        .footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+        .footer a:hover { color: white; }
+        .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+        .disclaimer { font-size: 0.7rem; color: rgba(255,255,255,0.35); max-width: 720px; margin: 1rem auto 0; line-height: 1.5; }
+        .disclaimer a { color: rgba(255,255,255,0.5); text-decoration: underline; }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .nav { padding: 1.25rem 1rem; }
+            .hamburger-menu { right: 1rem; min-width: 180px; }
+            .hero { padding: 3rem 1.5rem 2.5rem; }
+            .section { padding: 2.5rem 1.5rem; }
+            .problem-section .inner { padding: 2.5rem 1.5rem; }
+            .components-grid { grid-template-columns: 1fr; }
+            .audience-grid { grid-template-columns: 1fr; }
+            .report-preview-header .report-meta { text-align: left; }
+            .availability-section .inner { padding: 2rem 1.5rem; }
+            .diff-table { font-size: 0.76rem; }
+            .diff-table th, .diff-table td { padding: 0.5rem 0.55rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gc-bar"></div>
+    <div class="info-banner"
+        data-en="&#x2139;&#xFE0F; For information purposes only. Not affiliated with the Government of Canada. Always verify with the <a href='https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html'>official collective agreement text</a>."
+        data-fr="&#x2139;&#xFE0F; &Agrave; titre informatif seulement. Non affili&eacute; au gouvernement du Canada. Toujours v&eacute;rifier avec le <a href='https://www.canada.ca/fr/secretariat-conseil-tresor/services/conventions-collectives.html'>texte officiel de la convention collective</a>.">
+        &#x2139;&#xFE0F; For information purposes only. Not affiliated with the Government of Canada. Always verify with the <a href="https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html">official collective agreement text</a>.
+    </div>
+
+    <nav class="nav" style="position:relative;">
+        <a href="/" class="nav-brand"><span class="logo-mark">HAZEYDATA</span><span class="logo-dot"></span></a>
+        <div class="nav-actions">
+            <button class="hamburger-btn" onclick="toggleMenu()">&#9776;</button>
+            <button class="lang-btn" onclick="toggleLang()">FR</button>
+        </div>
+        <div class="hamburger-menu" id="hamburger-menu">
+            <a href="/" data-en="Home" data-fr="Accueil">Home</a>
+            <a href="/accord/" data-en="ACCORD" data-fr="ACCORD">ACCORD</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
+            <a href="/accord/paycheck-checker/" data-en="Paycheque Checker" data-fr="V&eacute;rificateur de paye">Paycheque Checker</a>
+            <a href="/accord/wfa-calculator/" data-en="WFA Calculator" data-fr="Calculateur RAE">WFA Calculator</a>
+            <a href="/accord/ca-intelligence/" class="current" data-en="CA Intelligence" data-fr="Intelligence CC">CA Intelligence</a>
+            <a href="/accord/guides/" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="/accord/blog/" data-en="Blog" data-fr="Blog">Blog</a>
+            <a href="mailto:fred@hazeydata.ai" data-en="Contact" data-fr="Contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+        <p class="eyebrow" data-en="ACCORD &mdash; CA Intelligence" data-fr="ACCORD &mdash; Intelligence CC">ACCORD &mdash; CA Intelligence</p>
+        <h1 data-en="CA Change Intelligence Reports" data-fr="Rapports d&rsquo;intelligence sur les modifications aux conventions collectives">CA Change Intelligence Reports</h1>
+        <p class="tagline" data-en="Know what just changed before you negotiate." data-fr="Sachez ce qui a chang&eacute; avant de n&eacute;gocier.">Know what just changed before you negotiate.</p>
+        <div class="hero-audiences">
+            <span class="audience-pill" data-en="LR Officers" data-fr="Agents de RI">LR Officers</span>
+            <span class="audience-pill" data-en="Departmental Leadership" data-fr="Leadership minist&eacute;riel">Departmental Leadership</span>
+            <span class="audience-pill" data-en="ADM &amp; DM Level" data-fr="Niveau SMA &amp; SM">ADM &amp; DM Level</span>
+        </div>
+    </section>
+
+    <!-- ── The Problem ── -->
+    <div class="problem-section">
+        <div class="inner">
+            <p class="section-label" data-en="The Problem" data-fr="Le probl&egrave;me">The Problem</p>
+            <h2 data-en="The intelligence gap at every bargaining table" data-fr="Le manque de renseignements &agrave; chaque table de n&eacute;gociation">The intelligence gap at every bargaining table</h2>
+            <p data-en="Collective agreements in the federal public service are renegotiated every two to four years. When a settlement is reached for one group, the delta &mdash; what actually changed, and what precedent it sets &mdash; is buried in legal language across dozens of articles. Nobody synthesizes this at scale." data-fr="Les conventions collectives dans la fonction publique f&eacute;d&eacute;rale sont ren&eacute;goci&eacute;es tous les deux &agrave; quatre ans. Lorsqu&rsquo;un r&egrave;glement est conclu pour un groupe, les modifications &mdash; ce qui a r&eacute;ellement chang&eacute; et quel pr&eacute;c&eacute;dent cela &eacute;tablit &mdash; sont enfouies dans un langage juridique r&eacute;parti sur des dizaines d&rsquo;articles. Personne ne synth&eacute;tise cela &agrave; grande &eacute;chelle.">Collective agreements in the federal public service are renegotiated every two to four years. When a settlement is reached for one group, the delta &mdash; what actually changed, and what precedent it sets &mdash; is buried in legal language across dozens of articles. Nobody synthesizes this at scale.</p>
+            <div class="problem-bullets">
+                <div class="problem-bullet">
+                    <div class="icon">
+                        <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm.75 4.5v3.75l2.75 1.6-.75 1.3-3.25-1.9V5.5h1.25z"/></svg>
+                    </div>
+                    <p data-en="LR officers walk into negotiations without structured intelligence on what comparable groups just won. Preparation relies on memory, informal networks, or manual side-by-side reading of two PDFs." data-fr="Les agents de RI entrent dans les n&eacute;gociations sans renseignements structur&eacute;s sur ce que des groupes comparables viennent d&rsquo;obtenir. La pr&eacute;paration repose sur la m&eacute;moire, les r&eacute;seaux informels ou la lecture manuelle de deux PDF c&ocirc;te &agrave; c&ocirc;te.">LR officers walk into negotiations without structured intelligence on what comparable groups just won. Preparation relies on memory, informal networks, or manual side-by-side reading of two PDFs.</p>
+                </div>
+                <div class="problem-bullet">
+                    <div class="icon">
+                        <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm.75 4.5v3.75l2.75 1.6-.75 1.3-3.25-1.9V5.5h1.25z"/></svg>
+                    </div>
+                    <p data-en="Departmental leadership signs off on settlements without a clear picture of what was agreed to, what it costs, or how it compares to other groups. MOUs are often the last thing reviewed." data-fr="Le leadership minist&eacute;riel approuve les r&egrave;glements sans avoir une image claire de ce qui a &eacute;t&eacute; convenu, du co&ucirc;t ou de la comparaison avec d&rsquo;autres groupes. Les protocoles d&rsquo;accord sont souvent les derniers examin&eacute;s.">Departmental leadership signs off on settlements without a clear picture of what was agreed to, what it costs, or how it compares to other groups. MOUs are often the last thing reviewed.</p>
+                </div>
+                <div class="problem-bullet">
+                    <div class="icon">
+                        <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm.75 4.5v3.75l2.75 1.6-.75 1.3-3.25-1.9V5.5h1.25z"/></svg>
+                    </div>
+                    <p data-en="Novel provisions &mdash; those that no other group has &mdash; are indistinguishable from boilerplate unless you have read every CA in the system. Most people have not." data-fr="Les dispositions novatrices &mdash; celles qu&rsquo;aucun autre groupe ne poss&egrave;de &mdash; sont indiscernables du texte standard &agrave; moins d&rsquo;avoir lu toutes les conventions collectives du syst&egrave;me. La plupart des gens ne l&rsquo;ont pas fait.">Novel provisions &mdash; those that no other group has &mdash; are indistinguishable from boilerplate unless you have read every CA in the system. Most people have not.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── What ACCORD Produces ── -->
+    <section class="section">
+        <p class="section-label" data-en="The Report" data-fr="Le rapport">The Report</p>
+        <h2 data-en="Five components. One structured briefing." data-fr="Cinq composantes. Un expos&eacute; structur&eacute;.">Five components. One structured briefing.</h2>
+        <p data-en="Each CA Change Intelligence Report covers one recently-concluded collective agreement. Built from ACCORD&rsquo;s structured database of federal CAs covering groups including AI, PA, TC, EC, EX, and CX." data-fr="Chaque rapport d&rsquo;intelligence sur les modifications couvre une convention collective r&eacute;cemment conclue. Construit &agrave; partir de la base de donn&eacute;es structur&eacute;e d&rsquo;ACCORD couvrant les groupes AI, PA, TC, EC, EX, CX et d&rsquo;autres.">Each CA Change Intelligence Report covers one recently-concluded collective agreement. Built from ACCORD&rsquo;s structured database of federal CAs covering groups including AI, PA, TC, EC, EX, and CX.</p>
+        <div class="components-grid">
+            <div class="component-card">
+                <p class="card-number" data-en="01" data-fr="01">01</p>
+                <h3 data-en="Article-Level Diff" data-fr="Comparaison article par article">Article-Level Diff</h3>
+                <p data-en="Every changed article categorized: ADMIN (numbering/formatting), MODIFIED (substantive language change), NEW PROVISION (new clause in existing article), or NEW ARTICLE (net-new article). Side-by-side language excerpt included." data-fr="Chaque article modifi&eacute; est cat&eacute;goris&eacute; : ADMIN (num&eacute;rotation/mise en forme), MODIFI&Eacute; (changement de fond), NOUVELLE DISPOSITION (nouvelle clause dans un article existant) ou NOUVEL ARTICLE (article enti&egrave;rement nouveau). Extrait de langage c&ocirc;te &agrave; c&ocirc;te inclus.">Every changed article categorized: ADMIN (numbering/formatting), MODIFIED (substantive language change), NEW PROVISION (new clause in existing article), or NEW ARTICLE (net-new article). Side-by-side language excerpt included.</p>
+            </div>
+            <div class="component-card">
+                <p class="card-number" data-en="02" data-fr="02">02</p>
+                <h3 data-en="Pay Rate Analysis" data-fr="Analyse des taux de r&eacute;mun&eacute;ration">Pay Rate Analysis</h3>
+                <p data-en="Compound wage increases across all years of the agreement. Step progression tables at each level. Year-over-year effective dates. Comparison to prior agreement rates and to the broader federal pattern." data-fr="Augmentations salariales compos&eacute;es sur toutes les ann&eacute;es de la convention. Tableaux de progression d&rsquo;&eacute;chelon &agrave; chaque niveau. Dates d&rsquo;entr&eacute;e en vigueur annuelles. Comparaison avec les taux de la convention pr&eacute;c&eacute;dente et avec le mod&egrave;le f&eacute;d&eacute;ral g&eacute;n&eacute;ral.">Compound wage increases across all years of the agreement. Step progression tables at each level. Year-over-year effective dates. Comparison to prior agreement rates and to the broader federal pattern.</p>
+            </div>
+            <div class="component-card">
+                <p class="card-number" data-en="03" data-fr="03">03</p>
+                <h3 data-en="MOU Analysis" data-fr="Analyse des protocoles d&rsquo;accord">MOU Analysis</h3>
+                <p data-en="All memoranda of understanding and letters of agreement reviewed. New MOUs flagged. Cross-CA relevance assessed: does this MOU mirror something already in PA, TC, or EC? Is it group-specific or a pilot for wider adoption?" data-fr="Tous les protocoles d&rsquo;accord et lettres d&rsquo;entente sont examin&eacute;s. Les nouveaux protocoles sont signal&eacute;s. La pertinence inter-CC est &eacute;valu&eacute;e : ce protocole refl&egrave;te-t-il quelque chose qui existe d&eacute;j&agrave; dans PA, TC ou EC? Est-il propre au groupe ou un pilote pour une adoption plus large?">All memoranda of understanding and letters of agreement reviewed. New MOUs flagged. Cross-CA relevance assessed: does this MOU mirror something already in PA, TC, or EC? Is it group-specific or a pilot for wider adoption?</p>
+            </div>
+            <div class="component-card">
+                <p class="card-number" data-en="04" data-fr="04">04</p>
+                <h3 data-en="Cross-CA Comparison" data-fr="Comparaison inter-conventions">Cross-CA Comparison</h3>
+                <p data-en="Key provisions benchmarked across comparable groups. Each provision flagged as STANDARD (common across groups), TREND (appearing in 3+ recent agreements), or NOVEL (unique to this group). Novel provisions highlighted for negotiating consideration." data-fr="Les dispositions cl&eacute;s sont &eacute;talonn&eacute;es par rapport aux groupes comparables. Chaque disposition est identifi&eacute;e comme STANDARD (commune entre les groupes), TENDANCE (pr&eacute;sente dans 3+ conventions r&eacute;centes) ou NOVATRICE (unique &agrave; ce groupe).">Key provisions benchmarked across comparable groups. Each provision flagged as STANDARD (common across groups), TREND (appearing in 3+ recent agreements), or NOVEL (unique to this group). Novel provisions highlighted for negotiating consideration.</p>
+            </div>
+            <div class="component-card">
+                <p class="card-number" data-en="05" data-fr="05">05</p>
+                <h3 data-en="LR Officer Takeaways" data-fr="Points &agrave; retenir pour les agents de RI">LR Officer Takeaways</h3>
+                <p data-en="Synthesized briefing: what precedents were established, what the union is likely to table at comparable groups, and what management-side preparation is warranted. Plain language. Not legal advice." data-fr="Bri&egrave;fing synth&eacute;tis&eacute; : quels pr&eacute;c&eacute;dents ont &eacute;t&eacute; &eacute;tablis, ce que le syndicat est susceptible de pr&eacute;senter lors des n&eacute;gociations avec des groupes comparables, et quelle pr&eacute;paration est justifi&eacute;e du c&ocirc;t&eacute; de la direction. Langage clair. Pas de conseils juridiques.">Synthesized briefing: what precedents were established, what the union is likely to table at comparable groups, and what management-side preparation is warranted. Plain language. Not legal advice.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Sample Report Preview ── -->
+    <div style="background: var(--gc-grey-light); padding: 3.5rem 2rem;">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <p class="section-label" data-en="Sample Report" data-fr="Exemple de rapport">Sample Report</p>
+            <h2 style="font-size: clamp(1.3rem, 3vw, 1.75rem); font-weight: 800; color: var(--gc-blue); letter-spacing: -0.02em; margin-bottom: 0.5rem;"
+                data-en="AI Group &mdash; December 2025 Agreement" data-fr="Groupe AI &mdash; Convention de d&eacute;cembre 2025">AI Group &mdash; December 2025 Agreement</h2>
+            <p style="color: var(--gc-grey-mid); font-size: 0.9rem; margin-bottom: 0;"
+               data-en="The following is an excerpt from a CA Change Intelligence Report. Article numbers, language, and flags are representative of the report format." data-fr="Ce qui suit est un extrait d&rsquo;un rapport d&rsquo;intelligence sur les modifications. Les num&eacute;ros d&rsquo;articles, le langage et les indicateurs sont repr&eacute;sentatifs du format du rapport.">The following is an excerpt from a CA Change Intelligence Report. Article numbers, language, and flags are representative of the report format.</p>
+
+            <div class="report-preview-wrap" style="margin-top: 1.5rem;">
+                <div class="report-preview-header">
+                    <div>
+                        <div class="report-title" data-en="CA CHANGE INTELLIGENCE REPORT" data-fr="RAPPORT D'INTELLIGENCE SUR LES MODIFICATIONS CC">CA CHANGE INTELLIGENCE REPORT</div>
+                        <div style="font-size: 1rem; font-weight: 800; color: var(--gc-blue); margin-top: 0.15rem;"
+                             data-en="Applied Information Technology (AI) Group" data-fr="Groupe technologies de l&rsquo;information appliqu&eacute;e (AI)">Applied Information Technology (AI) Group</div>
+                    </div>
+                    <div class="report-meta">
+                        <div data-en="Agreement signed: December 2025" data-fr="Convention sign&eacute;e : d&eacute;cembre 2025">Agreement signed: December 2025</div>
+                        <div data-en="Prior agreement: November 2021" data-fr="Convention pr&eacute;c&eacute;dente : novembre 2021">Prior agreement: November 2021</div>
+                        <div data-en="Prepared by: ACCORD / hazeydata.ai" data-fr="Pr&eacute;par&eacute; par : ACCORD / hazeydata.ai">Prepared by: ACCORD / hazeydata.ai</div>
+                    </div>
+                </div>
+
+                <span class="preview-label" data-en="EXCERPT &mdash; ARTICLE CHANGE DIFF" data-fr="EXTRAIT &mdash; COMPARAISON DES MODIFICATIONS">EXCERPT &mdash; ARTICLE CHANGE DIFF</span>
+
+                <p class="report-section-heading" data-en="Section 2 of 5 &mdash; Article-Level Changes" data-fr="Section 2 sur 5 &mdash; Modifications au niveau des articles">Section 2 of 5 &mdash; Article-Level Changes</p>
+
+                <table class="diff-table">
+                    <thead>
+                        <tr>
+                            <th data-en="Article" data-fr="Article">Article</th>
+                            <th data-en="Title" data-fr="Titre">Title</th>
+                            <th data-en="Change Type" data-fr="Type de modification">Change Type</th>
+                            <th data-en="Summary" data-fr="R&eacute;sum&eacute;">Summary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="white-space: nowrap; font-family: monospace; font-weight: 600;">20.01</td>
+                            <td data-en="Hours of Work" data-fr="Heures de travail">Hours of Work</td>
+                            <td><span class="badge badge-modified" data-en="MODIFIED" data-fr="MODIFI&Eacute;">MODIFIED</span></td>
+                            <td style="font-size: 0.8rem;" data-en="Standard weekly hours reference updated from &ldquo;37.5 hours&rdquo; to &ldquo;37.5 hours per week, averaged over the work schedule.&rdquo; Interpretive clarification; no operational change." data-fr="La r&eacute;f&eacute;rence aux heures hebdomadaires standard a &eacute;t&eacute; mise &agrave; jour de &laquo;&nbsp;37,5 heures&nbsp;&raquo; &agrave; &laquo;&nbsp;37,5 heures par semaine, en moyenne sur l&rsquo;horaire de travail.&nbsp;&raquo; Pr&eacute;cision interpr&eacute;tative; aucun changement op&eacute;rationnel.">Standard weekly hours reference updated from &ldquo;37.5 hours&rdquo; to &ldquo;37.5 hours per week, averaged over the work schedule.&rdquo; Interpretive clarification; no operational change.</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap; font-family: monospace; font-weight: 600;">22 MOU</td>
+                            <td data-en="Remote Work Framework" data-fr="Cadre de t&eacute;l&eacute;travail">Remote Work Framework</td>
+                            <td><span class="badge badge-new-mou" data-en="NEW MOU" data-fr="NOUV. PROTOCOLE">NEW MOU</span></td>
+                            <td style="font-size: 0.8rem;" data-en="New MOU establishing a joint committee to review remote work requests within 30 days. Employer retains final authority. No comparable MOU exists in PA or TC; pilot provision unique to AI group." data-fr="Nouveau protocole d&rsquo;accord &eacute;tablissant un comit&eacute; mixte pour examiner les demandes de t&eacute;l&eacute;travail dans les 30 jours. L&rsquo;employeur conserve l&rsquo;autorit&eacute; finale. Aucun protocole comparable n&rsquo;existe dans PA ou TC; disposition pilote unique au groupe AI.">New MOU establishing a joint committee to review remote work requests within 30 days. Employer retains final authority. No comparable MOU exists in PA or TC; pilot provision unique to AI group.</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap; font-family: monospace; font-weight: 600;">31.04</td>
+                            <td data-en="Bereavement Leave" data-fr="Cong&eacute; de deuil">Bereavement Leave</td>
+                            <td><span class="badge badge-new-provision" data-en="NEW PROVISION" data-fr="NOUV. DISPOSITION">NEW PROVISION</span></td>
+                            <td style="font-size: 0.8rem;" data-en="New sub-clause (d) adds one additional day of bereavement leave for the loss of a miscarriage or stillbirth. PA group received identical language in October 2024; establishes as pattern provision." data-fr="Nouveau sous-alin&eacute;a (d) ajoute un jour suppl&eacute;mentaire de cong&eacute; de deuil pour la perte due &agrave; une fausse couche ou &agrave; une mortinaissance. Le groupe PA a re&ccedil;u un libell&eacute; identique en octobre 2024; s&rsquo;&eacute;tablit comme disposition de r&eacute;f&eacute;rence.">New sub-clause (d) adds one additional day of bereavement leave for the loss of a miscarriage or stillbirth. PA group received identical language in October 2024; establishes as pattern provision.</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap; font-family: monospace; font-weight: 600;">48</td>
+                            <td data-en="AI Skills Allowance" data-fr="Indemnit&eacute; comp&eacute;tences IA">AI Skills Allowance</td>
+                            <td><span class="badge badge-new-article" data-en="NEW ARTICLE" data-fr="NOUVEL ARTICLE">NEW ARTICLE</span></td>
+                            <td style="font-size: 0.8rem;" data-en="Entirely new article. Introduces a $3,500 annual allowance for employees who obtain approved AI/ML certifications. Employer maintains list of approved credentials. No comparable article in any other TBS group." data-fr="Article enti&egrave;rement nouveau. Introduit une indemnit&eacute; annuelle de 3&nbsp;500&nbsp;$ pour les employ&eacute;s qui obtiennent des certifications IA/AM approuv&eacute;es. L&rsquo;employeur maintient une liste d&rsquo;identifiants approuv&eacute;s. Aucun article comparable dans aucun autre groupe du SCT.">Entirely new article. Introduces a $3,500 annual allowance for employees who obtain approved AI/ML certifications. Employer maintains list of approved credentials. No comparable article in any other TBS group.</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap; font-family: monospace; font-weight: 600;">Sched. A</td>
+                            <td data-en="Salary Rates" data-fr="Taux de salaires">Salary Rates</td>
+                            <td><span class="badge badge-admin" data-en="ADMIN" data-fr="ADMIN">ADMIN</span></td>
+                            <td style="font-size: 0.8rem;" data-en="Updated salary schedules appended. Effective dates: April 1, 2024 (3.5%), April 1, 2025 (3.0%), April 1, 2026 (2.75%). Compound increase over 3 years: 9.53%." data-fr="Annexes salariales mises &agrave; jour. Dates d&rsquo;entr&eacute;e en vigueur : 1er avril 2024 (3,5&nbsp;%), 1er avril 2025 (3,0&nbsp;%), 1er avril 2026 (2,75&nbsp;%). Augmentation compos&eacute;e sur 3 ans : 9,53&nbsp;%.">Updated salary schedules appended. Effective dates: April 1, 2024 (3.5%), April 1, 2025 (3.0%), April 1, 2026 (2.75%). Compound increase over 3 years: 9.53%.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <span class="preview-label" data-en="EXCERPT &mdash; CROSS-CA COMPARISON" data-fr="EXTRAIT &mdash; COMPARAISON INTER-CC">EXCERPT &mdash; CROSS-CA COMPARISON</span>
+                <p class="report-section-heading" data-en="Section 4 of 5 &mdash; Selected Provisions Benchmarked Across Groups" data-fr="Section 4 sur 5 &mdash; Dispositions s&eacute;lectionn&eacute;es &eacute;talonn&eacute;es entre les groupes">Section 4 of 5 &mdash; Selected Provisions Benchmarked Across Groups</p>
+
+                <table class="diff-table">
+                    <thead>
+                        <tr>
+                            <th data-en="Provision" data-fr="Disposition">Provision</th>
+                            <th data-en="AI" data-fr="AI">AI</th>
+                            <th data-en="PA" data-fr="PA">PA</th>
+                            <th data-en="TC" data-fr="TC">TC</th>
+                            <th data-en="EC" data-fr="EC">EC</th>
+                            <th data-en="Flag" data-fr="Indicateur">Flag</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-size: 0.8rem;" data-en="Bereavement leave &mdash; pregnancy loss" data-fr="Cong&eacute; de deuil &mdash; perte de grossesse">Bereavement leave &mdash; pregnancy loss</td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                            <td><span class="flag flag-standard" data-en="STANDARD" data-fr="STANDARD">STANDARD</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 0.8rem;" data-en="Remote work joint review committee" data-fr="Comit&eacute; mixte d&rsquo;examen du t&eacute;l&eacute;travail">Remote work joint review committee</td>
+                            <td>&#10003;</td>
+                            <td>&mdash;</td>
+                            <td>&mdash;</td>
+                            <td>&mdash;</td>
+                            <td><span class="flag flag-novel" data-en="NOVEL" data-fr="NOVATRICE">NOVEL</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 0.8rem;" data-en="Compressed work week provisions" data-fr="Dispositions sur la semaine de travail compress&eacute;e">Compressed work week provisions</td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                            <td>&mdash;</td>
+                            <td><span class="flag flag-trend" data-en="TREND" data-fr="TENDANCE">TREND</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 0.8rem;" data-en="AI/ML skills allowance" data-fr="Indemnit&eacute; de comp&eacute;tences IA/AM">AI/ML skills allowance</td>
+                            <td>&#10003;</td>
+                            <td>&mdash;</td>
+                            <td>&mdash;</td>
+                            <td>&mdash;</td>
+                            <td><span class="flag flag-novel" data-en="NOVEL" data-fr="NOVATRICE">NOVEL</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p class="report-footnote" data-en="&#9432; This excerpt is from an ACCORD CA Change Intelligence Report. The full report includes pay rate tables, MOU analysis, and LR Officer Takeaways. Reports are produced on request; not publicly distributed." data-fr="&#9432; Cet extrait est tir&eacute; d&rsquo;un rapport d&rsquo;intelligence ACCORD. Le rapport complet comprend les tableaux de taux de salaires, l&rsquo;analyse des protocoles d&rsquo;accord et les points &agrave; retenir pour les agents de RI. Les rapports sont produits sur demande; non distribu&eacute;s publiquement.">&#9432; This excerpt is from an ACCORD CA Change Intelligence Report. The full report includes pay rate tables, MOU analysis, and LR Officer Takeaways. Reports are produced on request; not publicly distributed.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Audience Cards ── -->
+    <section class="section">
+        <p class="section-label" data-en="Who It&rsquo;s For" data-fr="Pour qui">Who It&rsquo;s For</p>
+        <h2 data-en="Two audiences. Different questions. Same report." data-fr="Deux publics. Des questions diff&eacute;rentes. Le m&ecirc;me rapport.">Two audiences. Different questions. Same report.</h2>
+        <div class="audience-grid">
+            <div class="audience-card">
+                <div class="aud-icon">&#128203;</div>
+                <h3 data-en="For LR Officers" data-fr="Pour les agents de RI">For LR Officers</h3>
+                <ul>
+                    <li data-en="What did comparable groups just win at their tables?" data-fr="Qu&rsquo;ont obtenu les groupes comparables lors de leurs n&eacute;gociations?">What did comparable groups just win at their tables?</li>
+                    <li data-en="Which provisions are novel &mdash; and which are now the pattern?" data-fr="Quelles dispositions sont novatrices &mdash; et lesquelles font maintenant r&eacute;f&eacute;rence?">Which provisions are novel &mdash; and which are now the pattern?</li>
+                    <li data-en="What should I expect the union to table in my next round?" data-fr="Quelles demandes puis-je anticiper de la part du syndicat lors de mon prochain cycle?">What should I expect the union to table in my next round?</li>
+                    <li data-en="Delivered by engagement. Pilot pricing from $5,000 per report." data-fr="Livr&eacute; par engagement. Prix pilote &agrave; partir de 5&nbsp;000&nbsp;$ par rapport.">Delivered by engagement. Pilot pricing from $5,000 per report.</li>
+                </ul>
+            </div>
+            <div class="audience-card">
+                <div class="aud-icon">&#127970;</div>
+                <h3 data-en="For Departmental Leadership" data-fr="Pour le leadership minist&eacute;riel">For Departmental Leadership</h3>
+                <ul>
+                    <li data-en="What exactly did we just agree to &mdash; in plain language?" data-fr="Qu&rsquo;avons-nous exactement accept&eacute; &mdash; en langage clair?">What exactly did we just agree to &mdash; in plain language?</li>
+                    <li data-en="What are the cost implications of the new pay schedule?" data-fr="Quelles sont les implications financi&egrave;res du nouveau bar&egrave;me salarial?">What are the cost implications of the new pay schedule?</li>
+                    <li data-en="Which new MOUs require operational follow-up?" data-fr="Quels nouveaux protocoles d&rsquo;accord n&eacute;cessitent un suivi op&eacute;rationnel?">Which new MOUs require operational follow-up?</li>
+                    <li data-en="Enterprise subscription available for multi-CA monitoring." data-fr="Abonnement institutionnel disponible pour le suivi de plusieurs conventions.">Enterprise subscription available for multi-CA monitoring.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Availability ── -->
+    <div class="availability-section">
+        <div class="inner">
+            <div class="avail-icon">&#128274;</div>
+            <div>
+                <h3 data-en="Currently available by engagement" data-fr="Actuellement disponible par engagement">Currently available by engagement</h3>
+                <p data-en="CA Change Intelligence Reports are not a self-serve product. Each report is produced by ACCORD&rsquo;s analysis pipeline and reviewed before delivery. Pilot pricing starts at $5,000 per report for a single collective agreement. Enterprise subscriptions for multi-CA monitoring are available for departmental clients. Contact us to discuss your requirements." data-fr="Les rapports d&rsquo;intelligence sur les modifications ne sont pas un produit libre-service. Chaque rapport est produit par le pipeline d&rsquo;analyse d&rsquo;ACCORD et examin&eacute; avant la livraison. Les prix pilotes commencent &agrave; 5&nbsp;000&nbsp;$ par rapport pour une seule convention collective. Des abonnements institutionnels pour le suivi de plusieurs conventions sont disponibles pour les clients minist&eacute;riels. Communiquez avec nous pour discuter de vos besoins.">CA Change Intelligence Reports are not a self-serve product. Each report is produced by ACCORD&rsquo;s analysis pipeline and reviewed before delivery. Pilot pricing starts at $5,000 per report for a single collective agreement. Enterprise subscriptions for multi-CA monitoring are available for departmental clients. Contact us to discuss your requirements.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CTA ── -->
+    <div class="cta-section">
+        <h2 data-en="Request a report for your collective agreement" data-fr="Demandez un rapport pour votre convention collective">Request a report for your collective agreement</h2>
+        <p data-en="Describe your group, the agreement you want analyzed, and your timeline. We will follow up within two business days." data-fr="D&eacute;crivez votre groupe, la convention que vous souhaitez analyser et votre &eacute;ch&eacute;ancier. Nous assurerons un suivi dans les deux jours ouvrables.">Describe your group, the agreement you want analyzed, and your timeline. We will follow up within two business days.</p>
+        <div class="cta-buttons">
+            <a href="mailto:fred@hazeydata.ai?subject=CA%20Change%20Intelligence%20Report%20Request&body=Group%20or%20agreement%3A%0ATimeline%3A%0AOrganization%3A%0A%0AAdditional%20context%3A"
+               class="btn-primary"
+               data-en="Request a Report &rarr;" data-fr="Demander un rapport &rarr;">Request a Report &rarr;</a>
+            <a href="/accord/demo/" class="btn-secondary"
+               data-en="See the ACCORD Demo &rarr;" data-fr="Voir la d&eacute;mo ACCORD &rarr;">See the ACCORD Demo &rarr;</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/">hazeydata.ai</a>
+            <a href="/accord/">ACCORD</a>
+            <a href="/accord/demo/" data-en="Demo" data-fr="D&eacute;mo">Demo</a>
+            <a href="/accord/paycheck-checker/" data-en="Paycheque Checker" data-fr="V&eacute;rificateur de paye">Paycheque Checker</a>
+            <a href="/accord/ca-intelligence/" data-en="CA Intelligence" data-fr="Intelligence CC">CA Intelligence</a>
+            <a href="/accord/guides/" data-en="Guides" data-fr="Guides">Guides</a>
+            <a href="/accord/blog/" data-en="Blog" data-fr="Blogue">Blog</a>
+            <a href="mailto:fred@hazeydata.ai">Contact</a>
+        </div>
+        <p class="disclaimer"
+           data-en="Disclaimer: The information provided on this site is for reference purposes only and does not constitute legal or professional advice. ACCORD is not affiliated with the Government of Canada, the Treasury Board Secretariat, or any federal bargaining agent. Always consult the official collective agreement text on <a href='https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html'>Canada.ca</a> for authoritative information. Use at your own risk."
+           data-fr="Avis juridique : Les renseignements fournis sur ce site le sont &agrave; titre informatif seulement et ne constituent pas des conseils juridiques ou professionnels. ACCORD n&rsquo;est pas affili&eacute; au gouvernement du Canada. Consultez toujours le texte officiel sur <a href='https://www.canada.ca/fr/secretariat-conseil-tresor/services/conventions-collectives.html'>Canada.ca</a>. Utilisation &agrave; vos propres risques.">Disclaimer: The information provided on this site is for reference purposes only and does not constitute legal or professional advice. ACCORD is not affiliated with the Government of Canada, the Treasury Board Secretariat, or any federal bargaining agent. Always consult the official collective agreement text on <a href="https://www.canada.ca/en/treasury-board-secretariat/services/collective-agreements.html">Canada.ca</a> for authoritative information. Use at your own risk.</p>
+        <p data-en="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada" data-fr="&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada">&copy; 2026 hazeydata.ai &mdash; Ottawa, Canada</p>
+    </footer>
+
+    <script>
+    var currentLang = localStorage.getItem('accord-lang') || 'en';
+    function applyLang() {
+        document.documentElement.lang = currentLang;
+        document.querySelector('.lang-btn').textContent = currentLang === 'en' ? 'FR' : 'EN';
+        document.querySelectorAll('[data-en][data-fr]').forEach(function(el) {
+            el.innerHTML = el.getAttribute('data-' + currentLang);
+        });
+    }
+    function toggleLang() {
+        currentLang = currentLang === 'en' ? 'fr' : 'en';
+        localStorage.setItem('accord-lang', currentLang);
+        applyLang();
+    }
+    function toggleMenu() {
+        const menu = document.getElementById('hamburger-menu');
+        menu.classList.toggle('show');
+    }
+    document.addEventListener('click', function(e) {
+        const menu = document.getElementById('hamburger-menu');
+        const hamburgerBtn = document.querySelector('.hamburger-btn');
+        if (!menu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+            menu.classList.remove('show');
+        }
+    });
+    applyLang();
+    </script>
+</body>
+</html>
