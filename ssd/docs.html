@@ -158,7 +158,7 @@ curl https://api.hazeydata.ai/ssd/v1/districts \
   <span class="key">"offset"</span>: <span class="number">0</span>,
   <span class="key">"districts"</span>: [
     {
-      <span class="key">"district_id"</span>: <span class="string">"FL_00870"</span>,
+      <span class="key">"district_id"</span>: <span class="string">"FL_1200390"</span>,
       <span class="key">"district_name"</span>: <span class="string">"Miami-Dade County Public Schools"</span>,
       <span class="key">"state"</span>: <span class="string">"FL"</span>,
       <span class="key">"enrollment"</span>: <span class="number">334235</span>
@@ -180,7 +180,7 @@ curl https://api.hazeydata.ai/ssd/v1/districts \
       <table class="params">
         <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
         <tbody>
-          <tr><td>district_id</td><td><span class="type">string</span></td><td>Filter to a specific district (e.g. <code>FL_00870</code>).</td></tr>
+          <tr><td>district_id</td><td><span class="type">string</span></td><td>Filter to a specific district (e.g. <code>FL_1200390</code>).</td></tr>
           <tr><td>state</td><td><span class="type">string</span></td><td>Two-letter state code.</td></tr>
           <tr><td>date</td><td><span class="type">string</span></td><td>Exact date (<code>YYYY-MM-DD</code>). Returns all districts for that date.</td></tr>
           <tr><td>date_from</td><td><span class="type">string</span></td><td>Start of date range (<code>YYYY-MM-DD</code>).</td></tr>
@@ -190,7 +190,7 @@ curl https://api.hazeydata.ai/ssd/v1/districts \
         </tbody>
       </table>
       <div class="info-box tip">
-        <strong>Tip:</strong> The most common query pattern is <code>date=2025-12-25&amp;state=FL</code> &mdash; "which Florida districts are off on Christmas?" Or <code>district_id=FL_00870&amp;date_from=2025-12-20&amp;date_to=2026-01-05</code> for a single district's winter break window.
+        <strong>Tip:</strong> The most common query pattern is <code>date=2025-12-25&amp;state=FL</code> &mdash; "which Florida districts are off on Christmas?" Or <code>district_id=FL_1200390&amp;date_from=2025-12-20&amp;date_to=2026-01-05</code> for a single district's winter break window.
       </div>
       <h3>Example Request</h3>
       <pre><code><span class="comment"># What does spring break look like in Texas?</span>
@@ -201,10 +201,10 @@ curl <span class="string">"https://api.hazeydata.ai/ssd/v1/days?state=TX&amp;dat
   <span class="key">"total"</span>: <span class="number">2</span>,
   <span class="key">"days"</span>: [
     {
-      <span class="key">"district_id"</span>: <span class="string">"TX_04302"</span>,
+      <span class="key">"district_id"</span>: <span class="string">"TX_4823640"</span>,
       <span class="key">"district_name"</span>: <span class="string">"Houston Independent School District"</span>,
       <span class="key">"state"</span>: <span class="string">"TX"</span>,
-      <span class="key">"enrollment"</span>: <span class="number">189854</span>,
+      <span class="key">"enrollment"</span>: <span class="number">189934</span>,
       <span class="key">"date"</span>: <span class="string">"2026-03-09"</span>,
       <span class="key">"school_year"</span>: <span class="string">"2025-2026"</span>,
       <span class="key">"is_in_session"</span>: <span class="number">0.0</span>,
@@ -288,7 +288,7 @@ curl <span class="string">"https://api.hazeydata.ai/ssd/v1/sample/districts"</sp
     <table class="params">
       <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td>district_id</td><td><span class="type">string</span></td><td>Unique identifier. Format: <code>{STATE}_{NCES_ID}</code> (e.g. <code>TX_04302</code>).</td></tr>
+        <tr><td>district_id</td><td><span class="type">string</span></td><td>Unique identifier. Format: <code>{STATE}_{NCES_ID}</code> (e.g. <code>TX_4823640</code>).</td></tr>
         <tr><td>district_name</td><td><span class="type">string</span></td><td>Full district name.</td></tr>
         <tr><td>state</td><td><span class="type">string</span></td><td>Two-letter state code.</td></tr>
         <tr><td>enrollment</td><td><span class="type">integer</span></td><td>Total student enrollment.</td></tr>
@@ -302,10 +302,10 @@ curl <span class="string">"https://api.hazeydata.ai/ssd/v1/sample/districts"</sp
         <tr><td>date</td><td><span class="type">string</span></td><td>Calendar date (<code>YYYY-MM-DD</code>).</td></tr>
         <tr><td>school_year</td><td><span class="type">string</span></td><td>Academic year (e.g. <code>2025-2026</code>).</td></tr>
         <tr><td>is_in_session</td><td><span class="type">float</span></td><td><code>1.0</code> = full school day, <code>0.5</code> = half day, <code>0.0</code> = no school. See <a href="#confidence">Confidence Scores</a>.</td></tr>
-        <tr><td>day_type</td><td><span class="type">string</span></td><td>Category: <code>SCHOOL_DAY</code>, <code>WEEKEND</code>, <code>BREAK</code>, <code>HOLIDAY</code>, <code>TEACHER_WORKDAY</code>, <code>HALF_DAY</code>, <code>SUMMER</code>.</td></tr>
+        <tr><td>day_type</td><td><span class="type">string</span></td><td>Category: <code>SCHOOL_DAY</code>, <code>WEEKEND</code>, <code>BREAK</code>, <code>HOLIDAY</code>, <code>TEACHER_WORKDAY</code>, <code>HALF_DAY</code>, <code>NON_STUDENT_DAY</code>, <code>SUMMER</code>.</td></tr>
         <tr><td>break_name</td><td><span class="type">string | null</span></td><td>Name of break/holiday if applicable (e.g. <code>Spring Break</code>, <code>Thanksgiving</code>, <code>Martin Luther King Jr. Day</code>).</td></tr>
         <tr><td>confidence</td><td><span class="type">float</span></td><td>Confidence score from <code>0.0</code> to <code>1.0</code>. See <a href="#confidence">Confidence Scores</a>.</td></tr>
-        <tr><td>source_method</td><td><span class="type">string</span></td><td>How this data was obtained: <code>markitdown_extraction</code>, <code>pdf_extraction</code>, <code>deterministic</code> (weekends), <code>inferred</code>.</td></tr>
+        <tr><td>source_method</td><td><span class="type">string</span></td><td>How this data was obtained (e.g. <code>markitdown_extraction</code>, <code>pdf_extraction</code>, <code>imputation</code>, <code>deterministic</code> for weekends).</td></tr>
       </tbody>
     </table>
 
