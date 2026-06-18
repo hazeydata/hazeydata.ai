@@ -25,7 +25,7 @@
   .navbtn{border:1px solid var(--line);padding:8px 16px;border-radius:8px;font-size:13px;color:var(--fg)}
   .navbtn:hover{border-color:var(--accent);color:var(--accent)}
   /* hero */
-  .hero{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:60px 0}
+  .hero{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;padding:60px 0}
   .tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--accent);border:1px solid rgba(63,224,165,.3);background:rgba(63,224,165,.07);padding:6px 12px;border-radius:100px}
   .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.6s infinite}
   @keyframes blink{50%{opacity:.3}}
@@ -100,7 +100,8 @@
       <p class="lede">Day-level calendar data for 13,400+ districts. Every day classified, every cell confidence-scored. Built for demand models that move with families.</p>
       <div class="cta">
         <button class="btn primary" onclick="document.getElementById('p').scrollIntoView({behavior:'smooth'})" data-ab="api">Get API access — $99/mo</button>
-        <button class="btn ghost" data-ab="sample">Download free sample →</button>
+        <!-- Download-sample CTA hidden pending R1 clean-sample regen (S54) - see data-hub ticket -->
+        <!-- <button class="btn ghost" data-ab="sample">Download free sample →</button> -->
       </div>
     </div>
     <div class="panel">
@@ -116,60 +117,6 @@
         <span><i style="background:#ff6b5b"></i>On break</span>
       </div>
       <div class="statline mono"><span><b id="pct">38%</b> of students off this week</span><span><b id="cnt">4,127</b> districts on break</span></div>
-      <div class="statelinks">
-    <h3>Browse by state</h3>
-    <a href="/ssd/states/alabama/">Alabama</a>
-    <a href="/ssd/states/alaska/">Alaska</a>
-    <a href="/ssd/states/arizona/">Arizona</a>
-    <a href="/ssd/states/arkansas/">Arkansas</a>
-    <a href="/ssd/states/california/">California</a>
-    <a href="/ssd/states/colorado/">Colorado</a>
-    <a href="/ssd/states/connecticut/">Connecticut</a>
-    <a href="/ssd/states/delaware/">Delaware</a>
-    <a href="/ssd/states/district-of-columbia/">District of Columbia</a>
-    <a href="/ssd/states/florida/">Florida</a>
-    <a href="/ssd/states/georgia/">Georgia</a>
-    <a href="/ssd/states/hawaii/">Hawaii</a>
-    <a href="/ssd/states/idaho/">Idaho</a>
-    <a href="/ssd/states/illinois/">Illinois</a>
-    <a href="/ssd/states/indiana/">Indiana</a>
-    <a href="/ssd/states/iowa/">Iowa</a>
-    <a href="/ssd/states/kansas/">Kansas</a>
-    <a href="/ssd/states/kentucky/">Kentucky</a>
-    <a href="/ssd/states/louisiana/">Louisiana</a>
-    <a href="/ssd/states/maine/">Maine</a>
-    <a href="/ssd/states/maryland/">Maryland</a>
-    <a href="/ssd/states/massachusetts/">Massachusetts</a>
-    <a href="/ssd/states/michigan/">Michigan</a>
-    <a href="/ssd/states/minnesota/">Minnesota</a>
-    <a href="/ssd/states/mississippi/">Mississippi</a>
-    <a href="/ssd/states/missouri/">Missouri</a>
-    <a href="/ssd/states/montana/">Montana</a>
-    <a href="/ssd/states/nebraska/">Nebraska</a>
-    <a href="/ssd/states/nevada/">Nevada</a>
-    <a href="/ssd/states/new-hampshire/">New Hampshire</a>
-    <a href="/ssd/states/new-jersey/">New Jersey</a>
-    <a href="/ssd/states/new-mexico/">New Mexico</a>
-    <a href="/ssd/states/new-york/">New York</a>
-    <a href="/ssd/states/north-carolina/">North Carolina</a>
-    <a href="/ssd/states/north-dakota/">North Dakota</a>
-    <a href="/ssd/states/ohio/">Ohio</a>
-    <a href="/ssd/states/oklahoma/">Oklahoma</a>
-    <a href="/ssd/states/oregon/">Oregon</a>
-    <a href="/ssd/states/pennsylvania/">Pennsylvania</a>
-    <a href="/ssd/states/rhode-island/">Rhode Island</a>
-    <a href="/ssd/states/south-carolina/">South Carolina</a>
-    <a href="/ssd/states/south-dakota/">South Dakota</a>
-    <a href="/ssd/states/tennessee/">Tennessee</a>
-    <a href="/ssd/states/texas/">Texas</a>
-    <a href="/ssd/states/utah/">Utah</a>
-    <a href="/ssd/states/vermont/">Vermont</a>
-    <a href="/ssd/states/virginia/">Virginia</a>
-    <a href="/ssd/states/washington/">Washington</a>
-    <a href="/ssd/states/west-virginia/">West Virginia</a>
-    <a href="/ssd/states/wisconsin/">Wisconsin</a>
-    <a href="/ssd/states/wyoming/">Wyoming</a>
-  </div>
 </div>
   </section>
 
@@ -243,7 +190,59 @@
     <div class="eyebrow">// browse_by_state</div>
     <h2>School calendars for all 51 states</h2>
     <p class="sub">Jump to any state's districts — break dates and first/last day for 2025–26.</p>
-    
+    <div class="statelinks">
+    <a href="/ssd/states/alabama/">Alabama</a>
+    <a href="/ssd/states/alaska/">Alaska</a>
+    <a href="/ssd/states/arizona/">Arizona</a>
+    <a href="/ssd/states/arkansas/">Arkansas</a>
+    <a href="/ssd/states/california/">California</a>
+    <a href="/ssd/states/colorado/">Colorado</a>
+    <a href="/ssd/states/connecticut/">Connecticut</a>
+    <a href="/ssd/states/delaware/">Delaware</a>
+    <a href="/ssd/states/district-of-columbia/">District of Columbia</a>
+    <a href="/ssd/states/florida/">Florida</a>
+    <a href="/ssd/states/georgia/">Georgia</a>
+    <a href="/ssd/states/hawaii/">Hawaii</a>
+    <a href="/ssd/states/idaho/">Idaho</a>
+    <a href="/ssd/states/illinois/">Illinois</a>
+    <a href="/ssd/states/indiana/">Indiana</a>
+    <a href="/ssd/states/iowa/">Iowa</a>
+    <a href="/ssd/states/kansas/">Kansas</a>
+    <a href="/ssd/states/kentucky/">Kentucky</a>
+    <a href="/ssd/states/louisiana/">Louisiana</a>
+    <a href="/ssd/states/maine/">Maine</a>
+    <a href="/ssd/states/maryland/">Maryland</a>
+    <a href="/ssd/states/massachusetts/">Massachusetts</a>
+    <a href="/ssd/states/michigan/">Michigan</a>
+    <a href="/ssd/states/minnesota/">Minnesota</a>
+    <a href="/ssd/states/mississippi/">Mississippi</a>
+    <a href="/ssd/states/missouri/">Missouri</a>
+    <a href="/ssd/states/montana/">Montana</a>
+    <a href="/ssd/states/nebraska/">Nebraska</a>
+    <a href="/ssd/states/nevada/">Nevada</a>
+    <a href="/ssd/states/new-hampshire/">New Hampshire</a>
+    <a href="/ssd/states/new-jersey/">New Jersey</a>
+    <a href="/ssd/states/new-mexico/">New Mexico</a>
+    <a href="/ssd/states/new-york/">New York</a>
+    <a href="/ssd/states/north-carolina/">North Carolina</a>
+    <a href="/ssd/states/north-dakota/">North Dakota</a>
+    <a href="/ssd/states/ohio/">Ohio</a>
+    <a href="/ssd/states/oklahoma/">Oklahoma</a>
+    <a href="/ssd/states/oregon/">Oregon</a>
+    <a href="/ssd/states/pennsylvania/">Pennsylvania</a>
+    <a href="/ssd/states/rhode-island/">Rhode Island</a>
+    <a href="/ssd/states/south-carolina/">South Carolina</a>
+    <a href="/ssd/states/south-dakota/">South Dakota</a>
+    <a href="/ssd/states/tennessee/">Tennessee</a>
+    <a href="/ssd/states/texas/">Texas</a>
+    <a href="/ssd/states/utah/">Utah</a>
+    <a href="/ssd/states/vermont/">Vermont</a>
+    <a href="/ssd/states/virginia/">Virginia</a>
+    <a href="/ssd/states/washington/">Washington</a>
+    <a href="/ssd/states/west-virginia/">West Virginia</a>
+    <a href="/ssd/states/wisconsin/">Wisconsin</a>
+    <a href="/ssd/states/wyoming/">Wyoming</a>
+  </div>
   </section>
 
   <footer>

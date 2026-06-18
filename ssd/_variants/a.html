@@ -27,7 +27,7 @@
   .dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);box-shadow:0 0 0 0 rgba(31,122,92,.5);animation:pulse 2s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(31,122,92,.5)}70%{box-shadow:0 0 0 8px rgba(31,122,92,0)}100%{box-shadow:0 0 0 0 rgba(31,122,92,0)}}
   /* hero */
-  .hero{padding:72px 0 40px;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  .hero{padding:72px 0 40px;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:start}
   .hero h1{font-size:62px;font-weight:900;margin:20px 0 22px}
   .hero h1 em{font-style:italic;color:var(--accent)}
   .lede{font-size:19px;color:var(--muted);max-width:38ch;margin-bottom:30px}
@@ -89,7 +89,8 @@
       <p class="lede">Day-level calendar data for all 50 states + DC. Spring break, winter break, summer — structured, scored, and ready for your demand model.</p>
       <div class="cta">
         <button class="btn" onclick="document.getElementById('p').scrollIntoView({behavior:'smooth'})" data-ab="api">Get API access — $99/mo</button>
-        <button class="btn ghost" data-ab="sample">Download free sample</button>
+        <!-- Download-sample CTA hidden pending R1 clean-sample regen (S54) - see data-hub ticket -->
+        <!-- <button class="btn ghost" data-ab="sample">Download free sample</button> -->
       </div>
     </div>
     <div class="mapcard">
@@ -102,8 +103,53 @@
         <span><i style="background:#e9b949"></i>Partial break</span>
         <span><i style="background:#c8553d"></i>On break</span>
       </div>
-      <div class="statelinks">
-    <h3>Browse by state</h3>
+</div>
+  </section>
+
+  <div class="metrics">
+    <div class="metric"><div class="n a">13,400+</div><div class="l">Districts</div></div>
+
+  
+    <div class="metric"><div class="n">46M+</div><div class="l">Students</div></div>
+    <div class="metric"><div class="n">50 + DC</div><div class="l">States</div></div>
+    <div class="metric"><div class="n">3 yrs</div><div class="l">2024–2027</div></div>
+  </div>
+
+  <section>
+    <div class="eyebrow">Who uses this</div>
+    <h2 class="h2">School schedules are one of the strongest demand signals in America.</h2>
+    <p class="sub">When 46 million kids go on break, families move. Parks fill, flights book, hotels surge. We turn that into a clean feature for your pipeline.</p>
+    <div class="who">
+      <div class="cell"><div class="ic">🎢</div><h3>Theme parks</h3><p>Predict crowd spikes by knowing exactly when breaks start across every feeder market.</p></div>
+      <div class="cell"><div class="ic">🏨</div><h3>Hotels & travel</h3><p>Dynamic pricing tied to school calendars. See family surges before competitors do.</p></div>
+      <div class="cell"><div class="ic">📊</div><h3>Demand forecasting</h3><p>Airlines, rental cars, retail — anything that moves when families travel.</p></div>
+      <div class="cell"><div class="ic">🏛️</div><h3>Government & research</h3><p>Transportation planning, public health, education policy analysis.</p></div>
+      <div class="cell"><div class="ic">🔬</div><h3>Market research</h3><p>Regional seasonality at the district level. Which states start late? Unusual breaks?</p></div>
+      <div class="cell"><div class="ic">🧠</div><h3>ML features</h3><p>Drop school schedules straight into your model. A strong predictor for time-series.</p></div>
+    </div>
+  </section>
+
+  <section id="p" style="padding-top:0">
+    <div class="price">
+      <div>
+        <div class="eyebrow" style="color:#e9b949">One plan. Everything included.</div>
+        <h2>Plug every US school calendar into your pipeline.</h2>
+        <p>All districts. All three school years. Full API access (JSON + CSV). Confidence scores and NCES IDs for joining. Cancel anytime.</p>
+      </div>
+      <div class="pbox">
+        <div class="amt"><sup>$</sup>99</div>
+        <div class="per">per month</div>
+        <button class="btn" style="background:var(--accent);border-color:var(--accent);width:100%" data-ab="checkout" id="subscribe-btn" onclick="subscribe()">Get started →</button>
+      </div>
+    </div>
+  </section>
+
+
+  <section style="padding-top:0">
+    <div class="eyebrow">Browse by state</div>
+    <h2 class="h2" style="font-size:30px">School calendars for all 51 states</h2>
+    <p class="sub">Jump to any state's districts — spring break, winter break, and first/last day for the 2025–26 year.</p>
+    <div class="statelinks">
     <a href="/ssd/states/alabama/">Alabama</a>
     <a href="/ssd/states/alaska/">Alaska</a>
     <a href="/ssd/states/arizona/">Arizona</a>
@@ -156,53 +202,6 @@
     <a href="/ssd/states/wisconsin/">Wisconsin</a>
     <a href="/ssd/states/wyoming/">Wyoming</a>
   </div>
-</div>
-  </section>
-
-  <div class="metrics">
-    <div class="metric"><div class="n a">13,400+</div><div class="l">Districts</div></div>
-
-  
-    <div class="metric"><div class="n">46M+</div><div class="l">Students</div></div>
-    <div class="metric"><div class="n">50 + DC</div><div class="l">States</div></div>
-    <div class="metric"><div class="n">3 yrs</div><div class="l">2024–2027</div></div>
-  </div>
-
-  <section>
-    <div class="eyebrow">Who uses this</div>
-    <h2 class="h2">School schedules are one of the strongest demand signals in America.</h2>
-    <p class="sub">When 46 million kids go on break, families move. Parks fill, flights book, hotels surge. We turn that into a clean feature for your pipeline.</p>
-    <div class="who">
-      <div class="cell"><div class="ic">🎢</div><h3>Theme parks</h3><p>Predict crowd spikes by knowing exactly when breaks start across every feeder market.</p></div>
-      <div class="cell"><div class="ic">🏨</div><h3>Hotels & travel</h3><p>Dynamic pricing tied to school calendars. See family surges before competitors do.</p></div>
-      <div class="cell"><div class="ic">📊</div><h3>Demand forecasting</h3><p>Airlines, rental cars, retail — anything that moves when families travel.</p></div>
-      <div class="cell"><div class="ic">🏛️</div><h3>Government & research</h3><p>Transportation planning, public health, education policy analysis.</p></div>
-      <div class="cell"><div class="ic">🔬</div><h3>Market research</h3><p>Regional seasonality at the district level. Which states start late? Unusual breaks?</p></div>
-      <div class="cell"><div class="ic">🧠</div><h3>ML features</h3><p>Drop school schedules straight into your model. A strong predictor for time-series.</p></div>
-    </div>
-  </section>
-
-  <section id="p" style="padding-top:0">
-    <div class="price">
-      <div>
-        <div class="eyebrow" style="color:#e9b949">One plan. Everything included.</div>
-        <h2>Plug every US school calendar into your pipeline.</h2>
-        <p>All districts. All three school years. Full API access (JSON + CSV). Confidence scores and NCES IDs for joining. Cancel anytime.</p>
-      </div>
-      <div class="pbox">
-        <div class="amt"><sup>$</sup>99</div>
-        <div class="per">per month</div>
-        <button class="btn" style="background:var(--accent);border-color:var(--accent);width:100%" data-ab="checkout" id="subscribe-btn" onclick="subscribe()">Get started →</button>
-      </div>
-    </div>
-  </section>
-
-
-  <section style="padding-top:0">
-    <div class="eyebrow">Browse by state</div>
-    <h2 class="h2" style="font-size:30px">School calendars for all 51 states</h2>
-    <p class="sub">Jump to any state's districts — spring break, winter break, and first/last day for the 2025–26 year.</p>
-    
   </section>
 
   <footer>
