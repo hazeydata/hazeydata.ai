@@ -146,14 +146,14 @@
     <h2>RESTful JSON or CSV. Dead simple.</h2>
     <p class="sub">Query by district, date, or state. Every row carries a confidence score and source method.</p>
     <div class="codewrap">
-      <div class="ch mono">GET /api/v1/days?district_id=FL_12000306&date=2026-03-27</div>
+      <div class="ch mono">GET https://api.hazeydata.ai/ssd/v1/days?district_id=FL_1201440&date=2026-11-25</div>
       <pre class="mono">{
-  <span class="k">"district"</span>: <span class="s">"Alachua County"</span>,
+  <span class="k">"district"</span>: <span class="s">"ORANGE"</span>,
   <span class="k">"state"</span>: <span class="s">"FL"</span>,
-  <span class="k">"date"</span>: <span class="s">"2026-03-27"</span>,
+  <span class="k">"date"</span>: <span class="s">"2026-11-25"</span>,
   <span class="k">"is_in_session"</span>: <span class="s">0.0</span>,
   <span class="k">"day_type"</span>: <span class="s">"BREAK"</span>,
-  <span class="k">"break_name"</span>: <span class="s">"Spring Break"</span>,
+  <span class="k">"break_name"</span>: <span class="s">"Thanksgiving Break"</span>,
   <span class="k">"confidence"</span>: <span class="s">0.95</span>,
   <span class="k">"source_method"</span>: <span class="s">"observed"</span>
 }</pre>

@@ -656,7 +656,7 @@
             <ul>
                 <li class="good"><strong>Big districts are solid.</strong> Florida, Texas, Georgia, North Carolina — the major states have 77-100% confirmation rates. If your use case is weighted by student volume, you're in great shape.</li>
                 <li class="good"><strong>Every row has data.</strong> Even unconfirmed districts have reasonable state-median estimates. You won't hit nulls.</li>
-                <li class="mid"><strong>Confidence is labeled.</strong> Every row has a <code>confidence</code> field — "confirmed" or "medium". Filter by confidence to suit your risk tolerance.</li>
+                <li class="mid"><strong>Confidence is labeled.</strong> Every row has a <code>confidence</code> field — "confirmed" or "medium". Filter on <code>source_method</code> to separate observed rows from estimates.</li>
                 <li class="mid"><strong>Small districts are the gap.</strong> Districts under 2,000 students make up most of the unconfirmed rows. If you're modeling national-scale patterns, the impact is minimal.</li>
                 <li class="low"><strong>This is 2025-2026 only.</strong> We don't yet have multi-year historical data. That's planned for future releases.</li>
             </ul>
