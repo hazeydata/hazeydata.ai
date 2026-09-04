@@ -41,3 +41,7 @@ All of these serve from this repo:
 1. Check GitHub Actions: https://github.com/hazeydata/hazeydata.ai/actions
 2. If the run failed, check the logs — usually a secret expiry or Cloudflare issue.
 3. Manual deploy (emergency only): `cd ~/hazeydata.ai && CLOUDFLARE_API_TOKEN=$CLOUDFLARE_PAGES_TOKEN npx wrangler pages deploy . --project-name=hazeydata --branch=master`
+
+## SSD product site
+
+School Schedules Database sells at **https://schoolschedulesdatabase.com**. Paths under `/ssd` on this repo 301 there — do not rebuild a parallel funnel here.

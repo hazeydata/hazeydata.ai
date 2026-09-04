@@ -32,7 +32,11 @@
 /signup.html  /theme-park-crowd-report/signup.html  301
 
 # Project pages — old root level → new sub-dirs
-/ssd.html  /ssd/  301
+# SSD product lives on schoolschedulesdatabase.com (canonical)
+/ssd.html  https://schoolschedulesdatabase.com/  301
+/ssd  https://schoolschedulesdatabase.com/  301
+/ssd/  https://schoolschedulesdatabase.com/  301
+/ssd/*  https://schoolschedulesdatabase.com/:splat  301
 /accord.html  /accord/  301
 
 # CDR pitch pages
