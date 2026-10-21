@@ -15,6 +15,7 @@ SKIP_DIRS = {".git", "node_modules"}
 EXPECTED_ENDPOINT = "https://openmillage.goatcounter.com/count"
 EXPECTED_SRC = "//gc.zgo.at/count.js"
 COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
+NOSCRIPT_RE = re.compile(r"<noscript\b.*?</noscript\s*>", re.S | re.IGNORECASE)
 PATH_RE = re.compile(r'<script>\s*window\.goatcounter\s*=\s*\{path:[^<]*</script>')
 PREFIX_RE = re.compile(r"return\s+'([^']*)'\s*\+\s*p")
 
@@ -25,7 +26,7 @@ def fail(msg):
 
 
 def strip_comments(s):
-    """Drop HTML comments so commented-out tags never count.
+    """Drop HTML comments and <noscript> blocks so inert tags never count.
 
     A comment that mentions GoatCounter is itself a failure: it is either a
     disabled snippet or dead markup that would mislead the next reader.
@@ -34,7 +35,17 @@ def strip_comments(s):
         low = c.lower()
         if "goatcounter" in low or "gc.zgo.at" in low:
             fail("GoatCounter reference inside an HTML comment")
-    return COMMENT_RE.sub("", s)
+    s = COMMENT_RE.sub("", s)
+    if "<!--" in s:
+        fail("unterminated HTML comment")
+    for block in NOSCRIPT_RE.findall(s):
+        low = block.lower()
+        if "goatcounter" in low or "gc.zgo.at" in low:
+            fail("GoatCounter reference inside a <noscript> block")
+    s = NOSCRIPT_RE.sub("", s)
+    if re.search(r"<noscript\b", s, re.IGNORECASE):
+        fail("unterminated <noscript> block")
+    return s
 
 
 def parse_attrs(tag):
