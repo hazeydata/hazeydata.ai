@@ -7,7 +7,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TARGET = ROOT / "theme-park-crowd-report" / "index.html"
 
-COUNT_RE = re.compile(r'<script\b[^>]*\bdata-goatcounter=[^>]*\bsrc="//gc\.zgo\.at/count\.js"[^>]*>\s*</script>')
+# Deliberately loose: match any <script> tag mentioning data-goatcounter or gc.zgo.at
+# so bad variants are found and reported instead of silently missed.
+COUNT_RE = re.compile(r'<script\b[^>]*?(?:data-goatcounter|gc\.zgo\.at)[^>]*>', re.IGNORECASE)
+ATTR_RE = re.compile(r"""([^\s"'<>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+)))?""")
+SKIP_DIRS = {".git", "node_modules"}
+EXPECTED_ENDPOINT = "https://openmillage.goatcounter.com/count"
+EXPECTED_SRC = "//gc.zgo.at/count.js"
 PATH_RE = re.compile(r'<script>\s*window\.goatcounter\s*=\s*\{path:[^<]*</script>')
 PREFIX_RE = re.compile(r"return\s+'([^']*)'\s*\+\s*p")
 
@@ -17,10 +23,32 @@ def fail(msg):
     sys.exit(1)
 
 
+def parse_attrs(tag):
+    """Return list of (lowercased name, value or None) for the tag's attributes."""
+    inner = re.sub(r"^<script\b|/?>$", "", tag, flags=re.IGNORECASE)
+    attrs = []
+    for m in ATTR_RE.finditer(inner):
+        value = next((g for g in m.groups()[1:] if g is not None), None)
+        attrs.append((m.group(1).lower(), value))
+    return attrs
+
+
+def scan_site():
+    for path in sorted(ROOT.rglob("*.html")):
+        rel = path.relative_to(ROOT)
+        if any(part in SKIP_DIRS for part in rel.parts) or path == TARGET:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace").lower()
+        if "goatcounter" in text or "gc.zgo.at" in text:
+            fail("GoatCounter reference found outside theme-park-crowd-report/index.html: %s" % rel.as_posix())
+
+
 def main():
     if not TARGET.is_file():
         fail("missing file: theme-park-crowd-report/index.html")
     html = TARGET.read_text(encoding="utf-8")
+
+    scan_site()
 
     counts = COUNT_RE.findall(html)
     if len(counts) != 1:
@@ -39,8 +67,27 @@ def main():
     if not (head_open < path_m.start() and count_m.end() <= head_close):
         fail("goatcounter scripts are not inside <head>")
 
+    if path_m.start() >= count_m.start():
+        fail("window.goatcounter config script must come before the count.js tag")
     if html[path_m.end():count_m.start()].strip() != "":
         fail("path script does not immediately precede count.js tag")
+
+    tag = count_m.group(0)
+    attrs = parse_attrs(tag)
+    for name in ("data-goatcounter", "src"):
+        if sum(1 for n, _ in attrs if n == name) != 1:
+            fail("count.js tag must have exactly one %s attribute" % name)
+    values = dict(attrs)
+    if values["data-goatcounter"] != EXPECTED_ENDPOINT:
+        fail("data-goatcounter must be exactly %r, got %r" % (EXPECTED_ENDPOINT, values["data-goatcounter"]))
+    if values["src"] != EXPECTED_SRC:
+        fail("src must be exactly %r, got %r" % (EXPECTED_SRC, values["src"]))
+    if "http://" in tag.lower():
+        fail("count.js tag must not contain an http:// endpoint")
+    if not any(n == "async" and v is None for n, v in attrs):
+        fail("count.js tag must have a bare async attribute")
+    if not re.match(r"\s*</script>", html[count_m.end():], re.IGNORECASE):
+        fail("count.js tag must be an empty script closed by </script>")
 
     prefix = PREFIX_RE.search(path_m.group(0))
     if not prefix or prefix.group(1) != "/tpcr":
