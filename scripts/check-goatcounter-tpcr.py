@@ -14,6 +14,7 @@ ATTR_RE = re.compile(r"""([^\s"'<>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>
 SKIP_DIRS = {".git", "node_modules"}
 EXPECTED_ENDPOINT = "https://openmillage.goatcounter.com/count"
 EXPECTED_SRC = "//gc.zgo.at/count.js"
+COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
 PATH_RE = re.compile(r'<script>\s*window\.goatcounter\s*=\s*\{path:[^<]*</script>')
 PREFIX_RE = re.compile(r"return\s+'([^']*)'\s*\+\s*p")
 
@@ -21,6 +22,19 @@ PREFIX_RE = re.compile(r"return\s+'([^']*)'\s*\+\s*p")
 def fail(msg):
     print("FAIL: " + msg)
     sys.exit(1)
+
+
+def strip_comments(s):
+    """Drop HTML comments so commented-out tags never count.
+
+    A comment that mentions GoatCounter is itself a failure: it is either a
+    disabled snippet or dead markup that would mislead the next reader.
+    """
+    for c in COMMENT_RE.findall(s):
+        low = c.lower()
+        if "goatcounter" in low or "gc.zgo.at" in low:
+            fail("GoatCounter reference inside an HTML comment")
+    return COMMENT_RE.sub("", s)
 
 
 def parse_attrs(tag):
@@ -38,7 +52,7 @@ def scan_site():
         rel = path.relative_to(ROOT)
         if any(part in SKIP_DIRS for part in rel.parts) or path == TARGET:
             continue
-        text = path.read_text(encoding="utf-8", errors="replace").lower()
+        text = strip_comments(path.read_text(encoding="utf-8", errors="replace")).lower()
         if "goatcounter" in text or "gc.zgo.at" in text:
             fail("GoatCounter reference found outside theme-park-crowd-report/index.html: %s" % rel.as_posix())
 
@@ -46,7 +60,7 @@ def scan_site():
 def main():
     if not TARGET.is_file():
         fail("missing file: theme-park-crowd-report/index.html")
-    html = TARGET.read_text(encoding="utf-8")
+    html = strip_comments(TARGET.read_text(encoding="utf-8"))
 
     scan_site()
 
