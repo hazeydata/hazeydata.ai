@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HazeyData — Data Science by Fred Hazelton</title>
     <meta name="description" content="HazeyData is an independent data science practice by Fred Hazelton — building ML-powered tools for theme parks, sovereign AI infrastructure, school schedule data, and more.">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icon-180.png">
     <meta name="theme-color" content="#0a1628">
     <link rel="canonical" href="https://hazeydata.ai/">
@@ -15,18 +17,18 @@
     <meta property="og:url" content="https://hazeydata.ai/">
     <meta property="og:title" content="HazeyData — Data Science by Fred Hazelton">
     <meta property="og:description" content="Independent data science practice — ML-powered tools for theme parks, sovereign AI, and more.">
-    <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
+    <meta property="og:image" content="https://hazeydata.ai/assets/og-image-1200x630.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@disneystatswhiz">
     <meta name="twitter:title" content="HazeyData — Data Science by Fred Hazelton">
     <meta name="twitter:description" content="Independent data science practice — ML-powered tools for theme parks, sovereign AI, and more.">
-    <meta name="twitter:image" content="https://hazeydata.ai/assets/banner.jpg">
+    <meta name="twitter:image" content="https://hazeydata.ai/assets/og-image-1200x630.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css?v=20260315b">
     <style>
         /* ========================================
@@ -884,6 +886,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="hazeydata-b.css">
 </head>
 <body>
     <!-- Ambient background orbs -->
@@ -897,7 +900,7 @@
     <nav class="hub-nav" id="hubNav">
         <div class="hub-nav-inner">
             <a href="/" class="hub-logo">
-                <span class="hub-logo-mark">HAZEYDATA</span><span class="hub-logo-dot"></span>
+                <span class="hd-logo"><img src="assets/hd-mark.svg" width="21" height="34" alt=""><span>Hazey<b>Data</b></span></span>
             </a>
             <button class="hub-hamburger" id="hubHamburger" aria-label="Menu">
                 <span></span><span></span><span></span>
@@ -913,6 +916,7 @@
 
     <!-- Hero -->
     <section class="hub-hero">
+        <svg class="hd-motif" viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(50,50) scale(1.6) translate(-25,-49)"><g stroke="#5FC4D6" stroke-linecap="round" stroke-width="5"><line class="in" x1="12" y1="22" x2="30" y2="22" opacity=".25"/><line class="in" x1="18" y1="40" x2="40" y2="40" opacity=".4"/><line class="in" x1="10" y1="58" x2="34" y2="58" opacity=".3"/><line class="in" x1="20" y1="76" x2="36" y2="76" opacity=".2"/></g></g></svg>
         <div class="hub-hero-content">
             <div class="hero-data-line">
                 <span>Machine Learning</span>
@@ -920,12 +924,9 @@
                 <span>Data Products</span>
                 <span>Open Source</span>
             </div>
-            <h1>
-                <span class="hero-line-1">Data Science That</span>
-                <span class="hero-line-2">Solves Real Problems</span>
-            </h1>
+            <h1>Scattered records in, plain answers out.</h1>
             <p class="tagline">Independent practice by Fred Hazelton</p>
-            <p class="subtitle">Building ML-powered tools and data products — from theme park crowd forecasting to sovereign AI infrastructure to national-scale data collection.</p>
+            <p class="subtitle">We gather public records scattered across government sites and PDFs and turn them into tools you can search.</p>
             <div class="hero-cta-row">
                 <a href="#projects" class="btn btn-primary btn-lg">Explore Projects</a>
                 <a href="mailto:fred@hazeydata.ai" class="btn btn-outline btn-lg">Get in Touch</a>
@@ -936,28 +937,6 @@
             <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
         </div>
     </section>
-
-    <!-- Metrics Bar -->
-    <div class="metrics-bar">
-        <div class="metrics-inner">
-            <div class="metric-item">
-                <div class="metric-val">4</div>
-                <div class="metric-label">Active Projects</div>
-            </div>
-            <div class="metric-item">
-                <div class="metric-val">12</div>
-                <div class="metric-label">Parks Tracked</div>
-            </div>
-            <div class="metric-item">
-                <div class="metric-val">13,400+</div>
-                <div class="metric-label">School Districts</div>
-            </div>
-            <div class="metric-item">
-                <div class="metric-val">46M+</div>
-                <div class="metric-label">Students Covered</div>
-            </div>
-        </div>
-    </div>
 
     <!-- Projects -->
     <section id="projects" class="projects-section">
@@ -975,10 +954,9 @@
                     <div class="status-badge live">Live Beta</div>
                 </div>
                 <h3>Theme Park Crowd Report</h3>
-                <p class="card-desc">ML-powered wait time predictions for Disney, Universal, and more. The Wait Time Index (WTI) distills crowd levels into one number — so you can plan smarter.</p>
+                <p class="card-desc">ML-powered wait time predictions for Disney, Universal, and more. The Wait Time Index distills crowd levels into one number — so you can plan smarter.</p>
                 <div class="card-tags">
                     <span class="card-tag">XGBoost</span>
-                    <span class="card-tag">12 Parks</span>
                     <span class="card-tag">Discord Bot</span>
                     <span class="card-tag">AI Q&A</span>
                 </div>
@@ -1008,9 +986,8 @@
                     <div class="status-badge live">Live</div>
                 </div>
                 <h3>School Schedule Database</h3>
-                <p class="card-desc">Complete US school calendar dataset — 13,400+ districts, 46M+ students. Start dates, spring break, winter break, summer schedules. Structured API access.</p>
+                <p class="card-desc">US school calendar dataset gathered from district sources. Start dates, spring break, winter break, summer schedules. Structured API access.</p>
                 <div class="card-tags">
-                    <span class="card-tag">13,400+ Districts</span>
                     <span class="card-tag">REST API</span>
                     <span class="card-tag">AI Scraped</span>
                 </div>
@@ -1032,6 +1009,64 @@
                 </div>
                 <span class="card-link">Explore ACCORD <span class="card-link-arrow">→</span></span>
             </a>
+
+            <!-- OpenMillage -->
+            <a href="https://hazeydata.github.io/openmillage-site/" class="project-card openmillage">
+                <div class="card-header">
+                    <div class="card-emoji">🏛️</div>
+                    <div class="status-badge live">Live</div>
+                </div>
+                <h3>OpenMillage</h3>
+                <p class="card-desc">Property tax rates by taxing body, each linked to its official source. Florida pilot.</p>
+                <div class="card-tags">
+                    <span class="card-tag">Property Tax</span>
+                    <span class="card-tag">Official Sources</span>
+                </div>
+                <span class="card-link">Explore OpenMillage <span class="card-link-arrow">→</span></span>
+            </a>
+
+            <!-- AgentWebIndex -->
+            <a href="https://agentwebindex.com/" class="project-card agentwebindex">
+                <div class="card-header">
+                    <div class="card-emoji">🔎</div>
+                    <div class="status-badge live">Live</div>
+                </div>
+                <h3>AgentWebIndex</h3>
+                <p class="card-desc">A leaderboard of agent web APIs for search, scraping and browsing, built from logged benchmark runs, with cited prices.</p>
+                <div class="card-tags">
+                    <span class="card-tag">Leaderboard</span>
+                    <span class="card-tag">Agent APIs</span>
+                </div>
+                <span class="card-link">Explore AgentWebIndex <span class="card-link-arrow">→</span></span>
+            </a>
+
+            <!-- K12Comp (no link until launch) -->
+            <div class="project-card k12comp">
+                <div class="card-header">
+                    <div class="card-emoji">🏫</div>
+                    <div class="status-badge concept">Coming Soon</div>
+                </div>
+                <h3>K12Comp</h3>
+                <p class="card-desc">A sourced database of superintendent contract terms and teacher salary schedules, district by district.</p>
+                <div class="card-tags">
+                    <span class="card-tag">Compensation</span>
+                    <span class="card-tag">Official Sources</span>
+                </div>
+            </div>
+
+            <!-- ParkPermits (no link until launch) -->
+            <div class="project-card parkpermits">
+                <div class="card-header">
+                    <div class="card-emoji">🏗️</div>
+                    <div class="status-badge concept">Coming Soon</div>
+                </div>
+                <h3>ParkPermits</h3>
+                <p class="card-desc">A sourced tracker of the building, construction and environmental permits that theme parks file with local governments.</p>
+                <div class="card-tags">
+                    <span class="card-tag">Permits</span>
+                    <span class="card-tag">Public Filings</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1085,7 +1120,7 @@
         <div class="hub-footer-inner">
             <div class="hub-footer-top">
                 <div class="footer-brand-block">
-                    <div class="footer-brand-name">HAZEYDATA</div>
+                    <div class="footer-brand-name"><span class="hd-logo"><img src="assets/hd-mark.svg" width="21" height="34" alt=""><span>Hazey<b>Data</b></span></span></div>
                     <div class="footer-brand-sub">Data Science by Fred Hazelton</div>
                 </div>
                 <div class="footer-columns">
