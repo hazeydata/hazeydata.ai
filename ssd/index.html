@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>US School Calendar Database — 13,400 Districts, Day-Level Data | HazeyData</title>
-    <meta name="description" content="Complete US school calendar dataset. 13,400+ districts, 46M+ students. Day-level data with confidence scoring. API access $99/mo.">
+    <title>US School Calendar Database — 13,679 Districts, Day-Level Data | HazeyData</title>
+    <meta name="description" content="Complete US school calendar dataset. 13,679 districts, 44.7M students. Day-level data with confidence scoring. API access $99/mo.">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/icon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icon-180.png">
     <meta name="theme-color" content="#0a1628">
     <link rel="canonical" href="https://hazeydata.ai/ssd/">
     <meta property="og:type" content="product">
     <meta property="og:url" content="https://hazeydata.ai/ssd/">
-    <meta property="og:title" content="US School Calendar Database — 13,400 Districts, Day-Level Data | HazeyData">
-    <meta property="og:description" content="Complete US school calendar dataset. 13,400+ districts, 46M+ students. Day-level data with confidence scoring. API access $99/mo.">
+    <meta property="og:title" content="US School Calendar Database — 13,679 Districts, Day-Level Data | HazeyData">
+    <meta property="og:description" content="Complete US school calendar dataset. 13,679 districts, 44.7M students. Day-level data with confidence scoring. API access $99/mo.">
     <meta property="og:image" content="https://hazeydata.ai/assets/ssd-og-card.svg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@disneystatswhiz">
-    <meta name="twitter:title" content="US School Calendar Database — 13,400 Districts, Day-Level Data | HazeyData">
-    <meta name="twitter:description" content="Complete US school calendar dataset. 13,400+ districts, 46M+ students. Day-level data with confidence scoring. API access $99/mo.">
+    <meta name="twitter:title" content="US School Calendar Database — 13,679 Districts, Day-Level Data | HazeyData">
+    <meta name="twitter:description" content="Complete US school calendar dataset. 13,679 districts, 44.7M students. Day-level data with confidence scoring. API access $99/mo.">
     <meta name="twitter:image" content="https://hazeydata.ai/assets/ssd-og-card.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -149,9 +149,9 @@
     </header>
 
     <section class="hero" style="padding-bottom:20px;">
-        <div class="hero-badge"><span class="dot"></span> Actively Growing -- Updated Daily</div>
+        <div class="hero-badge"><span class="dot"></span> Actively Growing -- Three School Years</div>
         <h1>Know When Every School in America Is on Break</h1>
-        <p>Day-level school calendar data for 13,400+ districts, 46M+ students. API access for demand forecasting, travel planning, and market research.</p>
+        <p>Day-level school calendar data for 13,679 districts, 44.7M students. API access for demand forecasting, travel planning, and market research.</p>
     </section>
 
     <section class="heatmap-section" id="heatmap" style="padding-top:10px;">
@@ -213,8 +213,8 @@
             </template>
         </div>
         <div class="hero-stats" style="margin-bottom:0;">
-            <div class="hero-stat"><div class="val">13,400+</div><div class="lbl">Districts</div></div>
-            <div class="hero-stat"><div class="val">46M+</div><div class="lbl">Students</div></div>
+            <div class="hero-stat"><div class="val">13,679</div><div class="lbl">Districts</div></div>
+            <div class="hero-stat"><div class="val">44.7M</div><div class="lbl">Students</div></div>
             <div class="hero-stat"><div class="val">50</div><div class="lbl">States + DC</div></div>
             <div class="hero-stat"><div class="val">3 Years</div><div class="lbl">2024-2027</div></div>
         </div>
@@ -226,10 +226,10 @@
         <h2 class="section-title">Data Quality</h2>
         <p class="section-sub">What you're actually getting -- no hedging, no asterisks.</p>
         <div class="quality-list">
-            <div class="quality-item"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>All 50 states + DC covered.</h4><p>Day-level rows for every district, every day, across three school years. Filter by confidence to match your risk tolerance &mdash; see Confidence Scores below.</p></div></div>
+            <div class="quality-item"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>55 jurisdictions covered.</h4><p>Day-level rows for 13,679 districts across three school years. Filter on <code>source_method</code>. The evidence methods are <code>observed</code>, <code>r1_extract_driver</code>, <code>official_calendar_pdf_verified</code> and <code>human_anchor_email</code>; every other method is an estimate. Do not filter on <code>confidence</code> &mdash; it does not separate evidence from estimate, and the highest confidence values in the store belong to estimate methods.</p></div></div>
             <div class="quality-item"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>Every day has a classification.</h4><p>365 rows per district per year. Each day is classified: in-session, weekend, holiday, spring break, winter break, summer, etc. No gaps.</p></div></div>
-            <div class="quality-item"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>Every cell has a confidence score.</h4><p>0.0 to 1.0 per cell. You decide your threshold. Filter by confidence to match your risk tolerance.</p></div></div>
-            <div class="quality-item"><div class="quality-icon info">i</div><div class="quality-text"><h4>Active data quality program.</h4><p>We're continuously auditing source provenance and tightening confidence scores. Filter on <code>confidence</code> to match your tolerance &mdash; higher-confidence rows are hand-verified or directly extracted from district sources.</p></div></div>
+            <div class="quality-item"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>Every cell has a confidence score.</h4><p>0.0 to 1.0 per cell. Confidence ranks certainty <em>within</em> a method; it does not rank methods against each other. Filter on <code>source_method</code>. The evidence methods are <code>observed</code>, <code>r1_extract_driver</code>, <code>official_calendar_pdf_verified</code> and <code>human_anchor_email</code>; every other method is an estimate. Do not filter on <code>confidence</code> &mdash; it does not separate evidence from estimate, and the highest confidence values in the store belong to estimate methods.</p></div></div>
+            <div class="quality-item"><div class="quality-icon info">i</div><div class="quality-text"><h4>Active data quality program.</h4><p>We're continuously auditing source provenance and tightening confidence scores. Filter on <code>source_method</code>. The evidence methods are <code>observed</code>, <code>r1_extract_driver</code>, <code>official_calendar_pdf_verified</code> and <code>human_anchor_email</code>; every other method is an estimate. Do not filter on <code>confidence</code> &mdash; it does not separate evidence from estimate, and the highest confidence values in the store belong to estimate methods.</p></div></div>
             <div class="quality-item full-width"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>Three school years available.</h4><p>2024-2025, 2025-2026, and 2026-2027. Historical context for year-over-year analysis, plus forward-looking data for planning.</p></div></div>
         </div>
     </section>
@@ -254,14 +254,14 @@
 
     <section class="section">
         <h2 class="section-title">Coverage</h2>
-        <p class="section-sub">Day-level rows for every public school district in the United States.</p>
+        <p class="section-sub">Day-level rows for 13,679 districts across three school years.</p>
         <div class="coverage-summary">
             <div class="coverage-stats">
-                <div class="coverage-stat"><div class="val">13,400+</div><div class="lbl">Districts</div></div>
-                <div class="coverage-stat"><div class="val">46M+</div><div class="lbl">Students</div></div>
-                <div class="coverage-stat"><div class="val">50 + DC</div><div class="lbl">States</div></div>
+                <div class="coverage-stat"><div class="val">13,679</div><div class="lbl">Districts</div></div>
+                <div class="coverage-stat"><div class="val">44.7M</div><div class="lbl">Students</div></div>
+                <div class="coverage-stat"><div class="val">55</div><div class="lbl">Jurisdictions</div></div>
             </div>
-            <p class="coverage-note">Every public school district in the US is represented with day-level rows across three school years. NCES IDs on every row for easy joins to Census, NCES, and other federal datasets. Confidence scores on every cell let you filter to high-quality rows for your use case.</p>
+            <p class="coverage-note">13,679 districts are represented with day-level rows across three school years, every date labelled with the method it came from. NCES IDs on every row for easy joins to Census, NCES, and other federal datasets. Confidence scores on every cell let you filter to high-quality rows for your use case.</p>
         </div>
     </section>
 
@@ -283,7 +283,7 @@
         <p class="section-sub">RESTful JSON or CSV. Day-level queries by district, date, state. Dead simple. <a href="/ssd/docs.html" style="color:var(--accent);text-decoration:none;">Read the full docs &rarr;</a></p>
         <div class="code-block">
             <span class="comment"># Query a single district on a specific date</span><br>
-            GET <span class="string">/api/v1/days?district_id=FL_1200030&amp;date=2026-03-27</span><br><br>
+            GET <span class="string">https://api.hazeydata.ai/ssd/v1/days?district_id=FL_1201440&amp;date=2026-11-25</span><br><br>
             <span class="comment"># Response</span><br>
             {<br>
             &nbsp;&nbsp;<span class="key">"district"</span>: <span class="string">"Alachua County"</span>,<br>
@@ -299,7 +299,7 @@
         </div>
         <div class="code-block">
             <span class="comment"># Download full CSV for a state</span><br>
-            curl <span class="string">"https://hazeydata.ai/api/v1/days?state=FL&amp;format=csv"</span> \<br>
+            curl <span class="string">"https://api.hazeydata.ai/ssd/v1/days?state=FL&amp;format=csv"</span> \<br>
             &nbsp;&nbsp;-H <span class="string">"Authorization: Bearer ssd_live_your_key_here"</span> \<br>
             &nbsp;&nbsp;-o florida_school_days.csv
         </div>
@@ -319,7 +319,7 @@
                 </div>
                 <button onclick="subscribe()" class="price-cta primary" id="subscribe-btn">Get Started</button>
                 <ul class="price-features">
-                    <li><span class="check">&#10003;</span> All 13,400+ districts nationwide</li>
+                    <li><span class="check">&#10003;</span> All 13,679 districts nationwide</li>
                     <li><span class="check">&#10003;</span> All 3 school years (2024-2027)</li>
                     <li><span class="check">&#10003;</span> Day-level data (365 rows per district per year)</li>
                     <li><span class="check">&#10003;</span> Full API access (JSON + CSV)</li>
@@ -415,9 +415,9 @@
             var notIn = dayData.not_in_session_students || 0;
             var pct = dayData.national_pct || 0;
             if (notIn > 0) {
-                pctLabel.textContent = (notIn / 1000000).toFixed(1) + 'M students not in session (' + Math.round(100 - pct) + '% of 46M)';
+                pctLabel.textContent = (notIn / 1000000).toFixed(1) + 'M students not in session (' + Math.round(100 - pct) + '% of 44.7M)';
             } else {
-                pctLabel.textContent = Math.round(pct) + '% of 46M students in session';
+                pctLabel.textContent = Math.round(pct) + '% of 44.7M students in session';
             }
         }
 

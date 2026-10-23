@@ -95,9 +95,9 @@
 
   <section class="hero">
     <div>
-      <span class="tag"><span class="dot"></span> Live · updated daily</span>
+      <span class="tag"><span class="dot"></span> Actively Growing — Three School Years</span>
       <h1>Know when <span class="g">every school</span> in America is on break.</h1>
-      <p class="lede">Day-level calendar data for 13,400+ districts. Every day classified, every cell confidence-scored. Built for demand models that move with families.</p>
+      <p class="lede">Day-level calendar data for 13,679 districts. Every day classified, every cell confidence-scored. Built for demand models that move with families.</p>
       <div class="cta">
         <button class="btn primary" onclick="document.getElementById('p').scrollIntoView({behavior:'smooth'})" data-ab="api">Get API access — $99/mo</button>
         <!-- Download-sample CTA hidden pending R1 clean-sample regen (S54) - see data-hub ticket -->
@@ -121,8 +121,8 @@
   </section>
 
   <div class="strip">
-    <div class="m"><div class="n a">13,400+</div><div class="l">Districts</div></div>
-    <div class="m"><div class="n">46M+</div><div class="l">Students</div></div>
+    <div class="m"><div class="n a">13,679</div><div class="l">Districts</div></div>
+    <div class="m"><div class="n">44.7M</div><div class="l">Students</div></div>
     <div class="m"><div class="n">50 + DC</div><div class="l">States covered</div></div>
     <div class="m"><div class="n">365×3</div><div class="l">Days × school years</div></div>
   </div>
@@ -146,14 +146,14 @@
     <h2>RESTful JSON or CSV. Dead simple.</h2>
     <p class="sub">Query by district, date, or state. Every row carries a confidence score and source method.</p>
     <div class="codewrap">
-      <div class="ch mono">GET /api/v1/days?district_id=FL_12000306&date=2026-03-27</div>
+      <div class="ch mono">GET https://api.hazeydata.ai/ssd/v1/days?district_id=FL_1201440&amp;date=2026-11-25</div>
       <pre class="mono">{
-  <span class="k">"district"</span>: <span class="s">"Alachua County"</span>,
+  <span class="k">"district"</span>: <span class="s">"ORANGE"</span>,
   <span class="k">"state"</span>: <span class="s">"FL"</span>,
-  <span class="k">"date"</span>: <span class="s">"2026-03-27"</span>,
+  <span class="k">"date"</span>: <span class="s">"2026-11-25"</span>,
   <span class="k">"is_in_session"</span>: <span class="s">0.0</span>,
   <span class="k">"day_type"</span>: <span class="s">"BREAK"</span>,
-  <span class="k">"break_name"</span>: <span class="s">"Spring Break"</span>,
+  <span class="k">"break_name"</span>: <span class="s">"Thanksgiving Break"</span>,
   <span class="k">"confidence"</span>: <span class="s">0.95</span>,
   <span class="k">"source_method"</span>: <span class="s">"observed"</span>
 }</pre>
@@ -168,7 +168,7 @@
       <div class="pleft">
         <div style="font-weight:600;font-size:17px">Full access</div>
         <ul>
-          <li>All 13,400+ districts nationwide</li>
+          <li>All 13,679 districts in the store</li>
           <li>All 3 school years (2024–2027)</li>
           <li>Day-level rows (365 per district / year)</li>
           <li>Full API access — JSON + CSV</li>

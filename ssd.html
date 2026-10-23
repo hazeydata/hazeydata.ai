@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Schedule Database — HazeyData.ai</title>
-    <meta name="description" content="Complete US school calendar dataset. 13,400+ districts, 46M+ students. Start/end dates, spring break, winter break, summer schedules. API access.">
+    <meta name="description" content="Complete US school calendar dataset. 13,679 districts, 44.7M students. Start/end dates, spring break, winter break, summer schedules. API access.">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/icon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180.png">
     <meta name="theme-color" content="#0a1628">
@@ -13,15 +13,15 @@
     <!-- Open Graph -->
     <meta property="og:type" content="product">
     <meta property="og:url" content="https://hazeydata.ai/ssd.html">
-    <meta property="og:title" content="School Schedule Database — 13,400+ US Districts">
-    <meta property="og:description" content="Complete US school calendar dataset. 13,400+ districts, 46M+ students. Start/end dates, spring break, winter break, summer schedules. Structured API access.">
+    <meta property="og:title" content="School Schedule Database — 13,679 US Districts">
+    <meta property="og:description" content="Complete US school calendar dataset. 13,679 districts, 44.7M students. Start/end dates, spring break, winter break, summer schedules. Structured API access.">
     <meta property="og:image" content="https://hazeydata.ai/assets/banner.jpg">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@disneystatswhiz">
-    <meta name="twitter:title" content="School Schedule Database — 13,400+ US Districts">
-    <meta name="twitter:description" content="Complete US school calendar dataset. 13,400+ districts covering 46M+ students. API access for spring break, winter break, start/end dates.">
+    <meta name="twitter:title" content="School Schedule Database — 13,679 US Districts">
+    <meta name="twitter:description" content="Complete US school calendar dataset. 13,679 districts covering 44.7M students. API access for spring break, winter break, start/end dates.">
     <meta name="twitter:image" content="https://hazeydata.ai/assets/banner.jpg">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -581,10 +581,10 @@
     <section class="hero">
         <div class="hero-badge">
             <span class="dot"></span>
-            Actively Growing — Updated Daily
+            Actively Growing — Three School Years
         </div>
         <h1>The School Schedule Database</h1>
-        <p>A comprehensive dataset of US school calendars. 13,400+ districts, 46M+ students. Start dates, end dates, spring break, winter break, summer schedules — structured and ready for analysis.</p>
+        <p>A comprehensive dataset of US school calendars. 13,679 districts, 44.7M students. Start dates, end dates, spring break, winter break, summer schedules — structured and ready for analysis.</p>
         <p style="font-size: 14px; color: var(--accent); margin-top: 8px;">
             <a href="/ssd/ssd_sample_top100.csv" download style="color: var(--accent-light); text-decoration: none; border-bottom: 1px solid rgba(74,144,164,0.3);">
                 ⬇️ Download free sample (top 100 districts, 9.5M students)
@@ -592,11 +592,11 @@
         </p>
         <div class="hero-stats">
             <div class="hero-stat">
-                <div class="val" id="stat-districts">13,400+</div>
+                <div class="val" id="stat-districts">13,679</div>
                 <div class="lbl">Districts</div>
             </div>
             <div class="hero-stat">
-                <div class="val">46M+</div>
+                <div class="val">44.7M</div>
                 <div class="lbl">Students</div>
             </div>
             <div class="hero-stat">
@@ -656,7 +656,7 @@
             <ul>
                 <li class="good"><strong>Big districts are solid.</strong> Florida, Texas, Georgia, North Carolina — the major states have 77-100% confirmation rates. If your use case is weighted by student volume, you're in great shape.</li>
                 <li class="good"><strong>Every row has data.</strong> Even unconfirmed districts have reasonable state-median estimates. You won't hit nulls.</li>
-                <li class="mid"><strong>Confidence is labeled.</strong> Every row has a <code>confidence</code> field — "confirmed" or "medium". Filter by confidence to suit your risk tolerance.</li>
+                <li class="mid"><strong>Confidence is labeled.</strong> Every row has a <code>source_method</code> field. Filter on <code>source_method</code>. The evidence methods are <code>observed</code>, <code>r1_extract_driver</code>, <code>official_calendar_pdf_verified</code> and <code>human_anchor_email</code>; every other method is an estimate. Do not filter on <code>confidence</code> &mdash; it does not separate evidence from estimate, and the highest confidence values in the store belong to estimate methods.</li>
                 <li class="mid"><strong>Small districts are the gap.</strong> Districts under 2,000 students make up most of the unconfirmed rows. If you're modeling national-scale patterns, the impact is minimal.</li>
                 <li class="low"><strong>This is 2025-2026 only.</strong> We don't yet have multi-year historical data. That's planned for future releases.</li>
             </ul>
@@ -777,7 +777,7 @@
             </tbody>
         </table>
         <p style="font-size:12px;color:var(--text-muted);margin-top:16px;text-align:center">
-            Full coverage available for all 50 states + DC, PR, and territories. Table shows top 10 by enrollment.
+            13,679 districts across 55 jurisdictions &mdash; 50 states, DC and four territories. Table shows top 10 by enrollment.
             <br>Coverage improves daily as our scraper processes remaining districts.
         </p>
     </section>
@@ -888,7 +888,7 @@
                 <p class="price-desc">The full dataset. Every district, every state. For national-scale operations.</p>
                 <a href="mailto:fred@hazeydata.ai?subject=SSD%20National%20Access&body=I'm%20interested%20in%20the%20School%20Schedule%20Database%20(national).%0A%0ACompany:%20%0AUse%20case:%20" class="price-cta primary">Contact Sales</a>
                 <ul class="price-features">
-                    <li><span class="check">✓</span> All 13,400+ districts nationwide</li>
+                    <li><span class="check">✓</span> All 13,679 districts nationwide</li>
                     <li><span class="check">✓</span> JSON + CSV API access</li>
                     <li><span class="check">✓</span> Daily data updates</li>
                     <li><span class="check">✓</span> NCES IDs for easy joins</li>
