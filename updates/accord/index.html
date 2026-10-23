@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" class="ship">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACCORD updates · HazeyData</title>
+<meta name="description" content="A machine-readable API that encodes Canada&#x27;s federal collective agreement rules — rates of pay, leave entitlements, acting pay — into a single, auditable source of truth.">
+<link rel="canonical" href="https://hazeydata.ai/updates/accord/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180.png">
+<meta name="theme-color" content="#0a1628">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/updates/landing.css">
+</head>
+<body class="s2" style="--acc:#9055E2;--acct:#A473E7">
+<a class="skip" href="#main">Skip to main content</a>
+<header class="hn"><div class="in"><a class="hd-logo" href="/"><img src="/assets/hd-mark.svg" width="21" height="34" alt=""><span>Hazey<b>Data</b></span></a>
+<nav class="links" id="navLinks" aria-label="Primary"><a href="/#projects">Projects</a><a href="/#about">About</a><a class="btn" href="#signup">Subscribe</a></nav>
+<div class="right"><a class="btn mbtn" href="#signup">Subscribe</a><button class="burger" id="navBurger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">☰</button></div></div></header>
+<main id="main" tabindex="-1"><section class="hero" aria-labelledby="p-title"><p class="stat concept"><i aria-hidden="true"></i>Concept</p>
+<h1 id="p-title">ACCORD</h1><p class="sub">A machine-readable API that encodes Canada&#x27;s federal collective agreement rules — rates of pay, leave entitlements, acting pay — into a single, auditable source of truth.</p>
+<div id="signup" class="signup" aria-labelledby="signup-title">
+<h2 id="signup-title">Get ACCORD updates</h2>
+<div class="signup-embed" data-iframe-title="Subscribe to ACCORD updates from the HazeyData newsletter">
+<script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="bda93e85-e0ad-4550-8630-45a2758a85bc"></script>
+<noscript><a href="https://freds-newsletter-8cc03b.beehiiv.com/subscribe" class="btn">Subscribe</a></noscript>
+</div></div></section></main>
+<footer class="row"><div class="in"><a class="hd-logo" href="/"><img src="/assets/hd-mark.svg" width="21" height="34" alt=""><span>Hazey<b>Data</b></span></a>
+<nav aria-label="Footer"><span class="cur" aria-current="page">ACCORD</span><a href="/#projects">Projects</a><a href="/#about">About</a><a href="https://discord.gg/2Estr7sbP7">Discord</a><a href="https://twitter.com/disneystatswhiz">Twitter / X</a><!-- PLACEHOLDER (pending Fred): real footer email address; link intentionally not set. --><a href="#footer-email-pending" data-placeholder="footer-email" title="Placeholder: email address pending Fred">Email</a></nav>
+<div class="copy">© 2026 HazeyData — Fred Hazelton.</div></div></footer>
+<script>
+(function () {
+  var burger = document.getElementById('navBurger');
+  var links = document.getElementById('navLinks');
+  function setMenu(open) {
+    document.body.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  burger.addEventListener('click', function () { setMenu(!document.body.classList.contains('menu-open')); });
+  links.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && document.body.classList.contains('menu-open')) { setMenu(false); burger.focus(); }
+  });
+  // Title the Beehiiv iframe once the loader inserts it
+  var embed = document.querySelector('.signup-embed');
+  if (!embed) return;
+  var TITLE = embed.getAttribute('data-iframe-title');
+  function apply() { var f = embed.querySelector('iframe'); if (f) { f.setAttribute('title', TITLE); return true; } return false; }
+  if (apply()) return;
+  var mo = new MutationObserver(function () { if (apply()) mo.disconnect(); });
+  mo.observe(embed, { childList: true, subtree: true });
+})();
+</script>
+</body>
+</html>

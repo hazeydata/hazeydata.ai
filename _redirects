@@ -48,3 +48,9 @@
 
 # ACCORD pitch
 /accord-pitch.html  /accord/pitch.html  301
+
+# Project landing pages (K12Comp and ParkPermits have no hub page yet)
+/k12comp/  /updates/k12comp/  302
+/k12comp  /updates/k12comp/  302
+/parkpermits/  /updates/parkpermits/  302
+/parkpermits  /updates/parkpermits/  302
