@@ -57,3 +57,8 @@ html.ship [data-mock]{display:none!important}
  .hero{padding:56px 0}
 }
 @media (max-width:600px){footer.row .in{flex-direction:column;align-items:flex-start;gap:12px;padding:20px}footer.row nav{flex:none;width:100%}}
+/* secondary open-data link (Fred 10:28 PM ET): plain, below the primary subscribe block */
+.data-link{margin:14px 0 0;text-align:center;font-size:15px}
+.data-link a{color:var(--slate);text-decoration:underline;text-underline-offset:3px;display:inline-flex;align-items:center;min-height:44px;min-width:44px;padding:0 8px}
+.data-link a:hover{color:#fff}
+footer.row nav .cur{color:#fff;font-size:14px;min-height:44px;display:inline-flex;align-items:center}
