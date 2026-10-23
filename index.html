@@ -899,7 +899,8 @@
         }
         /* Hero inline Beehiiv subscribe: reserve space so the loader doesn't shift layout */
         .hero-subscribe { max-width: 560px; margin: 0 auto 1rem; }
-        .hero-subscribe-title { font-family: "Space Grotesk", system-ui, sans-serif; font-weight: 600; color: #FFFFFF; margin: 0 0 .5rem; }
+        .hero-subscribe-title { font-family: "Space Grotesk", system-ui, sans-serif; font-weight: 600; color: #FFFFFF; margin: 0 0 .5rem; font-size: 16px; line-height: 25.6px; letter-spacing: normal !important; text-transform: none; }
+        .hub-nav a.nav-subscribe:focus-visible, .hub-nav a.nav-subscribe-mobile:focus-visible, #hubHamburger:focus-visible { outline: 2px solid #5FC4D6 !important; outline-offset: 3px; }
         .hero-subscribe-embed { min-height: 68px; width: 100%; }
         @media (max-width: 600px) { .hero-subscribe-embed { min-height: 68px; } }
         /* Header C3: Projects, About, Subscribe -> #signup */
@@ -933,7 +934,7 @@
             </a>
             <div class="hub-nav-right">
                 <a href="#signup" class="btn btn-primary nav-subscribe-mobile">Subscribe</a>
-                <button class="hub-hamburger" id="hubHamburger" aria-label="Menu">
+                <button class="hub-hamburger" id="hubHamburger" aria-label="Menu" aria-expanded="false" aria-controls="hubNavLinks">
                     <span></span><span></span><span></span>
                 </button>
             </div>
@@ -959,7 +960,7 @@
             <p class="tagline">Independent practice by Fred Hazelton</p>
             <p class="subtitle">We gather public records scattered across government sites and PDFs and turn them into tools you can search.</p>
             <div class="hero-subscribe" id="signup" aria-labelledby="hero-subscribe-title">
-                <p id="hero-subscribe-title" class="hero-subscribe-title">Get the weekly data drop</p>
+                <h2 id="hero-subscribe-title" class="hero-subscribe-title">Get the weekly data drop</h2>
                 <div id="beehiiv-embed" class="hero-subscribe-embed" data-test-id="beehiiv-embed">
                     <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="43fff60e-b01e-480f-ad84-a4ff9ed88aef"></script>
                     <noscript><a href="https://freds-newsletter-8cc03b.beehiiv.com/subscribe" class="btn btn-primary btn-lg">Get the weekly data drop</a></noscript>
@@ -1189,18 +1190,42 @@
         // Hamburger
         const hamburger = document.getElementById('hubHamburger');
         const navLinks = document.getElementById('hubNavLinks');
+        function setMenu(open) {
+            hamburger.classList.toggle('open', open);
+            navLinks.classList.toggle('open', open);
+            hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
         hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('open');
-            navLinks.classList.toggle('open');
+            setMenu(!navLinks.classList.contains('open'));
         });
 
         // Close mobile nav on link click
         navLinks.querySelectorAll('a').forEach(a => {
-            a.addEventListener('click', () => {
-                hamburger.classList.remove('open');
-                navLinks.classList.remove('open');
-            });
+            a.addEventListener('click', () => setMenu(false));
         });
+
+        // Esc closes the menu and returns focus to the button
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                setMenu(false);
+                hamburger.focus();
+            }
+        });
+
+        // Title the Beehiiv iframe once the loader inserts it
+        (function () {
+            const embed = document.querySelector('.hero-subscribe-embed');
+            if (!embed) return;
+            const TITLE = 'Subscribe to the HazeyData newsletter';
+            const apply = () => {
+                const f = embed.querySelector('iframe');
+                if (f) { f.setAttribute('title', TITLE); return true; }
+                return false;
+            };
+            if (apply()) return;
+            const mo = new MutationObserver(() => { if (apply()) mo.disconnect(); });
+            mo.observe(embed, { childList: true, subtree: true });
+        })();
     </script>
 </body>
 </html>
