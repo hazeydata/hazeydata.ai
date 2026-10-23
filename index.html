@@ -322,6 +322,8 @@
             max-width: 1100px;
             margin: 0 auto;
             padding: 6rem 2rem;
+            padding-top: 7rem;
+            scroll-margin-top: 88px;
         }
 
         .project-grid {
@@ -334,7 +336,7 @@
             position: relative;
             background: rgba(255, 255, 255, 0.025);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
+            border-radius: 12px;
             padding: 2.5rem 2rem 2rem;
             text-decoration: none;
             display: flex;
@@ -366,16 +368,19 @@
             pointer-events: none;
         }
 
-        .project-card:hover {
+        a.project-card:hover {
             transform: translateY(-6px);
             border-color: var(--card-accent, var(--accent));
             box-shadow:
                 0 20px 60px rgba(0,0,0,0.3),
                 0 0 40px var(--card-glow, rgba(74,144,164,0.08));
         }
-        .project-card:hover::before,
-        .project-card:hover::after {
+        a.project-card:hover::before,
+        a.project-card:hover::after {
             opacity: 1;
+        }
+        div.project-card {
+            cursor: default;
         }
 
         .card-header {
@@ -387,8 +392,18 @@
             z-index: 1;
         }
         .card-emoji {
-            font-size: 2.75rem;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 26px;
             line-height: 1;
+            flex-shrink: 0;
+        }
+        .project-card.cdr .card-emoji {
+            font-size: 16px;
         }
 
         /* Status badges */
@@ -404,30 +419,6 @@
             padding: 0.3rem 0.7rem;
             border-radius: 20px;
             white-space: nowrap;
-        }
-        .status-badge.live {
-            background: rgba(74, 222, 128, 0.1);
-            color: #4ade80;
-            border: 1px solid rgba(74, 222, 128, 0.2);
-        }
-        .status-badge.live::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4ade80;
-            animation: pulse 2s ease-in-out infinite;
-            flex-shrink: 0;
-        }
-        .status-badge.dev {
-            background: rgba(250, 204, 21, 0.1);
-            color: #facc15;
-            border: 1px solid rgba(250, 204, 21, 0.2);
-        }
-        .status-badge.concept {
-            background: rgba(148, 163, 184, 0.1);
-            color: #94a3b8;
-            border: 1px solid rgba(148, 163, 184, 0.15);
         }
         @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
@@ -447,12 +438,19 @@
             flex: 1;
             position: relative;
             z-index: 1;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            overflow: hidden;
+            max-height: 5.25em;
         }
         .project-card .card-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.4rem;
             margin-bottom: 1.5rem;
+            margin-top: auto;
             position: relative;
             z-index: 1;
         }
@@ -461,7 +459,7 @@
             color: var(--tag-color, var(--accent-light));
             padding: 0.25rem 0.65rem;
             border-radius: 6px;
-            font-size: 0.72rem;
+            font-size: 12px;
             font-family: var(--font-mono);
             font-weight: 500;
             letter-spacing: 0.02em;
@@ -868,6 +866,20 @@
             }
         }
 
+        @media (max-width: 600px) {
+            .projects-section {
+                padding: 4rem 1rem 3rem;
+                padding-top: 5rem;
+            }
+            .project-grid {
+                gap: 1rem;
+            }
+            .project-card,
+            .project-card.featured {
+                padding: 1.5rem 1.25rem;
+            }
+        }
+
         @media (max-width: 480px) {
             .metrics-inner {
                 grid-template-columns: 1fr 1fr;
@@ -928,8 +940,8 @@
             <p class="tagline">Independent practice by Fred Hazelton</p>
             <p class="subtitle">We gather public records scattered across government sites and PDFs and turn them into tools you can search.</p>
             <div class="hero-cta-row">
-                <a href="#projects" class="btn btn-primary btn-lg">Explore Projects</a>
-                <a href="mailto:fred@hazeydata.ai" class="btn btn-outline btn-lg">Get in Touch</a>
+                <a href="https://freds-newsletter-8cc03b.beehiiv.com/subscribe" class="btn btn-primary btn-lg" target="_blank" rel="noopener">Get the weekly data drop</a>
+                <a href="#projects" class="btn btn-outline btn-lg">Explore projects</a>
             </div>
         </div>
         <div class="scroll-hint">
@@ -951,7 +963,7 @@
             <a href="/theme-park-crowd-report/" class="project-card tpcr">
                 <div class="card-header">
                     <div class="card-emoji">🎢</div>
-                    <div class="status-badge live">Live Beta</div>
+                    <div class="status-badge beta">Live Beta</div>
                 </div>
                 <h3>Theme Park Crowd Report</h3>
                 <p class="card-desc">ML-powered wait time predictions for Disney, Universal, and more. The Wait Time Index distills crowd levels into one number — so you can plan smarter.</p>
@@ -1044,7 +1056,7 @@
             <div class="project-card k12comp">
                 <div class="card-header">
                     <div class="card-emoji">🏫</div>
-                    <div class="status-badge concept">Coming Soon</div>
+                    <div class="status-badge soon">Coming Soon</div>
                 </div>
                 <h3>K12Comp</h3>
                 <p class="card-desc">A sourced database of superintendent contract terms and teacher salary schedules, district by district.</p>
@@ -1058,7 +1070,7 @@
             <div class="project-card parkpermits">
                 <div class="card-header">
                     <div class="card-emoji">🏗️</div>
-                    <div class="status-badge concept">Coming Soon</div>
+                    <div class="status-badge soon">Coming Soon</div>
                 </div>
                 <h3>ParkPermits</h3>
                 <p class="card-desc">A sourced tracker of the building, construction and environmental permits that theme parks file with local governments.</p>
@@ -1108,16 +1120,16 @@
         </div>
     </section>
 
-    <!-- Contact CTA -->
-    <section class="contact-cta">
-        <h2>Let's Work Together</h2>
-        <p>Have a data problem that needs solving? Interested in collaborating on one of these projects? Fred would love to hear from you.</p>
-        <a href="mailto:fred@hazeydata.ai" class="btn btn-primary btn-lg">Get in Touch</a>
-    </section>
-
     <!-- Footer -->
     <footer class="hub-footer">
         <div class="hub-footer-inner">
+            <div class="footer-cta">
+                <div class="footer-cta-text">
+                    <h2>Let's Work Together</h2>
+                    <p>Have a data problem that needs solving? Interested in collaborating on one of these projects? Fred would love to hear from you.</p>
+                </div>
+                <a href="mailto:fred@hazeydata.ai" class="btn btn-primary btn-lg">Get in Touch</a>
+            </div>
             <div class="hub-footer-top">
                 <div class="footer-brand-block">
                     <div class="footer-brand-name"><span class="hd-logo"><img src="assets/hd-mark.svg" width="21" height="34" alt=""><span>Hazey<b>Data</b></span></span></div>
