@@ -902,6 +902,18 @@
         .hero-subscribe-title { font-family: "Space Grotesk", system-ui, sans-serif; font-weight: 600; color: #FFFFFF; margin: 0 0 .5rem; }
         .hero-subscribe-embed { min-height: 68px; width: 100%; }
         @media (max-width: 600px) { .hero-subscribe-embed { min-height: 68px; } }
+        /* Header C3: Projects, About, Subscribe -> #signup */
+        #signup { scroll-margin-top: 96px; }
+        .hub-nav-links a.nav-subscribe, .hub-nav-links a.nav-subscribe:hover { color: var(--hd-navy, #0A1628) !important; text-transform: none; letter-spacing: 0; font-family: "Space Grotesk", system-ui, sans-serif; font-size: 14px; font-weight: 600; padding: 10px 16px; min-height: 44px; display: inline-flex; align-items: center; }
+        .hub-nav-right { display: none; align-items: center; gap: 10px; }
+        .nav-subscribe-mobile { display: none; }
+        @media (max-width: 768px) {
+            .hub-nav-right { display: flex; margin-left: auto; }
+            .nav-subscribe-mobile { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; font-size: 14px; }
+            .hub-hamburger { min-width: 44px; min-height: 44px; }
+            .hub-nav-links a { min-height: 44px; display: flex; align-items: center; }
+            .hub-nav-links a.nav-subscribe { display: none; }
+        }
     </style>
     <link rel="stylesheet" href="hazeydata-b.css">
 </head>
@@ -919,14 +931,16 @@
             <a href="/" class="hub-logo">
                 <span class="hd-logo"><img src="assets/hd-mark.svg" width="21" height="34" alt=""><span>Hazey<b>Data</b></span></span>
             </a>
-            <button class="hub-hamburger" id="hubHamburger" aria-label="Menu">
-                <span></span><span></span><span></span>
-            </button>
+            <div class="hub-nav-right">
+                <a href="#signup" class="btn btn-primary nav-subscribe-mobile">Subscribe</a>
+                <button class="hub-hamburger" id="hubHamburger" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
             <div class="hub-nav-links" id="hubNavLinks">
                 <a href="#projects">Projects</a>
                 <a href="#about">About</a>
-                <a href="https://discord.gg/2Estr7sbP7" target="_blank">Discord</a>
-                <a href="mailto:fred@hazeydata.ai">Contact</a>
+                <a href="#signup" class="btn btn-primary nav-subscribe">Subscribe</a>
             </div>
         </div>
     </nav>
@@ -944,15 +958,12 @@
             <h1>Scattered records in, plain answers out.</h1>
             <p class="tagline">Independent practice by Fred Hazelton</p>
             <p class="subtitle">We gather public records scattered across government sites and PDFs and turn them into tools you can search.</p>
-            <div class="hero-subscribe" aria-labelledby="hero-subscribe-title">
+            <div class="hero-subscribe" id="signup" aria-labelledby="hero-subscribe-title">
                 <p id="hero-subscribe-title" class="hero-subscribe-title">Get the weekly data drop</p>
                 <div id="beehiiv-embed" class="hero-subscribe-embed" data-test-id="beehiiv-embed">
                     <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="43fff60e-b01e-480f-ad84-a4ff9ed88aef"></script>
                     <noscript><a href="https://freds-newsletter-8cc03b.beehiiv.com/subscribe" class="btn btn-primary btn-lg">Get the weekly data drop</a></noscript>
                 </div>
-            </div>
-            <div class="hero-cta-row">
-                <a href="#projects" class="btn btn-outline btn-lg">Explore projects</a>
             </div>
         </div>
         <div class="scroll-hint">
