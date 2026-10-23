@@ -226,10 +226,10 @@
         <h2 class="section-title">Data Quality</h2>
         <p class="section-sub">What you're actually getting -- no hedging, no asterisks.</p>
         <div class="quality-list">
-            <div class="quality-item"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>All 50 states + DC covered.</h4><p>Day-level rows for every district, every day, across three school years. Filter by confidence to match your risk tolerance &mdash; see Confidence Scores below.</p></div></div>
+            <div class="quality-item"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>All 50 states + DC covered.</h4><p>Day-level rows for every district, every day, across three school years. Filter on <code>source_method</code> to separate observed rows from estimates &mdash; see Source Methods below.</p></div></div>
             <div class="quality-item"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>Every day has a classification.</h4><p>365 rows per district per year. Each day is classified: in-session, weekend, holiday, spring break, winter break, summer, etc. No gaps.</p></div></div>
-            <div class="quality-item"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>Every cell has a confidence score.</h4><p>0.0 to 1.0 per cell. You decide your threshold. Filter by confidence to match your risk tolerance.</p></div></div>
-            <div class="quality-item"><div class="quality-icon info">i</div><div class="quality-text"><h4>Active data quality program.</h4><p>We're continuously auditing source provenance and tightening confidence scores. Filter on <code>confidence</code> to match your tolerance &mdash; higher-confidence rows are hand-verified or directly extracted from district sources.</p></div></div>
+            <div class="quality-item"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>Every cell has a confidence score.</h4><p>0.0 to 1.0 per cell. <strong>Confidence does not separate observed rows from estimates</strong> &mdash; derive that from <code>source_method</code>.</p></div></div>
+            <div class="quality-item"><div class="quality-icon info">i</div><div class="quality-text"><h4>Active data quality program.</h4><p>We're continuously auditing source provenance and tightening confidence scores. Filter on <code>source_method</code> to separate observed rows from estimates &mdash; <code>official_calendar_pdf_verified</code> and <code>human_anchor_email</code> are human-verified; <code>observed</code>, <code>r1_extract_driver</code> and <code>annotation_extract</code> are extracted from the district's own calendar; <code>inferred</code> and <code>state_median_imputation</code> are estimates.</p></div></div>
             <div class="quality-item full-width"><div class="quality-icon check">&#10003;</div><div class="quality-text"><h4>Three school years available.</h4><p>2024-2025, 2025-2026, and 2026-2027. Historical context for year-over-year analysis, plus forward-looking data for planning.</p></div></div>
         </div>
     </section>
@@ -283,15 +283,15 @@
         <p class="section-sub">RESTful JSON or CSV. Day-level queries by district, date, state. Dead simple. <a href="/ssd/docs.html" style="color:var(--accent);text-decoration:none;">Read the full docs &rarr;</a></p>
         <div class="code-block">
             <span class="comment"># Query a single district on a specific date</span><br>
-            GET <span class="string">/api/v1/days?district_id=FL_1200030&amp;date=2026-03-27</span><br><br>
+            GET <span class="string">https://api.hazeydata.ai/ssd/v1/days?district_id=FL_1201440&amp;date=2026-11-25</span><br><br>
             <span class="comment"># Response</span><br>
             {<br>
-            &nbsp;&nbsp;<span class="key">"district"</span>: <span class="string">"Alachua County"</span>,<br>
+            &nbsp;&nbsp;<span class="key">"district"</span>: <span class="string">"ORANGE"</span>,<br>
             &nbsp;&nbsp;<span class="key">"state"</span>: <span class="string">"FL"</span>,<br>
-            &nbsp;&nbsp;<span class="key">"date"</span>: <span class="string">"2026-03-27"</span>,<br>
+            &nbsp;&nbsp;<span class="key">"date"</span>: <span class="string">"2026-11-25"</span>,<br>
             &nbsp;&nbsp;<span class="key">"is_in_session"</span>: <span class="number">0.0</span>,<br>
             &nbsp;&nbsp;<span class="key">"day_type"</span>: <span class="string">"BREAK"</span>,<br>
-            &nbsp;&nbsp;<span class="key">"break_name"</span>: <span class="string">"Spring Break"</span>,<br>
+            &nbsp;&nbsp;<span class="key">"break_name"</span>: <span class="string">"Thanksgiving Break"</span>,<br>
             &nbsp;&nbsp;<span class="key">"confidence"</span>: <span class="number">0.95</span>,<br>
             &nbsp;&nbsp;<span class="key">"source_method"</span>: <span class="string">"observed"</span>,<br>
             &nbsp;&nbsp;<span class="key">"school_year"</span>: <span class="string">"2025-2026"</span><br>
@@ -299,7 +299,7 @@
         </div>
         <div class="code-block">
             <span class="comment"># Download full CSV for a state</span><br>
-            curl <span class="string">"https://hazeydata.ai/api/v1/days?state=FL&amp;format=csv"</span> \<br>
+            curl <span class="string">"https://api.hazeydata.ai/ssd/v1/export?state=FL&amp;format=csv"</span> \<br>
             &nbsp;&nbsp;-H <span class="string">"Authorization: Bearer ssd_live_your_key_here"</span> \<br>
             &nbsp;&nbsp;-o florida_school_days.csv
         </div>
