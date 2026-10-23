@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" class="ship">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theme Park Crowd Report updates · HazeyData</title>
+<meta name="description" content="ML-powered wait time predictions for Disney, Universal, and more. The Wait Time Index distills crowd levels into one number — so you can plan smarter.">
+<link rel="canonical" href="https://hazeydata.ai/updates/tpcr/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icon-180.png">
+<meta name="theme-color" content="#0a1628">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/updates/landing.css">
+</head>
+<body class="vc dk" style="--acc:#994879;--acct:#BD73A0">
+<a class="skip" href="#main">Skip to content</a>
+<header class="hn"><div class="in"><a class="hd-logo" href="/"><img src="/assets/hd-mark.svg" width="21" height="34" alt=""><span>Hazey<b>Data</b></span></a>
+<nav class="links" id="navLinks" aria-label="Primary"><a href="/#projects">Projects</a><a href="/#about">About</a><a class="btn" href="#signup">Subscribe</a></nav>
+<div class="right"><a class="btn mbtn" href="#signup">Subscribe</a><button class="burger" id="navBurger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">☰</button></div></div></header>
+<main id="main"><section class="hero" aria-labelledby="p-title"><div class="chips"><span>XGBoost</span><span>Discord Bot</span><span>AI Q&amp;A</span></div><span class="badge beta">Live Beta</span>
+<h1 id="p-title">Theme Park Crowd Report</h1><p class="tl">Independent practice by Fred Hazelton</p><p class="sub">ML-powered wait time predictions for Disney, Universal, and more. The Wait Time Index distills crowd levels into one number — so you can plan smarter.</p>
+<div id="signup" class="signup panel" aria-labelledby="signup-title">
+<h2 id="signup-title">Get Theme Park Crowd Report updates</h2><p>Delivered by the HazeyData newsletter.</p>
+<div class="signup-embed" data-iframe-title="Subscribe to Theme Park Crowd Report updates from the HazeyData newsletter">
+<script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="0e6bd155-0111-4791-93a2-f720bd67d9ce"></script>
+<noscript><a href="https://freds-newsletter-8cc03b.beehiiv.com/subscribe" class="btn">Subscribe</a></noscript>
+</div></div></section></main>
+<footer><div class="in"><div class="top"><div><a class="hd-logo" href="/"><img src="/assets/hd-mark.svg" width="21" height="34" alt=""><span>Hazey<b>Data</b></span></a><div class="sub">Data Science by Fred Hazelton</div></div>
+<div class="cols"><nav class="col" aria-labelledby="f-projects"><h2 id="f-projects">Projects</h2><span class="cur" aria-current="page">Theme Park Crowd Report</span><a href="/cdr/">Canadian Digital Railway</a><a href="https://schoolschedulesdatabase.com/">School Schedule Database</a><a href="/accord/">ACCORD</a><a href="https://hazeydata.github.io/openmillage-site/">OpenMillage</a><a href="https://agentwebindex.com/">AgentWebIndex</a><a href="/k12comp/">K12Comp</a><a href="/parkpermits/">ParkPermits</a></nav>
+<nav class="col" aria-labelledby="f-connect"><h2 id="f-connect">Connect</h2><a href="https://discord.gg/2Estr7sbP7">Discord</a><a href="https://twitter.com/disneystatswhiz">Twitter / X</a><a href="mailto:fred@hazeydata.ai">Email</a></nav></div></div>
+<div class="fcta panel"><div><h2>Let's Work Together</h2><p>Have a data problem that needs solving? Interested in collaborating on one of these projects? Fred would love to hear from you.</p></div><a class="btn ghost" href="mailto:fred@hazeydata.ai">Get in Touch</a></div>
+<div class="copy">© 2026 HazeyData — Fred Hazelton. All rights reserved.</div></div></footer>
+<script>
+(function () {
+  var burger = document.getElementById('navBurger');
+  var links = document.getElementById('navLinks');
+  function setMenu(open) {
+    document.body.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  burger.addEventListener('click', function () { setMenu(!document.body.classList.contains('menu-open')); });
+  links.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && document.body.classList.contains('menu-open')) { setMenu(false); burger.focus(); }
+  });
+  // Title the Beehiiv iframe once the loader inserts it
+  var embed = document.querySelector('.signup-embed');
+  if (!embed) return;
+  var TITLE = embed.getAttribute('data-iframe-title');
+  function apply() { var f = embed.querySelector('iframe'); if (f) { f.setAttribute('title', TITLE); return true; } return false; }
+  if (apply()) return;
+  var mo = new MutationObserver(function () { if (apply()) mo.disconnect(); });
+  mo.observe(embed, { childList: true, subtree: true });
+})();
+</script>
+</body>
+</html>
