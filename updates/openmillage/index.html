@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" class="ship">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenMillage updates · HazeyData</title>
+<meta name="description" content="Property tax rates by taxing body, each linked to its official source.">
+<link rel="canonical" href="https://hazeydata.ai/updates/openmillage/">
+<link rel="icon" type="image/svg+xml" href="/assets/openmillage-icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/openmillage-icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/openmillage-icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/openmillage-icon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hazeydata.ai/updates/openmillage/">
+<meta property="og:title" content="OpenMillage updates · HazeyData">
+<meta property="og:description" content="Property tax rates by taxing body, each linked to its official source.">
+<meta property="og:image" content="https://hazeydata.ai/assets/og-image-1200x630.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OpenMillage updates · HazeyData">
+<meta name="twitter:description" content="Property tax rates by taxing body, each linked to its official source.">
+<meta name="twitter:image" content="https://hazeydata.ai/assets/og-image-1200x630.png">
+<meta name="theme-color" content="#0a1628">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/updates/landing.css">
+</head>
+<body class="s2" style="--acc:#155140;--acct:#289C7B">
+<a class="skip" href="#main">Skip to main content</a>
+<header class="hn"><div class="in"><a class="hd-logo" href="/"><img src="/assets/hd-mark.svg" width="21" height="34" alt=""><span>Hazey<b>Data</b></span></a>
+<nav class="links" id="navLinks" aria-label="Primary"><a href="/#projects">Projects</a><a href="/#about">About</a><a class="btn" href="#signup">Subscribe</a></nav>
+<div class="right"><a class="btn mbtn" href="#signup">Subscribe</a><button class="burger" id="navBurger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">☰</button></div></div></header>
+<main id="main" tabindex="-1"><section class="hero" aria-labelledby="p-title"><p class="stat live"><i aria-hidden="true"></i>Live</p>
+<h1 id="p-title">OpenMillage</h1><p class="sub">Property tax rates by taxing body, each linked to its official source.</p>
+<div id="signup" class="signup" aria-labelledby="signup-title">
+<h2 id="signup-title">Get OpenMillage updates</h2>
+<div class="signup-embed" data-iframe-title="Subscribe to OpenMillage updates from the HazeyData newsletter">
+<script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="c475919e-6c47-4aa5-8e83-78d98b30d31d"></script>
+<noscript><a href="https://freds-newsletter-8cc03b.beehiiv.com/subscribe" class="btn">Subscribe</a></noscript>
+</div>
+<p class="data-link"><a href="https://hazeydata.github.io/openmillage-site/">View the data</a></p></div></section></main>
+<footer class="row"><div class="in"><a class="hd-logo" href="/"><img src="/assets/hd-mark.svg" width="21" height="34" alt=""><span>Hazey<b>Data</b></span></a>
+<nav aria-label="Footer"><span class="cur" aria-current="page">OpenMillage</span><a href="/#projects">Projects</a><a href="/#about">About</a><a href="https://discord.gg/2Estr7sbP7">Discord</a><a href="https://twitter.com/disneystatswhiz">Twitter / X</a><a href="mailto:fred@hazeydata.ai">fred@hazeydata.ai</a></nav>
+<div class="copy">© 2026 HazeyData — Fred Hazelton.</div></div></footer>
+<script>
+(function () {
+  var burger = document.getElementById('navBurger');
+  var links = document.getElementById('navLinks');
+  function setMenu(open) {
+    document.body.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  burger.addEventListener('click', function () { setMenu(!document.body.classList.contains('menu-open')); });
+  links.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && document.body.classList.contains('menu-open')) { setMenu(false); burger.focus(); }
+  });
+  // Title the Beehiiv iframe once the loader inserts it
+  var embed = document.querySelector('.signup-embed');
+  if (!embed) return;
+  var TITLE = embed.getAttribute('data-iframe-title');
+  function apply() { var f = embed.querySelector('iframe'); if (f) { f.setAttribute('title', TITLE); return true; } return false; }
+  if (apply()) return;
+  var mo = new MutationObserver(function () { if (apply()) mo.disconnect(); });
+  mo.observe(embed, { childList: true, subtree: true });
+})();
+</script>
+</body>
+</html>
