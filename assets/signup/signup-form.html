@@ -1,0 +1,17 @@
+<!-- HD-SIGNUP-001 partial. Copy verbatim; change only the hidden source value. Checked by scripts/check-signup-partial.mjs -->
+<form class="hd-signup" method="post" action="/api/subscribe" novalidate>
+  <label class="hd-signup-label" for="hd-signup-email">Email</label>
+  <div class="hd-signup-row">
+    <input class="hd-signup-input" id="hd-signup-email" name="email" type="email" autocomplete="email" required inputmode="email" placeholder="you@example.com">
+    <button class="hd-signup-button" type="submit">Subscribe</button>
+  </div>
+  <input type="hidden" name="source" value="hazeydata">
+  <input type="hidden" name="utm_source" value="">
+  <input type="hidden" name="utm_medium" value="">
+  <input type="hidden" name="utm_campaign" value="">
+  <div class="hd-signup-hp" aria-hidden="true">
+    <label for="hd-signup-website">Website</label>
+    <input id="hd-signup-website" name="website" type="text" tabindex="-1" autocomplete="off" value="">
+  </div>
+  <p class="hd-signup-status" role="status" aria-live="polite" data-signup-status></p>
+</form>

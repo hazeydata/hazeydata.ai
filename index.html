@@ -897,12 +897,10 @@
                 text-align: center;
             }
         }
-        /* Hero inline Beehiiv subscribe: reserve space so the loader doesn't shift layout */
+        /* Hero first-party subscribe (HD-SIGNUP-001) */
         .hero-subscribe { max-width: 560px; margin: 0 auto 1rem; }
         .hero-subscribe-title { font-family: "Space Grotesk", system-ui, sans-serif; font-weight: 600; color: #FFFFFF; margin: 0 0 .5rem; font-size: 16px; line-height: 25.6px; letter-spacing: normal !important; text-transform: none; }
         .hub-nav a.nav-subscribe:focus-visible, .hub-nav a.nav-subscribe-mobile:focus-visible, #hubHamburger:focus-visible { outline: 2px solid #5FC4D6 !important; outline-offset: 3px; }
-        .hero-subscribe-embed { min-height: 68px; width: 100%; max-width: 400px; margin: 0 auto; } /* = Beehiiv form_width 400; centres the visible form */
-        @media (max-width: 600px) { .hero-subscribe-embed { min-height: 68px; } }
         /* Header C3: Projects, About, Subscribe -> #signup */
         #signup { scroll-margin-top: 96px; }
         .hub-nav-links a.nav-subscribe, .hub-nav-links a.nav-subscribe:hover { color: var(--hd-navy, #0A1628) !important; text-transform: none; letter-spacing: 0; font-family: "Space Grotesk", system-ui, sans-serif; font-size: 14px; font-weight: 600; padding: 10px 16px; min-height: 44px; display: inline-flex; align-items: center; }
@@ -917,6 +915,8 @@
         }
     </style>
     <link rel="stylesheet" href="hazeydata-b.css">
+    <link rel="stylesheet" href="/assets/signup/signup.css">
+    <script type="module" src="/assets/signup/signup.js"></script>
 </head>
 <body>
     <!-- Ambient background orbs -->
@@ -961,10 +961,22 @@
             <p class="subtitle">We gather public records scattered across government sites and PDFs and turn them into tools you can search.</p>
             <div class="hero-subscribe" id="signup" aria-labelledby="hero-subscribe-title">
                 <h2 id="hero-subscribe-title" class="hero-subscribe-title">Get the weekly data drop</h2>
-                <div id="beehiiv-embed" class="hero-subscribe-embed" data-test-id="beehiiv-embed">
-                    <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="43fff60e-b01e-480f-ad84-a4ff9ed88aef"></script>
-                    <noscript><a href="https://freds-newsletter-8cc03b.beehiiv.com/subscribe" class="btn btn-primary btn-lg">Get the weekly data drop</a></noscript>
-                </div>
+                <form class="hd-signup" method="post" action="/api/subscribe" novalidate>
+                  <label class="hd-signup-label" for="hd-signup-email">Email</label>
+                  <div class="hd-signup-row">
+                    <input class="hd-signup-input" id="hd-signup-email" name="email" type="email" autocomplete="email" required inputmode="email" placeholder="you@example.com">
+                    <button class="hd-signup-button" type="submit">Subscribe</button>
+                  </div>
+                  <input type="hidden" name="source" value="hazeydata">
+                  <input type="hidden" name="utm_source" value="">
+                  <input type="hidden" name="utm_medium" value="">
+                  <input type="hidden" name="utm_campaign" value="">
+                  <div class="hd-signup-hp" aria-hidden="true">
+                    <label for="hd-signup-website">Website</label>
+                    <input id="hd-signup-website" name="website" type="text" tabindex="-1" autocomplete="off" value="">
+                  </div>
+                  <p class="hd-signup-status" role="status" aria-live="polite" data-signup-status></p>
+                </form>
             </div>
         </div>
         <div class="scroll-hint">
@@ -1214,20 +1226,6 @@
             }
         });
 
-        // Title the Beehiiv iframe once the loader inserts it
-        (function () {
-            const embed = document.querySelector('.hero-subscribe-embed');
-            if (!embed) return;
-            const TITLE = 'Subscribe to the HazeyData newsletter';
-            const apply = () => {
-                const f = embed.querySelector('iframe');
-                if (f) { f.setAttribute('title', TITLE); return true; }
-                return false;
-            };
-            if (apply()) return;
-            const mo = new MutationObserver(() => { if (apply()) mo.disconnect(); });
-            mo.observe(embed, { childList: true, subtree: true });
-        })();
     </script>
 </body>
 </html>
