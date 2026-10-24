@@ -210,7 +210,7 @@ test('AC31 response is byte-identical whether Beehiiv succeeds, fails, or is not
 });
 
 test('AC32 Beehiiv 500: exactly one log line, fixed shape, no email/IP/body/key', async () => {
-  const env = await setup(); const ip = '203.0.113.77'; const addr = email('fail500ac32');
+  const env = await setup(); const ip = 'test-ip-ac32-77'; const addr = email('fail500ac32');
   const before = logs.lines.length;
   await handleSubscribe(req({ email: addr, source: 'cdr' }, { ip }), env, { fetch: beehiivMock() });
   const mine = logs.lines.slice(before);
