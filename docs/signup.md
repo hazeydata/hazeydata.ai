@@ -37,11 +37,12 @@ Every signup log line is JSON with `evt`, `status`, `source`, `beehiiv_status` a
 - `http_<code>`: Beehiiv answered with a non-2xx status (three-digit integer, for example `http_401`, `http_500`).
 - `network`: the Beehiiv fetch failed for any other reason.
 - `config`: Beehiiv secrets are not set, or `env.SIGNUPS` is not bound.
+- `d1_write`: the D1 INSERT threw (for example a missing table).
 
 Lines:
 - `status: stored_not_forwarded`: stored, Beehiiv not configured or failed; `reason` is one of `config`, `http_<code>`, `timeout`, `network`.
 - `status: error` with `reason: config`: `env.SIGNUPS` is not bound.
-- `status: error` with `reason: null`: the D1 write threw (for example a missing table). The visitor gets HTTP 502 and Beehiiv is not called. `store_error` is not in the enum, so the reason stays null.
+- `status: error` with `reason: d1_write`: the D1 write threw (for example a missing table). The visitor gets HTTP 502 and Beehiiv is not called.
 - `log()` writes null for any reason outside the enum.
 
 ## Incident 2026-10-24

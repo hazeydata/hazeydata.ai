@@ -95,11 +95,19 @@ for (const mode of ['js', 'nojs']) {
     assert.equal(lastLog().status, 'stored_not_forwarded'); assert.equal(lastLog().beehiiv_status, null); assert.equal(lastLog().reason, 'config');
   });
 
-  T('store missing table -> 502 error, Beehiiv not called, reason null (not in the enum)', async () => {
+  T('store missing table -> 502 error, Beehiiv not called, reason d1_write (AC32)', async () => {
     const env = await setup({ d1: { noSchema: true } }); const m = beehiivMock();
-    await expectStatus(await handleSubscribe(req({ email: email('notable') }, { json }), env, { fetch: m }), 'error', 502);
+    const start = logs.lines.length; const src = SOURCES[0];
+    await expectStatus(await handleSubscribe(req({ email: email('notable'), source: src }, { json }), env, { fetch: m }), 'error', 502);
     assert.equal(m.calls.length, 0);
-    assert.equal(lastLog().status, 'error'); assert.equal(lastLog().reason, null);
+    const emitted = logs.lines.slice(start);
+    assert.equal(emitted.filter((l) => JSON.parse(l).evt === 'signup').length, 1);
+    assert.deepEqual(JSON.parse(emitted[emitted.length - 1]), { evt: 'signup', status: 'error', source: src, beehiiv_status: null, reason: 'd1_write' });
+    const blob = emitted.join('\n');
+    assert.ok(!blob.includes(email('notable')) && !blob.includes('notable@'), 'email in log');
+    assert.ok(!/\d{1,3}(\.\d{1,3}){3}/.test(blob), 'IP-like value in log');
+    assert.ok(!blob.includes(ENV.BEEHIIV_API_KEY) && !blob.includes(ENV.BEEHIIV_PUB_ID), 'Beehiiv secret in log');
+    assert.ok(!/D1_ERROR|no such table/i.test(blob), 'D1 error text in log');
   });
 
   T('SIGNUPS unbound -> error, reason config, Beehiiv not called', async () => {

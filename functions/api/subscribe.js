@@ -20,7 +20,7 @@ export function normalizeSource(raw) {
 
 function log(status, source, beehiivStatus, reason) {
   // AC10: status, source, Beehiiv HTTP status and a fixed failure reason only.
-  if (reason != null && !/^(timeout|network|config|http_[0-9]{3})$/.test(reason)) reason = null;
+  if (reason != null && !/^(timeout|network|config|d1_write|http_[0-9]{3})$/.test(reason)) reason = null;
   console.log(JSON.stringify({ evt: 'signup', status, source, beehiiv_status: beehiivStatus ?? null, reason: reason ?? null }));
 }
 
@@ -146,7 +146,7 @@ export async function handleSubscribe(request, env, opts = {}) {
     ).bind(email, source, utm.utm_source, utm.utm_medium, utm.utm_campaign, new Date(now).toISOString()).run();
     inserted = (r?.meta?.changes ?? 0) > 0;
   } catch {
-    log('error', source, null);
+    log('error', source, null, 'd1_write');
     return respond(request, 'error');
   }
   if (!inserted) { log('already_subscribed', source, null); return respond(request, 'already_subscribed'); }
