@@ -8,7 +8,7 @@ Pending rows go into Beehiiv by CSV import.
 | Name | Kind | Required | Purpose |
 |---|---|---|---|
 | `SIGNUPS` | D1 binding to database `hazeydata-signups` | yes | signups table (`migrations/0001_signups.sql`) |
-| `SIGNUP_RL` | KV namespace binding | yes | per-IP rate limit, 5 per 10 min |
+| `SIGNUP_RL` | KV namespace binding | yes | per-IP rate limit, 5 per 10 min (fails open on a KV error, see below) |
 | `EXPORT_TOKEN` | secret | yes for export | bearer token for the CSV export |
 | `BEEHIIV_API_KEY`, `BEEHIIV_PUB_ID` | secrets | optional | live forward to Beehiiv |
 
@@ -35,3 +35,8 @@ npx wrangler d1 execute hazeydata-signups --remote --json \
 ## Retention
 OQ7 is deferred. Default: keep rows until someone asks for deletion
 (`npx wrangler d1 execute hazeydata-signups --remote --command "DELETE FROM signups WHERE email = '<lowercased email>'"`).
+
+## Rate limit fails open
+If the `SIGNUP_RL` KV read or write throws, the rate limit **fails open**: the request is not counted and goes on to the honeypot, email and store steps as usual (`overLimit` in `functions/api/subscribe.js`).
+Why: a KV outage should not block real signups. The cost is that abuse isn't throttled while KV is down. The honeypot, the Origin allowlist and the unique-email constraint still apply, and duplicate rows can't be created.
+Without the binding at all (local or preview), the limit falls back to per-isolate memory.
