@@ -4,20 +4,20 @@ How `.github/workflows/deploy.yml` authenticates to Cloudflare, and what to chec
 Never put token values or account IDs in this repo.
 
 ## Account
-- The correct Cloudflare account is the **Graceland account**: in the dashboard account switcher its name is the Graceland Gmail address followed by "'s Account".
-- The D1 database `hazeydata-signups` lives in the Graceland account.
-- A separate account under Fred's hazeydata.ai work address exists. It is **not** the right one. Don't create tokens or resources there.
+- Fred-reported, not verified: the correct Cloudflare account is the **Graceland account**: in the dashboard account switcher its name is the Graceland Gmail address followed by "'s Account".
+- Fred-reported, not verified: the D1 database `hazeydata-signups` lives in the Graceland account.
+- Fred-reported, not verified: a separate account under Fred's hazeydata.ai work address exists. It is **not** the right one. Don't create tokens or resources there.
 
 ## Repo secrets
 | Secret | What it is |
 |---|---|
-| `CLOUDFLARE_API_TOKEN` | API token **`hazeydata-ai-github-deploy`**, created Oct 24, 2026, scoped to the Graceland account only. Permissions: **D1: Edit**, **Cloudflare Pages: Edit**, **Account Settings: Read**. |
-| `CLOUDFLARE_ACCOUNT_ID` | Older secret (last updated about 7 months before Oct 2026). It points at the Graceland account; the green deploy on Oct 24, 2026 confirms it. |
+| `CLOUDFLARE_API_TOKEN` | Fred-reported, not verified: API token **`hazeydata-ai-github-deploy`**, created Oct 24, 2026, scoped to the Graceland account only, with permissions **D1: Edit**, **Cloudflare Pages: Edit**, **Account Settings: Read**. |
+| `CLOUDFLARE_ACCOUNT_ID` | Older secret (last updated about 7 months before Oct 2026). That it points at the Graceland account is inferred from attempt 5 of run 40076036664 succeeding on Oct 24, 2026; not checked directly. |
 
 The tokens named **"Wilma Deploy"** and **"side_hustle_token"** are unrelated to this repo. Don't use them here, and don't rotate or delete them because of this repo.
 
 ## Which token is in use?
-Cloudflare dashboard → My Profile → API Tokens: check the **Last used** column. After a deploy, `hazeydata-ai-github-deploy` should show a recent Last used time.
+Cloudflare dashboard → My Profile → API Tokens: check the **Last used** column. After a deploy, `hazeydata-ai-github-deploy` should show a recent Last used time. As of Oct 24, 2026, nobody has checked Last used yet.
 
 ## Symptom: `Authentication error [code: 10000]`
 The `Apply D1 schema (idempotent)` step fails with
