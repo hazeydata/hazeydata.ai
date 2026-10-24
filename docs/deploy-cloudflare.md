@@ -4,9 +4,9 @@ How `.github/workflows/deploy.yml` authenticates to Cloudflare, and what to chec
 Never put token values or account IDs in this repo.
 
 ## Account
-- The correct Cloudflare account is **"Graceland.greenjacket.kiwi@gmail.com's Account"** (the Graceland account).
+- The correct Cloudflare account is the **Graceland account**: in the dashboard account switcher its name is the Graceland Gmail address followed by "'s Account".
 - The D1 database `hazeydata-signups` lives in the Graceland account.
-- A separate account under fred@hazeydata.ai exists. It is **not** the right one. Don't create tokens or resources there.
+- A separate account under Fred's hazeydata.ai work address exists. It is **not** the right one. Don't create tokens or resources there.
 
 ## Repo secrets
 | Secret | What it is |
