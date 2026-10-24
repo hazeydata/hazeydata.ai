@@ -18,7 +18,7 @@ const req = tools ? createRequire(join(tools, 'package.json')) : null;
 const root = new URL('../..', import.meta.url).pathname;
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.json': 'application/json' };
 
-let browser, ip = '192.0.2.1';
+let browser, ip = 'test-ip-0';
 const blocked = [];
 const used = [];
 const logs = captureLogs();
@@ -83,7 +83,7 @@ for (const js of [true, false]) {
   for (const [want, kind] of CASES) {
     test(`[${js ? 'js' : 'nojs'}] ${want} via ${kind}`, { skip: !req && 'no SIGNUP_TEST_TOOLS' }, async () => {
       _resetMemoryLimiter();
-      ip = `192.0.2.${Math.floor(Math.random() * 250) + 1}`;
+      ip = `test-ip-${Math.random().toString(36).slice(2)}`;
       if (want === 'rate_limited') for (let i = 0; i < 5; i++) await overLimit({}, ip);
       const page = await newPage({ js });
       const addr = kind === 'bad' ? 'not-an-email' : email(`${kind}${js ? 'j' : 'n'}`);
@@ -103,7 +103,7 @@ for (const js of [true, false]) {
 }
 
 test('[js] AC13 button disables while in flight', { skip: !req && 'no SIGNUP_TEST_TOOLS' }, async () => {
-  _resetMemoryLimiter(); ip = '192.0.2.251';
+  _resetMemoryLimiter(); ip = 'test-ip-btn';
   const page = await newPage({ js: true, timeoutMs: 800 });
   await submit(page, email('slowbtn'));
   await page.waitForFunction(() => document.querySelector('.hd-signup-button').disabled);

@@ -14,7 +14,7 @@ beforeEach(() => _resetMemoryLimiter());
 
 function req(fields, { json = true, method = 'POST', origin = ORIGIN, ip, referer = `${ORIGIN}/` } = {}) {
   if (fields.email) used.push(fields.email);
-  const headers = { 'Content-Type': 'application/x-www-form-urlencoded', 'CF-Connecting-IP': ip || `198.51.100.${++ipSeq % 250}` };
+  const headers = { 'Content-Type': 'application/x-www-form-urlencoded', 'CF-Connecting-IP': ip || `test-ip-${++ipSeq}` };
   if (json) headers.Accept = 'application/json';
   if (origin) headers.Origin = origin;
   if (referer) headers.Referer = referer;
@@ -84,7 +84,7 @@ for (const mode of ['js', 'nojs']) {
 
   test(`[${mode}] AC7 6th request per IP in 10 min -> rate_limited 429, no Beehiiv call`, async () => {
     const m = beehiivMock();
-    const ip = '203.0.113.7';
+    const ip = 'test-ip-rl';
     for (let i = 0; i < 5; i++) await expectStatus(await call(req({ email: email(`new7${i}`) }, { json, ip }), m), 'subscribed', 200);
     assert.equal(m.calls.length, 5);
     await expectStatus(await call(req({ email: email('new7x') }, { json, ip }), m), 'rate_limited', 429);
@@ -99,10 +99,10 @@ for (const mode of ['js', 'nojs']) {
     const kv = { get: async (k) => store.get(k) ?? null, put: async (k, v, o) => { assert.ok(o.expirationTtl >= 600); store.set(k, v); } };
     const env = { ...ENV, SIGNUP_RL: kv };
     const m = beehiivMock();
-    for (let i = 0; i < 5; i++) await handleSubscribe(req({ email: email(`kv${i}`) }, { json, ip: '203.0.113.8' }), env, { fetch: m });
-    const res = await handleSubscribe(req({ email: email('kvx') }, { json, ip: '203.0.113.8' }), env, { fetch: m });
+    for (let i = 0; i < 5; i++) await handleSubscribe(req({ email: email(`kv${i}`) }, { json, ip: 'test-ip-kv' }), env, { fetch: m });
+    const res = await handleSubscribe(req({ email: email('kvx') }, { json, ip: 'test-ip-kv' }), env, { fetch: m });
     await expectStatus(res, 'rate_limited', 429);
-    assert.ok([...store.keys()].every((k) => !k.includes('203.0.113.8')), 'raw IP stored in KV key');
+    assert.ok([...store.keys()].every((k) => !k.includes('test-ip-kv')), 'raw IP stored in KV key');
   });
 
   for (const [local, label] of [['slow', 'timeout >5s'], ['fail500', '5xx'], ['network', 'network failure'], ['badkey', 'bad key 401']]) {
