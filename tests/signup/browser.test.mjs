@@ -10,15 +10,16 @@ import { readFile } from 'node:fs/promises';
 import { join, extname } from 'node:path';
 import { handleSubscribe, _resetMemoryLimiter, overLimit } from '../../functions/api/subscribe.js';
 import { onRequest as middleware } from '../../functions/_middleware.js';
+import { onRequest as exportRoute } from '../../functions/api/signups/[file].js';
 import { MESSAGES } from '../../assets/signup/signup-config.js';
-import { ENV, ORIGIN, email, beehiivMock, captureLogs, assertCleanLogs } from './helpers.mjs';
+import { ENV, EXPORT_TOKEN, ORIGIN, email, beehiivMock, captureLogs, assertCleanLogs, makeD1 } from './helpers.mjs';
 
 const tools = process.env.SIGNUP_TEST_TOOLS;
 const req = tools ? createRequire(join(tools, 'package.json')) : null;
 const root = new URL('../..', import.meta.url).pathname;
-const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.json': 'application/json' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.json': 'application/json', '.woff2': 'font/woff2' };
 
-let browser, ip = 'test-ip-0';
+let browser, ip = 'test-ip-0', db, env;
 const blocked = [];
 const used = [];
 const logs = captureLogs();
@@ -29,15 +30,20 @@ async function serveStatic(url) {
   try {
     const body = await readFile(join(root, p));
     return new Response(body, { status: 200, headers: { 'Content-Type': TYPES[extname(p)] || 'application/octet-stream' } });
-  } catch { return new Response('not found', { status: 404, headers: { 'Content-Type': 'text/plain' } }); }
+  } catch {
+    return new Response(await readFile(join(root, '404.html')), { status: 404, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+  }
 }
+const ASSETS = { fetch: (r) => serveStatic(new URL(r.url)) };
 
 async function route(r, { timeoutMs }) {
   const url = new URL(r.url());
   const headers = new Headers(r.headers());
   headers.set('CF-Connecting-IP', ip);
   const request = new Request(url, { method: r.method(), headers, body: ['GET', 'HEAD'].includes(r.method()) ? undefined : r.postData() });
-  if (url.pathname === '/api/subscribe') return handleSubscribe(request, ENV, { fetch: beehiivMock(), timeoutMs });
+  if (url.pathname === '/api/subscribe') return handleSubscribe(request, env, { fetch: beehiivMock(), timeoutMs });
+  const m = /^\/api\/signups\/([^/]+)$/.exec(url.pathname);
+  if (m) return exportRoute({ request, env: { ...env, ASSETS, EXPORT_TOKEN }, params: { file: m[1] } });
   return middleware({ request, env: {}, next: () => serveStatic(url) });
 }
 
@@ -68,15 +74,19 @@ async function submit(page, addr, { honeypot = false } = {}) {
 const statusText = (page) => page.$eval('[data-signup-status]', (el) => [el.dataset.state, el.textContent]);
 
 before(async () => {
+  env = { ...ENV, SIGNUPS: await makeD1() };
   if (!req) return;
   const puppeteer = req('puppeteer-core');
   browser = await puppeteer.launch({ executablePath: process.env.CHROME || '/usr/bin/google-chrome', headless: true, args: ['--no-sandbox'] });
 });
 after(async () => { await browser?.close(); logs.restore(); assertCleanLogs(assert, logs.lines, used); });
 
+// [expected status, mock kind]. R2: Beehiiv failures still show success (row stays pending);
+// only a store-write failure ('storefail') shows error.
 const CASES = [
-  ['subscribed', 'new'], ['already_subscribed', 'old'], ['invalid_email', 'bad'],
-  ['rate_limited', 'new'], ['error', 'fail500'], ['error', 'slow'], ['error', 'network'], ['subscribed', 'hp'],
+  ['subscribed', 'new'], ['already_subscribed', 'dupe'], ['invalid_email', 'bad'], ['rate_limited', 'new'],
+  ['error', 'storefail'], ['subscribed', 'fail500'], ['subscribed', 'slow'], ['subscribed', 'network'],
+  ['subscribed', 'badkey'], ['subscribed', 'hp'],
 ];
 
 for (const js of [true, false]) {
@@ -84,9 +94,14 @@ for (const js of [true, false]) {
     test(`[${js ? 'js' : 'nojs'}] ${want} via ${kind}`, { skip: !req && 'no SIGNUP_TEST_TOOLS' }, async () => {
       _resetMemoryLimiter();
       ip = `test-ip-${Math.random().toString(36).slice(2)}`;
+      db = await makeD1({ failWrites: kind === 'storefail' });
+      env = { ...ENV, SIGNUPS: db };
       if (want === 'rate_limited') for (let i = 0; i < 5; i++) await overLimit({}, ip);
+      const addrDupe = email(`dupe${js ? 'j' : 'n'}`);
+      if (kind === 'dupe') await db.prepare("INSERT INTO signups (email, source, created_at) VALUES (?, 'hazeydata', '2026-10-24T00:00:00.000Z')").bind(addrDupe).run();
       const page = await newPage({ js });
       const addr = kind === 'bad' ? 'not-an-email' : email(`${kind}${js ? 'j' : 'n'}`);
+      const before = kind === 'storefail' ? 0 : db.rows().length;
       if (js) {
         await submit(page, addr, { honeypot: kind === 'hp' });
         await page.waitForFunction(() => document.querySelector('[data-signup-status]').dataset.state);
@@ -97,31 +112,61 @@ for (const js of [true, false]) {
       }
       assert.deepEqual(await statusText(page), [want, MESSAGES[want]]);
       assert.ok(await page.$('#hd-signup-email'), 'page stays usable'); // AC18
+      if (kind !== 'storefail') {
+        const stored = want === 'subscribed' && kind !== 'hp' ? 1 : 0;
+        assert.equal(db.rows().length - before, stored, 'rows added'); // AC21 / AC6 / AC25
+        if (['fail500', 'slow', 'network', 'badkey'].includes(kind)) assert.equal(db.rows().at(-1).status, 'pending'); // AC23
+      }
       await page.close();
     });
   }
 }
 
+test('AC26 export 404 is byte-identical to an unknown path (real 404.html)', { skip: !req && 'no SIGNUP_TEST_TOOLS' }, async () => {
+  env = { ...ENV, SIGNUPS: await makeD1() };
+  const page = await newPage({ js: true });
+  const grab = (path, auth) => page.evaluate(async (p, a) => {
+    const r = await fetch(p, { headers: a ? { Authorization: a } : {} });
+    return [r.status, r.headers.get('content-type'), await r.text()];
+  }, path, auth);
+  const unknown = await grab('/no-such-page-hd');
+  assert.equal(unknown[0], 404);
+  assert.deepEqual(await grab('/api/signups/export.csv'), unknown);
+  assert.deepEqual(await grab('/api/signups/export.csv', 'Bearer wrong'), unknown);
+  const ok = await grab('/api/signups/export.csv', `Bearer ${EXPORT_TOKEN}`);
+  assert.equal(ok[0], 200); assert.ok(ok[2].startsWith('email,source,utm_source,utm_medium,utm_campaign,created_at'));
+  await page.close();
+});
+
 test('[js] AC13 button disables while in flight', { skip: !req && 'no SIGNUP_TEST_TOOLS' }, async () => {
-  _resetMemoryLimiter(); ip = 'test-ip-btn';
+  _resetMemoryLimiter(); ip = 'test-ip-btn'; env = { ...ENV, SIGNUPS: await makeD1() };
   const page = await newPage({ js: true, timeoutMs: 800 });
   await submit(page, email('slowbtn'));
   await page.waitForFunction(() => document.querySelector('.hd-signup-button').disabled);
   await page.waitForFunction(() => !document.querySelector('.hd-signup-button').disabled, { timeout: 5000 });
-  assert.equal((await statusText(page))[0], 'error');
+  assert.equal((await statusText(page))[0], 'subscribed');
   await page.close();
 });
 
-test('AC11/AC17 page renders with all third-party origins blocked; no Beehiiv in markup', { skip: !req && 'no SIGNUP_TEST_TOOLS' }, async () => {
+test('AC11/AC17 whole page makes 0 requests outside hazeydata.ai; renders; self-hosted fonts load', { skip: !req && 'no SIGNUP_TEST_TOOLS' }, async () => {
   const html = await readFile(join(root, 'index.html'), 'utf8');
   assert.ok(!/beehiiv/i.test(html), 'beehiiv reference in index.html');
   const form = await readFile(join(root, 'assets/signup/signup-form.html'), 'utf8');
   assert.ok(!/https?:\/\//.test(form.replace(/<!--.*?-->/s, '')), 'absolute URL in partial');
   assert.ok(!blocked.some((o) => /beehiiv/.test(o)), `beehiiv requested: ${blocked}`);
+  assert.ok(!/fonts\.(googleapis|gstatic)\.com/.test(html), 'Google Fonts link in index.html');
+  const css = await readFile(join(root, 'hazeydata-b.css'), 'utf8');
+  assert.ok(!/https?:\/\//.test(css.split('\n')[0]), 'remote @import in hazeydata-b.css');
+  blocked.length = 0;
   const page = await newPage({ js: true });
+  await page.evaluate(() => document.fonts.ready);
   const box = await page.$eval('form.hd-signup', (f) => f.getBoundingClientRect().height);
   assert.ok(box > 40);
-  console.error = () => {};
+  const fonts = await page.evaluate(() => ['Inter', 'Space Grotesk'].map((f) => document.fonts.check(`600 16px "${f}"`)));
+  assert.deepEqual(fonts, [true, true], 'self-hosted fonts loaded');
+  const h1 = await page.$eval('h1', (el) => getComputedStyle(el).fontFamily);
+  assert.match(h1, /Space Grotesk/);
+  assert.deepEqual(blocked, [], `third-party requests: ${blocked}`);
   await page.close();
 });
 
@@ -133,9 +178,9 @@ test('AC15 a11y: label, type/autocomplete, aria-live, honeypot hidden, axe 0 vio
     const s = document.querySelector('[data-signup-status]');
     const hp = document.querySelector('.hd-signup-hp');
     const hpi = document.querySelector('#hd-signup-website');
-    return { label: !!l && l.offsetHeight > 0, type: i.type, ac: i.autocomplete, live: s.getAttribute('aria-live'), hpHidden: hp.getAttribute('aria-hidden'), hpTab: hpi.tabIndex };
+    return { labelText: l.textContent, buttonText: document.querySelector('.hd-signup-button').textContent, placeholder: i.placeholder, label: !!l && l.offsetHeight > 0, type: i.type, ac: i.autocomplete, live: s.getAttribute('aria-live'), hpHidden: hp.getAttribute('aria-hidden'), hpTab: hpi.tabIndex };
   });
-  assert.deepEqual(facts, { label: true, type: 'email', ac: 'email', live: 'polite', hpHidden: 'true', hpTab: -1 });
+  assert.deepEqual(facts, { labelText: 'Your email', buttonText: 'Sign me up', placeholder: 'you@example.com', label: true, type: 'email', ac: 'email', live: 'polite', hpHidden: 'true', hpTab: -1 });
   await page.addScriptTag({ path: req.resolve('axe-core/axe.min.js') });
   const res = await page.evaluate(() => axe.run('form.hd-signup', { runOnly: ['wcag2a', 'wcag2aa'] }));
   assert.deepEqual(res.violations.map((v) => v.id), []);

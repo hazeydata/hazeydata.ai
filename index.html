@@ -26,9 +26,9 @@
     <meta name="twitter:description" content="Independent data science practice — ML-powered tools for theme parks, sovereign AI, and more.">
     <meta name="twitter:image" content="https://hazeydata.ai/assets/og-image-1200x630.png">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <link rel="stylesheet" href="styles.css?v=20260315b">
     <style>
         /* ========================================
@@ -962,10 +962,10 @@
             <div class="hero-subscribe" id="signup" aria-labelledby="hero-subscribe-title">
                 <h2 id="hero-subscribe-title" class="hero-subscribe-title">Get the weekly data drop</h2>
                 <form class="hd-signup" method="post" action="/api/subscribe" novalidate>
-                  <label class="hd-signup-label" for="hd-signup-email">Email</label>
+                  <label class="hd-signup-label" for="hd-signup-email">Your email</label>
                   <div class="hd-signup-row">
                     <input class="hd-signup-input" id="hd-signup-email" name="email" type="email" autocomplete="email" required inputmode="email" placeholder="you@example.com">
-                    <button class="hd-signup-button" type="submit">Subscribe</button>
+                    <button class="hd-signup-button" type="submit">Sign me up</button>
                   </div>
                   <input type="hidden" name="source" value="hazeydata">
                   <input type="hidden" name="utm_source" value="">

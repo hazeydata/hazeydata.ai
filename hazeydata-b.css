@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+@import url('/assets/fonts/fonts.css');
 :root{--hd-dot-grid:radial-gradient(circle,rgba(169,184,201,.09) 1px,transparent 1.2px) 0 0/22px 22px;--hd-glow:radial-gradient(circle at 78% 50%,rgba(95,196,214,.20) 0,rgba(27,111,128,.08) 35%,transparent 70%)}
 /* HazeyData Direction B restyle: override layer, loaded after styles.css */
 :root{--hd-deep:#03070F;--hd-bg:linear-gradient(135deg,#03070F 0%,#0A1628 100%);--bg-dark:#03070F;--accent:#5FC4D6;--accent-light:#5FC4D6;--hd-navy:#0A1628;--hd-panel:#13243D;--hd-cyan:#5FC4D6;--hd-slate:#A9B8C9;--hd-white:#fff;--font-text:'Inter',system-ui,sans-serif;--font-mono:'Space Grotesk',system-ui,sans-serif}

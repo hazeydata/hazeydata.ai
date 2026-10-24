@@ -1,4 +1,4 @@
-// HD-SIGNUP-001: POST /api/subscribe -> Beehiiv v2 create subscription.
+// HD-SIGNUP-001 (R2 store-first): POST /api/subscribe -> D1 SIGNUPS, then best-effort Beehiiv v2 forward.
 import {
   SOURCES, ALLOWED_ORIGINS, RATE_LIMIT, BEEHIIV_TIMEOUT_MS, STATUSES,
 } from '../../assets/signup/signup-config.js';
@@ -7,10 +7,8 @@ const HTTP = { subscribed: 200, already_subscribed: 200, invalid_email: 400, rat
 // Pragmatic server-side check (AC3). The browser's type=email is not trusted.
 const EMAIL_RE = /^[^\s@"<>()\[\],;:\\]{1,64}@(?=.{1,253}$)(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/;
 const UTM_RE = /^[A-Za-z0-9._-]{1,100}$/;
-// Beehiiv returns 200 for an existing subscriber too. A record created more than this long ago is "already".
-const ALREADY_AGE_SECONDS = 120;
 
-const memoryBuckets = new Map(); // fallback when no KV binding: per-isolate only
+const memoryBuckets = new Map(); // fallback only when no SIGNUP_RL binding (local dev)
 
 export function isValidEmail(email) {
   return typeof email === 'string' && email.length <= 254 && EMAIL_RE.test(email);
@@ -32,15 +30,20 @@ async function ipKey(ip, windowStart) {
   return `rl:${windowStart}:${hex}`;
 }
 
-// AC7: fixed window, 5 per IP per 10 min. Storage: KV namespace bound as SIGNUP_RL.
+// AC7: fixed window, 5 per IP per 10 min. Storage: KV namespace bound as SIGNUP_RL (key = window +
+// truncated SHA-256 of the IP, TTL just over the window; no raw IP stored). KV is eventually consistent,
+// so the limit is approximate across edge locations. Without the binding it falls back to per-isolate memory.
+// A KV error fails open: the store write that follows decides the outcome.
 export async function overLimit(env, ip, nowMs = Date.now()) {
   const windowStart = Math.floor(nowMs / 1000 / RATE_LIMIT.windowSeconds) * RATE_LIMIT.windowSeconds;
   const key = await ipKey(ip || 'none', windowStart);
   const kv = env.SIGNUP_RL;
   let count;
   if (kv) {
-    count = (parseInt(await kv.get(key), 10) || 0) + 1;
-    await kv.put(key, String(count), { expirationTtl: RATE_LIMIT.windowSeconds + 60 });
+    try {
+      count = (parseInt(await kv.get(key), 10) || 0) + 1;
+      await kv.put(key, String(count), { expirationTtl: RATE_LIMIT.windowSeconds + 60 });
+    } catch { return false; }
   } else {
     count = (memoryBuckets.get(key) || 0) + 1;
     memoryBuckets.set(key, count);
@@ -90,11 +93,10 @@ async function callBeehiiv(env, body, fetchImpl, timeoutMs) {
         signal: ctrl.signal,
       },
     );
-    let json = null;
-    if (res.ok) { try { json = await res.json(); } catch { json = null; } }
-    return { httpStatus: res.status, json };
+    try { await res.body?.cancel(); } catch { /* ignore */ }
+    return { httpStatus: res.status };
   } catch {
-    return { httpStatus: null, json: null }; // timeout or network failure
+    return { httpStatus: null }; // timeout or network failure
   } finally {
     clearTimeout(timer);
   }
@@ -123,35 +125,52 @@ export async function handleSubscribe(request, env, opts = {}) {
 
   if (String(form.get('website') || '') !== '') { log('honeypot', source, null); return respond(request, 'subscribed'); }
 
-  const email = String(form.get('email') || '').trim();
+  const email = String(form.get('email') || '').trim().toLowerCase();
   if (!isValidEmail(email)) { log('invalid_email', source, null); return respond(request, 'invalid_email'); }
 
-  if (!env.BEEHIIV_API_KEY || !env.BEEHIIV_PUB_ID) { log('error', source, null); return respond(request, 'error'); }
-
-  const body = { email, utm_source: source, reactivate_existing: false, send_welcome_email: false };
-  for (const k of ['utm_medium', 'utm_campaign']) {
+  const utm = {};
+  for (const k of ['utm_source', 'utm_medium', 'utm_campaign']) {
     const v = String(form.get(k) || '');
-    if (UTM_RE.test(v)) body[k] = v;
+    utm[k] = UTM_RE.test(v) ? v : null;
   }
-  // OQ1 default: utm_source is the form's source slug. A utm_source the visitor arrived with
-  // (e.g. ?utm_source=x on the page URL) is passed through as utm_content so neither is lost.
-  const suppliedSource = String(form.get('utm_source') || '');
-  if (UTM_RE.test(suppliedSource)) body.utm_content = suppliedSource;
-  const ref = request.headers.get('Referer');
-  if (ref) { try { const r = new URL(ref); if (ALLOWED_ORIGINS.includes(r.origin)) body.referring_site = r.origin + r.pathname; } catch { /* ignore */ } }
 
-  const { httpStatus, json } = await callBeehiiv(env, body, fetchImpl, timeoutMs);
-  let status;
-  if (httpStatus === 200 || httpStatus === 201) {
-    const created = Number(json?.data?.created);
-    status = Number.isFinite(created) && created < now / 1000 - ALREADY_AGE_SECONDS ? 'already_subscribed' : 'subscribed';
-  } else if (httpStatus === 400) {
-    status = 'invalid_email';
-  } else {
-    status = 'error';
+  // AC21/AC24/AC25: store first. Unique email (lowercased) dedupes; a write failure is the only 502.
+  const db = env.SIGNUPS;
+  let inserted;
+  try {
+    if (!db) throw new Error('no store');
+    const r = await db.prepare(
+      `INSERT INTO signups (email, source, utm_source, utm_medium, utm_campaign, created_at, status)
+       VALUES (?, ?, ?, ?, ?, ?, 'pending') ON CONFLICT(email) DO NOTHING`,
+    ).bind(email, source, utm.utm_source, utm.utm_medium, utm.utm_campaign, new Date(now).toISOString()).run();
+    inserted = (r?.meta?.changes ?? 0) > 0;
+  } catch {
+    log('error', source, null);
+    return respond(request, 'error');
   }
-  log(status, source, httpStatus);
-  return respond(request, status);
+  if (!inserted) { log('already_subscribed', source, null); return respond(request, 'already_subscribed'); }
+
+  // AC22/AC23: best-effort forward. The visitor sees success whatever Beehiiv does.
+  let httpStatus = null;
+  if (env.BEEHIIV_API_KEY && env.BEEHIIV_PUB_ID) {
+    const body = { email, utm_source: source, reactivate_existing: false, send_welcome_email: false };
+    if (utm.utm_medium) body.utm_medium = utm.utm_medium;
+    if (utm.utm_campaign) body.utm_campaign = utm.utm_campaign;
+    if (utm.utm_source) body.utm_content = utm.utm_source; // R1: incoming utm_source -> utm_content
+    const ref = request.headers.get('Referer');
+    if (ref) { try { const r = new URL(ref); if (ALLOWED_ORIGINS.includes(r.origin)) body.referring_site = r.origin + r.pathname; } catch { /* ignore */ } }
+    ({ httpStatus } = await callBeehiiv(env, body, fetchImpl, timeoutMs));
+  }
+  try {
+    if (httpStatus !== null && httpStatus >= 200 && httpStatus < 300) {
+      await db.prepare("UPDATE signups SET status = 'forwarded', forwarded_at = ?, last_error_code = NULL WHERE email = ?")
+        .bind(new Date(now).toISOString(), email).run();
+    } else {
+      await db.prepare('UPDATE signups SET last_error_code = ? WHERE email = ?').bind(httpStatus, email).run();
+    }
+  } catch { /* row is stored as pending already; export will pick it up */ }
+  log('subscribed', source, httpStatus);
+  return respond(request, 'subscribed');
 }
 
 export const onRequest = (context) => handleSubscribe(context.request, context.env);
