@@ -44,5 +44,23 @@ class CheckerTest(unittest.TestCase):
             self.assertNotIn("FORBIDDEN: index.html", r.stderr)
 
 
+class PublicContactEmailTest(unittest.TestCase):
+    """Locked rule: the public contact email everywhere is fred@hazeydata.ai."""
+    RETIRED = "contact" + "@hazeydata.ai"
+
+    def test_built_site_has_no_retired_contact_email(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = os.path.join(tmp, "out")
+            subprocess.run(["bash", BUILD, out], check=True, capture_output=True)
+            hits = []
+            for dirpath, _, files in os.walk(out):
+                for name in files:
+                    path = os.path.join(dirpath, name)
+                    with open(path, "rb") as f:
+                        if self.RETIRED.encode() in f.read().lower():
+                            hits.append(os.path.relpath(path, out))
+            self.assertEqual(hits, [], "retired contact email in served files: %s" % hits)
+
+
 if __name__ == "__main__":
     unittest.main()
