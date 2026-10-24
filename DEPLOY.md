@@ -18,6 +18,12 @@ git push
 # done — check https://hazeydata.ai in ~30 seconds
 ```
 
+## What Gets Published
+
+Only `dist/` is deployed, never the repo root. `scripts/build-public-site.sh [out_dir]` builds `dist/` (gitignored) from `git ls-files`, so untracked files never ship. It excludes `.wrangler/`, `.github/`, `scripts/`, `docs/` (any depth), `tests/`, `migrations/`, `functions/`, `node_modules/`, `scheduled/`, `*.md`, `package*.json`, and dotfiles. `functions/` is compiled by wrangler from the repo root, not served as assets.
+
+`scripts/check-deploy-files.py [dir]` (default `dist`) prints the files and exits 1 naming any forbidden path; `--list` only prints them. Tests: `python3 -m unittest tests/test_deploy_files.py`.
+
 ## Important
 
 - **This is the ONLY website repo.** Don't look for website files anywhere else.
@@ -40,7 +46,7 @@ All of these serve from this repo:
 **Site didn't update after push?**
 1. Check GitHub Actions: https://github.com/hazeydata/hazeydata.ai/actions
 2. If the run failed, check the logs — usually a secret expiry or Cloudflare issue.
-3. Manual deploy (emergency only): `cd ~/hazeydata.ai && CLOUDFLARE_API_TOKEN=$CLOUDFLARE_PAGES_TOKEN npx wrangler pages deploy . --project-name=hazeydata --branch=master`
+3. Manual deploy (emergency only): `cd ~/hazeydata.ai && bash scripts/build-public-site.sh && python3 scripts/check-deploy-files.py dist && CLOUDFLARE_API_TOKEN=$CLOUDFLARE_PAGES_TOKEN npx wrangler pages deploy dist --project-name=hazeydata --branch=master` (run from the repo root so `./functions` still deploys)
 
 ## SSD product site
 
