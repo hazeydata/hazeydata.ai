@@ -1,0 +1,12 @@
+.hd-signup { max-width: 400px; margin: 0 auto; text-align: left; }
+.hd-signup-label { display: block; font-size: 14px; font-weight: 600; color: #FFFFFF; margin: 0 0 6px; }
+.hd-signup-row { display: flex; gap: 8px; }
+.hd-signup-input { flex: 1 1 auto; width: 0; min-width: 0; min-height: 44px; padding: 0 12px; font: inherit; font-size: 16px; color: #FFFFFF; background: #13243D; border: 1px solid #5B7090; border-radius: 6px; }
+.hd-signup-input::placeholder { color: #A9B6C8; }
+.hd-signup-button { min-height: 44px; padding: 0 18px; font-family: "Space Grotesk", system-ui, sans-serif; font-size: 15px; font-weight: 600; color: #03070F; background: #5FC4D6; border: 0; border-radius: 6px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+.hd-signup-button[disabled] { opacity: .7; cursor: progress; }
+.hd-signup-input:focus-visible, .hd-signup-button:focus-visible { outline: 2px solid #5FC4D6; outline-offset: 3px; }
+.hd-signup-hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.hd-signup-status { min-height: 1.4em; margin: 8px 0 0; font-size: 14px; color: #E6ECF3; }
+.hd-signup-status[data-state="invalid_email"], .hd-signup-status[data-state="rate_limited"], .hd-signup-status[data-state="error"] { color: #FFD0C2; }
+@media (max-width: 600px) { .hd-signup { padding: 0 16px; } }
