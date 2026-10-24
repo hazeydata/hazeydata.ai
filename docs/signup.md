@@ -20,17 +20,29 @@ The CI API token (`CLOUDFLARE_API_TOKEN`) needs **D1 Edit** permission as well a
 ## Deploy verification
 After `pages deploy` the workflow runs two read-only checks, either of which fails the job:
 1. `d1 execute hazeydata-signups --remote --command "SELECT count(*) AS n FROM signups"` (fails if the table is missing).
-2. `GET https://hazeydata.ai/api/subscribe` must return 405 (proves the Function is live). The workflow never POSTs.
+2. `GET https://hazeydata.ai/api/subscribe` must return 405 (proves the Function is live). The workflow never POSTs. The curl has `--max-time 20`.
+
+These checks run after `pages deploy`, so a failure flags a bad deploy but cannot roll it back.
+`cloudflare/wrangler-action` is pinned to the v3.15.0 commit SHA (`9acf94ace14e7dc412b076f2c5c20b8ce93c79cd`).
 
 ## Response and log fields
-JSON response for a stored signup: `{"status":"subscribed","forwarded":true}` when Beehiiv returned 2xx, or
-`"forwarded":false` when Beehiiv is not configured or failed (non-2xx, network, timeout). The visitor sees success either way;
-a `forwarded:false` row stays `pending` (with `last_error_code` set after a Beehiiv failure) for CSV import. The no-JS 303 redirect is unchanged.
+JSON response for a stored signup is `{"status":"subscribed"}` whether Beehiiv returned 2xx, is not configured, or failed
+(AC31, spec R3). The body, status code and headers are byte-identical in all three cases, as is the no-JS 303 redirect, so
+the response never reveals the forwarding outcome. A row Beehiiv did not accept stays `pending` (with `last_error_code` set
+after a Beehiiv HTTP/network/timeout failure) for CSV import.
 
-Every signup log line is JSON with `evt`, `status`, `source`, `beehiiv_status` and `reason` (null when not applicable); never emails, IPs or keys.
-- `status: stored_not_forwarded`: stored, Beehiiv not configured or failed.
-- `status: error` with `reason: no_binding`: `env.SIGNUPS` is not bound.
-- `status: error` with `reason: store_error`: the D1 write threw (for example a missing table). The visitor gets HTTP 502 and Beehiiv is not called.
+Every signup log line is JSON with `evt`, `status`, `source`, `beehiiv_status` and `reason` (null when not applicable); never emails, IPs, Beehiiv response text or keys.
+`reason` (AC32) is only ever one of a fixed enum, never an error message or response body:
+- `timeout`: the Beehiiv call was aborted after the timeout.
+- `http_<code>`: Beehiiv answered with a non-2xx status (three-digit integer, for example `http_401`, `http_500`).
+- `network`: the Beehiiv fetch failed for any other reason.
+- `config`: Beehiiv secrets are not set, or `env.SIGNUPS` is not bound.
+
+Lines:
+- `status: stored_not_forwarded`: stored, Beehiiv not configured or failed; `reason` is one of `config`, `http_<code>`, `timeout`, `network`.
+- `status: error` with `reason: config`: `env.SIGNUPS` is not bound.
+- `status: error` with `reason: null`: the D1 write threw (for example a missing table). The visitor gets HTTP 502 and Beehiiv is not called. `store_error` is not in the enum, so the reason stays null.
+- `log()` writes null for any reason outside the enum.
 
 ## Incident 2026-10-24
 `migrations/0001_signups.sql` had never been applied to the remote D1, so the INSERT failed with "no such table: signups".

@@ -20,6 +20,7 @@ export function normalizeSource(raw) {
 
 function log(status, source, beehiivStatus, reason) {
   // AC10: status, source, Beehiiv HTTP status and a fixed failure reason only.
+  if (reason != null && !/^(timeout|network|config|http_[0-9]{3})$/.test(reason)) reason = null;
   console.log(JSON.stringify({ evt: 'signup', status, source, beehiiv_status: beehiivStatus ?? null, reason: reason ?? null }));
 }
 
@@ -94,9 +95,9 @@ async function callBeehiiv(env, body, fetchImpl, timeoutMs) {
       },
     );
     try { await res.body?.cancel(); } catch { /* ignore */ }
-    return { httpStatus: res.status };
+    return { httpStatus: res.status, failure: null };
   } catch {
-    return { httpStatus: null }; // timeout or network failure
+    return { httpStatus: null, failure: ctrl.signal.aborted ? 'timeout' : 'network' }; // fixed kinds only, never the error text
   } finally {
     clearTimeout(timer);
   }
@@ -137,7 +138,7 @@ export async function handleSubscribe(request, env, opts = {}) {
   // AC21/AC24/AC25: store first. Unique email (lowercased) dedupes; a write failure is the only 502.
   const db = env.SIGNUPS;
   let inserted;
-  if (!db) { log('error', source, null, 'no_binding'); return respond(request, 'error'); }
+  if (!db) { log('error', source, null, 'config'); return respond(request, 'error'); }
   try {
     const r = await db.prepare(
       `INSERT INTO signups (email, source, utm_source, utm_medium, utm_campaign, created_at, status)
@@ -145,13 +146,14 @@ export async function handleSubscribe(request, env, opts = {}) {
     ).bind(email, source, utm.utm_source, utm.utm_medium, utm.utm_campaign, new Date(now).toISOString()).run();
     inserted = (r?.meta?.changes ?? 0) > 0;
   } catch {
-    log('error', source, null, 'store_error');
+    log('error', source, null);
     return respond(request, 'error');
   }
   if (!inserted) { log('already_subscribed', source, null); return respond(request, 'already_subscribed'); }
 
   // AC22/AC23: best-effort forward. The visitor sees success whatever Beehiiv does.
   let httpStatus = null;
+  let failure = 'config';
   if (env.BEEHIIV_API_KEY && env.BEEHIIV_PUB_ID) {
     const body = { email, utm_source: source, reactivate_existing: false, send_welcome_email: false };
     if (utm.utm_medium) body.utm_medium = utm.utm_medium;
@@ -159,7 +161,7 @@ export async function handleSubscribe(request, env, opts = {}) {
     if (utm.utm_source) body.utm_content = utm.utm_source; // R1: incoming utm_source -> utm_content
     const ref = request.headers.get('Referer');
     if (ref) { try { const r = new URL(ref); if (ALLOWED_ORIGINS.includes(r.origin)) body.referring_site = r.origin + r.pathname; } catch { /* ignore */ } }
-    ({ httpStatus } = await callBeehiiv(env, body, fetchImpl, timeoutMs));
+    ({ httpStatus, failure } = await callBeehiiv(env, body, fetchImpl, timeoutMs));
   }
   const forwarded = httpStatus !== null && httpStatus >= 200 && httpStatus < 300;
   try {
@@ -170,8 +172,9 @@ export async function handleSubscribe(request, env, opts = {}) {
       await db.prepare('UPDATE signups SET last_error_code = ? WHERE email = ?').bind(httpStatus, email).run();
     }
   } catch { /* row is stored as pending already; export will pick it up */ }
-  log(forwarded ? 'subscribed' : 'stored_not_forwarded', source, httpStatus);
-  return respond(request, 'subscribed', { forwarded });
+  const reason = forwarded ? null : (failure || `http_${httpStatus}`);
+  log(forwarded ? 'subscribed' : 'stored_not_forwarded', source, httpStatus, reason);
+  return respond(request, 'subscribed');
 }
 
 export const onRequest = (context) => handleSubscribe(context.request, context.env);
