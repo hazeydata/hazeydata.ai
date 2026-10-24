@@ -50,7 +50,7 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 let SQL;
-export async function makeD1({ failWrites = false, noSchema = false } = {}) {
+export async function makeD1({ failWrites = false, noSchema = false, writeError = null } = {}) {
   if (!SQL) {
     const req = createRequire(join(process.env.SIGNUP_TEST_TOOLS, 'package.json'));
     SQL = await req('sql.js')();
@@ -58,7 +58,7 @@ export async function makeD1({ failWrites = false, noSchema = false } = {}) {
   const db = new SQL.Database();
   if (!noSchema) db.run(readFileSync(new URL('../../migrations/0001_signups.sql', import.meta.url), 'utf8'));
   const exec = (sql, args) => {
-    if (failWrites && /^\s*(INSERT|UPDATE)\s+(INTO\s+)?signups/i.test(sql)) throw new Error('D1_ERROR: simulated');
+    if (failWrites && /^\s*(INSERT|UPDATE)\s+(INTO\s+)?signups/i.test(sql)) throw (writeError || new Error('D1_ERROR: simulated'));
     const st = db.prepare(sql); st.bind(args.map((a) => (a === undefined ? null : a)));
     const results = []; while (st.step()) results.push(st.getAsObject()); st.free();
     return { results, meta: { changes: db.getRowsModified() } };

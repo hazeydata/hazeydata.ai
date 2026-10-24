@@ -124,14 +124,30 @@ for (const mode of ['js', 'nojs']) {
     assert.deepEqual(seen, [[email('order'), 'pending']]);
   });
 
-  T('AC24 store write fails -> error 502, no Beehiiv call', async () => {
+  T('AC24 store write fails -> error 502, no Beehiiv call, reason d1_write', async () => {
     const env = await setup({ d1: { failWrites: true } });
-    const m = beehiivMock();
-    await expectStatus(await handleSubscribe(req({ email: email('storefail') }, { json }), env, { fetch: m }), 'error', 502);
+    const m = beehiivMock(); const src = SOURCES[0];
+    const start = logs.lines.length;
+    await expectStatus(await handleSubscribe(req({ email: email('storefail'), source: src }, { json }), env, { fetch: m }), 'error', 502);
     assert.equal(m.calls.length, 0);
+    const emitted = logs.lines.slice(start).map((l) => JSON.parse(l)).filter((l) => l.evt === 'signup');
+    assert.deepEqual(emitted, [{ evt: 'signup', status: 'error', source: src, beehiiv_status: null, reason: 'd1_write' }]);
     const noDb = { ...ENV };
     await expectStatus(await handleSubscribe(req({ email: email('nodb') }, { json }), noDb, { fetch: m }), 'error', 502);
     assert.equal(m.calls.length, 0);
+  });
+
+  T('AC24 D1 generic write error (not missing table) -> 502, no Beehiiv call, reason d1_write', async () => {
+    const env = await setup({ d1: { failWrites: true, writeError: new Error('D1_ERROR: SQLITE_BUSY: database is locked') } });
+    const m = beehiivMock(); const src = SOURCES[1] || SOURCES[0];
+    const start = logs.lines.length;
+    await expectStatus(await handleSubscribe(req({ email: email('d1busy'), source: src }, { json }), env, { fetch: m }), 'error', 502);
+    assert.equal(m.calls.length, 0);
+    assert.equal(env.SIGNUPS.rows().length, 0);
+    const emitted = logs.lines.slice(start);
+    const sig = emitted.map((l) => JSON.parse(l)).filter((l) => l.evt === 'signup');
+    assert.deepEqual(sig, [{ evt: 'signup', status: 'error', source: src, beehiiv_status: null, reason: 'd1_write' }]);
+    assert.ok(!/D1_ERROR|SQLITE_BUSY|locked/i.test(emitted.join('\n')), 'D1 error text in log');
   });
 
   T('AC25 existing email (any case) -> already_subscribed, no new row, no call, pending stays pending', async () => {
