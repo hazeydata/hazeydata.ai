@@ -170,6 +170,42 @@ test('AC11/AC17 whole page makes 0 requests outside hazeydata.ai; renders; self-
   await page.close();
 });
 
+async function renderedFonts(page, selectors) {
+  const cdp = await page.createCDPSession();
+  await cdp.send('DOM.enable'); await cdp.send('CSS.enable');
+  const { root: doc } = await cdp.send('DOM.getDocument');
+  const out = {};
+  for (const sel of selectors) {
+    const { nodeId } = await cdp.send('DOM.querySelector', { nodeId: doc.nodeId, selector: sel });
+    assert.ok(nodeId, `missing ${sel}`);
+    const { fonts } = await cdp.send('CSS.getPlatformFontsForNode', { nodeId });
+    out[sel] = fonts.map((f) => f.familyName);
+  }
+  await cdp.detach();
+  return out;
+}
+
+for (const [width, subscribe] of [[1440, '.hub-nav-links a.nav-subscribe'], [390, 'a.nav-subscribe-mobile']]) {
+  test(`AC11 rendered fonts @${width}: nav links + Subscribe in Inter, h1 in Space Grotesk, third parties blocked`, { skip: !req && 'no SIGNUP_TEST_TOOLS' }, async () => {
+    blocked.length = 0;
+    const page = await newPage({ js: true, width });
+    await page.evaluate(() => document.fonts.ready);
+    if (width === 390) await page.click('#hubHamburger');
+    const sel = ['.hub-nav-links a[href="#projects"]', '.hub-nav-links a[href="#about"]', subscribe, 'h1'];
+    const got = await renderedFonts(page, sel);
+    // Platform family names of the variable fonts' default instance, e.g. "Space Grotesk Light"; every glyph must come from it.
+    const only = (fam, re) => fam.length > 0 && fam.every((f) => re.test(f));
+    for (const s of sel.slice(0, 3)) assert.ok(only(got[s], /^Inter\b/), `${s} rendered with ${got[s]}`);
+    assert.ok(only(got.h1, /^Space Grotesk\b/), `h1 rendered with ${got.h1}`);
+    for (const s of sel.slice(0, 3)) {
+      const fam = await page.$eval(s, (el) => getComputedStyle(el).fontFamily);
+      assert.match(fam, /sans-serif\s*$/, `${s} font stack lacks sans-serif fallback: ${fam}`);
+    }
+    assert.deepEqual(blocked, [], `third-party requests: ${blocked}`);
+    await page.close();
+  });
+}
+
 test('AC15 a11y: label, type/autocomplete, aria-live, honeypot hidden, axe 0 violations, focus ring', { skip: !req && 'no SIGNUP_TEST_TOOLS' }, async () => {
   const page = await newPage({ js: true });
   const facts = await page.evaluate(() => {

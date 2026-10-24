@@ -9,7 +9,7 @@ h1,h2,h3,h4,.about-name,.section-label,.hero-data-line span,.footer-brand-name{f
 .hub-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
 .hub-logo-mark,.hub-logo-dot{display:none!important}
 .hd-logo{display:flex;align-items:center;gap:9px;font:700 22px 'Space Grotesk',sans-serif;letter-spacing:.012em;color:#fff}.hd-logo b{font-weight:500;color:var(--hd-cyan)}
-.hub-nav-links a{color:var(--hd-slate)!important;font-family:'Inter'!important}.hub-nav-links a:hover{color:var(--hd-cyan)!important}
+.hub-nav-links a{color:var(--hd-slate)!important;font-family:'Inter',system-ui,sans-serif!important}.hub-nav-links a:hover{color:var(--hd-cyan)!important}
 .hub-hero{background:transparent!important;position:relative;overflow:hidden}
 .hd-motif{position:absolute;right:-22vw;top:50%;transform:translateY(-50%);width:min(66vw,860px);opacity:.3;z-index:0;pointer-events:none}
 .hub-hero::before{content:"";position:absolute;inset:0;background:var(--hd-glow);pointer-events:none;z-index:0}
@@ -20,7 +20,7 @@ h1,h2,h3,h4,.about-name,.section-label,.hero-data-line span,.footer-brand-name{f
 .hub-hero h1 span{background:none!important;-webkit-text-fill-color:currentColor!important;color:#fff!important}
 .hub-hero .tagline{color:var(--hd-cyan)!important}
 .hub-hero .subtitle,.section-desc,.card-desc,.about-body p{color:var(--hd-slate)!important}
-.btn-primary{background:var(--hd-cyan)!important;color:var(--hd-navy)!important;border:0!important;box-shadow:none!important;font-family:'Inter'!important;font-weight:600!important;border-radius:8px!important}
+.btn-primary{background:var(--hd-cyan)!important;color:var(--hd-navy)!important;border:0!important;box-shadow:none!important;font-family:'Inter',system-ui,sans-serif!important;font-weight:600!important;border-radius:8px!important}
 .btn-outline{border:1.5px solid #fff!important;color:#fff!important;background:transparent!important;border-radius:8px!important}
 .section-label{color:var(--hd-cyan)!important;text-transform:uppercase;letter-spacing:.12em!important;font-size:13px!important}
 .projects-section,.about-section,.contact-cta{background:transparent!important}
