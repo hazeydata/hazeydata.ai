@@ -28,7 +28,10 @@ class BuildPublicSiteTest(unittest.TestCase):
 
 class CheckerTest(unittest.TestCase):
     def test_checker_fails_on_forbidden_paths(self):
-        bad = (".wrangler/cache/pages.json", "docs/x.md", "tests/a.py", "migrations/1.sql")
+        bad = (".wrangler/cache/pages.json", "docs/x.md", "tests/a.py", "migrations/1.sql",
+               ".env", ".dev.vars", ".gitignore", "sub/.ENV", "scheduled/job.js",
+               "Scheduled/x.js", "README.MD", "notes/a.Md", "package.json",
+               "package-lock.json", "sub/package.dev.json")
         with tempfile.TemporaryDirectory() as tmp:
             for rel in bad + ("index.html",):
                 p = os.path.join(tmp, rel)

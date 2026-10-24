@@ -10,20 +10,23 @@ import os
 import sys
 
 FORBIDDEN_DIRS = {".wrangler", ".github", "scripts", "docs", "tests",
-                  "migrations", "functions", "node_modules"}
-FORBIDDEN_NAMES = {"package.json", "package-lock.json"}
+                  "migrations", "functions", "node_modules", "scheduled"}
+FORBIDDEN_NAMES = {".env", ".dev.vars", ".gitignore"}
 
 
 def forbidden_reason(rel):
     parts = rel.split("/")
     for p in parts[:-1]:
-        if p in FORBIDDEN_DIRS:
+        if p.lower() in FORBIDDEN_DIRS:
             return "forbidden directory '%s'" % p
     name = parts[-1]
-    if name.endswith(".md"):
+    low = name.lower()
+    if low.endswith(".md"):
         return "markdown file"
-    if name in FORBIDDEN_NAMES:
+    if low.startswith("package") and low.endswith(".json"):
         return "package file"
+    if low in FORBIDDEN_NAMES:
+        return "secret/config dotfile"
     return None
 
 

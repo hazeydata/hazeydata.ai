@@ -31,7 +31,7 @@ for f in sys.stdin.buffer.read().split(b"\0"):
     if any(p.startswith(".") for p in parts): continue          # dotfiles/dirs (.wrangler, .github)
     if s.startswith(skip_top): continue
     if "docs" in parts[:-1] or "node_modules" in parts[:-1]: continue  # any depth
-    if s.endswith(".md") or parts[-1] in ("package.json", "package-lock.json"): continue
+    if s.endswith(".md") or (parts[-1].startswith("package") and parts[-1].endswith(".json")): continue  # package*.json
     sys.stdout.buffer.write(f + b"\0")
 ' > "$list"
 tar --null -T "$list" -cf - | tar -xf - -C "$OUT"
