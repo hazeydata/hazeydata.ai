@@ -15,7 +15,7 @@ Pending rows go into Beehiiv by CSV import.
 Schema: the deploy workflow applies it on every push to master, before `pages deploy`
 (`wrangler d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql`; idempotent, `CREATE ... IF NOT EXISTS`).
 To apply by hand: `npx wrangler d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql`.
-The CI API token (`CLOUDFLARE_API_TOKEN`) needs **D1 Edit** permission as well as Pages Edit.
+The CI API token (`CLOUDFLARE_API_TOKEN`) needs **D1 Edit** permission as well as Pages Edit, on the Graceland account where `hazeydata-signups` lives. See `docs/deploy-cloudflare.md`.
 
 ## Deploy verification
 After `pages deploy` the workflow runs two read-only checks, either of which fails the job:
