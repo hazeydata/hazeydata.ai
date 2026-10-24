@@ -27,8 +27,8 @@ const loc = (res) => new URL(res.headers.get('Location'));
 
 for (const mode of ['js', 'nojs']) {
   const json = mode === 'js';
-  const expectStatus = async (res, want, http) => {
-    if (json) { assert.equal(res.status, http); assert.deepEqual(await res.json(), { status: want }); }
+  const expectStatus = async (res, want, http, forwarded) => {
+    if (json) { assert.equal(res.status, http); assert.deepEqual(await res.json(), forwarded === undefined ? { status: want } : { status: want, forwarded }); }
     else { assert.equal(res.status, 303); assert.equal(loc(res).searchParams.get('signup'), want); assert.equal(loc(res).hash, '#signup'); }
   };
   const T = (name, fn) => test(`[${mode}] ${name}`, fn);
@@ -38,7 +38,7 @@ for (const mode of ['js', 'nojs']) {
     let rowsAtCall = -1;
     const base = beehiivMock();
     const m = async (u, i) => { rowsAtCall = env.SIGNUPS.rows().length; return base(u, i); };
-    await expectStatus(await handleSubscribe(req({ email: ` New1@HazeyData.INVALID `.replace(/HazeyData\.INVALID/, 'hazeydata.invalid'), source: 'openmillage' }, { json }), env, { fetch: m }), 'subscribed', 200);
+    await expectStatus(await handleSubscribe(req({ email: ` New1@HazeyData.INVALID `.replace(/HazeyData\.INVALID/, 'hazeydata.invalid'), source: 'openmillage' }, { json }), env, { fetch: m }), 'subscribed', 200, true);
     assert.equal(rowsAtCall, 1, 'row written before the Beehiiv call');
     const [r] = env.SIGNUPS.rows();
     assert.equal(r.email, 'new1@hazeydata.invalid');
@@ -52,7 +52,7 @@ for (const mode of ['js', 'nojs']) {
   T('AC23 key missing -> subscribed, row pending, last_error_code null, no Beehiiv call', async () => {
     const env = await setup({ env: { BEEHIIV_API_KEY: undefined } });
     const m = beehiivMock();
-    await expectStatus(await handleSubscribe(req({ email: email('nokey') }, { json }), env, { fetch: m }), 'subscribed', 200);
+    await expectStatus(await handleSubscribe(req({ email: email('nokey') }, { json }), env, { fetch: m }), 'subscribed', 200, false);
     assert.equal(m.calls.length, 0);
     const [r] = env.SIGNUPS.rows();
     assert.equal(r.status, 'pending'); assert.equal(r.last_error_code, null);
@@ -62,12 +62,59 @@ for (const mode of ['js', 'nojs']) {
     T(`AC23 Beehiiv ${code ?? local} -> subscribed, pending, last_error_code ${code}, no retry`, async () => {
       const env = await setup();
       const m = beehiivMock();
-      await expectStatus(await handleSubscribe(req({ email: email(`${local}23`) }, { json }), env, { fetch: m, timeoutMs: 50 }), 'subscribed', 200);
+      await expectStatus(await handleSubscribe(req({ email: email(`${local}23`) }, { json }), env, { fetch: m, timeoutMs: 50 }), 'subscribed', 200, false);
       assert.equal(m.calls.length, 1);
       const [r] = env.SIGNUPS.rows();
       assert.equal(r.status, 'pending'); assert.equal(r.last_error_code, code);
     });
   }
+
+  const lastLog = () => JSON.parse(logs.lines[logs.lines.length - 1]);
+
+  for (const [local, code] of [['fail500', 500], ['badkey', 401], ['network', null], ['slow', null]]) {
+    T(`Beehiiv ${code ?? local}: one pending row, last_error_code set, subscribed + forwarded:false, stored_not_forwarded`, async () => {
+      const env = await setup(); const m = beehiivMock();
+      await expectStatus(await handleSubscribe(req({ email: email(`${local}fw`) }, { json }), env, { fetch: m, timeoutMs: 50 }), 'subscribed', 200, false);
+      const rows = env.SIGNUPS.rows();
+      assert.equal(rows.length, 1); assert.equal(rows[0].status, 'pending'); assert.equal(rows[0].last_error_code, code);
+      assert.equal(lastLog().status, 'stored_not_forwarded'); assert.equal(lastLog().beehiiv_status, code); assert.equal(lastLog().reason, null);
+    });
+  }
+
+  T('Beehiiv 2xx: forwarded row, forwarded:true, log subscribed', async () => {
+    const env = await setup(); const m = beehiivMock();
+    await expectStatus(await handleSubscribe(req({ email: email('okfw') }, { json }), env, { fetch: m }), 'subscribed', 200, true);
+    const rows = env.SIGNUPS.rows();
+    assert.equal(rows.length, 1); assert.equal(rows[0].status, 'forwarded');
+    assert.equal(lastLog().status, 'subscribed'); assert.equal(lastLog().reason, null);
+  });
+
+  T('Beehiiv not configured: stored, forwarded:false, stored_not_forwarded', async () => {
+    const env = await setup({ env: { BEEHIIV_PUB_ID: undefined } });
+    await expectStatus(await handleSubscribe(req({ email: email('nocfg') }, { json }), env, { fetch: beehiivMock() }), 'subscribed', 200, false);
+    assert.equal(lastLog().status, 'stored_not_forwarded'); assert.equal(lastLog().beehiiv_status, null);
+  });
+
+  T('store missing table -> 502 error, Beehiiv not called, reason store_error', async () => {
+    const env = await setup({ d1: { noSchema: true } }); const m = beehiivMock();
+    await expectStatus(await handleSubscribe(req({ email: email('notable') }, { json }), env, { fetch: m }), 'error', 502);
+    assert.equal(m.calls.length, 0);
+    assert.equal(lastLog().status, 'error'); assert.equal(lastLog().reason, 'store_error');
+  });
+
+  T('SIGNUPS unbound -> error, reason no_binding, Beehiiv not called', async () => {
+    const m = beehiivMock();
+    await expectStatus(await handleSubscribe(req({ email: email('unbound') }, { json }), { ...ENV }, { fetch: m }), 'error', 502);
+    assert.equal(m.calls.length, 0);
+    assert.equal(lastLog().reason, 'no_binding');
+  });
+
+  T('store happens before Beehiiv: row exists in D1 when fetch is called', async () => {
+    const env = await setup(); const base = beehiivMock(); let seen = null;
+    const m = async (u, i) => { seen = env.SIGNUPS.rows().map((r) => [r.email, r.status]); return base(u, i); };
+    await handleSubscribe(req({ email: email('order') }, { json }), env, { fetch: m });
+    assert.deepEqual(seen, [[email('order'), 'pending']]);
+  });
 
   T('AC24 store write fails -> error 502, no Beehiiv call', async () => {
     const env = await setup({ d1: { failWrites: true } });
@@ -101,7 +148,7 @@ for (const mode of ['js', 'nojs']) {
     for (const [i, src] of [undefined, 'evil', 'HAZEYDATA', '=HYPERLINK("x")'].entries()) {
       const env = await setup(); const m = beehiivMock();
       const f = { email: email(`src${i}`) }; if (src !== undefined) f.source = src;
-      await expectStatus(await handleSubscribe(req(f, { json }), env, { fetch: m }), 'subscribed', 200);
+      await expectStatus(await handleSubscribe(req(f, { json }), env, { fetch: m }), 'subscribed', 200, true);
       assert.equal(env.SIGNUPS.rows()[0].source, 'unknown');
       assert.equal(m.calls[0].body.utm_source, 'unknown');
     }
@@ -126,12 +173,12 @@ for (const mode of ['js', 'nojs']) {
     const store = new Map();
     const kv = { get: async (k) => store.get(k) ?? null, put: async (k, v, o) => { assert.ok(o.expirationTtl >= 600); store.set(k, v); } };
     const env = await setup({ env: { SIGNUP_RL: kv } }); const m = beehiivMock();
-    for (let i = 0; i < 5; i++) await expectStatus(await handleSubscribe(req({ email: email(`rl${i}`) }, { json, ip: 'test-ip-rl' }), env, { fetch: m }), 'subscribed', 200);
+    for (let i = 0; i < 5; i++) await expectStatus(await handleSubscribe(req({ email: email(`rl${i}`) }, { json, ip: 'test-ip-rl' }), env, { fetch: m }), 'subscribed', 200, true);
     await expectStatus(await handleSubscribe(req({ email: email('rlx') }, { json, ip: 'test-ip-rl' }), env, { fetch: m }), 'rate_limited', 429);
     assert.equal(m.calls.length, 5); assert.equal(env.SIGNUPS.rows().length, 5);
     assert.ok([...store.keys()].every((k) => !k.includes('test-ip-rl')), 'raw IP in KV key');
     const later = Date.now() + 601_000;
-    await expectStatus(await handleSubscribe(req({ email: email('rly') }, { json, ip: 'test-ip-rl' }), env, { fetch: m, now: later }), 'subscribed', 200);
+    await expectStatus(await handleSubscribe(req({ email: email('rly') }, { json, ip: 'test-ip-rl' }), env, { fetch: m, now: later }), 'subscribed', 200, true);
   });
 
   T('AC9 non-POST -> 405; bad or missing Origin -> 403; nothing stored', async () => {
@@ -227,7 +274,7 @@ test('AC28 token compare: constant-time shape, never matches when unset', async 
 
 test('AC30 shape: key removed -> success + one pending row -> export returns it -> repeat is already_subscribed', async () => {
   const SIGNUPS = await makeD1(); const m = beehiivMock(); const env = { SIGNUPS };
-  assert.deepEqual(await (await handleSubscribe(req({ email: email('kitty30') }), env, { fetch: m })).json(), { status: 'subscribed' });
+  assert.deepEqual(await (await handleSubscribe(req({ email: email('kitty30') }), env, { fetch: m })).json(), { status: 'subscribed', forwarded: false });
   assert.equal(SIGNUPS.rows().length, 1); assert.equal(SIGNUPS.rows()[0].status, 'pending');
   const csv = await (await exp(env, { auth: `Bearer ${EXPORT_TOKEN}` })).text();
   assert.ok(csv.split('\r\n')[1].startsWith('kitty30@hazeydata.invalid,'));

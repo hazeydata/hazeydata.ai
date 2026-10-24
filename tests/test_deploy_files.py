@@ -44,5 +44,15 @@ class CheckerTest(unittest.TestCase):
             self.assertNotIn("FORBIDDEN: index.html", r.stderr)
 
 
+class WorkflowTest(unittest.TestCase):
+    def test_schema_applied_before_pages_deploy(self):
+        wf = open(os.path.join(ROOT, ".github", "workflows", "deploy.yml")).read()
+        migrate = wf.find("d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql")
+        deploy = wf.find("pages deploy")
+        self.assertGreaterEqual(migrate, 0, "migration step missing")
+        self.assertGreater(deploy, migrate, "migration must run before pages deploy")
+        self.assertIn("SELECT count(*) AS n FROM signups", wf[deploy:])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -41,6 +41,10 @@ All of these serve from this repo:
 - www.themeparkcrowdreport.com
 - hazeydata.pages.dev
 
+## Signup database
+
+The workflow applies `migrations/0001_signups.sql` to the remote D1 `hazeydata-signups` before `pages deploy` (idempotent). After the deploy it verifies the table (`SELECT count(*) AS n FROM signups`) and that `GET /api/subscribe` returns 405 (the workflow never POSTs). `CLOUDFLARE_API_TOKEN` needs **D1 Edit** permission in addition to Pages Edit. 2026-10-24 incident: the table was missing, so every signup returned `error` and nothing was stored. Details, response `forwarded` field and log reasons: `docs/signup.md`.
+
 ## Troubleshooting
 
 **Site didn't update after push?**

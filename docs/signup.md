@@ -12,7 +12,30 @@ Pending rows go into Beehiiv by CSV import.
 | `EXPORT_TOKEN` | secret | yes for export | bearer token for the CSV export |
 | `BEEHIIV_API_KEY`, `BEEHIIV_PUB_ID` | secrets | optional | live forward to Beehiiv |
 
-Schema (once; idempotent): `npx wrangler d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql`
+Schema: the deploy workflow applies it on every push to master, before `pages deploy`
+(`wrangler d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql`; idempotent, `CREATE ... IF NOT EXISTS`).
+To apply by hand: `npx wrangler d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql`.
+The CI API token (`CLOUDFLARE_API_TOKEN`) needs **D1 Edit** permission as well as Pages Edit.
+
+## Deploy verification
+After `pages deploy` the workflow runs two read-only checks, either of which fails the job:
+1. `d1 execute hazeydata-signups --remote --command "SELECT count(*) AS n FROM signups"` (fails if the table is missing).
+2. `GET https://hazeydata.ai/api/subscribe` must return 405 (proves the Function is live). The workflow never POSTs.
+
+## Response and log fields
+JSON response for a stored signup: `{"status":"subscribed","forwarded":true}` when Beehiiv returned 2xx, or
+`"forwarded":false` when Beehiiv is not configured or failed (non-2xx, network, timeout). The visitor sees success either way;
+a `forwarded:false` row stays `pending` (with `last_error_code` set after a Beehiiv failure) for CSV import. The no-JS 303 redirect is unchanged.
+
+Every signup log line is JSON with `evt`, `status`, `source`, `beehiiv_status` and `reason` (null when not applicable); never emails, IPs or keys.
+- `status: stored_not_forwarded`: stored, Beehiiv not configured or failed.
+- `status: error` with `reason: no_binding`: `env.SIGNUPS` is not bound.
+- `status: error` with `reason: store_error`: the D1 write threw (for example a missing table). The visitor gets HTTP 502 and Beehiiv is not called.
+
+## Incident 2026-10-24
+`migrations/0001_signups.sql` had never been applied to the remote D1, so the INSERT failed with "no such table: signups".
+Every signup returned `error` and nothing was stored; Beehiiv was never called. Fixed by applying the schema in the deploy
+workflow and adding the verification steps above.
 
 ## Export pending signups
 ```bash

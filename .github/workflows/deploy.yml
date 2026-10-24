@@ -23,9 +23,29 @@ jobs:
       - name: Check deploy files
         run: python3 scripts/check-deploy-files.py dist
 
+      - name: Apply D1 schema (idempotent)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql --yes
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=hazeydata
+
+      - name: Verify signups table exists (read-only)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: d1 execute hazeydata-signups --remote --command "SELECT count(*) AS n FROM signups"
+
+      - name: Verify signup Function is live (GET only, expects 405)
+        run: |
+          code=$(curl -sS -o /dev/null -w '%{http_code}' https://hazeydata.ai/api/subscribe)
+          echo "GET /api/subscribe -> $code"
+          test "$code" = "405"
