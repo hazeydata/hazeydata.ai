@@ -17,9 +17,15 @@ jobs:
       - name: Check GoatCounter tag
         run: python3 scripts/check-goatcounter-tpcr.py
 
+      - name: Build public site
+        run: bash scripts/build-public-site.sh
+
+      - name: Check deploy files
+        run: python3 scripts/check-deploy-files.py dist
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name=hazeydata
+          command: pages deploy dist --project-name=hazeydata

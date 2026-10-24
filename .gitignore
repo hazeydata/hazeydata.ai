@@ -1,2 +1,4 @@
 .wrangler/
 _sketches/
+dist/
+__pycache__/
