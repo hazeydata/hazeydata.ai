@@ -96,20 +96,23 @@ for (const deck of DECKS) {
         return c;
       };
       const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+      // Finish entrance animations at once so text is measured at its resting opacity.
+      const st = document.createElement('style'); st.textContent = '.slide *{animation-delay:0s!important;animation-duration:0s!important;transition:none!important}'; document.head.append(st);
       const slides = [...document.querySelectorAll('.slide')];
       const out = [];
       for (const lang of ['en', 'fr']) {
         document.body.classList.toggle('lang-fr', lang === 'fr');
         for (let i = 0; i < slides.length; i++) {
           slides.forEach((s, j) => { s.classList.remove('exit'); s.classList.toggle('active', j === i); });
-          await sleep(900);
+          await sleep(150);
           for (const e of slides[i].querySelectorAll('*')) {
             if (![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
             const cs = getComputedStyle(e); const r = e.getBoundingClientRect();
             if (!r.width || !r.height || cs.visibility === 'hidden' || cs.display === 'none') continue;
             if (!/[A-Za-zÀ-ÿ0-9]/.test(e.textContent)) continue; // emoji / symbols only
             let op = 1; for (let a = e; a && a !== slides[i]; a = a.parentElement) op *= Number(getComputedStyle(a).opacity);
-            if (op < 0.99) continue; // decorative de-emphasised text is out of scope for this guard
+            // Text deliberately faded with opacity (captions, decoration) is out of scope for this guard; see docs/cdr.md.
+            if (op < 0.99) continue;
             const bg = bgOf(e); const fg = parse(cs.webkitTextFillColor && cs.webkitTextFillColor !== cs.color ? cs.webkitTextFillColor : cs.color);
             if (!fg) continue;
             const px = parseFloat(cs.fontSize); const large = px >= 24 || (px >= 18.66 && Number(cs.fontWeight) >= 700) || (px >= 24 && Number(cs.fontWeight) >= 600);

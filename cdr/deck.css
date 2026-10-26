@@ -52,3 +52,10 @@ h2{font-weight:600!important}
 .slide-terry .small-label{color:#1B6F80!important}
 body.lang-fr .compare-table[data-lang="fr"],body.lang-fr .rev-table[data-lang="fr"],body.lang-fr .fund-table[data-lang="fr"]{display:block!important}
 @media (max-width:360px){.slide h1[style*="font-size"]{font-size:2.3rem!important}.slide h1,.slide h2,.slide h3{overflow-wrap:break-word}}
+.slide-terry .terry-bubble p{color:#0A1628!important}
+/* Accent tokens on light slides resolve to teal (text contrast); dark panels inside them keep cyan */
+.slide-white,.slide-warm,.slide-terry{--maple-red:#1B6F80;--maple:#1B6F80;--accent-gold:#1B6F80;--accent-gold-light:#1B6F80;--accent-warm:#1B6F80;--terry-blue-light:#1B6F80;--accent-green:#1B5E20}
+.slide-white .card-dark,.slide-warm .card-dark,.slide-terry .card-dark,.slide-white .dark-bg,.slide-warm .dark-bg,.slide-white [style*="background: var(--rail-slate)"],.slide-warm [style*="background: var(--rail-slate)"],.slide-white [style*="background:var(--rail-slate)"],.slide-warm [style*="background:var(--rail-slate)"]{--maple-red:#5FC4D6;--maple:#5FC4D6;--accent-gold:#5FC4D6;--accent-gold-light:#5FC4D6;--accent-warm:#5FC4D6;--terry-blue-light:#5FC4D6}
+/* Teal/green accent text on dark slides: teal #1B6F80 is ~2-3:1 on navy, so dark slides use cyan; positive-state green lightens to #66BB6A */
+.slide-cover,.slide-dark,.slide-accent,.slide-blue,.slide-deep{--accent-teal:#5FC4D6;--terry-blue:#5FC4D6;--rail-slate-lighter:#5FC4D6;--maple-red-dark:#5FC4D6;--accent-green:#66BB6A}
+.slide-white .flow-desc,.slide-warm .flow-desc{opacity:.75!important}

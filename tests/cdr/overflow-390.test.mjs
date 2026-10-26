@@ -46,10 +46,12 @@ async function measure(page, lang, i, W) {
         if (b.right > W + 0.5) bad.push({ el: e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') + (typeof e.className === 'string' && e.className ? '.' + e.className.trim().split(/\s+/).join('.') : ''), right: Math.round(b.right), text: (e.textContent || '').trim().slice(0, 40) });
       }
       const lato = [...slides[i].querySelectorAll('*')].filter((e) => /lato/i.test(getComputedStyle(e).fontFamily)).length;
+      // On phones every column grid stacks to one track, in EN and FR (FR rules must not re-force columns).
+      const multiCol = [...slides[i].querySelectorAll('.two-col, .three-col, .four-col')].filter((g) => g.getBoundingClientRect().width && getComputedStyle(g).gridTemplateColumns.trim().split(/\s+/).length > 1).length;
       const lt = document.querySelector('.lang-toggle');
       const slideSW = slides[i].scrollWidth - slides[i].clientWidth;
       const ltClipped = lt ? lt.scrollWidth > lt.clientWidth + 1 : false;
-      return ({ slide: i, docScrollWidth: document.documentElement.scrollWidth, maxRight: Math.round(maxRight), slideScrollExcess: slideSW, overflowing: bad.length, langToggleClipped: ltClipped, latoElements: lato, worst: bad.sort((a, b) => b.right - a.right).slice(0, 5) });
+      return ({ slide: i, docScrollWidth: document.documentElement.scrollWidth, maxRight: Math.round(maxRight), slideScrollExcess: slideSW, overflowing: bad.length, langToggleClipped: ltClipped, latoElements: lato, multiCol, worst: bad.sort((a, b) => b.right - a.right).slice(0, 5) });
   }, lang, W, i);
 }
 
@@ -104,7 +106,7 @@ for (const deck of DECKS) {
         const s = await measure(page, lang, i, W);
         out[lang].push(s);
         if (EVID) await page.screenshot({ path: join(EVID, `${deck.replace(/\W+/g, '_')}_${W}_${lang}_s${String(s.slide).padStart(2, '0')}.png`) });
-        if (s.docScrollWidth > W || s.slideScrollExcess > 0 || s.overflowing || s.langToggleClipped || s.latoElements) fails.push(`${lang} slide ${s.slide}: maxRight=${s.maxRight} ${JSON.stringify(s.worst[0] || {})} toggleClipped=${s.langToggleClipped} lato=${s.latoElements}`);
+        if (s.docScrollWidth > W || s.slideScrollExcess > 0 || s.overflowing || s.langToggleClipped || s.latoElements || s.multiCol) fails.push(`${lang} slide ${s.slide}: multiCol=${s.multiCol} maxRight=${s.maxRight} ${JSON.stringify(s.worst[0] || {})} toggleClipped=${s.langToggleClipped} lato=${s.latoElements}`);
       }
     }
     if (EVID) { await writeFile(join(EVID, `${deck.replace(/\W+/g, '_')}_${W}.json`), JSON.stringify(out, null, 1)); }
