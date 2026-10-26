@@ -14,7 +14,8 @@ const tools = process.env.CDR_TEST_TOOLS || process.env.SIGNUP_TEST_TOOLS;
 const root = process.env.CDR_ROOT || new URL('../..', import.meta.url).pathname;
 const EVID = process.env.CDR_EVIDENCE;
 const W = 390;
-const DECKS = ['cdr/project-plan.html', 'cdr/pitch.html', 'cdr/funding-pitch.html', 'cdr/pilot-pitch.html'];
+// cdr-project-plan.html is the root-level copy of the project plan (CDR-RESTYLE loads /cdr/deck.css there too).
+const DECKS = ['cdr/project-plan.html', 'cdr/pitch.html', 'cdr/funding-pitch.html', 'cdr/pilot-pitch.html', 'cdr-project-plan.html'];
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
 let browser;
 
@@ -44,25 +45,54 @@ async function measure(page, lang, i) {
         maxRight = Math.max(maxRight, b.right);
         if (b.right > W + 0.5) bad.push({ el: e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') + (typeof e.className === 'string' && e.className ? '.' + e.className.trim().split(/\s+/).join('.') : ''), right: Math.round(b.right), text: (e.textContent || '').trim().slice(0, 40) });
       }
+      const lato = [...slides[i].querySelectorAll('*')].filter((e) => /lato/i.test(getComputedStyle(e).fontFamily)).length;
       const lt = document.querySelector('.lang-toggle');
       const slideSW = slides[i].scrollWidth - slides[i].clientWidth;
       const ltClipped = lt ? lt.scrollWidth > lt.clientWidth + 1 : false;
-      return ({ slide: i, docScrollWidth: document.documentElement.scrollWidth, maxRight: Math.round(maxRight), slideScrollExcess: slideSW, overflowing: bad.length, langToggleClipped: ltClipped, worst: bad.sort((a, b) => b.right - a.right).slice(0, 5) });
+      return ({ slide: i, docScrollWidth: document.documentElement.scrollWidth, maxRight: Math.round(maxRight), slideScrollExcess: slideSW, overflowing: bad.length, langToggleClipped: ltClipped, latoElements: lato, worst: bad.sort((a, b) => b.right - a.right).slice(0, 5) });
   }, lang, W, i);
 }
 
+async function open(path) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: W, height: 844 });
+  await page.setRequestInterception(true);
+  page.on('request', async (r) => {
+    const u = new URL(r.url());
+    if (u.hostname !== 'cdr.test') return r.abort();
+    let p = decodeURIComponent(u.pathname); if (p.endsWith('/')) p += 'index.html';
+    try { r.respond({ status: 200, contentType: TYPES[extname(p)] || 'application/octet-stream', body: await readFile(join(root, p)) }); }
+    catch { r.respond({ status: 404, body: '' }); }
+  });
+  await page.goto(`http://cdr.test/${path}`, { waitUntil: 'load' });
+  return page;
+}
+
+// Landing page /cdr/ (CDR-RESTYLE): fits 390 in full-page layout, CTA sits above the stats in the DOM, no Lato.
+test('cdr/ landing fits 390px, CTA above stats', { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
+  const page = await open('cdr/');
+  await new Promise((r) => setTimeout(r, 500));
+  const s = await page.evaluate((W) => {
+    const bad = [];
+    for (const e of document.querySelectorAll('body *')) {
+      if (e.closest('.cdr-ambient')) continue;
+      const b = e.getBoundingClientRect();
+      if (b.width === 0 || b.height === 0 || getComputedStyle(e).visibility === 'hidden') continue;
+      if (b.right > W + 0.5) bad.push(e.tagName.toLowerCase() + '.' + (typeof e.className === 'string' ? e.className : '') + ' ' + Math.round(b.right));
+    }
+    const cta = document.querySelector('.cdr-hero-cta'), stats = document.querySelector('.cdr-crisis-stats');
+    return { docScrollWidth: document.documentElement.scrollWidth, bad: bad.slice(0, 5),
+      ctaBeforeStats: !!(cta && stats && (cta.compareDocumentPosition(stats) & Node.DOCUMENT_POSITION_FOLLOWING)),
+      lato: [...document.querySelectorAll('body *')].filter((e) => /lato/i.test(getComputedStyle(e).fontFamily)).length };
+  }, W);
+  if (EVID) { await mkdir(EVID, { recursive: true }); await page.screenshot({ path: join(EVID, 'cdr_landing_390.png'), fullPage: true }); await writeFile(join(EVID, 'cdr_landing.json'), JSON.stringify(s, null, 1)); }
+  await page.close();
+  assert.deepEqual(s, { docScrollWidth: W, bad: [], ctaBeforeStats: true, lato: 0 });
+});
+
 for (const deck of DECKS) {
   test(`${deck} fits 390px on every slide (EN+FR)`, { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
-    const page = await browser.newPage();
-    await page.setViewport({ width: W, height: 844 });
-    await page.setRequestInterception(true);
-    page.on('request', async (r) => {
-      const u = new URL(r.url());
-      if (u.hostname !== 'cdr.test') return r.abort();
-      try { r.respond({ status: 200, contentType: TYPES[extname(u.pathname)] || 'application/octet-stream', body: await readFile(join(root, decodeURIComponent(u.pathname))) }); }
-      catch { r.respond({ status: 404, body: '' }); }
-    });
-    await page.goto(`http://cdr.test/${deck}`, { waitUntil: 'load' });
+    const page = await open(deck);
     const out = {};
     if (EVID) await mkdir(EVID, { recursive: true });
     const fails = [];
@@ -73,7 +103,7 @@ for (const deck of DECKS) {
         const s = await measure(page, lang, i);
         out[lang].push(s);
         if (EVID) await page.screenshot({ path: join(EVID, `${deck.replace(/\W+/g, '_')}_${lang}_s${String(s.slide).padStart(2, '0')}.png`) });
-        if (s.docScrollWidth > W || s.slideScrollExcess > 1 || s.overflowing || s.langToggleClipped) fails.push(`${lang} slide ${s.slide}: maxRight=${s.maxRight} ${JSON.stringify(s.worst[0] || {})} toggleClipped=${s.langToggleClipped}`);
+        if (s.docScrollWidth > W || s.slideScrollExcess > 1 || s.overflowing || s.langToggleClipped || s.latoElements) fails.push(`${lang} slide ${s.slide}: maxRight=${s.maxRight} ${JSON.stringify(s.worst[0] || {})} toggleClipped=${s.langToggleClipped} lato=${s.latoElements}`);
       }
     }
     if (EVID) { await writeFile(join(EVID, `${deck.replace(/\W+/g, '_')}.json`), JSON.stringify(out, null, 1)); }
