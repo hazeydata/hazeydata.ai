@@ -69,14 +69,85 @@ for (const mode of ['js', 'nojs']) {
     });
   }
 
-  T('AC24 store write fails -> error 502, no Beehiiv call', async () => {
-    const env = await setup({ d1: { failWrites: true } });
-    const m = beehiivMock();
-    await expectStatus(await handleSubscribe(req({ email: email('storefail') }, { json }), env, { fetch: m }), 'error', 502);
+  const lastLog = () => JSON.parse(logs.lines[logs.lines.length - 1]);
+
+  for (const [local, code, reason] of [['fail500', 500, 'http_500'], ['badkey', 401, 'http_401'], ['network', null, 'network'], ['slow', null, 'timeout']]) {
+    T(`Beehiiv ${code ?? local}: one pending row, last_error_code set, subscribed, stored_not_forwarded, reason ${reason}`, async () => {
+      const env = await setup(); const m = beehiivMock();
+      await expectStatus(await handleSubscribe(req({ email: email(`${local}fw`) }, { json }), env, { fetch: m, timeoutMs: 50 }), 'subscribed', 200);
+      const rows = env.SIGNUPS.rows();
+      assert.equal(rows.length, 1); assert.equal(rows[0].status, 'pending'); assert.equal(rows[0].last_error_code, code);
+      assert.equal(lastLog().status, 'stored_not_forwarded'); assert.equal(lastLog().beehiiv_status, code); assert.equal(lastLog().reason, reason);
+    });
+  }
+
+  T('Beehiiv 2xx: forwarded row, log subscribed', async () => {
+    const env = await setup(); const m = beehiivMock();
+    await expectStatus(await handleSubscribe(req({ email: email('okfw') }, { json }), env, { fetch: m }), 'subscribed', 200);
+    const rows = env.SIGNUPS.rows();
+    assert.equal(rows.length, 1); assert.equal(rows[0].status, 'forwarded');
+    assert.equal(lastLog().status, 'subscribed'); assert.equal(lastLog().reason, null);
+  });
+
+  T('Beehiiv not configured: stored, stored_not_forwarded, reason config', async () => {
+    const env = await setup({ env: { BEEHIIV_PUB_ID: undefined } });
+    await expectStatus(await handleSubscribe(req({ email: email('nocfg') }, { json }), env, { fetch: beehiivMock() }), 'subscribed', 200);
+    assert.equal(lastLog().status, 'stored_not_forwarded'); assert.equal(lastLog().beehiiv_status, null); assert.equal(lastLog().reason, 'config');
+  });
+
+  T('store missing table -> 502 error, Beehiiv not called, reason d1_write (AC32)', async () => {
+    const env = await setup({ d1: { noSchema: true } }); const m = beehiivMock();
+    const start = logs.lines.length; const src = SOURCES[0];
+    await expectStatus(await handleSubscribe(req({ email: email('notable'), source: src }, { json }), env, { fetch: m }), 'error', 502);
     assert.equal(m.calls.length, 0);
+    const emitted = logs.lines.slice(start);
+    assert.equal(emitted.filter((l) => JSON.parse(l).evt === 'signup').length, 1);
+    assert.deepEqual(JSON.parse(emitted[emitted.length - 1]), { evt: 'signup', status: 'error', source: src, beehiiv_status: null, reason: 'd1_write' });
+    const blob = emitted.join('\n');
+    assert.ok(!blob.includes(email('notable')) && !blob.includes('notable@'), 'email in log');
+    assert.ok(!/\d{1,3}(\.\d{1,3}){3}/.test(blob), 'IP-like value in log');
+    assert.ok(!blob.includes(ENV.BEEHIIV_API_KEY) && !blob.includes(ENV.BEEHIIV_PUB_ID), 'Beehiiv secret in log');
+    assert.ok(!/D1_ERROR|no such table/i.test(blob), 'D1 error text in log');
+  });
+
+  T('SIGNUPS unbound -> error, reason config, Beehiiv not called', async () => {
+    const m = beehiivMock();
+    await expectStatus(await handleSubscribe(req({ email: email('unbound') }, { json }), { ...ENV }, { fetch: m }), 'error', 502);
+    assert.equal(m.calls.length, 0);
+    assert.equal(lastLog().reason, 'config');
+  });
+
+  T('store happens before Beehiiv: row exists in D1 when fetch is called', async () => {
+    const env = await setup(); const base = beehiivMock(); let seen = null;
+    const m = async (u, i) => { seen = env.SIGNUPS.rows().map((r) => [r.email, r.status]); return base(u, i); };
+    await handleSubscribe(req({ email: email('order') }, { json }), env, { fetch: m });
+    assert.deepEqual(seen, [[email('order'), 'pending']]);
+  });
+
+  T('AC24 store write fails -> error 502, no Beehiiv call, reason d1_write', async () => {
+    const env = await setup({ d1: { failWrites: true } });
+    const m = beehiivMock(); const src = SOURCES[0];
+    const start = logs.lines.length;
+    await expectStatus(await handleSubscribe(req({ email: email('storefail'), source: src }, { json }), env, { fetch: m }), 'error', 502);
+    assert.equal(m.calls.length, 0);
+    const emitted = logs.lines.slice(start).map((l) => JSON.parse(l)).filter((l) => l.evt === 'signup');
+    assert.deepEqual(emitted, [{ evt: 'signup', status: 'error', source: src, beehiiv_status: null, reason: 'd1_write' }]);
     const noDb = { ...ENV };
     await expectStatus(await handleSubscribe(req({ email: email('nodb') }, { json }), noDb, { fetch: m }), 'error', 502);
     assert.equal(m.calls.length, 0);
+  });
+
+  T('AC24 D1 generic write error (not missing table) -> 502, no Beehiiv call, reason d1_write', async () => {
+    const env = await setup({ d1: { failWrites: true, writeError: new Error('D1_ERROR: SQLITE_BUSY: database is locked') } });
+    const m = beehiivMock(); const src = SOURCES[1] || SOURCES[0];
+    const start = logs.lines.length;
+    await expectStatus(await handleSubscribe(req({ email: email('d1busy'), source: src }, { json }), env, { fetch: m }), 'error', 502);
+    assert.equal(m.calls.length, 0);
+    assert.equal(env.SIGNUPS.rows().length, 0);
+    const emitted = logs.lines.slice(start);
+    const sig = emitted.map((l) => JSON.parse(l)).filter((l) => l.evt === 'signup');
+    assert.deepEqual(sig, [{ evt: 'signup', status: 'error', source: src, beehiiv_status: null, reason: 'd1_write' }]);
+    assert.ok(!/D1_ERROR|SQLITE_BUSY|locked/i.test(emitted.join('\n')), 'D1 error text in log');
   });
 
   T('AC25 existing email (any case) -> already_subscribed, no new row, no call, pending stays pending', async () => {
@@ -142,6 +213,45 @@ for (const mode of ['js', 'nojs']) {
     assert.equal(env.SIGNUPS.rows().length, 1);
   });
 }
+
+test('AC31 response is byte-identical whether Beehiiv succeeds, fails, or is not configured', async () => {
+  const cases = [
+    ['ok31', {}, undefined],
+    ['fail500', {}, undefined],
+    ['nocfg31', { env: { BEEHIIV_API_KEY: undefined } }, undefined],
+  ];
+  for (const json of [true, false]) {
+    const seen = [];
+    for (const [local, extra] of cases.map(([l, e]) => [l, e])) {
+      const env = await setup(extra);
+      const res = await handleSubscribe(req({ email: email(`${local}x${json}`) }, { json, referer: `${ORIGIN}/cdr/` }), env, { fetch: beehiivMock() });
+      seen.push({ status: res.status, type: res.headers.get('Content-Type'), location: res.headers.get('Location'), body: await res.text() });
+    }
+    assert.deepEqual(seen[1], seen[0]);
+    assert.deepEqual(seen[2], seen[0]);
+    if (json) assert.equal(seen[0].body, '{"status":"subscribed"}');
+  }
+});
+
+test('AC32 Beehiiv 500: exactly one log line, fixed shape, no email/IP/body/key', async () => {
+  const env = await setup(); const ip = 'test-ip-ac32-77'; const addr = email('fail500ac32');
+  const before = logs.lines.length;
+  await handleSubscribe(req({ email: addr, source: 'cdr' }, { ip }), env, { fetch: beehiivMock() });
+  const mine = logs.lines.slice(before);
+  assert.equal(mine.length, 1);
+  assert.deepEqual(JSON.parse(mine[0]), { evt: 'signup', status: 'stored_not_forwarded', source: 'cdr', beehiiv_status: 500, reason: 'http_500' });
+  for (const secret of [addr, addr.split('@')[0], ip, 'boom', ENV.BEEHIIV_API_KEY]) assert.ok(!mine[0].includes(secret), secret);
+});
+
+test('AC32 reasons: timeout, network, config, http_401', async () => {
+  const cases = [['slowac32', {}, 'timeout'], ['networkac32', {}, 'network'], ['cfgac32', { env: { BEEHIIV_API_KEY: undefined } }, 'config'], ['badkeyac32', {}, 'http_401']];
+  for (const [local, extra, reason] of cases) {
+    const env = await setup(extra); const before = logs.lines.length;
+    await handleSubscribe(req({ email: email(local) }), env, { fetch: beehiivMock(), timeoutMs: 50 });
+    const mine = logs.lines.slice(before).map((l) => JSON.parse(l));
+    assert.equal(mine.length, 1); assert.equal(mine[0].reason, reason, local);
+  }
+});
 
 test('AC8 default Beehiiv timeout is 5 s; AC9 origins exactly hazeydata.ai and www', () => {
   assert.equal(BEEHIIV_TIMEOUT_MS, 5000);

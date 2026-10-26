@@ -29,7 +29,7 @@ Only `dist/` is deployed, never the repo root. `scripts/build-public-site.sh [ou
 - **This is the ONLY website repo.** Don't look for website files anywhere else.
 - The old `theme-park-crowd-report/web/` folder was removed (March 2026). It's gone. Don't recreate it.
 - Deploy workflow: `.github/workflows/deploy.yml`
-- Cloudflare secrets (API token + account ID) are stored as GitHub repo secrets.
+- Cloudflare secrets (`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`) are GitHub repo secrets for the Graceland Cloudflare account. Which account, which token and its permissions: `docs/deploy-cloudflare.md`.
 - Branch: `master` (not main)
 
 ## Domains
@@ -41,12 +41,16 @@ All of these serve from this repo:
 - www.themeparkcrowdreport.com
 - hazeydata.pages.dev
 
+## Signup database
+
+The workflow applies `migrations/0001_signups.sql` to the remote D1 `hazeydata-signups` before `pages deploy` (idempotent). After the deploy it verifies the table (`SELECT count(*) AS n FROM signups`) and that `GET /api/subscribe` returns 405 (the workflow never POSTs). These checks run after the deploy, so a failure flags a bad deploy but cannot roll it back. `CLOUDFLARE_API_TOKEN` needs **D1 Edit** in addition to Pages Edit (and Account Settings Read); see `docs/deploy-cloudflare.md`. 2026-10-24 incident: the table was missing, so every signup returned `error` and nothing was stored. Details and log reasons: `docs/signup.md`.
+
 ## Troubleshooting
 
 **Site didn't update after push?**
 1. Check GitHub Actions: https://github.com/hazeydata/hazeydata.ai/actions
-2. If the run failed, check the logs — usually a secret expiry or Cloudflare issue.
-3. Manual deploy (emergency only): `cd ~/hazeydata.ai && bash scripts/build-public-site.sh && python3 scripts/check-deploy-files.py dist && CLOUDFLARE_API_TOKEN=$CLOUDFLARE_PAGES_TOKEN npx wrangler pages deploy dist --project-name=hazeydata --branch=master` (run from the repo root so `./functions` still deploys)
+2. If the run failed, check the logs. `Authentication error [code: 10000]` means the token can't see the Graceland account; see `docs/deploy-cloudflare.md`.
+3. Manual deploy (emergency only): `cd ~/hazeydata.ai && bash scripts/build-public-site.sh && python3 scripts/check-deploy-files.py dist && CLOUDFLARE_API_TOKEN=$CLOUDFLARE_PAGES_TOKEN npx wrangler pages deploy dist --project-name=hazeydata --branch=master` (run from the repo root so `./functions` still deploys; the token must be scoped to the Graceland account, see `docs/deploy-cloudflare.md`)
 
 ## SSD product site
 
