@@ -1,6 +1,6 @@
-// CDR decks + blog article at 320px and 390px: no element on ANY slide (EN and FR) may extend past the viewport.
+// CDR decks + blog index + blog article at 320px and 390px: no element on ANY slide (EN and FR) may extend past the viewport.
 // Also at <=768px: deck tables scroll sideways (display:block; overflow-x:auto) in EN and FR, FR grids have the same
-// column count as their EN copies, and at <=480px the nav-bar .brand-sub ("by hazeydata.ai") is hidden.
+// column count as their EN copies, at <=400px every .stat-row is one column, and at <=480px the nav-bar .brand-sub ("by hazeydata.ai") is hidden.
 // body{overflow:hidden} clips overflow, so documentElement.scrollWidth alone is not enough:
 // each visible element's (on every slide, nav bar included) getBoundingClientRect().right is checked against 390 (content inside
 // an overflow-x:auto/scroll container is exempt, since it is scrollable).
@@ -17,7 +17,7 @@ const root = process.env.CDR_ROOT || new URL('../..', import.meta.url).pathname;
 const EVID = process.env.CDR_EVIDENCE;
 const WIDTHS = [320, 390];
 const DECKS = ['cdr/project-plan.html', 'cdr/pitch.html', 'cdr/funding-pitch.html', 'cdr/pilot-pitch.html',
-  'cdr/construction-pitch.html', 'cdr/blog/why-canada-needs-a-digital-railway.html'];
+  'cdr/construction-pitch.html', 'cdr/blog/index.html', 'cdr/blog/why-canada-needs-a-digital-railway.html'];
 // decks that ship the nav-bar brand with a .brand-sub span
 const BRANDED = new Set(['cdr/project-plan.html', 'cdr/pitch.html', 'cdr/funding-pitch.html', 'cdr/pilot-pitch.html']);
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
@@ -57,10 +57,11 @@ async function measure(page, lang, i, W) {
         .map((t) => { const c = getComputedStyle(t); return { cls: t.className, display: c.display, overflowX: c.overflowX }; });
       const grids = [...scope.querySelectorAll(`.two-col[data-lang="${lang}"], .three-col[data-lang="${lang}"], .four-col[data-lang="${lang}"], .use-cases-grid[data-lang="${lang}"], .faq-grid[data-lang="${lang}"]`)]
         .filter(shown).map((g) => g.className.split(/\s+/)[0] + ':' + getComputedStyle(g).gridTemplateColumns.trim().split(/\s+/).length);
+      const statRows = [...scope.querySelectorAll('.stat-row')].filter(shown).map((r) => getComputedStyle(r).gridTemplateColumns.trim().split(/\s+/).length);
       const bs = document.querySelector('.nav-bar .brand-sub');
       const brandSub = bs ? getComputedStyle(bs).display : null;
       const ltClipped = lt ? lt.scrollWidth > lt.clientWidth + 1 : false;
-      return ({ slide: i, docScrollWidth: document.documentElement.scrollWidth, maxRight: Math.round(maxRight), slideScrollExcess: slideSW, overflowing: bad.length, langToggleClipped: ltClipped, tables, grids, brandSub, worst: bad.sort((a, b) => b.right - a.right).slice(0, 5) });
+      return ({ slide: i, docScrollWidth: document.documentElement.scrollWidth, maxRight: Math.round(maxRight), slideScrollExcess: slideSW, overflowing: bad.length, langToggleClipped: ltClipped, tables, grids, statRows, brandSub, worst: bad.sort((a, b) => b.right - a.right).slice(0, 5) });
   }, lang, W, i);
 }
 
@@ -89,6 +90,7 @@ for (const deck of DECKS) for (const W of WIDTHS) {
         if (EVID) await page.screenshot({ path: join(EVID, `${deck.replace(/\W+/g, '_')}_${W}_${lang}_s${String(s.slide).padStart(2, '0')}.png`) });
         if (s.docScrollWidth > W || s.slideScrollExcess > 1 || s.overflowing || s.langToggleClipped) fails.push(`${tag}: maxRight=${s.maxRight} docSW=${s.docScrollWidth} ${JSON.stringify(s.worst[0] || {})} toggleClipped=${s.langToggleClipped}`);
         for (const t of s.tables) if (t.display !== 'block' || t.overflowX !== 'auto') fails.push(`${tag}: table.${t.cls} is ${t.display}/overflow-x:${t.overflowX}, want block/auto`);
+        if (W <= 400) for (const c of s.statRows) if (c !== 1) fails.push(`${tag}: .stat-row has ${c} columns, want 1 at <=400px`);
         if (BRANDED.has(deck) && s.brandSub !== 'none') fails.push(`${tag}: .nav-bar .brand-sub display=${s.brandSub}, want none at <=480px`);
       }
     }

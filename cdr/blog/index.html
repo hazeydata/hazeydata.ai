@@ -154,6 +154,8 @@
         }
 
         @media (max-width: 768px) {
+            /* 390px overflow fix: tags wrap instead of pushing past the viewport (reached 352 at 320px) */
+            .blog-card-meta { flex-wrap: wrap; row-gap: 0.5rem; }
             .cdr-blog-nav { padding: 0.75rem 1.25rem; }
             .cdr-blog-hamburger { display: block; }
             .cdr-blog-links {
