@@ -142,3 +142,70 @@ for (const deck of DECKS) {
     assert.deepEqual(bad, []);
   });
 }
+
+// Colour tokens (Tobias-confirmed 2026-10-26). Hex lives only in the :root token definitions; rules use var(--acc*) / var(--green*).
+const TOKEN_FILES = ['cdr/deck.css', 'cdr/landing.css'];
+const TOKEN_HEX = /#(1B6F80|1B5E20|5FC4D6|66BB6A)\b/i;
+const tokensOf = (css) => Object.fromEntries([...css.matchAll(/(--(?:acc|acc-on-light|green|green-on-light))\s*:\s*(#[0-9a-f]{6})/gi)].map((m) => [m[1], m[2].toLowerCase()]));
+const hexLum = (h) => { const v = [1, 3, 5].map((k) => { let x = parseInt(h.slice(k, k + 2), 16) / 255; return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+const hexRatio = (a, b) => { const [x, y] = [hexLum(a), hexLum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+
+test('colour tokens: defined identically in each CSS file and meet AA on their surfaces', async () => {
+  const got = [];
+  for (const f of TOKEN_FILES) {
+    const t = tokensOf(await readFile(join(root, f), 'utf8'));
+    assert.deepEqual(Object.keys(t).sort(), ['--acc', '--acc-on-light', '--green', '--green-on-light'], f);
+    got.push(t);
+    for (const k of ['--acc-on-light', '--green-on-light']) for (const bg of ['#f4f7fa', '#ffffff']) assert.ok(hexRatio(t[k], bg) >= 4.5, `${f} ${k} on ${bg}: ${hexRatio(t[k], bg).toFixed(2)}`);
+    for (const k of ['--acc', '--green']) for (const bg of ['#0a1628', '#03070f']) assert.ok(hexRatio(t[k], bg) >= 4.5, `${f} ${k} on ${bg}: ${hexRatio(t[k], bg).toFixed(2)}`);
+  }
+  assert.deepEqual(got[0], got[1]);
+});
+
+test('no in-scope file hard-codes accent/green hex outside the token definitions', async () => {
+  const hits = [];
+  for (const f of ['cdr/index.html', ...DECKS, ...TOKEN_FILES]) {
+    const src = (await readFile(join(root, f), 'utf8')).replace(/--(?:acc|acc-on-light|green|green-on-light)\s*:\s*#[0-9a-f]{6}/gi, '');
+    src.split('\n').forEach((l, i) => { if (TOKEN_HEX.test(l)) hits.push(`${f}:${i + 1}`); });
+  }
+  assert.deepEqual(hits, []);
+});
+
+// Cyan 2px top line only on dark cards; the on-light accent only as text, links or thin (<=4px) rules.
+for (const deck of DECKS) {
+  test(`${deck}: cyan top line only on dark cards; on-light accent only text/thin rules`, { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
+    const page = await open(deck);
+    const bad = await page.evaluate(() => {
+      const rgb = (h) => `rgb(${[1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16)).join(', ')})`;
+      const root = getComputedStyle(document.documentElement);
+      const ACC = rgb(root.getPropertyValue('--acc').trim()); const ONL = rgb(root.getPropertyValue('--acc-on-light').trim());
+      const out = []; const slides = [...document.querySelectorAll('.slide')];
+      for (const lang of ['en', 'fr']) {
+        document.body.classList.toggle('lang-fr', lang === 'fr');
+        slides.forEach((s, i) => {
+          slides.forEach((x, j) => x.classList.toggle('active', j === i));
+          for (const e of s.querySelectorAll('*')) {
+            const cs = getComputedStyle(e); const r = e.getBoundingClientRect();
+            if (!r.width || !r.height || cs.display === 'none') continue;
+            const tag = `${lang} s${i + 1} ${e.tagName.toLowerCase()}.${String(e.className).trim().split(/\s+/).join('.')}`;
+            // Composite background behind/at the element (gradient = house navy), as in the contrast test.
+            let c = [255, 255, 255];
+            for (const a of [e, ...(function* () { for (let p = e.parentElement; p; p = p.parentElement) yield p; })()].reverse()) {
+              const ac = getComputedStyle(a); if (/gradient/.test(ac.backgroundImage)) c = [10, 22, 40];
+              const m = ac.backgroundColor.match(/[\d.]+/g).map(Number); const al = m.length > 3 ? m[3] : 1; c = c.map((v, k) => m[k] * al + v * (1 - al));
+            }
+            const light = (0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]) / 255 > 0.5;
+            const topLine = parseFloat(cs.borderTopWidth) >= 2 && cs.borderTopColor === ACC && cs.borderBottomColor !== ACC;
+            if (topLine && light) out.push(`${tag} cyan top line on light card`);
+            if (e.classList.contains('card-dark') && !(cs.borderTopWidth === '2px' && cs.borderTopColor === ACC)) out.push(`${tag} dark card lacks cyan top line`);
+            if (cs.backgroundColor === ONL && Math.min(r.width, r.height) > 4) out.push(`${tag} on-light accent as fill ${Math.round(r.width)}x${Math.round(r.height)}`);
+            for (const side of ['Top', 'Right', 'Bottom', 'Left']) if (cs[`border${side}Color`] === ONL && parseFloat(cs[`border${side}Width`]) > 4) out.push(`${tag} thick on-light border`);
+          }
+        });
+      }
+      return [...new Set(out)];
+    });
+    await page.close();
+    assert.deepEqual(bad, []);
+  });
+}

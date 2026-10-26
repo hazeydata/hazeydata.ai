@@ -1,27 +1,27 @@
 /* CDR slide decks -> HazeyData Direction B (CDR-RESTYLE). Shared by all /cdr/ decks; loaded after each deck's inline <style>. Keeps .deck/.slide/.active/.exit, nav JS, data-lang. */
-:root{--rail-black:#03070F;--rail-charcoal:#03070F;--rail-charcoal-mid:#0A1628;--rail-slate:#0A1628;--rail-slate-light:#13243D;--rail-slate-lighter:#1B6F80;
+:root{/* colour tokens (Tobias-confirmed): dark-surface accent/green and on-light text variants */--acc:#5FC4D6;--acc-on-light:#1B6F80;--green:#66BB6A;--green-on-light:#1B5E20;--rail-black:#03070F;--rail-charcoal:#03070F;--rail-charcoal-mid:#0A1628;--rail-slate:#0A1628;--rail-slate-light:#13243D;--rail-slate-lighter:var(--acc-on-light);
 --rail-grey-dark:#0A1628;--rail-grey-mid:#4A5B70;--rail-grey-light:#F4F7FA;--rail-grey:#E3E9F0;--bg-warm:#F4F7FA;--bg-cream:#F4F7FA;--bg-blush:#F4F7FA;
---maple-red:#5FC4D6;--maple:#5FC4D6;--maple-red-dark:#1B6F80;--maple-red-soft:#7fd3e1;--accent-gold:#5FC4D6;--accent-gold-light:#5FC4D6;--accent-warm:#5FC4D6;
---accent-teal:#1B6F80;--terry-blue:#1B6F80;--terry-blue-light:#5FC4D6;--shadow:none;--shadow-lg:none}
+--maple-red:var(--acc);--maple:var(--acc);--maple-red-dark:var(--acc-on-light);--maple-red-soft:#7fd3e1;--accent-gold:var(--acc);--accent-gold-light:var(--acc);--accent-warm:var(--acc);
+--accent-teal:var(--acc-on-light);--terry-blue:var(--acc-on-light);--terry-blue-light:var(--acc);--shadow:none;--shadow-lg:none}
 body{font-family:'Inter',system-ui,sans-serif!important;background:#03070F!important}
 h1,h2,h3,h4,.nav-brand{font-family:'Space Grotesk',system-ui,sans-serif!important}
 h1{font-weight:600!important;letter-spacing:-.01em!important}
 h2{font-weight:600!important}
 .slide{padding:72px 120px 96px!important}
 .slide-cover,.slide-dark,.slide-accent,.slide-blue{background:radial-gradient(circle,rgba(169,184,201,.09) 1px,transparent 1.2px) 0 0/22px 22px,linear-gradient(135deg,#03070F 0%,#0A1628 100%)!important;color:#fff!important}
-.slide-cover h1::after{content:"";display:block;width:44px;height:3px;border-radius:1.5px;background:#5FC4D6;margin:18px auto 0}
+.slide-cover h1::after{content:"";display:block;width:44px;height:3px;border-radius:1.5px;background:var(--acc);margin:18px auto 0}
 .slide-white,.slide-warm{background:#F4F7FA!important;color:#0A1628!important}
 .content-box{max-width:1100px!important}
 .two-col{gap:56px!important;max-width:1100px!important}.three-col,.four-col{gap:32px!important;max-width:1100px!important}
-.card{background:#fff!important;border:1px solid #E3E9F0!important;border-left:1px solid #E3E9F0!important;border-top:2px solid #5FC4D6!important;border-radius:12px!important;box-shadow:none!important;padding:36px 32px!important}
+.card{background:#fff!important;border:1px solid #E3E9F0!important;border-left:1px solid #E3E9F0!important;border-top:1px solid #E3E9F0!important;border-radius:12px!important;box-shadow:none!important;padding:36px 32px!important}
 .card h3{color:#0A1628!important}.card p{color:#4A5B70!important}
-.card-dark{background:linear-gradient(180deg,#0A1628,#03070F)!important;border:1px solid rgba(169,184,201,.15)!important;border-top:2px solid rgba(95,196,214,.5)!important;border-radius:12px!important;padding:36px 32px!important}
-.card-dark h3{color:#5FC4D6!important}.card-dark p{color:#A9B8C9!important;opacity:1!important}
+.card-dark{background:linear-gradient(180deg,#0A1628,#03070F)!important;border:1px solid rgba(169,184,201,.15)!important;border-top:2px solid var(--acc)!important;border-radius:12px!important;padding:36px 32px!important}
+.card-dark h3{color:var(--acc)!important}.card-dark p{color:#A9B8C9!important;opacity:1!important}
 .nav-bar{background:rgba(3,7,15,.95)!important;border-top:1px solid #13243D!important;height:56px!important}
-.nav-dot.active{background:#5FC4D6!important}
-.nav-btn{border-radius:8px!important;border-color:rgba(169,184,201,.3)!important}.nav-btn:hover{border-color:#5FC4D6!important;color:#5FC4D6!important}
+.nav-dot.active{background:var(--acc)!important}
+.nav-btn{border-radius:8px!important;border-color:rgba(169,184,201,.3)!important}.nav-btn:hover{border-color:var(--acc)!important;color:var(--acc)!important}
 .lang-toggle{border-radius:8px!important;border-color:rgba(169,184,201,.3)!important;flex-shrink:0}
-.lang-btn.active{background:#5FC4D6!important;color:#0A1628!important}
+.lang-btn.active{background:var(--acc)!important;color:#0A1628!important}
 @media (max-width:1024px){.slide{padding:56px 48px 88px!important}}
 @media (max-width:768px){.slide{padding:40px 22px 84px!important}.card,.card-dark{padding:24px 20px!important}
 /* fix-spec #1,#2,#4 */
@@ -41,21 +41,24 @@ h2{font-weight:600!important}
 /* pilot-pitch: .slide-terry is a light slide, .slide-deep a dark one (brief §3) */
 .slide-terry{background:#F4F7FA!important;color:#0A1628!important}
 .slide-deep{background:radial-gradient(circle,rgba(169,184,201,.09) 1px,transparent 1.2px) 0 0/22px 22px,linear-gradient(135deg,#03070F 0%,#0A1628 100%)!important;color:#fff!important}
-/* Light slides: cyan #5FC4D6 is 1.89:1 on #F4F7FA. Text accents use the house teal #1B6F80 (5.38:1); cyan stays for rules/badges on dark */
-.slide-white .stat-number,.slide-warm .stat-number,.slide-terry .stat-number,.slide-white .pill,.slide-warm .pill,.slide-terry .pill{color:#1B6F80!important}
+/* Light slides: cyan var(--acc) is 1.89:1 on #F4F7FA. Text accents use the house teal var(--acc-on-light) (5.38:1); cyan stays for rules/badges on dark */
+.slide-white .stat-number,.slide-warm .stat-number,.slide-terry .stat-number,.slide-white .pill,.slide-warm .pill,.slide-terry .pill{color:var(--acc-on-light)!important}
 .pill-red,.pill-gold,.pill-blue{background:rgba(95,196,214,.15)!important}
 /* 320px: wide comparison tables scroll inside the slide */
 .compare-table,.rev-table,.fund-table{display:block!important;max-width:100%;overflow-x:auto}
 /* .slide-terry content was authored white-on-blue: map it to navy/teal on the light slide */
-.slide-terry{--accent-gold-light:#1B6F80;--rail-white:#0A1628}
+.slide-terry{--accent-gold-light:var(--acc-on-light);--rail-white:#0A1628}
 .slide-terry>.content-box>[style*="255,255,255"],.slide-terry>.content-box>[style*="255,255,255"] strong,.slide-terry .two-col [style*="255,255,255"],.slide-terry .two-col [style*="255,255,255"] *{color:#0A1628!important}
-.slide-terry .small-label{color:#1B6F80!important}
+.slide-terry .small-label{color:var(--acc-on-light)!important}
 body.lang-fr .compare-table[data-lang="fr"],body.lang-fr .rev-table[data-lang="fr"],body.lang-fr .fund-table[data-lang="fr"]{display:block!important}
 @media (max-width:360px){.slide h1[style*="font-size"]{font-size:2.3rem!important}.slide h1,.slide h2,.slide h3{overflow-wrap:break-word}}
 .slide-terry .terry-bubble p{color:#0A1628!important}
 /* Accent tokens on light slides resolve to teal (text contrast); dark panels inside them keep cyan */
-.slide-white,.slide-warm,.slide-terry{--maple-red:#1B6F80;--maple:#1B6F80;--accent-gold:#1B6F80;--accent-gold-light:#1B6F80;--accent-warm:#1B6F80;--terry-blue-light:#1B6F80;--accent-green:#1B5E20}
-.slide-white .card-dark,.slide-warm .card-dark,.slide-terry .card-dark,.slide-white .dark-bg,.slide-warm .dark-bg,.slide-white [style*="background: var(--rail-slate)"],.slide-warm [style*="background: var(--rail-slate)"],.slide-white [style*="background:var(--rail-slate)"],.slide-warm [style*="background:var(--rail-slate)"]{--maple-red:#5FC4D6;--maple:#5FC4D6;--accent-gold:#5FC4D6;--accent-gold-light:#5FC4D6;--accent-warm:#5FC4D6;--terry-blue-light:#5FC4D6}
-/* Teal/green accent text on dark slides: teal #1B6F80 is ~2-3:1 on navy, so dark slides use cyan; positive-state green lightens to #66BB6A */
-.slide-cover,.slide-dark,.slide-accent,.slide-blue,.slide-deep{--accent-teal:#5FC4D6;--terry-blue:#5FC4D6;--rail-slate-lighter:#5FC4D6;--maple-red-dark:#5FC4D6;--accent-green:#66BB6A}
+.slide-white,.slide-warm,.slide-terry{--maple-red:var(--acc-on-light);--maple:var(--acc-on-light);--accent-gold:var(--acc-on-light);--accent-gold-light:var(--acc-on-light);--accent-warm:var(--acc-on-light);--terry-blue-light:var(--acc-on-light);--accent-green:var(--green-on-light)}
+.slide-white .card-dark,.slide-warm .card-dark,.slide-terry .card-dark,.slide-white .dark-bg,.slide-warm .dark-bg,.slide-white [style*="background: var(--rail-slate)"],.slide-warm [style*="background: var(--rail-slate)"],.slide-white [style*="background:var(--rail-slate)"],.slide-warm [style*="background:var(--rail-slate)"]{--maple-red:var(--acc);--maple:var(--acc);--accent-gold:var(--acc);--accent-gold-light:var(--acc);--accent-warm:var(--acc);--terry-blue-light:var(--acc)}
+/* Teal/green accent text on dark slides: teal var(--acc-on-light) is ~2-3:1 on navy, so dark slides use cyan; positive-state green lightens to var(--green) */
+.slide-cover,.slide-dark,.slide-accent,.slide-blue,.slide-deep{--accent-teal:var(--acc);--terry-blue:var(--acc);--rail-slate-lighter:var(--acc);--maple-red-dark:var(--acc);--accent-green:var(--green)}
 .slide-white .flow-desc,.slide-warm .flow-desc{opacity:.75!important}
+/* Tobias 2026-10-26: on light slides the on-light accent is text/links/thin rules only, and cards carry no cyan top line */
+.slide-blush .gap-icon,.slide-blush .journey-num,.slide-white .gap-icon,.slide-warm .gap-icon,.slide-terry .gap-icon,.slide-white .journey-num,.slide-warm .journey-num,.slide-terry .journey-num{background:var(--acc)!important;color:#0A1628!important}
+.slide-white .card-persona,.slide-warm .card-persona,.slide-terry .card-persona,.slide-white .hw-card,.slide-warm .hw-card,.slide-white .stack-layer,.slide-warm .stack-layer,.slide-white .flow-step,.slide-warm .flow-step{border-top-color:#E3E9F0!important}
