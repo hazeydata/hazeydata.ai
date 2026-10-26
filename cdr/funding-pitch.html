@@ -743,7 +743,11 @@
   /* ── 390px overflow fix (fix/cdr-390-overflow) ── */
   .lang-toggle { flex-shrink: 0; }
   @media (max-width: 768px) {
-    .rev-table, .fund-table { display: block; max-width: 100%; overflow-x: auto; }
+    .rev-table, .fund-table, .compare-table { display: block; max-width: 100%; overflow-x: auto; }
+    /* FR copies: beat `body.lang-fr [data-lang="fr"] { display: revert !important }` at the top of the file */
+    body.lang-fr table.rev-table[data-lang="fr"],
+    body.lang-fr table.fund-table[data-lang="fr"],
+    body.lang-fr table.compare-table[data-lang="fr"] { display: block !important; }
     .stat { min-width: 0; flex: 1 1 120px; }
     .card-dark > div[style*="flex"] { flex-wrap: wrap; }
     .two-col > *, .three-col > *, .four-col > * { min-width: 0; }
@@ -762,7 +766,7 @@
     .nav-controls { gap: 4px; flex-shrink: 0; }
     .nav-btn { width: 30px; height: 30px; }
     .nav-bar .brand-sub { display: none; }
-    .rev-table td, .fund-table td { overflow-wrap: anywhere; }
+    .rev-table td, .fund-table td, .compare-table td { overflow-wrap: anywhere; }
   }
 </style>
 </head>

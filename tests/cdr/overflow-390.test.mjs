@@ -1,4 +1,6 @@
-// CDR decks at 390px: no element on ANY slide (EN and FR) may extend past the viewport.
+// CDR decks + blog article at 320px and 390px: no element on ANY slide (EN and FR) may extend past the viewport.
+// Also at <=768px: deck tables scroll sideways (display:block; overflow-x:auto) in EN and FR, FR grids have the same
+// column count as their EN copies, and at <=480px the nav-bar .brand-sub ("by hazeydata.ai") is hidden.
 // body{overflow:hidden} clips overflow, so documentElement.scrollWidth alone is not enough:
 // each visible element's (on every slide, nav bar included) getBoundingClientRect().right is checked against 390 (content inside
 // an overflow-x:auto/scroll container is exempt, since it is scrollable).
@@ -13,8 +15,11 @@ import { join, extname } from 'node:path';
 const tools = process.env.CDR_TEST_TOOLS || process.env.SIGNUP_TEST_TOOLS;
 const root = process.env.CDR_ROOT || new URL('../..', import.meta.url).pathname;
 const EVID = process.env.CDR_EVIDENCE;
-const W = 390;
-const DECKS = ['cdr/project-plan.html', 'cdr/pitch.html', 'cdr/funding-pitch.html', 'cdr/pilot-pitch.html'];
+const WIDTHS = [320, 390];
+const DECKS = ['cdr/project-plan.html', 'cdr/pitch.html', 'cdr/funding-pitch.html', 'cdr/pilot-pitch.html',
+  'cdr/construction-pitch.html', 'cdr/blog/why-canada-needs-a-digital-railway.html'];
+// decks that ship the nav-bar brand with a .brand-sub span
+const BRANDED = new Set(['cdr/project-plan.html', 'cdr/pitch.html', 'cdr/funding-pitch.html', 'cdr/pilot-pitch.html']);
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
 let browser;
 
@@ -26,7 +31,7 @@ before(async () => {
 });
 after(async () => { if (browser) await browser.close(); });
 
-async function measure(page, lang, i) {
+async function measure(page, lang, i, W) {
   return page.evaluate(async (lang, W, i) => {
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     document.body.classList.toggle('lang-fr', lang === 'fr');
@@ -34,10 +39,11 @@ async function measure(page, lang, i) {
     // .slide itself is overflow-y:auto (so overflow-x computes to auto); sideways scroll of a slide is a bug, so only inner scrollers exempt.
     const scrollable = (e) => { for (let a = e.parentElement; a && a !== document.body && !a.classList.contains('slide'); a = a.parentElement) { const o = getComputedStyle(a).overflowX; if (o === 'auto' || o === 'scroll') return true; } return false; };
       slides.forEach((s, j) => { s.classList.remove('exit'); s.classList.toggle('active', j === i); });
-      await sleep(800);
+      await sleep(slides.length ? 800 : 300);
+      const scope = slides.length ? slides[i] : document.body;
       const bad = [];
       let maxRight = 0;
-      for (const e of [...slides[i].querySelectorAll('*'), ...document.querySelectorAll('.nav-bar, .nav-bar *')]) {
+      for (const e of [...scope.querySelectorAll('*'), ...document.querySelectorAll('.nav-bar, .nav-bar *')]) {
         const b = e.getBoundingClientRect();
         if (b.width === 0 || b.height === 0 || getComputedStyle(e).visibility === 'hidden') continue;
         if (scrollable(e)) continue;
@@ -45,14 +51,21 @@ async function measure(page, lang, i) {
         if (b.right > W + 0.5) bad.push({ el: e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') + (typeof e.className === 'string' && e.className ? '.' + e.className.trim().split(/\s+/).join('.') : ''), right: Math.round(b.right), text: (e.textContent || '').trim().slice(0, 40) });
       }
       const lt = document.querySelector('.lang-toggle');
-      const slideSW = slides[i].scrollWidth - slides[i].clientWidth;
+      const slideSW = slides.length ? slides[i].scrollWidth - slides[i].clientWidth : 0;
+      const shown = (e) => e.getClientRects().length > 0 && getComputedStyle(e).visibility !== 'hidden';
+      const tables = [...scope.querySelectorAll('table.rev-table, table.fund-table, table.compare-table')].filter(shown)
+        .map((t) => { const c = getComputedStyle(t); return { cls: t.className, display: c.display, overflowX: c.overflowX }; });
+      const grids = [...scope.querySelectorAll(`.two-col[data-lang="${lang}"], .three-col[data-lang="${lang}"], .four-col[data-lang="${lang}"], .use-cases-grid[data-lang="${lang}"], .faq-grid[data-lang="${lang}"]`)]
+        .filter(shown).map((g) => g.className.split(/\s+/)[0] + ':' + getComputedStyle(g).gridTemplateColumns.trim().split(/\s+/).length);
+      const bs = document.querySelector('.nav-bar .brand-sub');
+      const brandSub = bs ? getComputedStyle(bs).display : null;
       const ltClipped = lt ? lt.scrollWidth > lt.clientWidth + 1 : false;
-      return ({ slide: i, docScrollWidth: document.documentElement.scrollWidth, maxRight: Math.round(maxRight), slideScrollExcess: slideSW, overflowing: bad.length, langToggleClipped: ltClipped, worst: bad.sort((a, b) => b.right - a.right).slice(0, 5) });
+      return ({ slide: i, docScrollWidth: document.documentElement.scrollWidth, maxRight: Math.round(maxRight), slideScrollExcess: slideSW, overflowing: bad.length, langToggleClipped: ltClipped, tables, grids, brandSub, worst: bad.sort((a, b) => b.right - a.right).slice(0, 5) });
   }, lang, W, i);
 }
 
-for (const deck of DECKS) {
-  test(`${deck} fits 390px on every slide (EN+FR)`, { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
+for (const deck of DECKS) for (const W of WIDTHS) {
+  test(`${deck} fits ${W}px on every slide (EN+FR)`, { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
     const page = await browser.newPage();
     await page.setViewport({ width: W, height: 844 });
     await page.setRequestInterception(true);
@@ -68,15 +81,22 @@ for (const deck of DECKS) {
     const fails = [];
     for (const lang of ['en', 'fr']) {
       out[lang] = [];
-      const n = await page.evaluate(() => document.querySelectorAll('.slide').length);
+      const n = Math.max(1, await page.evaluate(() => document.querySelectorAll('.slide').length));
       for (let i = 0; i < n; i++) {
-        const s = await measure(page, lang, i);
+        const s = await measure(page, lang, i, W);
         out[lang].push(s);
-        if (EVID) await page.screenshot({ path: join(EVID, `${deck.replace(/\W+/g, '_')}_${lang}_s${String(s.slide).padStart(2, '0')}.png`) });
-        if (s.docScrollWidth > W || s.slideScrollExcess > 1 || s.overflowing || s.langToggleClipped) fails.push(`${lang} slide ${s.slide}: maxRight=${s.maxRight} ${JSON.stringify(s.worst[0] || {})} toggleClipped=${s.langToggleClipped}`);
+        const tag = `${lang} slide ${s.slide}`;
+        if (EVID) await page.screenshot({ path: join(EVID, `${deck.replace(/\W+/g, '_')}_${W}_${lang}_s${String(s.slide).padStart(2, '0')}.png`) });
+        if (s.docScrollWidth > W || s.slideScrollExcess > 1 || s.overflowing || s.langToggleClipped) fails.push(`${tag}: maxRight=${s.maxRight} docSW=${s.docScrollWidth} ${JSON.stringify(s.worst[0] || {})} toggleClipped=${s.langToggleClipped}`);
+        for (const t of s.tables) if (t.display !== 'block' || t.overflowX !== 'auto') fails.push(`${tag}: table.${t.cls} is ${t.display}/overflow-x:${t.overflowX}, want block/auto`);
+        if (BRANDED.has(deck) && s.brandSub !== 'none') fails.push(`${tag}: .nav-bar .brand-sub display=${s.brandSub}, want none at <=480px`);
       }
     }
-    if (EVID) { await writeFile(join(EVID, `${deck.replace(/\W+/g, '_')}.json`), JSON.stringify(out, null, 1)); }
+    // FR copies must lay out like EN copies (FR rules at the top of each deck re-force columns with !important)
+    for (let i = 0; i < out.en.length; i++) {
+      if (JSON.stringify(out.fr[i].grids) !== JSON.stringify(out.en[i].grids)) fails.push(`slide ${i}: FR grids ${JSON.stringify(out.fr[i].grids)} != EN ${JSON.stringify(out.en[i].grids)}`);
+    }
+    if (EVID) { await writeFile(join(EVID, `${deck.replace(/\W+/g, '_')}_${W}.json`), JSON.stringify(out, null, 1)); }
     await page.close();
     assert.deepEqual(fails, []);
   });
