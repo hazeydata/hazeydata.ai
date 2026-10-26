@@ -1,0 +1,141 @@
+// CDR-RESTYLE house-style guards: no Lato anywhere (source, network, computed), landing house button + h1 bar,
+// and WCAG contrast of every text element on every deck slide (EN+FR) at 1440x900.
+// Needs puppeteer-core for the browser tests: CDR_TEST_TOOLS=<dir with node_modules>, CHROME=<chrome path>.
+import { test, before, after } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import { readFile } from 'node:fs/promises';
+import { join, extname } from 'node:path';
+
+const tools = process.env.CDR_TEST_TOOLS || process.env.SIGNUP_TEST_TOOLS;
+const root = process.env.CDR_ROOT || new URL('../..', import.meta.url).pathname;
+const DECKS = ['cdr/project-plan.html', 'cdr/pitch.html', 'cdr/funding-pitch.html', 'cdr/pilot-pitch.html', 'cdr-project-plan.html'];
+const PAGES = ['cdr/', ...DECKS];
+const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png' };
+const LATO_URL = /\blato\b|fonts\.googleapis\.com|fonts\.gstatic\.com/i;
+let browser;
+
+before(async () => {
+  if (!tools) return;
+  const puppeteer = createRequire(join(tools, 'package.json'))('puppeteer-core');
+  browser = await puppeteer.launch({ executablePath: process.env.CHROME || '/usr/bin/google-chrome', headless: 'new',
+    args: ['--no-sandbox', '--font-render-hinting=none'], userDataDir: process.env.CDR_PROFILE });
+});
+after(async () => { if (browser) await browser.close(); });
+
+async function open(path, requests = []) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1440, height: 900 });
+  await page.setRequestInterception(true);
+  page.on('request', async (r) => {
+    requests.push(r.url());
+    const u = new URL(r.url());
+    if (u.hostname !== 'cdr.test') return r.abort();
+    let p = decodeURIComponent(u.pathname); if (p.endsWith('/')) p += 'index.html';
+    try { r.respond({ status: 200, contentType: TYPES[extname(p)] || 'application/octet-stream', body: await readFile(join(root, p)) }); }
+    catch { r.respond({ status: 404, body: '' }); }
+  });
+  await page.goto(`http://cdr.test/${path}`, { waitUntil: 'load' });
+  await page.evaluate(() => document.fonts.ready);
+  return page;
+}
+
+// Static: no restyled CDR page or its shared CSS mentions Lato or Google Fonts at all.
+// (cdr/construction-pitch.html and cdr/blog/ are outside CDR-RESTYLE and not covered.)
+test('no Lato or Google Fonts in any restyled CDR source file', async () => {
+  const files = ['cdr/index.html', ...DECKS, 'cdr/deck.css', 'cdr/landing.css'];
+  const hits = [];
+  for (const f of files) {
+    (await readFile(join(root, f), 'utf8')).split('\n').forEach((l, i) => { if (LATO_URL.test(l)) hits.push(`${f}:${i + 1}`); });
+  }
+  assert.deepEqual(hits, []);
+});
+
+for (const path of PAGES) {
+  test(`${path}: no Lato request, @import, @font-face or computed font`, { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
+    const requests = [];
+    const page = await open(path, requests);
+    const r = await page.evaluate(() => {
+      const rules = [];
+      const walk = (sheet) => { let list; try { list = sheet.cssRules; } catch { return; } for (const x of list) { if (x.styleSheet) { rules.push('@import ' + x.href); walk(x.styleSheet); } else if (/lato/i.test(x.cssText)) rules.push(x.cssText.slice(0, 80)); } };
+      for (const s of document.styleSheets) { if (s.href && /lato|googleapis/i.test(s.href)) rules.push('link ' + s.href); walk(s); }
+      return { rules: rules.filter((x) => /lato|googleapis|gstatic/i.test(x)),
+        computed: [...document.querySelectorAll('*')].filter((e) => /lato/i.test(getComputedStyle(e).fontFamily)).length };
+    });
+    await page.close();
+    assert.deepEqual({ requests: requests.filter((u) => LATO_URL.test(u)), ...r }, { requests: [], rules: [], computed: 0 });
+  });
+}
+
+test('cdr/ landing: house primary button and cyan h1 bar', { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
+  const page = await open('cdr/');
+  const s = await page.evaluate(() => {
+    const b = getComputedStyle(document.querySelector('.btn-cdr'));
+    const bar = getComputedStyle(document.querySelector('.cdr-hero h1'), '::after');
+    return { btnBg: b.backgroundColor, btnColor: b.color, btnRadius: b.borderRadius,
+      bar: { display: bar.display, width: bar.width, height: bar.height, bg: bar.backgroundColor } };
+  });
+  await page.close();
+  assert.deepEqual(s, { btnBg: 'rgb(95, 196, 214)', btnColor: 'rgb(10, 22, 40)', btnRadius: '8px',
+    bar: { display: 'block', width: '44px', height: '3px', bg: 'rgb(95, 196, 214)' } });
+});
+
+for (const deck of DECKS) {
+  test(`${deck}: text contrast >= 4.5:1 (3:1 large) on every slide, EN+FR`, { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
+    const page = await open(deck);
+    const fails = await page.evaluate(async () => {
+      const parse = (c) => { const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const [r, g, b, a = 1] = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return [r, g, b, a]; };
+      const over = (top, bot) => [0, 1, 2].map((k) => top[k] * top[3] + bot[k] * (1 - top[3])).concat(1);
+      const lum = (c) => { const v = c.slice(0, 3).map((x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+      const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+      // Background behind an element: composite every ancestor's background-color; a gradient/image layer counts as the house dark navy.
+      const bgOf = (e) => {
+        const chain = []; for (let a = e; a; a = a.parentElement) chain.push(a);
+        let c = [255, 255, 255, 1];
+        for (const a of chain.reverse()) { const cs = getComputedStyle(a); if (cs.backgroundImage !== 'none' && /gradient/.test(cs.backgroundImage)) c = [10, 22, 40, 1]; const bc = parse(cs.backgroundColor); if (bc && bc[3] > 0) c = over(bc, c); }
+        return c;
+      };
+      const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+      const slides = [...document.querySelectorAll('.slide')];
+      const out = [];
+      for (const lang of ['en', 'fr']) {
+        document.body.classList.toggle('lang-fr', lang === 'fr');
+        for (let i = 0; i < slides.length; i++) {
+          slides.forEach((s, j) => { s.classList.remove('exit'); s.classList.toggle('active', j === i); });
+          await sleep(900);
+          for (const e of slides[i].querySelectorAll('*')) {
+            if (![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+            const cs = getComputedStyle(e); const r = e.getBoundingClientRect();
+            if (!r.width || !r.height || cs.visibility === 'hidden' || cs.display === 'none') continue;
+            if (!/[A-Za-zÀ-ÿ0-9]/.test(e.textContent)) continue; // emoji / symbols only
+            let op = 1; for (let a = e; a && a !== slides[i]; a = a.parentElement) op *= Number(getComputedStyle(a).opacity);
+            if (op < 0.99) continue; // decorative de-emphasised text is out of scope for this guard
+            const bg = bgOf(e); const fg = parse(cs.webkitTextFillColor && cs.webkitTextFillColor !== cs.color ? cs.webkitTextFillColor : cs.color);
+            if (!fg) continue;
+            const px = parseFloat(cs.fontSize); const large = px >= 24 || (px >= 18.66 && Number(cs.fontWeight) >= 700) || (px >= 24 && Number(cs.fontWeight) >= 600);
+            const need = large ? 3 : 4.5; const got = ratio(over(fg, bg), bg);
+            if (got < need) out.push(`${lang} s${i + 1} ${e.tagName.toLowerCase()}.${String(e.className).trim().split(/\s+/).join('.')} ${got.toFixed(2)}<${need} fg=${cs.color} "${e.textContent.trim().slice(0, 24)}"`);
+          }
+        }
+      }
+      return out;
+    });
+    await page.close();
+    assert.deepEqual(fails, []);
+  });
+}
+
+// Every deck slide uses a house background: the navy gradient (dark) or #F4F7FA / white (light). Catches leftover old gradients.
+for (const deck of DECKS) {
+  test(`${deck}: every slide has a house background`, { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
+    const page = await open(deck);
+    const bad = await page.evaluate(() => [...document.querySelectorAll('.slide')].map((s, i) => {
+      const c = getComputedStyle(s);
+      const dark = c.backgroundImage.includes('rgb(3, 7, 15)') && c.backgroundImage.includes('rgb(10, 22, 40)');
+      const light = c.backgroundImage === 'none' && ['rgb(244, 247, 250)', 'rgb(255, 255, 255)'].includes(c.backgroundColor);
+      return dark || light ? null : `s${i + 1} ${s.className} ${c.backgroundColor} ${c.backgroundImage.slice(0, 60)}`;
+    }).filter(Boolean));
+    await page.close();
+    assert.deepEqual(bad, []);
+  });
+}

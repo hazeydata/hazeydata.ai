@@ -1,4 +1,4 @@
-// CDR decks at 390px: no element on ANY slide (EN and FR) may extend past the viewport.
+// CDR decks at 390px and 320px: no element on ANY slide (EN and FR) may extend past the viewport.
 // body{overflow:hidden} clips overflow, so documentElement.scrollWidth alone is not enough:
 // each visible element's (on every slide, nav bar included) getBoundingClientRect().right is checked against 390 (content inside
 // an overflow-x:auto/scroll container is exempt, since it is scrollable).
@@ -13,7 +13,7 @@ import { join, extname } from 'node:path';
 const tools = process.env.CDR_TEST_TOOLS || process.env.SIGNUP_TEST_TOOLS;
 const root = process.env.CDR_ROOT || new URL('../..', import.meta.url).pathname;
 const EVID = process.env.CDR_EVIDENCE;
-const W = 390;
+const WIDTHS = [390, 320];
 // cdr-project-plan.html is the root-level copy of the project plan (CDR-RESTYLE loads /cdr/deck.css there too).
 const DECKS = ['cdr/project-plan.html', 'cdr/pitch.html', 'cdr/funding-pitch.html', 'cdr/pilot-pitch.html', 'cdr-project-plan.html'];
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
@@ -27,7 +27,7 @@ before(async () => {
 });
 after(async () => { if (browser) await browser.close(); });
 
-async function measure(page, lang, i) {
+async function measure(page, lang, i, W) {
   return page.evaluate(async (lang, W, i) => {
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     document.body.classList.toggle('lang-fr', lang === 'fr');
@@ -53,7 +53,7 @@ async function measure(page, lang, i) {
   }, lang, W, i);
 }
 
-async function open(path) {
+async function open(path, W) {
   const page = await browser.newPage();
   await page.setViewport({ width: W, height: 844 });
   await page.setRequestInterception(true);
@@ -68,9 +68,10 @@ async function open(path) {
   return page;
 }
 
+for (const W of WIDTHS) {
 // Landing page /cdr/ (CDR-RESTYLE): fits 390 in full-page layout, CTA sits above the stats in the DOM, no Lato.
-test('cdr/ landing fits 390px, CTA above stats', { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
-  const page = await open('cdr/');
+test(`cdr/ landing fits ${W}px, CTA above stats`, { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
+  const page = await open('cdr/', W);
   await new Promise((r) => setTimeout(r, 500));
   const s = await page.evaluate((W) => {
     const bad = [];
@@ -85,14 +86,14 @@ test('cdr/ landing fits 390px, CTA above stats', { skip: !tools && 'set CDR_TEST
       ctaBeforeStats: !!(cta && stats && (cta.compareDocumentPosition(stats) & Node.DOCUMENT_POSITION_FOLLOWING)),
       lato: [...document.querySelectorAll('body *')].filter((e) => /lato/i.test(getComputedStyle(e).fontFamily)).length };
   }, W);
-  if (EVID) { await mkdir(EVID, { recursive: true }); await page.screenshot({ path: join(EVID, 'cdr_landing_390.png'), fullPage: true }); await writeFile(join(EVID, 'cdr_landing.json'), JSON.stringify(s, null, 1)); }
+  if (EVID) { await mkdir(EVID, { recursive: true }); await page.screenshot({ path: join(EVID, `cdr_landing_${W}.png`), fullPage: true }); await writeFile(join(EVID, `cdr_landing_${W}.json`), JSON.stringify(s, null, 1)); }
   await page.close();
   assert.deepEqual(s, { docScrollWidth: W, bad: [], ctaBeforeStats: true, lato: 0 });
 });
 
 for (const deck of DECKS) {
-  test(`${deck} fits 390px on every slide (EN+FR)`, { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
-    const page = await open(deck);
+  test(`${deck} fits ${W}px on every slide (EN+FR)`, { skip: !tools && 'set CDR_TEST_TOOLS' }, async () => {
+    const page = await open(deck, W);
     const out = {};
     if (EVID) await mkdir(EVID, { recursive: true });
     const fails = [];
@@ -100,14 +101,15 @@ for (const deck of DECKS) {
       out[lang] = [];
       const n = await page.evaluate(() => document.querySelectorAll('.slide').length);
       for (let i = 0; i < n; i++) {
-        const s = await measure(page, lang, i);
+        const s = await measure(page, lang, i, W);
         out[lang].push(s);
-        if (EVID) await page.screenshot({ path: join(EVID, `${deck.replace(/\W+/g, '_')}_${lang}_s${String(s.slide).padStart(2, '0')}.png`) });
-        if (s.docScrollWidth > W || s.slideScrollExcess > 1 || s.overflowing || s.langToggleClipped || s.latoElements) fails.push(`${lang} slide ${s.slide}: maxRight=${s.maxRight} ${JSON.stringify(s.worst[0] || {})} toggleClipped=${s.langToggleClipped} lato=${s.latoElements}`);
+        if (EVID) await page.screenshot({ path: join(EVID, `${deck.replace(/\W+/g, '_')}_${W}_${lang}_s${String(s.slide).padStart(2, '0')}.png`) });
+        if (s.docScrollWidth > W || s.slideScrollExcess > 0 || s.overflowing || s.langToggleClipped || s.latoElements) fails.push(`${lang} slide ${s.slide}: maxRight=${s.maxRight} ${JSON.stringify(s.worst[0] || {})} toggleClipped=${s.langToggleClipped} lato=${s.latoElements}`);
       }
     }
-    if (EVID) { await writeFile(join(EVID, `${deck.replace(/\W+/g, '_')}.json`), JSON.stringify(out, null, 1)); }
+    if (EVID) { await writeFile(join(EVID, `${deck.replace(/\W+/g, '_')}_${W}.json`), JSON.stringify(out, null, 1)); }
     await page.close();
     assert.deepEqual(fails, []);
   });
+}
 }
