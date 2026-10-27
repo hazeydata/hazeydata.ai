@@ -43,7 +43,7 @@ All of these serve from this repo:
 
 ## Signup database
 
-The workflow applies `migrations/0001_signups.sql` to the remote D1 `hazeydata-signups` before `pages deploy` (idempotent). After the deploy it verifies the table (`SELECT count(*) AS n FROM signups`) and that `GET /api/subscribe` returns 405 (the workflow never POSTs). These checks run after the deploy, so a failure flags a bad deploy but cannot roll it back. `CLOUDFLARE_API_TOKEN` needs **D1 Edit** in addition to Pages Edit (and Account Settings Read); see `docs/deploy-cloudflare.md`. 2026-10-24 incident: the table was missing, so every signup returned `error` and nothing was stored. Details and log reasons: `docs/signup.md`.
+The workflow does not apply migrations; they are applied by hand after Fred's go (see `docs/signup.md`). After the deploy it verifies the table (`SELECT count(*) AS n FROM signups`) and that `GET /api/subscribe` returns 405 (the workflow never POSTs). These checks run after the deploy, so a failure flags a bad deploy but cannot roll it back. `CLOUDFLARE_API_TOKEN` needs only Pages Edit plus **D1 Read** (re-scope from D1 Edit not done yet; Fred's call); see `docs/deploy-cloudflare.md`. 2026-10-24 incident: the table was missing, so every signup returned `error` and nothing was stored. Details and log reasons: `docs/signup.md`.
 
 ## Troubleshooting
 

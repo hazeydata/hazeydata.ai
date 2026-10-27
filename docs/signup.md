@@ -4,7 +4,7 @@
 if the Beehiiv secrets are set. If Beehiiv is unavailable the visitor still sees success and the row stays `pending`.
 Pending rows go into Beehiiv by CSV import.
 
-## Bindings and secrets (Cloudflare Pages project `hazeydata`, Production + Preview)
+## Bindings and secrets (Cloudflare Pages project `hazeydata`, Production only)
 | Name | Kind | Required | Purpose |
 |---|---|---|---|
 | `SIGNUPS` | D1 binding to database `hazeydata-signups` | yes | signups table (`migrations/0001_signups.sql`) |
@@ -12,10 +12,21 @@ Pending rows go into Beehiiv by CSV import.
 | `EXPORT_TOKEN` | secret | yes for export | bearer token for the CSV export |
 | `BEEHIIV_API_KEY`, `BEEHIIV_PUB_ID` | secrets | optional | live forward to Beehiiv |
 
-Schema: the deploy workflow applies it on every push to master, before `pages deploy`
-(`wrangler d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql`; idempotent, `CREATE ... IF NOT EXISTS`).
-To apply by hand: `npx wrangler d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql`.
-The CI API token (`CLOUDFLARE_API_TOKEN`) needs **D1 Edit** permission as well as Pages Edit, on the Graceland account where `hazeydata-signups` lives. See `docs/deploy-cloudflare.md`.
+**Preview deployments have no `SIGNUPS` or `SIGNUP_RL` binding** (checked read-only on Oct 27, 2026). On a preview URL,
+`POST /api/subscribe` logs `status: error`, `reason: config` and stores nothing, and the rate limit falls back to
+per-isolate memory. Test signups on production only, or add the preview bindings first (Fred's call; not done).
+
+## Migrations
+The deploy workflow does **not** apply migrations. Each migration is applied once, by hand, after Fred's go, through the
+Cloudflare connector or wrangler, for example:
+`npx wrangler d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql`.
+`0001_signups.sql` is already applied: a read-only `sqlite_master` check on Oct 27, 2026 showed the `signups` table,
+`signups_email_unique` and `signups_status` matching the file exactly.
+Until Oct 27, 2026 the workflow re-applied `0001_signups.sql` on every deploy; that step was removed so CI no longer writes to D1.
+
+The CI API token (`CLOUDFLARE_API_TOKEN`) only needs **Cloudflare Pages: Edit** plus **D1: Read** (for the read-only table
+check below), on the Graceland account where `hazeydata-signups` lives. Re-scoping the current token down from D1 Edit is
+Fred's call and has **not** been done yet. See `docs/deploy-cloudflare.md`.
 
 ## Deploy verification
 After `pages deploy` the workflow runs two read-only checks, either of which fails the job:
@@ -47,8 +58,8 @@ Lines:
 
 ## Incident 2026-10-24
 `migrations/0001_signups.sql` had never been applied to the remote D1, so the INSERT failed with "no such table: signups".
-Every signup returned `error` and nothing was stored; Beehiiv was never called. Fixed by applying the schema in the deploy
-workflow and adding the verification steps above.
+Every signup returned `error` and nothing was stored; Beehiiv was never called. Fixed by applying the schema (at the time, from the deploy
+workflow; since Oct 27, 2026 by hand, see Migrations) and adding the verification steps above.
 
 ## Export pending signups
 ```bash
