@@ -1,30 +1,30 @@
-/* CDR landing (/cdr/) -> HazeyData Direction B (CDR-RESTYLE). CTA order is in the markup. */
-:root{/* colour tokens (Tobias-confirmed): dark-surface accent/green and on-light text variants */--acc:#5FC4D6;--acc-on-light:#1B6F80;--green:#66BB6A;--green-on-light:#1B5E20;--font-mono:'Space Grotesk',system-ui,sans-serif;--cdr-red:var(--acc);--cdr-red-light:var(--acc);--cdr-red-glow:rgba(95,196,214,.12);--cdr-red-subtle:rgba(95,196,214,.06);--cdr-maple:#C41E3A}
+:root{/* colour tokens (Tobias-confirmed). Hex/rgb literals appear only in :root; every rule uses var(...). --acc/--green on dark surfaces, --acc-on-light/--green-on-light for text on light ones, --acc-hover for the CTA hover, plus the house neutrals */--acc:#5FC4D6;--acc-on-light:#1B6F80;--acc-hover:#7FD3E1;--green:#66BB6A;--green-on-light:#1B5E20;--navy:#0A1628;--navy-deep:#03070F;--navy-mid:#13243D;--ink-muted:#A9B8C9;--ink-grey:#4A5B70;--surface-light:#F4F7FA;--border-light:#E3E9F0;--white:#FFFFFF;--black:#000000;
+--font-mono:'Space Grotesk',system-ui,sans-serif;--cdr-red:var(--acc);--cdr-red-light:var(--acc);--cdr-red-glow:color-mix(in srgb,var(--acc) 12%,transparent);--cdr-red-subtle:color-mix(in srgb,var(--acc) 6%,transparent)}
 .cdr-ambient{display:none!important}
-.cdr-nav{background:rgba(3,7,15,.95)!important;border-bottom:1px solid #13243D!important}
+.cdr-nav{background:color-mix(in srgb,var(--navy-deep) 95%,transparent)!important;border-bottom:1px solid var(--navy-mid)!important}
 .cdr-hero{min-height:auto!important;padding:9rem 2rem 6rem!important;position:relative;overflow:hidden}
 .cdr-hero::before{content:"";position:absolute;inset:0;background:var(--hd-glow);pointer-events:none}
 .cdr-hero-content{max-width:760px!important;display:flex;flex-direction:column;align-items:center;position:relative}
 .cdr-hero-label{color:var(--acc)!important;font-family:'Space Grotesk',sans-serif!important;letter-spacing:.12em!important;font-size:13px!important}
 .cdr-hero-label::before,.cdr-hero-label::after{background:var(--acc)!important}
 .cdr-hero h1{font-weight:600!important}
-.cdr-hero h1 .cdr-title-main{background:none!important;-webkit-text-fill-color:#fff!important;color:#fff}
+.cdr-hero h1 .cdr-title-main{background:none!important;-webkit-text-fill-color:var(--white)!important;color:var(--white)}
 .cdr-hero h1::after{content:"";display:block;width:44px;height:3px;border-radius:1.5px;background:var(--acc);margin:18px auto 0}
 .cdr-hero .hero-sub{color:var(--acc)!important}
-.cdr-hero .hero-desc{color:#A9B8C9!important;opacity:1!important;margin-bottom:0!important}
+.cdr-hero .hero-desc{color:var(--ink-muted)!important;opacity:1!important;margin-bottom:0!important}
 .cdr-hero-cta{margin-top:2.5rem!important}
-.cdr-crisis-stats{margin:4rem auto 0!important;border-radius:12px!important;border-color:rgba(169,184,201,.15)!important;background:rgba(169,184,201,.15)!important}
-.crisis-stat{background:linear-gradient(180deg,#0A1628,#03070F)!important;padding:2.25rem 1.5rem!important}
+.cdr-crisis-stats{margin:4rem auto 0!important;border-radius:12px!important;border-color:color-mix(in srgb,var(--ink-muted) 15%,transparent)!important;background:color-mix(in srgb,var(--ink-muted) 15%,transparent)!important}
+.crisis-stat{background:linear-gradient(180deg,var(--navy),var(--navy-deep))!important;padding:2.25rem 1.5rem!important}
 .crisis-stat .val,.spec-stat .val{color:var(--acc)!important;font-family:'Space Grotesk',sans-serif!important}
-.crisis-stat .lbl{color:#A9B8C9!important}
-.btn-cdr{background:var(--acc)!important;color:#0A1628!important;border-radius:8px!important;font-weight:600!important;box-shadow:none!important}
-.btn-cdr:hover{background:#7fd3e1!important}
+.crisis-stat .lbl{color:var(--ink-muted)!important}
+.btn-cdr{background:var(--acc)!important;color:var(--navy)!important;border-radius:8px!important;font-weight:600!important;box-shadow:none!important}
+.btn-cdr:hover{background:var(--acc-hover)!important}
 .cdr-section{max-width:1100px!important;padding:6rem 2rem!important}
 .cdr-section-header{margin-bottom:3.5rem!important}
-.cdr-section-header p{color:#A9B8C9!important}
-.cdr-blockquote{border-left-color:var(--acc)!important;background:#13243D!important;border-radius:0 12px 12px 0}
-.cdr-pillar,.cdr-detail-card,.cdr-resource-link{background:linear-gradient(180deg,#0A1628,#03070F)!important;border:1px solid rgba(169,184,201,.15)!important;border-radius:12px!important;box-shadow:none!important}
+.cdr-section-header p{color:var(--ink-muted)!important}
+.cdr-blockquote{border-left-color:var(--acc)!important;background:var(--navy-mid)!important;border-radius:0 12px 12px 0}
+.cdr-pillar,.cdr-detail-card,.cdr-resource-link{background:linear-gradient(180deg,var(--navy),var(--navy-deep))!important;border:1px solid color-mix(in srgb,var(--ink-muted) 15%,transparent)!important;border-radius:12px!important;box-shadow:none!important}
 a.cdr-resource-link:hover{border-color:var(--acc)!important}
-.pillar-icon{background:rgba(95,196,214,.12)!important;border:1px solid rgba(95,196,214,.25);border-radius:12px}
-.cdr-divider{border-color:#13243D!important;background:#13243D!important}
+.pillar-icon{background:color-mix(in srgb,var(--acc) 12%,transparent)!important;border:1px solid color-mix(in srgb,var(--acc) 25%,transparent);border-radius:12px}
+.cdr-divider{border-color:var(--navy-mid)!important;background:var(--navy-mid)!important}
 @media (max-width:600px){.cdr-hero{padding:7rem 1.25rem 4rem!important}.cdr-section{padding:4rem 1.25rem!important}.cdr-hero-cta .btn{width:100%;justify-content:center}.cdr-crisis-stats{grid-template-columns:1fr!important}}

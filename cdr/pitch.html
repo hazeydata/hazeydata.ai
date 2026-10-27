@@ -59,7 +59,7 @@
   .lang-toggle {
     display: flex;
     gap: 0;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid color-mix(in srgb, var(--white) 20%, transparent);
     border-radius: 4px;
     overflow: hidden;
   }
@@ -69,13 +69,13 @@
     font-weight: 600;
     cursor: pointer;
     background: transparent;
-    color: rgba(255,255,255,0.5);
+    color: color-mix(in srgb, var(--white) 50%, transparent);
     border: none;
     letter-spacing: 0.05em;
   }
   .lang-btn.active {
     background: var(--maple-red);
-    color: white;
+    color: var(--white);
   }
 
   .deck {
@@ -261,10 +261,10 @@
   .card p { font-size: 0.95rem; line-height: 1.65; color: var(--rail-grey-mid); }
 
   .card-dark {
-    background: rgba(255,255,255,0.06);
+    background: color-mix(in srgb, var(--white) 6%, transparent);
     border-radius: 8px;
     padding: 32px 28px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
     border-left: 4px solid var(--accent-gold);
   }
   .card-dark h3 { color: var(--accent-gold-light); }
@@ -331,8 +331,8 @@
     margin-right: auto;
   }
   .flow-step {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
+    background: color-mix(in srgb, var(--white) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--white) 15%, transparent);
     border-radius: 8px;
     padding: 16px 14px;
     text-align: center;
@@ -361,7 +361,7 @@
     width: 36px; height: 36px;
     border-radius: 50%;
     background: var(--maple-red);
-    color: white;
+    color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -420,10 +420,10 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-  .pill-red { background: rgba(196,30,58,0.15); color: var(--maple-red); }
-  .pill-gold { background: rgba(200,151,62,0.15); color: var(--accent-gold); }
-  .pill-green { background: rgba(46,125,50,0.15); color: var(--accent-green); }
-  .pill-blue { background: rgba(58,74,92,0.15); color: var(--rail-slate-light); }
+  .pill-red { background: color-mix(in srgb, var(--maple-red) 15%, transparent); color: var(--maple-red); }
+  .pill-gold { background: color-mix(in srgb, var(--accent-gold) 15%, transparent); color: var(--accent-gold); }
+  .pill-green { background: color-mix(in srgb, var(--accent-green) 15%, transparent); color: var(--accent-green); }
+  .pill-blue { background: color-mix(in srgb, var(--rail-slate-light) 15%, transparent); color: var(--rail-slate-light); }
 
   /* ── Divider ── */
   .divider {
@@ -441,14 +441,14 @@
     position: fixed;
     bottom: 0; left: 0; right: 0;
     height: 52px;
-    background: rgba(20,20,22,0.92);
+    background: color-mix(in srgb, var(--rail-black) 92%, transparent);
     backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 32px;
     z-index: 100;
-    border-top: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
   }
   .nav-brand {
     font-family: 'Space Grotesk', system-ui, sans-serif;
@@ -465,7 +465,7 @@
   .nav-dot {
     width: 8px; height: 8px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.2);
+    background: color-mix(in srgb, var(--white) 20%, transparent);
     cursor: pointer;
     transition: all 0.3s ease;
   }
@@ -477,7 +477,7 @@
   .nav-btn {
     width: 36px; height: 36px;
     border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid color-mix(in srgb, var(--white) 15%, transparent);
     background: transparent;
     color: var(--rail-white);
     cursor: pointer;
@@ -487,10 +487,10 @@
     font-size: 1rem;
     transition: all 0.2s ease;
   }
-  .nav-btn:hover { background: rgba(255,255,255,0.1); }
+  .nav-btn:hover { background: color-mix(in srgb, var(--white) 10%, transparent); }
   .slide-counter {
     font-size: 0.75rem;
-    color: rgba(255,255,255,0.4);
+    color: color-mix(in srgb, var(--white) 40%, transparent);
     font-weight: 500;
     min-width: 40px;
     text-align: center;
@@ -682,13 +682,13 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
     padding: 12px 16px;
-    border-bottom: 2px solid rgba(255,255,255,0.2);
+    border-bottom: 2px solid color-mix(in srgb, var(--white) 20%, transparent);
     color: var(--accent-gold-light);
   }
   .compare-table td {
     padding: 12px 16px;
     font-size: 0.88rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
     opacity: 0.85;
   }
   .compare-table tr:last-child td {
@@ -757,7 +757,7 @@
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-white" data-slide="1">
     <div class="gc-bar"></div>
-    <div class="section-num">01</div>
+    <div class="section-num" aria-hidden="true">01</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en">The Landscape</div>
       <div class="small-label anim-1" data-lang="fr">Le contexte</div>
@@ -817,7 +817,7 @@
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-warm" data-slide="2">
     <div class="gc-bar"></div>
-    <div class="section-num">02</div>
+    <div class="section-num" aria-hidden="true">02</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en">The Gap</div>
       <div class="small-label anim-1" data-lang="fr">La lacune</div>
@@ -940,7 +940,7 @@
   <!-- SLIDE 4 — CENTRALIZATION PROBLEM -->
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-blue" data-slide="3">
-    <div class="section-num light">03</div>
+    <div class="section-num light" aria-hidden="true">03</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en" style="color: var(--accent-gold-light);">The Lesson</div>
       <div class="small-label anim-1" data-lang="fr" style="color: var(--accent-gold-light);">La leçon</div>
@@ -948,11 +948,11 @@
       <h2 class="anim-1" data-lang="fr">Le problème de la centralisation</h2>
       <div class="divider gold anim-2"></div>
 
-      <div class="quote-block anim-2" data-lang="en" style="border-color: rgba(255,255,255,0.3);">
+      <div class="quote-block anim-2" data-lang="en" style="border-color: color-mix(in srgb, var(--white) 30%, transparent);">
         "We've seen what happens when we centralize critical infrastructure and hand it to a single vendor. We lived through Phoenix. We're still living through it."
         <span class="quote-source" style="opacity:0.5;">— A decade of lessons the hard way</span>
       </div>
-      <div class="quote-block anim-2" data-lang="fr" style="border-color: rgba(255,255,255,0.3);">
+      <div class="quote-block anim-2" data-lang="fr" style="border-color: color-mix(in srgb, var(--white) 30%, transparent);">
         « Nous avons vu ce qui se passe lorsqu'on centralise l'infrastructure critique et qu'on la confie à un seul fournisseur. Nous avons vécu Phénix. Nous le vivons encore. »
         <span class="quote-source" style="opacity:0.5;">— Une décennie de leçons apprises à la dure</span>
       </div>
@@ -992,7 +992,7 @@
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-white" data-slide="4">
     <div class="gc-bar"></div>
-    <div class="section-num">04</div>
+    <div class="section-num" aria-hidden="true">04</div>
     <div class="content-box" style="text-align:center;">
       <div class="small-label anim-1" data-lang="en">The Vision</div>
       <div class="small-label anim-1" data-lang="fr">La vision</div>
@@ -1049,7 +1049,7 @@
   <!-- SLIDE 6 — THE STATIONS -->
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-accent" data-slide="5">
-    <div class="section-num light">05</div>
+    <div class="section-num light" aria-hidden="true">05</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">How It Works</div>
       <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Comment ça fonctionne</div>
@@ -1145,7 +1145,7 @@
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-white" data-slide="6">
     <div class="gc-bar"></div>
-    <div class="section-num">06</div>
+    <div class="section-num" aria-hidden="true">06</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en">The Track</div>
       <div class="small-label anim-1" data-lang="fr">La voie</div>
@@ -1161,62 +1161,62 @@
       </p>
 
       <div class="flow anim-3" data-lang="en">
-        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--rail-slate) 8%, transparent); border-color:var(--rail-slate-light);">
           <div class="flow-icon">🏥</div>
           <div class="flow-label">Station A</div>
           <div class="flow-desc">Hospital in Saskatoon</div>
         </div>
         <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.12); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 12%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">🛤️</div>
           <div class="flow-label">CDR-OS Mesh</div>
           <div class="flow-desc">Encrypted WireGuard/mTLS</div>
         </div>
         <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
-        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--rail-slate) 8%, transparent); border-color:var(--rail-slate-light);">
           <div class="flow-icon">🏛️</div>
           <div class="flow-label">Station B</div>
           <div class="flow-desc">First Nation in Moosonee</div>
         </div>
         <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
-        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--rail-slate) 8%, transparent); border-color:var(--rail-slate-light);">
           <div class="flow-icon">🎓</div>
           <div class="flow-label">Station C</div>
           <div class="flow-desc">University in Halifax</div>
         </div>
         <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
-        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--rail-slate) 8%, transparent); border-color:var(--rail-slate-light);">
           <div class="flow-icon">🏢</div>
           <div class="flow-label">Station D</div>
           <div class="flow-desc">Federal department</div>
         </div>
       </div>
       <div class="flow anim-3" data-lang="fr">
-        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--rail-slate) 8%, transparent); border-color:var(--rail-slate-light);">
           <div class="flow-icon">🏥</div>
           <div class="flow-label">Station A</div>
           <div class="flow-desc">Hôpital à Saskatoon</div>
         </div>
         <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.12); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 12%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">🛤️</div>
           <div class="flow-label">Réseau CDR-OS</div>
           <div class="flow-desc">Chiffré WireGuard/mTLS</div>
         </div>
         <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
-        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--rail-slate) 8%, transparent); border-color:var(--rail-slate-light);">
           <div class="flow-icon">🏛️</div>
           <div class="flow-label">Station B</div>
           <div class="flow-desc">Première Nation à Moosonee</div>
         </div>
         <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
-        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--rail-slate) 8%, transparent); border-color:var(--rail-slate-light);">
           <div class="flow-icon">🎓</div>
           <div class="flow-label">Station C</div>
           <div class="flow-desc">Université à Halifax</div>
         </div>
         <div class="flow-arrow" style="color:var(--rail-slate);">⟷</div>
-        <div class="flow-step" style="background:rgba(42,50,64,0.08); border-color:var(--rail-slate-light);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--rail-slate) 8%, transparent); border-color:var(--rail-slate-light);">
           <div class="flow-icon">🏢</div>
           <div class="flow-label">Station D</div>
           <div class="flow-desc">Ministère fédéral</div>
@@ -1245,14 +1245,14 @@
         <div>
           <h3 data-lang="en" style="color: var(--rail-slate); margin-bottom:16px;">The Critical Principle</h3>
           <h3 data-lang="fr" style="color: var(--rail-slate); margin-bottom:16px;">Le principe critique</h3>
-          <div data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:white;">
+          <div data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:var(--white);">
             <p style="font-size:1rem; line-height:1.7; opacity:0.9;">
               <strong style="color:var(--accent-gold-light);">The institution has root access. We don't.</strong><br><br>
               We can't SSH into it. We don't have a backdoor. The software is open-source precisely so that no one has to take our word for it. They can read every line.
             </p>
             <p style="font-size:0.82rem; opacity:0.5; margin-top:16px;">Updates delivered via signed repository — same model as Ubuntu and Red Hat Linux distributions.</p>
           </div>
-          <div data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:white;">
+          <div data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:var(--white);">
             <p style="font-size:1rem; line-height:1.7; opacity:0.9;">
               <strong style="color:var(--accent-gold-light);">L'institution a l'accès root. Pas nous.</strong><br><br>
               Nous ne pouvons pas nous y connecter par SSH. Nous n'avons pas de porte dérobée. Le logiciel est à code ouvert précisément pour que personne n'ait à nous croire sur parole. Ils peuvent lire chaque ligne.
@@ -1268,7 +1268,7 @@
   <!-- SLIDE 8 — GOVERNANCE -->
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-dark" data-slide="7">
-    <div class="section-num light">07</div>
+    <div class="section-num light" aria-hidden="true">07</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Governance</div>
       <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Gouvernance</div>
@@ -1304,7 +1304,7 @@
         </div>
       </div>
 
-      <div class="anim-4" style="background: rgba(200,151,62,0.1); border: 1px solid rgba(200,151,62,0.3); border-radius:12px; padding:28px 36px; margin-top:32px; max-width:800px; margin-left:auto; margin-right:auto; text-align:center;">
+      <div class="anim-4" style="background: color-mix(in srgb, var(--accent-gold) 10%, transparent); border: 1px solid color-mix(in srgb, var(--accent-gold) 30%, transparent); border-radius:12px; padding:28px 36px; margin-top:32px; max-width:800px; margin-left:auto; margin-right:auto; text-align:center;">
         <h3 data-lang="en" style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.1rem;">Cryptographic Attestation</h3>
         <h3 data-lang="fr" style="color:var(--accent-gold-light); margin-bottom:12px; font-size:1.1rem;">Attestation cryptographique</h3>
         <p data-lang="en" style="font-size:0.95rem; opacity:0.85; line-height:1.7;">
@@ -1322,7 +1322,7 @@
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-warm" data-slide="8">
     <div class="gc-bar"></div>
-    <div class="section-num">08</div>
+    <div class="section-num" aria-hidden="true">08</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en">The Station Agent</div>
       <div class="small-label anim-1" data-lang="fr">L'agent de station</div>
@@ -1337,11 +1337,11 @@
         Nommé d'après <strong>Terry Fox</strong> — le Canadien qui a connecté ce pays à pied avec rien d'autre que de la détermination et de l'espoir. Chaque station CDR est livrée avec un Terry — un assistant IA local qui est l'interface principale pour les institutions.
       </p>
 
-      <div class="quote-block anim-2" data-lang="en" style="background:rgba(196,30,58,0.04); border-color:var(--maple-red); border-radius:8px;">
+      <div class="quote-block anim-2" data-lang="en" style="background:color-mix(in srgb, var(--maple-red) 4%, transparent); border-color:var(--maple-red); border-radius:8px;">
         "Hey, I'm Terry. What do you want to build today?"
         <span class="quote-source">— First thing every new station hears</span>
       </div>
-      <div class="quote-block anim-2" data-lang="fr" style="background:rgba(196,30,58,0.04); border-color:var(--maple-red); border-radius:8px;">
+      <div class="quote-block anim-2" data-lang="fr" style="background:color-mix(in srgb, var(--maple-red) 4%, transparent); border-color:var(--maple-red); border-radius:8px;">
         « Bonjour, je suis Terry. Qu'est-ce que vous voulez construire aujourd'hui? »
         <span class="quote-source">— La première chose que chaque nouvelle station entend</span>
       </div>
@@ -1396,7 +1396,7 @@
         <div>
           <h3 data-lang="en" style="color: var(--rail-slate); margin-bottom:16px;">🪶 Indigenous Language Preservation</h3>
           <h3 data-lang="fr" style="color: var(--rail-slate); margin-bottom:16px;">🪶 Préservation des langues autochtones</h3>
-          <div data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:white;">
+          <div data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:var(--white);">
             <p style="font-size:0.95rem; line-height:1.7; opacity:0.9; margin-bottom:16px;">
               Over <strong style="color:var(--accent-gold-light);">70 Indigenous languages</strong> in Canada — many critically endangered. Terry can learn local languages and dialects from community members.
             </p>
@@ -1408,7 +1408,7 @@
             </ul>
             <p style="font-size:0.8rem; opacity:0.5; margin-top:16px;">Fundable via Indigenous Languages Act, Indigenous Services Canada, Canadian Heritage</p>
           </div>
-          <div data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:white;">
+          <div data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:28px; color:var(--white);">
             <p style="font-size:0.95rem; line-height:1.7; opacity:0.9; margin-bottom:16px;">
               Plus de <strong style="color:var(--accent-gold-light);">70 langues autochtones</strong> au Canada — beaucoup en danger critique. Terry peut apprendre les langues et dialectes locaux auprès des membres de la communauté.
             </p>
@@ -1429,7 +1429,7 @@
   <!-- SLIDE 10 — NETWORK EFFECT -->
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-accent" data-slide="9">
-    <div class="section-num light">09</div>
+    <div class="section-num light" aria-hidden="true">09</div>
     <div class="content-box" style="text-align:center;">
       <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">The Flywheel</div>
       <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">L'effet d'entraînement</div>
@@ -1451,7 +1451,7 @@
           <div class="flow-desc">Radiology support tool</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">📦</div>
           <div class="flow-label">Terry Shares</div>
           <div class="flow-desc">Packaged for the registry</div>
@@ -1463,7 +1463,7 @@
           <div class="flow-desc">Customized for local needs</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">🔄</div>
           <div class="flow-label">Improvements Flow</div>
           <div class="flow-desc">Back to all stations</div>
@@ -1482,7 +1482,7 @@
           <div class="flow-desc">Outil d'aide en radiologie</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">📦</div>
           <div class="flow-label">Terry partage</div>
           <div class="flow-desc">Empaqueté pour le registre</div>
@@ -1494,7 +1494,7 @@
           <div class="flow-desc">Personnalisé localement</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">🔄</div>
           <div class="flow-label">Améliorations</div>
           <div class="flow-desc">Retournent à toutes les stations</div>
@@ -1509,14 +1509,14 @@
 
       <div class="two-col anim-4" style="margin-top:36px; text-align:left;">
         <div class="card-dark" style="border-left-color: var(--accent-teal);">
-          <h3 data-lang="en" style="color:#7dd3e8;">📊 Federated Learning</h3>
-          <h3 data-lang="fr" style="color:#7dd3e8;">📊 Apprentissage fédéré</h3>
+          <h3 data-lang="en" style="color:var(--acc);">📊 Federated Learning</h3>
+          <h3 data-lang="fr" style="color:var(--acc);">📊 Apprentissage fédéré</h3>
           <p data-lang="en">Models improve across nodes by sharing mathematical improvements — gradients, not raw data. A hospital's patient data never moves. Only the model intelligence does.</p>
           <p data-lang="fr">Les modèles s'améliorent à travers les nœuds en partageant des améliorations mathématiques — des gradients, pas des données brutes. Les données des patients d'un hôpital ne bougent jamais. Seule l'intelligence du modèle voyage.</p>
         </div>
         <div class="card-dark" style="border-left-color: var(--accent-green);">
-          <h3 data-lang="en" style="color:#81c784;">🌐 Compound Growth</h3>
-          <h3 data-lang="fr" style="color:#81c784;">🌐 Croissance composée</h3>
+          <h3 data-lang="en" style="color:var(--green);">🌐 Compound Growth</h3>
+          <h3 data-lang="fr" style="color:var(--green);">🌐 Croissance composée</h3>
           <p data-lang="en">The 50th hospital to join has access to everything the first 49 built. The second Indigenous community can build on what the first shared — if and only if the first community chose to share it.</p>
           <p data-lang="fr">Le 50e hôpital qui rejoint le réseau a accès à tout ce que les 49 premiers ont construit. La deuxième communauté autochtone peut s'appuyer sur ce que la première a partagé — si et seulement si la première communauté a choisi de le partager.</p>
         </div>
@@ -1528,40 +1528,40 @@
   <!-- SLIDE 11 — CANADIAN-MADE -->
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-blue" data-slide="10">
-    <div class="section-num light">10</div>
+    <div class="section-num light" aria-hidden="true">10</div>
     <div class="content-box" style="text-align:center;">
       <div class="anim-1" style="font-size:5rem; margin-bottom:20px;">🍁</div>
       <h2 class="anim-1" data-lang="en">Canadian-Made. Full Stop.</h2>
       <h2 class="anim-1" data-lang="fr">Fabriqué au Canada. Point final.</h2>
       <div class="divider gold center anim-2"></div>
 
-      <p class="subtitle anim-2" data-lang="en" style="color:rgba(255,255,255,0.85); max-width:720px; margin: 0 auto 20px;">
+      <p class="subtitle anim-2" data-lang="en" style="color:color-mix(in srgb, var(--white) 85%, transparent); max-width:720px; margin: 0 auto 20px;">
         The software is Canadian. The company is Canadian. The data stays in Canada. The governance is Canadian.
       </p>
-      <p class="subtitle anim-2" data-lang="fr" style="color:rgba(255,255,255,0.85); max-width:720px; margin: 0 auto 20px;">
+      <p class="subtitle anim-2" data-lang="fr" style="color:color-mix(in srgb, var(--white) 85%, transparent); max-width:720px; margin: 0 auto 20px;">
         Le logiciel est canadien. L'entreprise est canadienne. Les données restent au Canada. La gouvernance est canadienne.
       </p>
 
-      <div class="quote-block anim-3" data-lang="en" style="border-color: rgba(255,255,255,0.3); max-width:700px; margin: 20px auto;">
+      <div class="quote-block anim-3" data-lang="en" style="border-color: color-mix(in srgb, var(--white) 30%, transparent); max-width:700px; margin: 20px auto;">
         "The steel for the original railway was imported too. What made it Canadian wasn't where the materials came from — it was that we built it here, we operated it here, and it served Canadians from coast to coast to coast."
       </div>
-      <div class="quote-block anim-3" data-lang="fr" style="border-color: rgba(255,255,255,0.3); max-width:700px; margin: 20px auto;">
+      <div class="quote-block anim-3" data-lang="fr" style="border-color: color-mix(in srgb, var(--white) 30%, transparent); max-width:700px; margin: 20px auto;">
         « L'acier du chemin de fer original était importé aussi. Ce qui l'a rendu canadien, ce n'est pas d'où venaient les matériaux — c'est qu'on l'a construit ici, qu'on l'a exploité ici, et qu'il a servi les Canadiens d'un océan à l'autre. »
       </div>
 
       <div class="anim-3" style="margin: 24px auto; max-width:800px;">
         <table class="compare-table" data-lang="en">
           <tr><th>Player</th><th>Offering</th><th>The Gap</th></tr>
-          <tr><td>Cohere + CoreWeave</td><td>Canadian AI company, US compute</td><td style="color:#ff8a80;">Not fully sovereign — NJ data centre</td></tr>
-          <tr><td>Hypertec + Bell</td><td>End-to-end sovereign cloud</td><td style="color:#ff8a80;">Enterprise scale, not distributed</td></tr>
-          <tr><td>AWS / Azure / GCP</td><td>Canadian data residency</td><td style="color:#ff8a80;">US-owned, subject to CLOUD Act</td></tr>
+          <tr><td>Cohere + CoreWeave</td><td>Canadian AI company, US compute</td><td style="color:var(--maple-red);">Not fully sovereign — NJ data centre</td></tr>
+          <tr><td>Hypertec + Bell</td><td>End-to-end sovereign cloud</td><td style="color:var(--maple-red);">Enterprise scale, not distributed</td></tr>
+          <tr><td>AWS / Azure / GCP</td><td>Canadian data residency</td><td style="color:var(--maple-red);">US-owned, subject to CLOUD Act</td></tr>
           <tr><td style="color:var(--accent-gold-light);">Canadian Digital Railway</td><td style="color:var(--accent-gold-light);">Distributed, local, open-source, federated</td><td style="color:var(--accent-gold-light);">✓ Nothing like it exists</td></tr>
         </table>
         <table class="compare-table" data-lang="fr">
           <tr><th>Acteur</th><th>Offre</th><th>La lacune</th></tr>
-          <tr><td>Cohere + CoreWeave</td><td>Entreprise IA canadienne, calcul US</td><td style="color:#ff8a80;">Pas pleinement souverain — centre de données NJ</td></tr>
-          <tr><td>Hypertec + Bell</td><td>Nuage souverain de bout en bout</td><td style="color:#ff8a80;">Échelle entreprise, pas distribué</td></tr>
-          <tr><td>AWS / Azure / GCP</td><td>Résidence de données au Canada</td><td style="color:#ff8a80;">Propriété US, assujetti au CLOUD Act</td></tr>
+          <tr><td>Cohere + CoreWeave</td><td>Entreprise IA canadienne, calcul US</td><td style="color:var(--maple-red);">Pas pleinement souverain — centre de données NJ</td></tr>
+          <tr><td>Hypertec + Bell</td><td>Nuage souverain de bout en bout</td><td style="color:var(--maple-red);">Échelle entreprise, pas distribué</td></tr>
+          <tr><td>AWS / Azure / GCP</td><td>Résidence de données au Canada</td><td style="color:var(--maple-red);">Propriété US, assujetti au CLOUD Act</td></tr>
           <tr><td style="color:var(--accent-gold-light);">Chemin de fer num. canadien</td><td style="color:var(--accent-gold-light);">Distribué, local, code ouvert, fédéré</td><td style="color:var(--accent-gold-light);">✓ Rien de comparable n'existe</td></tr>
         </table>
       </div>
@@ -1580,28 +1580,28 @@
   <!-- ════════════════════════════════════════════ -->
   <div class="slide slide-cover" data-slide="11">
     <div class="flag-stripe"></div>
-    <span class="confidential" data-lang="en" style="color:rgba(255,255,255,0.35);">Private — Not for Distribution</span>
-    <span class="confidential" data-lang="fr" style="color:rgba(255,255,255,0.35);">Privé — Ne pas distribuer</span>
+    <span class="confidential" data-lang="en" style="color:color-mix(in srgb, var(--white) 35%, transparent);">Private — Not for Distribution</span>
+    <span class="confidential" data-lang="fr" style="color:color-mix(in srgb, var(--white) 35%, transparent);">Privé — Ne pas distribuer</span>
 
     <div class="anim-1" style="font-size:3rem; margin-bottom:12px;">🚂🍁</div>
     <h1 class="anim-1" style="font-size:2.8rem; margin-bottom:8px;" data-lang="en">The Path Forward</h1>
     <h1 class="anim-1" style="font-size:2.8rem; margin-bottom:8px;" data-lang="fr">La voie à suivre</h1>
     <div class="divider gold center anim-2"></div>
 
-    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.85);">
+    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:680px; color:color-mix(in srgb, var(--white) 85%, transparent);">
       We're not asking for a national rollout.<br>We're asking for a pilot.
     </p>
-    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.85);">
+    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:680px; color:color-mix(in srgb, var(--white) 85%, transparent);">
       Nous ne demandons pas un déploiement national.<br>Nous demandons un projet pilote.
     </p>
 
     <div class="anim-3" style="margin-top:32px; display:flex; gap:24px; flex-wrap:wrap; justify-content:center;">
-      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:28px 32px; text-align:center; min-width:140px;">
+      <div style="background:color-mix(in srgb, var(--white) 8%, transparent); border:1px solid color-mix(in srgb, var(--white) 15%, transparent); border-radius:12px; padding:28px 32px; text-align:center; min-width:140px;">
         <div style="font-family:'Space Grotesk', system-ui, sans-serif; font-size:3rem; font-weight:900; color:var(--accent-gold-light);">5</div>
         <div data-lang="en" style="font-size:0.85rem; opacity:0.7; margin-top:4px;">Stations</div>
         <div data-lang="fr" style="font-size:0.85rem; opacity:0.7; margin-top:4px;">Stations</div>
       </div>
-      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:28px 32px; text-align:center; min-width:140px;">
+      <div style="background:color-mix(in srgb, var(--white) 8%, transparent); border:1px solid color-mix(in srgb, var(--white) 15%, transparent); border-radius:12px; padding:28px 32px; text-align:center; min-width:140px;">
         <div style="font-family:'Space Grotesk', system-ui, sans-serif; font-size:3rem; font-weight:900; color:var(--accent-gold-light);">6</div>
         <div data-lang="en" style="font-size:0.85rem; opacity:0.7; margin-top:4px;">Months</div>
         <div data-lang="fr" style="font-size:0.85rem; opacity:0.7; margin-top:4px;">Mois</div>
@@ -1609,29 +1609,29 @@
     </div>
 
     <div class="anim-3" data-lang="en" style="margin-top:28px; display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
-      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏥 2 Hospitals</span>
-      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🪶 1 First Nations Community</span>
-      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🎓 1 University</span>
-      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏛️ 1 Federal Department</span>
+      <span class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏥 2 Hospitals</span>
+      <span class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🪶 1 First Nations Community</span>
+      <span class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🎓 1 University</span>
+      <span class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏛️ 1 Federal Department</span>
     </div>
     <div class="anim-3" data-lang="fr" style="margin-top:28px; display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
-      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏥 2 Hôpitaux</span>
-      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🪶 1 Communauté des Premières Nations</span>
-      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🎓 1 Université</span>
-      <span class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏛️ 1 Ministère fédéral</span>
+      <span class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏥 2 Hôpitaux</span>
+      <span class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🪶 1 Communauté des Premières Nations</span>
+      <span class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🎓 1 Université</span>
+      <span class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); font-size:0.8rem; padding:6px 16px;">🏛️ 1 Ministère fédéral</span>
     </div>
 
-    <p class="anim-4" data-lang="en" style="text-align:center; max-width:600px; color:rgba(255,255,255,0.55); font-size:1rem; margin-top:32px; line-height:1.7;">
-      The infrastructure funding exists. The policy framework exists.<br>The reports documenting the gap exist.<br><strong style="color:rgba(255,255,255,0.85);">What's missing is someone willing to build the last mile.</strong>
+    <p class="anim-4" data-lang="en" style="text-align:center; max-width:600px; color:color-mix(in srgb, var(--white) 55%, transparent); font-size:1rem; margin-top:32px; line-height:1.7;">
+      The infrastructure funding exists. The policy framework exists.<br>The reports documenting the gap exist.<br><strong style="color:color-mix(in srgb, var(--white) 85%, transparent);">What's missing is someone willing to build the last mile.</strong>
     </p>
-    <p class="anim-4" data-lang="fr" style="text-align:center; max-width:600px; color:rgba(255,255,255,0.55); font-size:1rem; margin-top:32px; line-height:1.7;">
-      Le financement d'infrastructure existe. Le cadre politique existe.<br>Les rapports documentant la lacune existent.<br><strong style="color:rgba(255,255,255,0.85);">Ce qui manque, c'est quelqu'un prêt à construire le dernier kilomètre.</strong>
+    <p class="anim-4" data-lang="fr" style="text-align:center; max-width:600px; color:color-mix(in srgb, var(--white) 55%, transparent); font-size:1rem; margin-top:32px; line-height:1.7;">
+      Le financement d'infrastructure existe. Le cadre politique existe.<br>Les rapports documentant la lacune existent.<br><strong style="color:color-mix(in srgb, var(--white) 85%, transparent);">Ce qui manque, c'est quelqu'un prêt à construire le dernier kilomètre.</strong>
     </p>
 
-    <p class="anim-4" data-lang="en" style="font-size:1.15rem; font-weight:600; color:rgba(255,255,255,0.9); margin-top:24px;">
+    <p class="anim-4" data-lang="en" style="font-size:1.15rem; font-weight:600; color:color-mix(in srgb, var(--white) 90%, transparent); margin-top:24px;">
       We'd like to be that someone.
     </p>
-    <p class="anim-4" data-lang="fr" style="font-size:1.15rem; font-weight:600; color:rgba(255,255,255,0.9); margin-top:24px;">
+    <p class="anim-4" data-lang="fr" style="font-size:1.15rem; font-weight:600; color:color-mix(in srgb, var(--white) 90%, transparent); margin-top:24px;">
       Nous aimerions être ce quelqu'un.
     </p>
 

@@ -62,7 +62,7 @@
   .lang-toggle {
     display: flex;
     gap: 0;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid color-mix(in srgb, var(--white) 20%, transparent);
     border-radius: 4px;
     overflow: hidden;
   }
@@ -72,13 +72,13 @@
     font-weight: 600;
     cursor: pointer;
     background: transparent;
-    color: rgba(255,255,255,0.5);
+    color: color-mix(in srgb, var(--white) 50%, transparent);
     border: none;
     letter-spacing: 0.05em;
   }
   .lang-btn.active {
     background: var(--maple-red);
-    color: white;
+    color: var(--white);
   }
 
   .deck {
@@ -259,10 +259,10 @@
   .card p { font-size: 0.95rem; line-height: 1.65; color: var(--rail-grey-mid); }
 
   .card-dark {
-    background: rgba(255,255,255,0.06);
+    background: color-mix(in srgb, var(--white) 6%, transparent);
     border-radius: 8px;
     padding: 32px 28px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
     border-left: 4px solid var(--accent-gold);
   }
   .card-dark h3 { color: var(--accent-gold-light); }
@@ -333,8 +333,8 @@
     margin-right: auto;
   }
   .flow-step {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
+    background: color-mix(in srgb, var(--white) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--white) 15%, transparent);
     border-radius: 8px;
     padding: 16px 14px;
     text-align: center;
@@ -363,7 +363,7 @@
     width: 36px; height: 36px;
     border-radius: 50%;
     background: var(--maple-red);
-    color: white;
+    color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -396,10 +396,10 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-  .pill-red { background: rgba(196,30,58,0.15); color: var(--maple-red); }
-  .pill-gold { background: rgba(200,151,62,0.15); color: var(--accent-gold); }
-  .pill-green { background: rgba(46,125,50,0.15); color: var(--accent-green); }
-  .pill-blue { background: rgba(58,74,92,0.15); color: var(--rail-slate-light); }
+  .pill-red { background: color-mix(in srgb, var(--maple-red) 15%, transparent); color: var(--maple-red); }
+  .pill-gold { background: color-mix(in srgb, var(--accent-gold) 15%, transparent); color: var(--accent-gold); }
+  .pill-green { background: color-mix(in srgb, var(--accent-green) 15%, transparent); color: var(--accent-green); }
+  .pill-blue { background: color-mix(in srgb, var(--rail-slate-light) 15%, transparent); color: var(--rail-slate-light); }
 
   /* ── Divider ── */
   .divider {
@@ -532,14 +532,14 @@
     width: 100%;
   }
   .hw-card {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
+    background: color-mix(in srgb, var(--white) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--white) 12%, transparent);
     border-radius: 8px;
     padding: 24px 20px;
     text-align: center;
     border-top: 4px solid var(--accent-gold);
   }
-  .hw-card.highlight { border-top-color: var(--maple-red); background: rgba(196,30,58,0.08); }
+  .hw-card.highlight { border-top-color: var(--maple-red); background: color-mix(in srgb, var(--maple-red) 8%, transparent); }
   .hw-card .hw-icon { font-size: 2rem; margin-bottom: 8px; }
   .hw-card .hw-name { font-size: 0.9rem; font-weight: 700; color: var(--accent-gold-light); margin-bottom: 4px; }
   .hw-card.highlight .hw-name { color: var(--rail-white); }
@@ -566,10 +566,10 @@
     font-weight: 900;
     flex-shrink: 0;
   }
-  .phase-badge.red { background: var(--maple-red); color: white; }
-  .phase-badge.gold { background: var(--accent-gold); color: white; }
-  .phase-badge.teal { background: var(--accent-teal); color: white; }
-  .phase-badge.green { background: var(--accent-green); color: white; }
+  .phase-badge.red { background: var(--maple-red); color: var(--white); }
+  .phase-badge.gold { background: var(--accent-gold); color: var(--white); }
+  .phase-badge.teal { background: var(--accent-teal); color: var(--white); }
+  .phase-badge.green { background: var(--accent-green); color: var(--white); }
 
   /* ── Metric grid ── */
   .metric-grid {
@@ -580,8 +580,8 @@
     width: 100%;
   }
   .metric-card {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: color-mix(in srgb, var(--white) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
     border-radius: 8px;
     padding: 24px 20px;
     text-align: center;
@@ -652,8 +652,8 @@
 
   /* ── Stack layers ── */
   .stack-layer {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: color-mix(in srgb, var(--white) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
     border-radius: 8px;
     padding: 16px 24px;
     margin-bottom: 8px;
@@ -679,13 +679,13 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
     padding: 12px 16px;
-    border-bottom: 2px solid rgba(255,255,255,0.2);
+    border-bottom: 2px solid color-mix(in srgb, var(--white) 20%, transparent);
     color: var(--accent-gold-light);
   }
   .compare-table td {
     padding: 12px 16px;
     font-size: 0.88rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
     opacity: 0.85;
   }
 
@@ -705,14 +705,14 @@
     position: fixed;
     bottom: 0; left: 0; right: 0;
     height: 52px;
-    background: rgba(20,20,22,0.92);
+    background: color-mix(in srgb, var(--rail-black) 92%, transparent);
     backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 32px;
     z-index: 100;
-    border-top: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
   }
   .nav-brand {
     font-family: 'Space Grotesk', system-ui, sans-serif;
@@ -729,7 +729,7 @@
   .nav-dot {
     width: 8px; height: 8px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.2);
+    background: color-mix(in srgb, var(--white) 20%, transparent);
     cursor: pointer;
     transition: all 0.3s ease;
   }
@@ -741,7 +741,7 @@
   .nav-btn {
     width: 36px; height: 36px;
     border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid color-mix(in srgb, var(--white) 15%, transparent);
     background: transparent;
     color: var(--rail-white);
     cursor: pointer;
@@ -751,10 +751,10 @@
     font-size: 1rem;
     transition: all 0.2s ease;
   }
-  .nav-btn:hover { background: rgba(255,255,255,0.1); }
+  .nav-btn:hover { background: color-mix(in srgb, var(--white) 10%, transparent); }
   .slide-counter {
     font-size: 0.75rem;
-    color: rgba(255,255,255,0.4);
+    color: color-mix(in srgb, var(--white) 40%, transparent);
     font-weight: 500;
     min-width: 50px;
     text-align: center;
@@ -778,8 +778,8 @@
     padding: 20px 24px;
     margin-bottom: 12px;
   }
-  .criteria-box.success { background: rgba(46,125,50,0.1); border: 1px solid rgba(46,125,50,0.3); }
-  .criteria-box.fail { background: rgba(196,30,58,0.08); border: 1px solid rgba(196,30,58,0.25); }
+  .criteria-box.success { background: color-mix(in srgb, var(--accent-green) 10%, transparent); border: 1px solid color-mix(in srgb, var(--accent-green) 30%, transparent); }
+  .criteria-box.fail { background: color-mix(in srgb, var(--maple-red) 8%, transparent); border: 1px solid color-mix(in srgb, var(--maple-red) 25%, transparent); }
   .criteria-box h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; }
   .criteria-box.success h4 { color: var(--accent-green); }
   .criteria-box.fail h4 { color: var(--maple-red); }
@@ -800,7 +800,7 @@
     height: 32px;
     border-radius: 50%;
     background: var(--accent-gold);
-    color: white;
+    color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -943,7 +943,7 @@
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-white" data-slide="1">
     <div class="gc-bar"></div>
-    <div class="section-num">01</div>
+    <div class="section-num" aria-hidden="true">01</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en">Vision Recap</div>
       <div class="small-label anim-1" data-lang="fr">Rappel de la vision</div>
@@ -1000,7 +1000,7 @@
   <!-- SLIDE 3 — ARCHITECTURE OVERVIEW -->
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-accent" data-slide="2">
-    <div class="section-num light">02</div>
+    <div class="section-num light" aria-hidden="true">02</div>
     <div class="content-box" style="text-align:center;">
       <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Architecture</div>
       <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Architecture</div>
@@ -1009,23 +1009,23 @@
       <div class="divider gold center anim-2"></div>
 
       <!-- Tier 3: Cloud -->
-      <div class="stack-layer anim-2" style="margin: 0 auto 8px; border: 2px solid var(--accent-teal); background: rgba(42,142,127,0.12);">
+      <div class="stack-layer anim-2" style="margin: 0 auto 8px; border: 2px solid var(--accent-teal); background: color-mix(in srgb, var(--accent-teal) 12%, transparent);">
         <div class="sl-icon">☁️</div>
-        <div class="sl-name" style="color: #7dd3e8;">Tier 3 — Sovereign Cloud Backbone</div>
+        <div class="sl-name" style="color: var(--acc);">Tier 3 — Sovereign Cloud Backbone</div>
         <div class="sl-desc" data-lang="en">ThinkOn consortium • Overflow compute • Federated query aggregation • Protected B certified • Usage-based pricing</div>
         <div class="sl-desc" data-lang="fr">Consortium ThinkOn • Calcul de débordement • Agrégation de requêtes fédérées • Certifié Protégé B • Tarification à l'utilisation</div>
       </div>
       <!-- Tier 2: Mesh -->
-      <div class="stack-layer anim-3" style="margin: 0 auto 8px; border: 2px solid var(--accent-gold); background: rgba(200,151,62,0.12);">
+      <div class="stack-layer anim-3" style="margin: 0 auto 8px; border: 2px solid var(--accent-gold); background: color-mix(in srgb, var(--accent-gold) 12%, transparent);">
         <div class="sl-icon">🔗</div>
         <div class="sl-name">Tier 2 — Federated Mesh Network</div>
         <div class="sl-desc" data-lang="en">WireGuard/mTLS encrypted mesh • Smart overflow routing • Tamper-evident audit chain • Protocol Registry sync</div>
         <div class="sl-desc" data-lang="fr">Réseau maillé chiffré WireGuard/mTLS • Routage intelligent de débordement • Chaîne d'audit inaltérable • Synchronisation du Registre</div>
       </div>
       <!-- Tier 1: Edge -->
-      <div class="stack-layer anim-3" style="margin: 0 auto 8px; border: 2px solid var(--maple-red); background: rgba(196,30,58,0.12);">
+      <div class="stack-layer anim-3" style="margin: 0 auto 8px; border: 2px solid var(--maple-red); background: color-mix(in srgb, var(--maple-red) 12%, transparent);">
         <div class="sl-icon">🏛️</div>
-        <div class="sl-name" style="color: #ff8a80;">Tier 1 — Edge Stations</div>
+        <div class="sl-name" style="color: var(--maple-red);">Tier 1 — Edge Stations</div>
         <div class="sl-desc" data-lang="en">Institution-owned hardware • Data never leaves • Local inference • Terry AI agent • CDR-OS manages everything</div>
         <div class="sl-desc" data-lang="fr">Matériel appartenant à l'institution • Les données ne quittent jamais • Inférence locale • Agent IA Terry • CDR-OS gère tout</div>
       </div>
@@ -1039,50 +1039,50 @@
 
       <!-- Hardware icons flow -->
       <div class="flow anim-5" data-lang="en" style="margin-top: 24px;">
-        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+        <div class="flow-step" style="border-color: color-mix(in srgb, var(--white) 20%, transparent);">
           <div class="flow-icon">🍎</div>
           <div class="flow-label">Apple Silicon</div>
           <div class="flow-desc">MLX • Mac Studio</div>
         </div>
         <div class="flow-arrow">⟷</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">⚙️</div>
           <div class="flow-label">CDR-OS</div>
           <div class="flow-desc">Hardware Abstraction</div>
         </div>
         <div class="flow-arrow">⟷</div>
-        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+        <div class="flow-step" style="border-color: color-mix(in srgb, var(--white) 20%, transparent);">
           <div class="flow-icon">🟢</div>
           <div class="flow-label">NVIDIA</div>
           <div class="flow-desc">CUDA • Hypertec CIARA</div>
         </div>
         <div class="flow-arrow">⟷</div>
-        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+        <div class="flow-step" style="border-color: color-mix(in srgb, var(--white) 20%, transparent);">
           <div class="flow-icon">🔴</div>
           <div class="flow-label">AMD</div>
           <div class="flow-desc">ROCm • Workstations</div>
         </div>
       </div>
       <div class="flow anim-5" data-lang="fr" style="margin-top: 24px;">
-        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+        <div class="flow-step" style="border-color: color-mix(in srgb, var(--white) 20%, transparent);">
           <div class="flow-icon">🍎</div>
           <div class="flow-label">Apple Silicon</div>
           <div class="flow-desc">MLX • Mac Studio</div>
         </div>
         <div class="flow-arrow">⟷</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">⚙️</div>
           <div class="flow-label">CDR-OS</div>
           <div class="flow-desc">Abstraction matérielle</div>
         </div>
         <div class="flow-arrow">⟷</div>
-        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+        <div class="flow-step" style="border-color: color-mix(in srgb, var(--white) 20%, transparent);">
           <div class="flow-icon">🟢</div>
           <div class="flow-label">NVIDIA</div>
           <div class="flow-desc">CUDA • Hypertec CIARA</div>
         </div>
         <div class="flow-arrow">⟷</div>
-        <div class="flow-step" style="border-color: rgba(255,255,255,0.2);">
+        <div class="flow-step" style="border-color: color-mix(in srgb, var(--white) 20%, transparent);">
           <div class="flow-icon">🔴</div>
           <div class="flow-label">AMD</div>
           <div class="flow-desc">ROCm • Stations de travail</div>
@@ -1095,7 +1095,7 @@
   <!-- SLIDE 4 — CDR-OS TECHNICAL STACK -->
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-dark" data-slide="3">
-    <div class="section-num light">03</div>
+    <div class="section-num light" aria-hidden="true">03</div>
     <div class="content-box" style="text-align:center;">
       <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Technical Stack</div>
       <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Pile technique</div>
@@ -1139,14 +1139,14 @@
           <div class="sl-desc" data-lang="en">Tamper-evident, append-only logs. Multi-party verification. Cryptographic attestation of software state.</div>
           <div class="sl-desc" data-lang="fr">Journaux inaltérables, en ajout seulement. Vérification multipartite. Attestation cryptographique de l'état logiciel.</div>
         </div>
-        <div class="stack-layer" style="border-left: 4px solid #7dd3e8;">
+        <div class="stack-layer" style="border-left: 4px solid var(--acc);">
           <div class="sl-icon">📊</div>
           <div class="sl-name" data-lang="en">Federated Analytics</div>
           <div class="sl-name" data-lang="fr">Analytique fédérée</div>
           <div class="sl-desc" data-lang="en">Containerized queries. Differential privacy. Federated SQL interface. BI tool compatible (Tableau, Power BI).</div>
           <div class="sl-desc" data-lang="fr">Requêtes conteneurisées. Confidentialité différentielle. Interface SQL fédérée. Compatible outils BI (Tableau, Power BI).</div>
         </div>
-        <div class="stack-layer" style="border-left: 4px solid #ce93d8;">
+        <div class="stack-layer" style="border-left: 4px solid var(--acc);">
           <div class="sl-icon">📦</div>
           <div class="sl-name" data-lang="en">Protocol Registry Client</div>
           <div class="sl-name" data-lang="fr">Client du Registre</div>
@@ -1168,7 +1168,7 @@
   <!-- SLIDE 5 — HARDWARE MATRIX -->
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-blue" data-slide="4">
-    <div class="section-num light">04</div>
+    <div class="section-num light" aria-hidden="true">04</div>
     <div class="content-box" style="text-align:center;">
       <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Hardware Matrix</div>
       <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Matrice matérielle</div>
@@ -1251,7 +1251,7 @@
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-warm" data-slide="5">
     <div class="gc-bar"></div>
-    <div class="section-num">05</div>
+    <div class="section-num" aria-hidden="true">05</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en"><span class="pill pill-red">Phase 0 — Stage A</span> &nbsp; Month 1</div>
       <div class="small-label anim-1" data-lang="fr"><span class="pill pill-red">Phase 0 — Étape A</span> &nbsp; Mois 1</div>
@@ -1331,11 +1331,11 @@
         </div>
       </div>
 
-      <div class="anim-4" data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:20px 28px; color:white; margin-top:16px; max-width:760px; text-align:center;">
-        <p style="font-size:0.9rem; opacity:0.9;"><strong style="color:var(--accent-gold-light);">The acid test:</strong> <code style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px;">grep -ri "fred|hazelton|hazeydata" protocol/</code> → must return <strong>zero results</strong></p>
+      <div class="anim-4" data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:20px 28px; color:var(--white); margin-top:16px; max-width:760px; text-align:center;">
+        <p style="font-size:0.9rem; opacity:0.9;"><strong style="color:var(--accent-gold-light);">The acid test:</strong> <code style="background:color-mix(in srgb, var(--white) 10%, transparent); padding:2px 8px; border-radius:4px;">grep -ri "fred|hazelton|hazeydata" protocol/</code> → must return <strong>zero results</strong></p>
       </div>
-      <div class="anim-4" data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:20px 28px; color:white; margin-top:16px; max-width:760px; text-align:center;">
-        <p style="font-size:0.9rem; opacity:0.9;"><strong style="color:var(--accent-gold-light);">Le test décisif :</strong> <code style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px;">grep -ri "fred|hazelton|hazeydata" protocol/</code> → doit retourner <strong>zéro résultat</strong></p>
+      <div class="anim-4" data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:20px 28px; color:var(--white); margin-top:16px; max-width:760px; text-align:center;">
+        <p style="font-size:0.9rem; opacity:0.9;"><strong style="color:var(--accent-gold-light);">Le test décisif :</strong> <code style="background:color-mix(in srgb, var(--white) 10%, transparent); padding:2px 8px; border-radius:4px;">grep -ri "fred|hazelton|hazeydata" protocol/</code> → doit retourner <strong>zéro résultat</strong></p>
       </div>
     </div>
   </div>
@@ -1345,7 +1345,7 @@
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-white" data-slide="6">
     <div class="gc-bar"></div>
-    <div class="section-num">06</div>
+    <div class="section-num" aria-hidden="true">06</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en"><span class="pill pill-red">Phase 0 — Stage B</span> &nbsp; Months 2–4</div>
       <div class="small-label anim-1" data-lang="fr"><span class="pill pill-red">Phase 0 — Étape B</span> &nbsp; Mois 2–4</div>
@@ -1424,10 +1424,10 @@
   <!-- SLIDE 8 — PHASE 0 STAGE C -->
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-accent" data-slide="7">
-    <div class="section-num light">07</div>
+    <div class="section-num light" aria-hidden="true">07</div>
     <div class="content-box">
-      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);"><span class="pill" style="background:rgba(196,30,58,0.25); color:#ff8a80;">Phase 0 — Stage C</span> &nbsp; Months 5–6</div>
-      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);"><span class="pill" style="background:rgba(196,30,58,0.25); color:#ff8a80;">Phase 0 — Étape C</span> &nbsp; Mois 5–6</div>
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);"><span class="pill" style="background:color-mix(in srgb, var(--maple-red) 25%, transparent); color:var(--maple-red);">Phase 0 — Stage C</span> &nbsp; Months 5–6</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);"><span class="pill" style="background:color-mix(in srgb, var(--maple-red) 25%, transparent); color:var(--maple-red);">Phase 0 — Étape C</span> &nbsp; Mois 5–6</div>
       <h2 class="anim-1" data-lang="en">Cross-Pollination — The Knowledge Test</h2>
       <h2 class="anim-1" data-lang="fr">Pollinisation croisée — Le test du savoir</h2>
       <div class="divider gold anim-2"></div>
@@ -1447,13 +1447,13 @@
           <div class="flow-desc">Builds patient intake protocol</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">📦</div>
           <div class="flow-label">VAP Abstraction</div>
           <div class="flow-desc">Strip to X₁, X₂, X₃…</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">🛤️</div>
           <div class="flow-label">Registry</div>
           <div class="flow-desc">Published as "Client Onboarding"</div>
@@ -1472,13 +1472,13 @@
           <div class="flow-desc">Crée protocole d'accueil patient</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">📦</div>
           <div class="flow-label">Abstraction VAP</div>
           <div class="flow-desc">Réduit à X₁, X₂, X₃…</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">🛤️</div>
           <div class="flow-label">Registre</div>
           <div class="flow-desc">Publié comme « Accueil client »</div>
@@ -1493,14 +1493,14 @@
 
       <div class="two-col anim-4" style="margin-top:28px;">
         <div class="card-dark" style="border-left-color: var(--accent-green);">
-          <h3 data-lang="en" style="color:#81c784;">✓ Success Criteria</h3>
-          <h3 data-lang="fr" style="color:#81c784;">✓ Critères de succès</h3>
+          <h3 data-lang="en" style="color:var(--green);">✓ Success Criteria</h3>
+          <h3 data-lang="fr" style="color:var(--green);">✓ Critères de succès</h3>
           <p data-lang="en" style="line-height:1.8;"><strong>Deploy time:</strong> < 1 day from discovery to running<br><strong>Data leakage:</strong> Zero — VAP linter confirms clean<br><strong>User satisfaction:</strong> > 7/10 survey score<br><strong>Adaptation effort:</strong> < 4 hours with Terry guidance</p>
           <p data-lang="fr" style="line-height:1.8;"><strong>Temps de déploiement :</strong> < 1 jour de la découverte à l'exécution<br><strong>Fuite de données :</strong> Zéro — le linter VAP confirme la propreté<br><strong>Satisfaction :</strong> > 7/10 au sondage<br><strong>Effort d'adaptation :</strong> < 4 heures avec guidance de Terry</p>
         </div>
         <div class="card-dark red">
-          <h3 data-lang="en" style="color:#ff8a80;">✗ Failure Conditions</h3>
-          <h3 data-lang="fr" style="color:#ff8a80;">✗ Conditions d'échec</h3>
+          <h3 data-lang="en" style="color:var(--maple-red);">✗ Failure Conditions</h3>
+          <h3 data-lang="fr" style="color:var(--maple-red);">✗ Conditions d'échec</h3>
           <p data-lang="en" style="line-height:1.8;"><strong>Any protected data</strong> from originating station detected in the deployed protocol<br><strong>Deploy time</strong> exceeds 3 days<br><strong>Requires manual code editing</strong> — Terry should handle adaptation<br><strong>User satisfaction</strong> below 5/10</p>
           <p data-lang="fr" style="line-height:1.8;"><strong>Toute donnée protégée</strong> de la station d'origine détectée dans le protocole déployé<br><strong>Temps de déploiement</strong> dépasse 3 jours<br><strong>Nécessite de modifier le code manuellement</strong> — Terry devrait gérer l'adaptation<br><strong>Satisfaction utilisateur</strong> en dessous de 5/10</p>
         </div>
@@ -1513,7 +1513,7 @@
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-white" data-slide="8">
     <div class="gc-bar"></div>
-    <div class="section-num">08</div>
+    <div class="section-num" aria-hidden="true">08</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en"><span class="pill pill-red">Phase 0 — Stage D</span> &nbsp; Parallel Track</div>
       <div class="small-label anim-1" data-lang="fr"><span class="pill pill-red">Phase 0 — Étape D</span> &nbsp; Voie parallèle</div>
@@ -1542,7 +1542,7 @@
         </div>
         <div>
           <h3 style="color: var(--rail-slate); margin-bottom:16px;">Strategic Advantage</h3>
-          <div style="background: var(--rail-slate); border-radius:12px; padding:24px; color:white;">
+          <div style="background: var(--rail-slate); border-radius:12px; padding:24px; color:var(--white);">
             <p style="font-size:0.92rem; line-height:1.7; opacity:0.9; margin-bottom:16px;">
               <strong style="color:var(--accent-gold-light);">ThinkOn partnership accelerates this.</strong> The ThinkOn consortium already holds Protected B certification for their sovereign cloud services. CDR's cloud backbone inherits this trust chain.
             </p>
@@ -1574,7 +1574,7 @@
         </div>
         <div>
           <h3 style="color: var(--rail-slate); margin-bottom:16px;">Avantage stratégique</h3>
-          <div style="background: var(--rail-slate); border-radius:12px; padding:24px; color:white;">
+          <div style="background: var(--rail-slate); border-radius:12px; padding:24px; color:var(--white);">
             <p style="font-size:0.92rem; line-height:1.7; opacity:0.9; margin-bottom:16px;">
               <strong style="color:var(--accent-gold-light);">Le partenariat ThinkOn accélère cela.</strong> Le consortium ThinkOn détient déjà la certification Protégé B. La dorsale nuage du CDR hérite de cette chaîne de confiance.
             </p>
@@ -1599,10 +1599,10 @@
   <!-- SLIDE 10 — PHASE 1 -->
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-dark" data-slide="9">
-    <div class="section-num light">09</div>
+    <div class="section-num light" aria-hidden="true">09</div>
     <div class="content-box">
-      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);"><span class="pill" style="background:rgba(200,151,62,0.25); color:var(--accent-gold-light);">Phase 1</span> &nbsp; Months 7–18</div>
-      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);"><span class="pill" style="background:rgba(200,151,62,0.25); color:var(--accent-gold-light);">Phase 1</span> &nbsp; Mois 7–18</div>
+      <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);"><span class="pill" style="background:color-mix(in srgb, var(--accent-gold) 25%, transparent); color:var(--accent-gold-light);">Phase 1</span> &nbsp; Months 7–18</div>
+      <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);"><span class="pill" style="background:color-mix(in srgb, var(--accent-gold) 25%, transparent); color:var(--accent-gold-light);">Phase 1</span> &nbsp; Mois 7–18</div>
       <h2 class="anim-1" data-lang="en">Ten Stations — Real Sectors, Real Scale</h2>
       <h2 class="anim-1" data-lang="fr">Dix stations — Vrais secteurs, vraie échelle</h2>
       <div class="divider gold anim-2"></div>
@@ -1669,7 +1669,7 @@
   <!-- SLIDE 11 — PHASE 2 & 3 -->
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-blue" data-slide="10">
-    <div class="section-num light">10</div>
+    <div class="section-num light" aria-hidden="true">10</div>
     <div class="content-box" style="text-align:center;">
       <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Growth Trajectory</div>
       <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Trajectoire de croissance</div>
@@ -1679,10 +1679,10 @@
 
       <div class="two-col anim-3" data-lang="en" style="text-align:left; margin-top:24px;">
         <div class="card-dark teal">
-          <h3 style="color:#7dd3e8;">Phase 2 — National Network <span style="opacity:0.5; font-size:0.8rem;">(Months 18–36)</span></h3>
+          <h3 style="color:var(--acc);">Phase 2 — National Network <span style="color:var(--ink-muted); font-size:0.8rem;">(Months 18–36)</span></h3>
           <div style="display:flex; gap:24px; margin: 16px 0;">
-            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#7dd3e8;">50+</div><div class="stat-label">Nodes coast to coast</div></div>
-            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#7dd3e8;">100+</div><div class="stat-label">Published protocols</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:var(--acc);">50+</div><div class="stat-label">Nodes coast to coast</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:var(--acc);">100+</div><div class="stat-label">Published protocols</div></div>
           </div>
           <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
             <li>Governance council — institutions set network rules</li>
@@ -1694,10 +1694,10 @@
           </ul>
         </div>
         <div class="card-dark green">
-          <h3 style="color:#81c784;">Phase 3 — Knowledge Economy <span style="opacity:0.5; font-size:0.8rem;">(36+ Months)</span></h3>
+          <h3 style="color:var(--green);">Phase 3 — Knowledge Economy <span style="color:var(--ink-muted); font-size:0.8rem;">(36+ Months)</span></h3>
           <div style="display:flex; gap:24px; margin: 16px 0;">
-            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#81c784;">500+</div><div class="stat-label">Nodes national</div></div>
-            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#81c784;">1000+</div><div class="stat-label">Protocols in Registry</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:var(--green);">500+</div><div class="stat-label">Nodes national</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:var(--green);">1000+</div><div class="stat-label">Protocols in Registry</div></div>
           </div>
           <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
             <li>Protocol Registry = de facto standard for institutional knowledge sharing</li>
@@ -1711,10 +1711,10 @@
       </div>
       <div class="two-col anim-3" data-lang="fr" style="text-align:left; margin-top:24px;">
         <div class="card-dark teal">
-          <h3 style="color:#7dd3e8;">Phase 2 — Réseau national <span style="opacity:0.5; font-size:0.8rem;">(Mois 18–36)</span></h3>
+          <h3 style="color:var(--acc);">Phase 2 — Réseau national <span style="color:var(--ink-muted); font-size:0.8rem;">(Mois 18–36)</span></h3>
           <div style="display:flex; gap:24px; margin: 16px 0;">
-            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#7dd3e8;">50+</div><div class="stat-label">Nœuds d'un océan à l'autre</div></div>
-            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#7dd3e8;">100+</div><div class="stat-label">Protocoles publiés</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:var(--acc);">50+</div><div class="stat-label">Nœuds d'un océan à l'autre</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:var(--acc);">100+</div><div class="stat-label">Protocoles publiés</div></div>
           </div>
           <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
             <li>Conseil de gouvernance — les institutions établissent les règles</li>
@@ -1726,10 +1726,10 @@
           </ul>
         </div>
         <div class="card-dark green">
-          <h3 style="color:#81c784;">Phase 3 — Économie du savoir <span style="opacity:0.5; font-size:0.8rem;">(36+ mois)</span></h3>
+          <h3 style="color:var(--green);">Phase 3 — Économie du savoir <span style="color:var(--ink-muted); font-size:0.8rem;">(36+ mois)</span></h3>
           <div style="display:flex; gap:24px; margin: 16px 0;">
-            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#81c784;">500+</div><div class="stat-label">Nœuds nationaux</div></div>
-            <div class="stat"><div class="stat-number" style="font-size:2rem; color:#81c784;">1000+</div><div class="stat-label">Protocoles au Registre</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:var(--green);">500+</div><div class="stat-label">Nœuds nationaux</div></div>
+            <div class="stat"><div class="stat-number" style="font-size:2rem; color:var(--green);">1000+</div><div class="stat-label">Protocoles au Registre</div></div>
           </div>
           <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
             <li>Le Registre = standard de facto pour le partage de connaissances institutionnel</li>
@@ -1749,7 +1749,7 @@
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-warm" data-slide="11">
     <div class="gc-bar"></div>
-    <div class="section-num">11</div>
+    <div class="section-num" aria-hidden="true">11</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en">The AI Station Agent</div>
       <div class="small-label anim-1" data-lang="fr">L'agent IA de station</div>
@@ -1799,68 +1799,68 @@
           <div class="journey-step"><div class="journey-num">5</div><div class="journey-text"><strong>Build &amp; Deploy</strong> — Guided creation with reverse prompting. Tool runs locally. Nothing leaves.</div></div>
           <div class="journey-step"><div class="journey-num">6</div><div class="journey-text"><strong>Publish</strong> — "Terry, publish this to the Railway" → VAP abstracts → Protocol Registry</div></div>
 
-          <div style="background: rgba(196,30,58,0.06); border: 1px solid rgba(196,30,58,0.2); border-radius:8px; padding:16px 20px; margin-top:16px;">
+          <div style="background: color-mix(in srgb, var(--maple-red) 6%, transparent); border: 1px solid color-mix(in srgb, var(--maple-red) 20%, transparent); border-radius:8px; padding:16px 20px; margin-top:16px;">
             <p style="font-size:0.88rem; color:var(--rail-grey-dark); line-height:1.6;"><strong style="color:var(--maple-red);">Key insight:</strong> The product IS the trainer. No onboarding consultants needed. This is proven — the interaction model powering Terry is battle-tested across thousands of hours.</p>
           </div>
         </div>
       </div>
 
       <!-- 5-file workspace structure -->
-      <div class="anim-4" data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:24px 32px; color:white; margin-top:20px; max-width:960px; text-align:left;">
+      <div class="anim-4" data-lang="en" style="background: var(--rail-slate); border-radius:12px; padding:24px 32px; color:var(--white); margin-top:20px; max-width:960px; text-align:left;">
         <h3 style="color:var(--accent-gold-light); margin-bottom:16px; font-size:1.05rem;">📁 Terry's 5-File Workspace — Pre-Configured Per Station (Phase 0 Deliverable)</h3>
         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
-          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+          <div style="background:color-mix(in srgb, var(--white) 6%, transparent); border:1px solid color-mix(in srgb, var(--white) 12%, transparent); border-radius:8px; padding:14px 16px;">
             <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">SOUL.md</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Terry's personality, domain knowledge, guard rails for this institution type</p>
           </div>
-          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+          <div style="background:color-mix(in srgb, var(--white) 6%, transparent); border:1px solid color-mix(in srgb, var(--white) 12%, transparent); border-radius:8px; padding:14px 16px;">
             <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">USER.md</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Everything about the specific user — skills, schedule, preferences</p>
           </div>
-          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+          <div style="background:color-mix(in srgb, var(--white) 6%, transparent); border:1px solid color-mix(in srgb, var(--white) 12%, transparent); border-radius:8px; padding:14px 16px;">
             <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">TOOLS.md</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Their systems, integrations, local hardware specifics</p>
           </div>
-          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+          <div style="background:color-mix(in srgb, var(--white) 6%, transparent); border:1px solid color-mix(in srgb, var(--white) 12%, transparent); border-radius:8px; padding:14px 16px;">
             <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">AGENTS.md</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">How Terry works — memory, check-ins, escalation rules</p>
           </div>
-          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+          <div style="background:color-mix(in srgb, var(--white) 6%, transparent); border:1px solid color-mix(in srgb, var(--white) 12%, transparent); border-radius:8px; padding:14px 16px;">
             <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">HEARTBEAT.md</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">What Terry monitors proactively for this institution</p>
           </div>
-          <div style="background:rgba(196,30,58,0.15); border:1px solid rgba(196,30,58,0.3); border-radius:8px; padding:14px 16px;">
-            <p style="font-size:0.85rem; font-weight:700; color:#ff8a80; margin-bottom:4px;">SOUL.md Library</p>
+          <div style="background:color-mix(in srgb, var(--maple-red) 15%, transparent); border:1px solid color-mix(in srgb, var(--maple-red) 30%, transparent); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--maple-red); margin-bottom:4px;">SOUL.md Library</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Pre-built templates per sector: clinic, retail, university, government, Indigenous governance</p>
           </div>
         </div>
         <p style="font-size:0.82rem; opacity:0.6; margin-top:12px; text-align:center;">Onboarding flow: <strong style="opacity:0.9;">Intake questionnaire → File generation → Terry boot → First session</strong></p>
       </div>
-      <div class="anim-4" data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:24px 32px; color:white; margin-top:20px; max-width:960px; text-align:left;">
+      <div class="anim-4" data-lang="fr" style="background: var(--rail-slate); border-radius:12px; padding:24px 32px; color:var(--white); margin-top:20px; max-width:960px; text-align:left;">
         <h3 style="color:var(--accent-gold-light); margin-bottom:16px; font-size:1.05rem;">📁 Espace de travail de Terry — 5 fichiers préconfigurés par station (livrable Phase 0)</h3>
         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
-          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+          <div style="background:color-mix(in srgb, var(--white) 6%, transparent); border:1px solid color-mix(in srgb, var(--white) 12%, transparent); border-radius:8px; padding:14px 16px;">
             <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">SOUL.md</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Personnalité de Terry, connaissances du domaine, garde-fous pour ce type d'institution</p>
           </div>
-          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+          <div style="background:color-mix(in srgb, var(--white) 6%, transparent); border:1px solid color-mix(in srgb, var(--white) 12%, transparent); border-radius:8px; padding:14px 16px;">
             <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">USER.md</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Tout sur l'utilisateur — compétences, horaire, préférences</p>
           </div>
-          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+          <div style="background:color-mix(in srgb, var(--white) 6%, transparent); border:1px solid color-mix(in srgb, var(--white) 12%, transparent); border-radius:8px; padding:14px 16px;">
             <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">TOOLS.md</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Leurs systèmes, intégrations, spécificités du matériel local</p>
           </div>
-          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+          <div style="background:color-mix(in srgb, var(--white) 6%, transparent); border:1px solid color-mix(in srgb, var(--white) 12%, transparent); border-radius:8px; padding:14px 16px;">
             <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">AGENTS.md</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Comment Terry fonctionne — mémoire, vérifications, règles d'escalade</p>
           </div>
-          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:14px 16px;">
+          <div style="background:color-mix(in srgb, var(--white) 6%, transparent); border:1px solid color-mix(in srgb, var(--white) 12%, transparent); border-radius:8px; padding:14px 16px;">
             <p style="font-size:0.85rem; font-weight:700; color:var(--accent-gold-light); margin-bottom:4px;">HEARTBEAT.md</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Ce que Terry surveille proactivement pour cette institution</p>
           </div>
-          <div style="background:rgba(196,30,58,0.15); border:1px solid rgba(196,30,58,0.3); border-radius:8px; padding:14px 16px;">
-            <p style="font-size:0.85rem; font-weight:700; color:#ff8a80; margin-bottom:4px;">Bibliothèque SOUL.md</p>
+          <div style="background:color-mix(in srgb, var(--maple-red) 15%, transparent); border:1px solid color-mix(in srgb, var(--maple-red) 30%, transparent); border-radius:8px; padding:14px 16px;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--maple-red); margin-bottom:4px;">Bibliothèque SOUL.md</p>
             <p style="font-size:0.78rem; opacity:0.7; line-height:1.5;">Gabarits par secteur : clinique, commerce, université, gouvernement, gouvernance autochtone</p>
           </div>
         </div>
@@ -1909,7 +1909,7 @@
           <div class="journey-step"><div class="journey-num">5</div><div class="journey-text"><strong>Construire et déployer</strong> — Création guidée par prompts inversés. L'outil fonctionne localement</div></div>
           <div class="journey-step"><div class="journey-num">6</div><div class="journey-text"><strong>Publier</strong> — « Terry, publie ça sur le Railway » → abstraction VAP → Registre</div></div>
 
-          <div style="background: rgba(196,30,58,0.06); border: 1px solid rgba(196,30,58,0.2); border-radius:8px; padding:16px 20px; margin-top:16px;">
+          <div style="background: color-mix(in srgb, var(--maple-red) 6%, transparent); border: 1px solid color-mix(in srgb, var(--maple-red) 20%, transparent); border-radius:8px; padding:16px 20px; margin-top:16px;">
             <p style="font-size:0.88rem; color:var(--rail-grey-dark); line-height:1.6;"><strong style="color:var(--maple-red);">Insight clé :</strong> Le produit EST le formateur. Pas de consultants d'intégration nécessaires. C'est prouvé — le modèle d'interaction est éprouvé sur des milliers d'heures.</p>
           </div>
         </div>
@@ -1921,7 +1921,7 @@
   <!-- SLIDE 13 — PROTOCOL REGISTRY MVP -->
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-accent" data-slide="12">
-    <div class="section-num light">12</div>
+    <div class="section-num light" aria-hidden="true">12</div>
     <div class="content-box" style="text-align:center;">
       <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Protocol Registry</div>
       <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Registre de protocoles</div>
@@ -1968,18 +1968,18 @@
         <h3 data-lang="en" style="color:var(--accent-gold-light); margin-bottom:16px; text-align:left;">Quality Control</h3>
         <h3 data-lang="fr" style="color:var(--accent-gold-light); margin-bottom:16px; text-align:left;">Contrôle de qualité</h3>
         <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
-          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">⭐ Star Ratings</span>
-          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">✅ Verification Badges</span>
-          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">👥 Sector Curators</span>
-          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">🔒 Security Scanning</span>
-          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">📊 Deployment Count</span>
-          <span data-lang="en" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">🏛️ Institution Verified</span>
-          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">⭐ Évaluations</span>
-          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">✅ Badges de vérification</span>
-          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">👥 Curateurs sectoriels</span>
-          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">🔒 Balayage sécurité</span>
-          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">📊 Nombre de déploiements</span>
-          <span data-lang="fr" class="pill" style="background:rgba(200,151,62,0.2); color:var(--accent-gold-light); padding:8px 16px;">🏛️ Institution vérifiée</span>
+          <span data-lang="en" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">⭐ Star Ratings</span>
+          <span data-lang="en" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">✅ Verification Badges</span>
+          <span data-lang="en" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">👥 Sector Curators</span>
+          <span data-lang="en" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">🔒 Security Scanning</span>
+          <span data-lang="en" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">📊 Deployment Count</span>
+          <span data-lang="en" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">🏛️ Institution Verified</span>
+          <span data-lang="fr" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">⭐ Évaluations</span>
+          <span data-lang="fr" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">✅ Badges de vérification</span>
+          <span data-lang="fr" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">👥 Curateurs sectoriels</span>
+          <span data-lang="fr" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">🔒 Balayage sécurité</span>
+          <span data-lang="fr" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">📊 Nombre de déploiements</span>
+          <span data-lang="fr" class="pill" style="background:color-mix(in srgb, var(--accent-gold) 20%, transparent); color:var(--accent-gold-light); padding:8px 16px;">🏛️ Institution vérifiée</span>
         </div>
       </div>
     </div>
@@ -1989,7 +1989,7 @@
   <!-- SLIDE 14 — FEDERATED ANALYTICS ENGINE -->
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-dark" data-slide="13">
-    <div class="section-num light">13</div>
+    <div class="section-num light" aria-hidden="true">13</div>
     <div class="content-box" style="text-align:center;">
       <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Federated Analytics</div>
       <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Analytique fédérée</div>
@@ -2011,7 +2011,7 @@
           <div class="flow-desc">Analyst submits query</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">📦</div>
           <div class="flow-label">Containerized</div>
           <div class="flow-desc">Sandboxed execution</div>
@@ -2023,7 +2023,7 @@
           <div class="flow-desc">At each authorized station</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">🔒</div>
           <div class="flow-label">Diff. Privacy</div>
           <div class="flow-desc">Noise added, aggregated</div>
@@ -2042,7 +2042,7 @@
           <div class="flow-desc">L'analyste soumet</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">📦</div>
           <div class="flow-label">Conteneurisée</div>
           <div class="flow-desc">Exécution isolée</div>
@@ -2054,7 +2054,7 @@
           <div class="flow-desc">À chaque station autorisée</div>
         </div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step" style="background:rgba(200,151,62,0.15); border-color:var(--accent-gold);">
+        <div class="flow-step" style="background:color-mix(in srgb, var(--accent-gold) 15%, transparent); border-color:var(--accent-gold);">
           <div class="flow-icon">🔒</div>
           <div class="flow-label">Conf. différentielle</div>
           <div class="flow-desc">Bruit ajouté, agrégé</div>
@@ -2103,7 +2103,7 @@
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-white" data-slide="14">
     <div class="gc-bar"></div>
-    <div class="section-num">14</div>
+    <div class="section-num" aria-hidden="true">14</div>
     <div class="content-box" style="text-align:center;">
       <div class="small-label anim-1" data-lang="en">Success Metrics</div>
       <div class="small-label anim-1" data-lang="fr">Mesures de succès</div>
@@ -2112,98 +2112,98 @@
       <div class="divider anim-2"></div>
 
       <div class="metric-grid anim-3" data-lang="en">
-        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--maple-red) 6%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--maple-red);">Phase 0 (Months 1–6)</div>
           <div class="metric-val" style="color:var(--maple-red);">4</div>
           <div class="metric-label">Stations deployed<br>(1 internal + 3 pilot)</div>
         </div>
-        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--maple-red) 6%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--maple-red);">Phase 0</div>
           <div class="metric-val" style="color:var(--maple-red);">≥ 1</div>
           <div class="metric-label">Cross-sector transfer<br>documented & measured</div>
         </div>
-        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--maple-red) 6%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--maple-red);">Phase 0</div>
           <div class="metric-val" style="color:var(--maple-red);"> < 2hr</div>
           <div class="metric-label">Time-to-productive<br>(first tool built with Terry)</div>
         </div>
 
-        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-gold) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-gold);">Phase 1 (Months 7–18)</div>
           <div class="metric-val" style="color:var(--accent-gold);">10</div>
           <div class="metric-label">Active stations<br>across 3–4 sectors</div>
         </div>
-        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-gold) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-gold);">Phase 1</div>
           <div class="metric-val" style="color:var(--accent-gold);">20+</div>
           <div class="metric-label">Published protocols<br>in Registry</div>
         </div>
-        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-gold) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-gold);">Phase 1</div>
           <div class="metric-val" style="color:var(--accent-gold);">$60K+</div>
           <div class="metric-label">Annual recurring revenue<br>(managed services)</div>
         </div>
 
-        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-teal) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-teal);">Phase 2 (Months 18–36)</div>
           <div class="metric-val" style="color:var(--accent-teal);">50+</div>
           <div class="metric-label">Nodes coast to coast</div>
         </div>
-        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-teal) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-teal);">Phase 2</div>
           <div class="metric-val" style="color:var(--accent-teal);">✓</div>
           <div class="metric-label">TBS Protected B<br>certification achieved</div>
         </div>
-        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-teal) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-teal);">Phase 2</div>
           <div class="metric-val" style="color:var(--accent-teal);"> > 80%</div>
           <div class="metric-label">Cross-pollination<br>success rate</div>
         </div>
       </div>
       <div class="metric-grid anim-3" data-lang="fr">
-        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--maple-red) 6%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--maple-red);">Phase 0 (Mois 1–6)</div>
           <div class="metric-val" style="color:var(--maple-red);">4</div>
           <div class="metric-label">Stations déployées<br>(1 interne + 3 pilotes)</div>
         </div>
-        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--maple-red) 6%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--maple-red);">Phase 0</div>
           <div class="metric-val" style="color:var(--maple-red);">≥ 1</div>
           <div class="metric-label">Transfert inter-secteur<br>documenté et mesuré</div>
         </div>
-        <div class="metric-card" style="background:rgba(196,30,58,0.06); border:1px solid rgba(196,30,58,0.2);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--maple-red) 6%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--maple-red);">Phase 0</div>
           <div class="metric-val" style="color:var(--maple-red);"> < 2h</div>
           <div class="metric-label">Temps jusqu'à la productivité<br>(premier outil avec Terry)</div>
         </div>
 
-        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-gold) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-gold);">Phase 1 (Mois 7–18)</div>
           <div class="metric-val" style="color:var(--accent-gold);">10</div>
           <div class="metric-label">Stations actives<br>dans 3–4 secteurs</div>
         </div>
-        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-gold) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-gold);">Phase 1</div>
           <div class="metric-val" style="color:var(--accent-gold);">20+</div>
           <div class="metric-label">Protocoles publiés<br>au Registre</div>
         </div>
-        <div class="metric-card" style="background:rgba(200,151,62,0.08); border:1px solid rgba(200,151,62,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-gold) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-gold);">Phase 1</div>
           <div class="metric-val" style="color:var(--accent-gold);">60K$+</div>
           <div class="metric-label">Revenu récurrent annuel<br>(services gérés)</div>
         </div>
 
-        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-teal) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-teal);">Phase 2 (Mois 18–36)</div>
           <div class="metric-val" style="color:var(--accent-teal);">50+</div>
           <div class="metric-label">Nœuds d'un océan à l'autre</div>
         </div>
-        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-teal) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-teal);">Phase 2</div>
           <div class="metric-val" style="color:var(--accent-teal);">✓</div>
           <div class="metric-label">Certification Protégé B<br>du SCT obtenue</div>
         </div>
-        <div class="metric-card" style="background:rgba(42,142,127,0.08); border:1px solid rgba(42,142,127,0.25);">
+        <div class="metric-card" style="background:color-mix(in srgb, var(--accent-teal) 8%, transparent); border:1px solid var(--border-light);">
           <div class="metric-phase" style="color:var(--accent-teal);">Phase 2</div>
           <div class="metric-val" style="color:var(--accent-teal);"> > 80%</div>
           <div class="metric-label">Taux de succès de<br>pollinisation croisée</div>
@@ -2224,7 +2224,7 @@
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-warm" data-slide="15">
     <div class="gc-bar"></div>
-    <div class="section-num">15</div>
+    <div class="section-num" aria-hidden="true">15</div>
     <div class="content-box">
       <div class="small-label anim-1" data-lang="en">Risk Register</div>
       <div class="small-label anim-1" data-lang="fr">Registre des risques</div>
@@ -2303,7 +2303,7 @@
   <!-- SLIDE 17 — TEAM & PARTNERS -->
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-accent" data-slide="16">
-    <div class="section-num light">16</div>
+    <div class="section-num light" aria-hidden="true">16</div>
     <div class="content-box" style="text-align:center;">
       <div class="small-label anim-1" data-lang="en" style="color:var(--accent-gold-light);">Team & Partners</div>
       <div class="small-label anim-1" data-lang="fr" style="color:var(--accent-gold-light);">Équipe et partenaires</div>
@@ -2347,7 +2347,7 @@
             <li>Includes Aptum, eStruxture consortium members</li>
           </ul>
         </div>
-        <div class="card-dark" style="border-left-color: #ce93d8;">
+        <div class="card-dark" style="border-left-color: var(--acc);">
           <h3 style="margin-bottom:8px;">🪶 FNTC + 🎓 University</h3>
           <p style="font-size:0.82rem; opacity:0.5; margin-bottom:12px;">Partners — Co-Design & Research</p>
           <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
@@ -2395,7 +2395,7 @@
             <li>Inclut Aptum, eStruxture comme membres du consortium</li>
           </ul>
         </div>
-        <div class="card-dark" style="border-left-color: #ce93d8;">
+        <div class="card-dark" style="border-left-color: var(--acc);">
           <h3 style="margin-bottom:8px;">🪶 CTPN + 🎓 Université</h3>
           <p style="font-size:0.82rem; opacity:0.5; margin-bottom:12px;">Partenaires — Co-conception et recherche</p>
           <ul class="check-list white-checks" style="opacity:0.85; font-size:0.88rem;">
@@ -2415,48 +2415,48 @@
   <!-- ═══════════════════════════════════════════════════ -->
   <div class="slide slide-cover" data-slide="17">
     <div class="flag-stripe"></div>
-    <span class="confidential" data-lang="en" style="color:rgba(255,255,255,0.35);">Partners & Internal — Draft</span>
-    <span class="confidential" data-lang="fr" style="color:rgba(255,255,255,0.35);">Partenaires et interne — Ébauche</span>
+    <span class="confidential" data-lang="en" style="color:color-mix(in srgb, var(--white) 35%, transparent);">Partners & Internal — Draft</span>
+    <span class="confidential" data-lang="fr" style="color:color-mix(in srgb, var(--white) 35%, transparent);">Partenaires et interne — Ébauche</span>
 
     <div class="anim-1" style="font-size:3rem; margin-bottom:12px;">🚂🍁</div>
     <h1 class="anim-1" style="font-size:2.8rem; margin-bottom:8px;" data-lang="en">Let's Build the Railway</h1>
     <h1 class="anim-1" style="font-size:2.8rem; margin-bottom:8px;" data-lang="fr">Construisons le chemin de fer</h1>
     <div class="divider gold center anim-2"></div>
 
-    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.85);">
+    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:680px; color:color-mix(in srgb, var(--white) 85%, transparent);">
       Phase 0 is 6 months and 4 stations.<br>The thesis is testable. The plan is concrete.<br>The partners are identified.
     </p>
-    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:680px; color:rgba(255,255,255,0.85);">
+    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:680px; color:color-mix(in srgb, var(--white) 85%, transparent);">
       La Phase 0 est 6 mois et 4 stations.<br>La thèse est testable. Le plan est concret.<br>Les partenaires sont identifiés.
     </p>
 
     <div class="anim-3" style="margin-top:32px; display:flex; gap:24px; flex-wrap:wrap; justify-content:center;">
-      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
+      <div style="background:color-mix(in srgb, var(--white) 8%, transparent); border:1px solid color-mix(in srgb, var(--white) 15%, transparent); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
         <div style="font-family:'Space Grotesk', system-ui, sans-serif; font-size:2.4rem; font-weight:900; color:var(--maple-red);">Phase 0</div>
         <div data-lang="en" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Prove It Works</div>
         <div data-lang="fr" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Prouver que ça marche</div>
       </div>
-      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
+      <div style="background:color-mix(in srgb, var(--white) 8%, transparent); border:1px solid color-mix(in srgb, var(--white) 15%, transparent); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
         <div style="font-family:'Space Grotesk', system-ui, sans-serif; font-size:2.4rem; font-weight:900; color:var(--accent-gold);">Phase 1</div>
         <div data-lang="en" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Scale to Ten</div>
         <div data-lang="fr" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Passer à dix</div>
       </div>
-      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
+      <div style="background:color-mix(in srgb, var(--white) 8%, transparent); border:1px solid color-mix(in srgb, var(--white) 15%, transparent); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
         <div style="font-family:'Space Grotesk', system-ui, sans-serif; font-size:2.4rem; font-weight:900; color:var(--accent-teal);">Phase 2</div>
         <div data-lang="en" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Go National</div>
         <div data-lang="fr" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Devenir national</div>
       </div>
-      <div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
+      <div style="background:color-mix(in srgb, var(--white) 8%, transparent); border:1px solid color-mix(in srgb, var(--white) 15%, transparent); border-radius:12px; padding:24px 28px; text-align:center; min-width:120px;">
         <div style="font-family:'Space Grotesk', system-ui, sans-serif; font-size:2.4rem; font-weight:900; color:var(--accent-green);">Phase 3</div>
         <div data-lang="en" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Knowledge Economy</div>
         <div data-lang="fr" style="font-size:0.8rem; opacity:0.6; margin-top:4px;">Économie du savoir</div>
       </div>
     </div>
 
-    <div class="quote-block anim-4" data-lang="en" style="border-color: rgba(255,255,255,0.3); max-width:600px; margin: 32px auto 0; text-align:center;">
+    <div class="quote-block anim-4" data-lang="en" style="border-color: color-mix(in srgb, var(--white) 30%, transparent); max-width:600px; margin: 32px auto 0; text-align:center;">
       "The last spike of the digital age."
     </div>
-    <div class="quote-block anim-4" data-lang="fr" style="border-color: rgba(255,255,255,0.3); max-width:600px; margin: 32px auto 0; text-align:center;">
+    <div class="quote-block anim-4" data-lang="fr" style="border-color: color-mix(in srgb, var(--white) 30%, transparent); max-width:600px; margin: 32px auto 0; text-align:center;">
       « Le dernier crampon de l'ère numérique. »
     </div>
 
