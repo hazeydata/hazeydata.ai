@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/icon-180.png">
-    <meta name="theme-color" content="#0a1628">
+    <meta name="theme-color" content="var(--navy)">
     <link rel="canonical" href="https://hazeydata.ai/cdr/">
 
     <!-- Open Graph -->
@@ -25,9 +25,7 @@
     <meta name="twitter:description" content="A coast-to-coast network of locally-owned AI compute nodes — running open-weight models on Canadian soil.">
     <meta name="twitter:image" content="https://hazeydata.ai/assets/og-image-1200x630.png">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/fonts/fonts.css">
     <link rel="stylesheet" href="../styles.css?v=20260315b">
     <style>
         /* ========================================
@@ -57,13 +55,13 @@
         }
         .cdr-ambient .orb-1 {
             width: 600px; height: 600px;
-            background: radial-gradient(circle, #C41E3A 0%, transparent 70%);
+            background: radial-gradient(circle, var(--cdr-red) 0%, transparent 70%);
             top: -15%; left: -10%;
             animation: cdr-drift 25s ease-in-out infinite alternate;
         }
         .cdr-ambient .orb-2 {
             width: 500px; height: 500px;
-            background: radial-gradient(circle, #4a90a4 0%, transparent 70%);
+            background: radial-gradient(circle, var(--acc-on-light) 0%, transparent 70%);
             bottom: -10%; right: -10%;
             animation: cdr-drift 30s ease-in-out infinite alternate-reverse;
         }
@@ -81,10 +79,10 @@
             transition: all 0.3s ease;
         }
         .cdr-nav.scrolled {
-            background: rgba(10, 22, 40, 0.9);
+            background: color-mix(in srgb, var(--navy) 90%, transparent);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
         }
         .cdr-nav-inner {
             max-width: 1200px;
@@ -104,7 +102,7 @@
             font-family: var(--font-mono);
             font-weight: 800;
             letter-spacing: 0.12em;
-            background: linear-gradient(135deg, #4a90a4 0%, #6bb5c9 50%, #4a90a4 100%);
+            background: linear-gradient(135deg, var(--acc-on-light) 0%, var(--acc) 50%, var(--acc-on-light) 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -205,7 +203,7 @@
         }
         .cdr-hero h1 .cdr-title-main {
             display: block;
-            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.85) 100%);
+            background: linear-gradient(135deg, var(--white) 0%, color-mix(in srgb, var(--white) 85%, transparent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -230,8 +228,8 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.06);
+            background: color-mix(in srgb, var(--white) 4%, transparent);
+            border: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
             border-radius: 16px;
             overflow: hidden;
             margin: 3rem 0;
@@ -242,7 +240,7 @@
         .crisis-stat {
             padding: 2rem 1.5rem;
             text-align: center;
-            background: rgba(10, 22, 40, 0.6);
+            background: color-mix(in srgb, var(--navy) 60%, transparent);
             backdrop-filter: blur(8px);
         }
         .crisis-stat .val {
@@ -267,12 +265,12 @@
             margin-top: 2rem;
         }
         .btn-cdr {
-            background: linear-gradient(135deg, var(--cdr-red) 0%, #9a1530 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--cdr-red) 0%, var(--cdr-red) 100%);
+            color: var(--white);
         }
         .btn-cdr:hover {
             transform: translateY(-1px);
-            box-shadow: 0 8px 30px rgba(196, 30, 58, 0.3);
+            box-shadow: 0 8px 30px color-mix(in srgb, var(--cdr-red) 30%, transparent);
             background: linear-gradient(135deg, var(--cdr-red-light) 0%, var(--cdr-red) 100%);
         }
 
@@ -344,8 +342,8 @@
             margin-top: 2rem;
         }
         .cdr-pillar {
-            background: rgba(255, 255, 255, 0.025);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: color-mix(in srgb, var(--white) 2.5%, transparent);
+            border: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
             border-radius: 16px;
             padding: 2.25rem 1.75rem;
             transition: all 0.3s ease;
@@ -353,10 +351,10 @@
             -webkit-backdrop-filter: blur(8px);
         }
         .cdr-pillar:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(196, 30, 58, 0.25);
+            background: color-mix(in srgb, var(--white) 4%, transparent);
+            border-color: color-mix(in srgb, var(--cdr-red) 25%, transparent);
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 12px 40px color-mix(in srgb, var(--black) 20%, transparent);
         }
         .cdr-pillar .pillar-icon {
             font-size: 2.25rem;
@@ -378,8 +376,8 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.06);
+            background: color-mix(in srgb, var(--white) 4%, transparent);
+            border: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
             border-radius: 16px;
             overflow: hidden;
             margin: 2.5rem 0;
@@ -387,7 +385,7 @@
         .spec-stat {
             padding: 2rem 1.5rem;
             text-align: center;
-            background: rgba(10, 22, 40, 0.6);
+            background: color-mix(in srgb, var(--navy) 60%, transparent);
             backdrop-filter: blur(8px);
         }
         .spec-stat .val {
@@ -412,8 +410,8 @@
             margin-top: 2rem;
         }
         .cdr-detail-card {
-            background: rgba(255, 255, 255, 0.025);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: color-mix(in srgb, var(--white) 2.5%, transparent);
+            border: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
             border-radius: 16px;
             padding: 2rem;
             backdrop-filter: blur(8px);
@@ -421,7 +419,7 @@
             transition: all 0.2s;
         }
         .cdr-detail-card:hover {
-            border-color: rgba(74, 144, 164, 0.25);
+            border-color: color-mix(in srgb, var(--acc-on-light) 25%, transparent);
         }
         .cdr-detail-card h3 {
             font-size: 1.1rem;
@@ -465,8 +463,8 @@
             justify-content: center;
             gap: 0.5rem;
             padding: 0.8rem 1rem;
-            background: rgba(255, 255, 255, 0.025);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: color-mix(in srgb, var(--white) 2.5%, transparent);
+            border: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
             border-radius: 10px;
             color: var(--text-secondary);
             text-decoration: none;
@@ -475,9 +473,9 @@
             transition: all 0.2s;
         }
         .cdr-resource-link:hover {
-            border-color: rgba(196, 30, 58, 0.3);
+            border-color: color-mix(in srgb, var(--cdr-red) 30%, transparent);
             color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.04);
+            background: color-mix(in srgb, var(--white) 4%, transparent);
             transform: translateY(-1px);
         }
 
@@ -485,7 +483,7 @@
         .cdr-footer {
             position: relative;
             z-index: 1;
-            border-top: 1px solid rgba(255,255,255,0.06);
+            border-top: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
             padding: 2.5rem 2rem;
         }
         .cdr-footer-inner {
@@ -527,7 +525,7 @@
             max-width: 1000px;
             margin: 0 auto;
             border: 0;
-            border-top: 1px solid rgba(255,255,255,0.06);
+            border-top: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
         }
 
         /* --- Responsive --- */
@@ -539,14 +537,14 @@
                 position: absolute;
                 top: 100%;
                 right: 1rem;
-                background: rgba(10, 22, 40, 0.95);
+                background: color-mix(in srgb, var(--navy) 95%, transparent);
                 border: 1px solid var(--border);
                 border-radius: 12px;
                 padding: 0.75rem 1rem;
                 min-width: 180px;
                 flex-direction: column;
                 gap: 0.25rem;
-                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+                box-shadow: 0 8px 30px color-mix(in srgb, var(--black) 40%, transparent);
                 backdrop-filter: blur(16px);
             }
             .cdr-nav-links.open { display: flex; }
@@ -568,6 +566,7 @@
         }
     </style>
     <link rel="stylesheet" href="../hazeydata-b.css">
+    <link rel="stylesheet" href="/cdr/landing.css">
 </head>
 <body>
     <!-- Ambient background -->
@@ -603,6 +602,10 @@
             </h1>
             <p class="hero-sub">Sovereign AI Infrastructure, Coast to Coast</p>
             <p class="hero-desc">A coast-to-coast network of locally-owned AI compute nodes — running open-weight models on Canadian soil — connected by federated governance that no single entity controls.</p>
+            <div class="cdr-hero-cta">
+                <a href="/cdr/blog/why-canada-needs-a-digital-railway.html" class="btn btn-cdr btn-lg">Read the Vision →</a>
+                <a href="mailto:fred@hazeydata.ai?subject=Canadian%20Digital%20Railway" class="btn btn-outline btn-lg">Get in Touch</a>
+            </div>
 
             <div class="cdr-crisis-stats">
                 <div class="crisis-stat">
@@ -617,11 +620,6 @@
                     <div class="val">$2B+</div>
                     <div class="lbl">Federal AI spending<br>since 2024</div>
                 </div>
-            </div>
-
-            <div class="cdr-hero-cta">
-                <a href="/cdr/blog/why-canada-needs-a-digital-railway.html" class="btn btn-cdr btn-lg">Read the Vision →</a>
-                <a href="mailto:fred@hazeydata.ai?subject=Canadian%20Digital%20Railway" class="btn btn-outline btn-lg">Get in Touch</a>
             </div>
         </div>
     </section>

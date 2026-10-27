@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Join the Canadian Digital Railway Pilot 🚂🍁 | hazeydata.ai</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap');
+  @import url('/assets/fonts/fonts.css');
 
   :root {
     /* Warmer railway palette */
@@ -39,7 +39,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--rail-charcoal);
     color: var(--rail-grey-dark);
     overflow: hidden;
@@ -53,17 +53,17 @@
   body.lang-fr [data-lang="en"] { display: none !important; }
   body.lang-fr [data-lang="fr"] { display: revert !important; }
   body.lang-fr .flow[data-lang="fr"] { display: flex !important; }
-  body.lang-fr .two-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
-  body.lang-fr .three-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr; }
-  body.lang-fr .four-col[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr 1fr 1fr; }
-  body.lang-fr .use-cases-grid[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
-  body.lang-fr .faq-grid[data-lang="fr"] { display: grid !important; grid-template-columns: 1fr 1fr; }
+  body.lang-fr .two-col[data-lang="fr"] { display: grid !important; }
+  body.lang-fr .three-col[data-lang="fr"] { display: grid !important; }
+  body.lang-fr .four-col[data-lang="fr"] { display: grid !important; }
+  body.lang-fr .use-cases-grid[data-lang="fr"] { display: grid !important; }
+  body.lang-fr .faq-grid[data-lang="fr"] { display: grid !important; }
   body.lang-fr .timeline-flow[data-lang="fr"] { display: flex !important; }
 
   .lang-toggle {
     display: flex;
     gap: 0;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid color-mix(in srgb, var(--white) 20%, transparent);
     border-radius: 4px;
     overflow: hidden;
   }
@@ -73,13 +73,13 @@
     font-weight: 600;
     cursor: pointer;
     background: transparent;
-    color: rgba(255,255,255,0.5);
+    color: color-mix(in srgb, var(--white) 50%, transparent);
     border: none;
     letter-spacing: 0.05em;
   }
   .lang-btn.active {
     background: var(--maple-red);
-    color: white;
+    color: var(--white);
   }
 
   .deck {
@@ -129,7 +129,7 @@
 
   /* Slide themes — warmer than the funding deck */
   .slide-cover {
-    background: linear-gradient(160deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    background: linear-gradient(160deg, var(--navy-deep) 0%, var(--navy) 40%, var(--navy-mid) 100%);
     color: var(--rail-white);
     text-align: center;
   }
@@ -146,19 +146,19 @@
     color: var(--rail-grey-dark);
   }
   .slide-terry {
-    background: linear-gradient(160deg, #1a3a4f 0%, #1e4d6a 40%, #2a6b8a 100%);
+    background: linear-gradient(160deg, var(--navy-mid) 0%, var(--navy-mid) 40%, var(--navy-mid) 100%);
     color: var(--rail-white);
   }
   .slide-dark {
-    background: linear-gradient(160deg, #1a1a2e 0%, var(--rail-charcoal) 100%);
+    background: linear-gradient(160deg, var(--navy-deep) 0%, var(--rail-charcoal) 100%);
     color: var(--rail-white);
   }
   .slide-deep {
-    background: linear-gradient(160deg, #0d1b2a 0%, #1b2838 50%, #1a3a4f 100%);
+    background: linear-gradient(160deg, var(--navy-deep) 0%, var(--navy) 50%, var(--navy-mid) 100%);
     color: var(--rail-white);
   }
   .slide-forest {
-    background: linear-gradient(160deg, #1a2e1a 0%, #1e3e2a 100%);
+    background: linear-gradient(160deg, var(--navy-deep) 0%, var(--navy-mid) 100%);
     color: var(--rail-white);
   }
   .slide-white {
@@ -168,7 +168,7 @@
 
   /* ── Typography — warmer, friendlier ── */
   h1 {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
     font-size: 3rem;
     font-weight: 900;
     line-height: 1.15;
@@ -177,7 +177,7 @@
   }
 
   h2 {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
     font-size: 2.1rem;
     font-weight: 700;
     line-height: 1.25;
@@ -250,20 +250,20 @@
   .card p { font-size: 0.92rem; line-height: 1.65; color: var(--rail-grey-mid); }
 
   .card-dark {
-    background: rgba(255,255,255,0.06);
+    background: color-mix(in srgb, var(--white) 6%, transparent);
     border-radius: 12px;
     padding: 28px 24px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
     border-left: 4px solid var(--accent-gold);
   }
   .card-dark h3 { color: var(--accent-gold-light); }
   .card-dark p { font-size: 0.92rem; line-height: 1.65; opacity: 0.8; }
 
   .card-warm {
-    background: rgba(255,255,255,0.7);
+    background: color-mix(in srgb, var(--white) 70%, transparent);
     border-radius: 12px;
     padding: 28px 24px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 16px color-mix(in srgb, var(--black) 5%, transparent);
     border-left: 4px solid var(--terry-blue);
   }
   .card-warm h3 { color: var(--terry-blue); }
@@ -290,10 +290,10 @@
     width: 100%;
   }
   .use-case {
-    background: rgba(255,255,255,0.08);
+    background: color-mix(in srgb, var(--white) 8%, transparent);
     border-radius: 12px;
     padding: 24px;
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid color-mix(in srgb, var(--white) 12%, transparent);
     display: flex;
     gap: 16px;
     align-items: flex-start;
@@ -321,7 +321,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    background: rgba(200,151,62,0.2);
+    background: color-mix(in srgb, var(--accent-gold) 20%, transparent);
     color: var(--accent-gold-light);
     padding: 2px 10px;
     border-radius: 10px;
@@ -338,9 +338,9 @@
   }
   .faq-item {
     padding: 20px 24px;
-    background: rgba(255,255,255,0.06);
+    background: color-mix(in srgb, var(--white) 6%, transparent);
     border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
   }
   .faq-item .faq-q {
     font-weight: 700;
@@ -393,7 +393,7 @@
     font-size: 1.5rem;
     margin: 0 auto 12px;
   }
-  .timeline-dot.warm { background: rgba(200,151,62,0.2); }
+  .timeline-dot.warm { background: color-mix(in srgb, var(--accent-gold) 20%, transparent); }
   .timeline-label {
     font-size: 0.78rem;
     font-weight: 700;
@@ -501,8 +501,8 @@
 
   /* ── Terry chat bubble ── */
   .terry-bubble {
-    background: rgba(59,107,138,0.15);
-    border: 1px solid rgba(59,107,138,0.25);
+    background: color-mix(in srgb, var(--terry-blue) 15%, transparent);
+    border: 1px solid color-mix(in srgb, var(--terry-blue) 25%, transparent);
     border-radius: 16px 16px 16px 4px;
     padding: 20px 24px;
     max-width: 600px;
@@ -522,11 +522,11 @@
     color: var(--rail-grey-dark);
   }
   .terry-bubble.dark-bg {
-    background: rgba(90,148,184,0.15);
-    border-color: rgba(90,148,184,0.3);
+    background: color-mix(in srgb, var(--terry-blue-light) 15%, transparent);
+    border-color: color-mix(in srgb, var(--terry-blue-light) 30%, transparent);
   }
   .terry-bubble.dark-bg p {
-    color: rgba(255,255,255,0.9);
+    color: color-mix(in srgb, var(--white) 90%, transparent);
   }
 
   /* ── What-you-get grid ── */
@@ -540,9 +540,9 @@
   .offer-item {
     text-align: center;
     padding: 24px 16px;
-    background: rgba(255,255,255,0.06);
+    background: color-mix(in srgb, var(--white) 6%, transparent);
     border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
   }
   .offer-item .offer-icon { font-size: 2.2rem; margin-bottom: 10px; }
   .offer-item h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 6px; }
@@ -553,17 +553,17 @@
     position: fixed;
     bottom: 0; left: 0; right: 0;
     height: 52px;
-    background: rgba(20,20,22,0.92);
+    background: color-mix(in srgb, var(--rail-black) 92%, transparent);
     backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 32px;
     z-index: 100;
-    border-top: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
   }
   .nav-brand {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
     font-weight: 700;
     font-size: 0.85rem;
     color: var(--rail-white);
@@ -577,7 +577,7 @@
   .nav-dot {
     width: 8px; height: 8px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.2);
+    background: color-mix(in srgb, var(--white) 20%, transparent);
     cursor: pointer;
     transition: all 0.3s ease;
   }
@@ -589,7 +589,7 @@
   .nav-btn {
     width: 36px; height: 36px;
     border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid color-mix(in srgb, var(--white) 15%, transparent);
     background: transparent;
     color: var(--rail-white);
     cursor: pointer;
@@ -599,10 +599,10 @@
     font-size: 1rem;
     transition: all 0.2s ease;
   }
-  .nav-btn:hover { background: rgba(255,255,255,0.1); }
+  .nav-btn:hover { background: color-mix(in srgb, var(--white) 10%, transparent); }
   .slide-counter {
     font-size: 0.75rem;
-    color: rgba(255,255,255,0.4);
+    color: color-mix(in srgb, var(--white) 40%, transparent);
     font-weight: 500;
     min-width: 44px;
     text-align: center;
@@ -697,12 +697,6 @@
     .card-dark > div[style*="flex"] { flex-wrap: wrap; }
     .two-col > *, .three-col > *, .four-col > *, .use-cases-grid > *, .faq-grid > * { min-width: 0; }
     .two-col { grid-template-columns: minmax(0, 1fr); }
-    /* FR mode re-forces multi-column grids with !important and no media query (top of file) */
-    body.lang-fr .two-col[data-lang="fr"],
-    body.lang-fr .three-col[data-lang="fr"],
-    body.lang-fr .four-col[data-lang="fr"],
-    body.lang-fr .use-cases-grid[data-lang="fr"],
-    body.lang-fr .faq-grid[data-lang="fr"] { grid-template-columns: minmax(0, 1fr); }
     .anim-4 > div[style*="grid-template-columns"] { grid-template-columns: minmax(0, 1fr) !important; }
     .anim-4 p { overflow-wrap: anywhere; }
     .stack-layer .sl-name { min-width: 0; }
@@ -716,6 +710,7 @@
     .rev-table td, .fund-table td, .compare-table td { overflow-wrap: anywhere; }
   }
 </style>
+<link rel="stylesheet" href="/cdr/deck.css">
 </head>
 <body>
 
@@ -735,11 +730,11 @@
 
     <div class="divider gold center anim-2"></div>
 
-    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:620px; color:rgba(255,255,255,0.8);">
+    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:620px; color:color-mix(in srgb, var(--white) 80%, transparent);">
       Be one of the first stations on the line.<br>
       <span style="font-size:0.95rem; opacity:0.7;">An invitation to help build Canada's sovereign AI future — starting with yours.</span>
     </p>
-    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:620px; color:rgba(255,255,255,0.8);">
+    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:620px; color:color-mix(in srgb, var(--white) 80%, transparent);">
       Soyez l'une des premières stations sur la ligne.<br>
       <span style="font-size:0.95rem; opacity:0.7;">Une invitation à bâtir l'avenir de l'IA souveraine au Canada — en commençant par le vôtre.</span>
     </p>
@@ -841,10 +836,10 @@
       <h2 class="anim-1" data-lang="fr" style="font-size:2.4rem;">Voici Terry</h2>
       <div class="divider gold center anim-2"></div>
 
-      <p class="subtitle anim-2" data-lang="en" style="color:rgba(255,255,255,0.8); max-width:640px; margin: 0 auto 24px; font-size:1rem;">
+      <p class="subtitle anim-2" data-lang="en" style="color:color-mix(in srgb, var(--white) 80%, transparent); max-width:640px; margin: 0 auto 24px; font-size:1rem;">
         Named after <strong>Terry Fox</strong> — the Canadian who connected this country through sheer determination. Terry is your AI partner. Not a chatbot. Not a search engine. A collaborator who <strong>already knows you</strong>. Before your station arrives, we'll ask you a few questions about your business. Terry boots up pre-configured for YOUR world — your industry, your tools, your pain points. Not a cold start. A warm handshake.
       </p>
-      <p class="subtitle anim-2" data-lang="fr" style="color:rgba(255,255,255,0.8); max-width:640px; margin: 0 auto 24px; font-size:1rem;">
+      <p class="subtitle anim-2" data-lang="fr" style="color:color-mix(in srgb, var(--white) 80%, transparent); max-width:640px; margin: 0 auto 24px; font-size:1rem;">
         Nommé d'après <strong>Terry Fox</strong> — le Canadien qui a connecté ce pays par sa détermination. Terry est votre partenaire IA. Pas un chatbot. Pas un moteur de recherche. Un collaborateur qui <strong>vous connaît déjà</strong>. Avant l'arrivée de votre station, nous vous poserons quelques questions sur votre entreprise. Terry démarre préconfiguré pour VOTRE monde — votre industrie, vos outils, vos points de douleur. Pas un démarrage à froid. Une poignée de main chaleureuse.
       </p>
 
@@ -856,7 +851,7 @@
       <div class="two-col anim-4" data-lang="en" style="text-align:left; margin-top:24px; max-width:800px; margin-left:auto; margin-right:auto;">
         <div>
           <h3 style="color:var(--accent-gold-light); margin-bottom:14px;">🔧 Terry Builds With You</h3>
-          <ul class="check-list gold-checks" style="opacity:0.85; color:rgba(255,255,255,0.85);">
+          <ul class="check-list gold-checks" style="opacity:0.85; color:color-mix(in srgb, var(--white) 85%, transparent);">
             <li>Learns your business through conversation</li>
             <li>Suggests tools based on what you need</li>
             <li>Builds things step by step — you're always in control</li>
@@ -865,7 +860,7 @@
         </div>
         <div>
           <h3 style="color:var(--accent-gold-light); margin-bottom:14px;">🎓 Terry IS Your Trainer</h3>
-          <ul class="check-list gold-checks" style="opacity:0.85; color:rgba(255,255,255,0.85);">
+          <ul class="check-list gold-checks" style="opacity:0.85; color:color-mix(in srgb, var(--white) 85%, transparent);">
             <li>No manuals. No onboarding consultants</li>
             <li>Terry teaches you by building with you</li>
             <li>Asks questions, makes suggestions, explains as you go</li>
@@ -876,7 +871,7 @@
       <div class="two-col anim-4" data-lang="fr" style="text-align:left; margin-top:24px; max-width:800px; margin-left:auto; margin-right:auto;">
         <div>
           <h3 style="color:var(--accent-gold-light); margin-bottom:14px;">🔧 Terry construit avec vous</h3>
-          <ul class="check-list gold-checks" style="opacity:0.85; color:rgba(255,255,255,0.85);">
+          <ul class="check-list gold-checks" style="opacity:0.85; color:color-mix(in srgb, var(--white) 85%, transparent);">
             <li>Apprend votre entreprise par la conversation</li>
             <li>Suggère des outils selon vos besoins</li>
             <li>Construit étape par étape — vous gardez le contrôle</li>
@@ -885,7 +880,7 @@
         </div>
         <div>
           <h3 style="color:var(--accent-gold-light); margin-bottom:14px;">🎓 Terry EST votre formateur</h3>
-          <ul class="check-list gold-checks" style="opacity:0.85; color:rgba(255,255,255,0.85);">
+          <ul class="check-list gold-checks" style="opacity:0.85; color:color-mix(in srgb, var(--white) 85%, transparent);">
             <li>Pas de manuels. Pas de consultants d'intégration</li>
             <li>Terry vous enseigne en construisant avec vous</li>
             <li>Pose des questions, fait des suggestions, explique au fur et à mesure</li>
@@ -944,13 +939,13 @@
         </div>
       </div>
 
-      <div class="anim-4" data-lang="en" style="background: #1a3a4f; border-radius:12px; padding:24px 32px; color:white; margin-top:28px; max-width:680px; margin-left:auto; margin-right:auto; text-align:left;">
+      <div class="anim-4" data-lang="en" style="background: var(--navy-mid); border-radius:12px; padding:24px 32px; color:var(--white); margin-top:28px; max-width:680px; margin-left:auto; margin-right:auto; text-align:left;">
         <h3 style="color:var(--accent-gold-light); margin-bottom:10px;">🪶 For Indigenous Communities</h3>
         <p style="font-size:0.92rem; line-height:1.7; opacity:0.9;">
           OCAP® compliant <strong>by architecture</strong>, not by policy. Your data literally cannot leave your machine. We partner with the <strong>First Nations Technology Council (FNTC)</strong> and the <strong>First Nations Information Governance Centre (FNIGC)</strong> to ensure the CDR meets Indigenous data sovereignty standards. Your community decides what to build. Not us.
         </p>
       </div>
-      <div class="anim-4" data-lang="fr" style="background: #1a3a4f; border-radius:12px; padding:24px 32px; color:white; margin-top:28px; max-width:680px; margin-left:auto; margin-right:auto; text-align:left;">
+      <div class="anim-4" data-lang="fr" style="background: var(--navy-mid); border-radius:12px; padding:24px 32px; color:var(--white); margin-top:28px; max-width:680px; margin-left:auto; margin-right:auto; text-align:left;">
         <h3 style="color:var(--accent-gold-light); margin-bottom:10px;">🪶 Pour les communautés autochtones</h3>
         <p style="font-size:0.92rem; line-height:1.7; opacity:0.9;">
           Conforme aux PCAP® <strong>par l'architecture</strong>, pas par une politique. Vos données ne peuvent littéralement pas quitter votre machine. Nous collaborons avec le <strong>First Nations Technology Council (FNTC)</strong> et le <strong>Centre de gouvernance de l'information des Premières Nations (CGIPN)</strong> pour garantir que le CDR respecte les normes de souveraineté des données autochtones. Votre communauté décide quoi construire. Pas nous.
@@ -1066,21 +1061,21 @@
       <div class="two-col anim-3" data-lang="en">
         <div>
           <div class="gap-item">
-            <div class="gap-icon" style="background:var(--accent-warm); color:white;">📋</div>
+            <div class="gap-icon" style="background:var(--accent-warm); color:var(--white);">📋</div>
             <div class="gap-text">
               <h4 style="color:var(--rail-slate);">A Short Questionnaire</h4>
               <p>Fill out a quick form about your business so Terry can hit the ground running. Industry, tools you use, what frustrates you. Takes 15 minutes — saves weeks of ramp-up.</p>
             </div>
           </div>
           <div class="gap-item">
-            <div class="gap-icon" style="background:var(--accent-gold); color:white;">⏰</div>
+            <div class="gap-icon" style="background:var(--accent-gold); color:var(--white);">⏰</div>
             <div class="gap-text">
               <h4 style="color:var(--rail-slate);">Your Time</h4>
               <p>2–3 hours per week for 3 months. That's it. Use Terry the way you'd use any tool — when it's helpful, not on a schedule.</p>
             </div>
           </div>
           <div class="gap-item">
-            <div class="gap-icon" style="background:var(--terry-blue); color:white;">💡</div>
+            <div class="gap-icon" style="background:var(--terry-blue); color:var(--white);">💡</div>
             <div class="gap-text">
               <h4 style="color:var(--rail-slate);">A Real Problem</h4>
               <p>Something in your work that takes too long, costs too much, or frustrates you. That's what Terry is here to help with.</p>
@@ -1089,14 +1084,14 @@
         </div>
         <div>
           <div class="gap-item">
-            <div class="gap-icon" style="background:var(--accent-green); color:white;">💬</div>
+            <div class="gap-icon" style="background:var(--accent-green); color:var(--white);">💬</div>
             <div class="gap-text">
               <h4 style="color:var(--rail-slate);">Honest Feedback</h4>
               <p>What works. What doesn't. What's confusing. We need the truth, not politeness. Your feedback shapes the product for everyone.</p>
             </div>
           </div>
           <div class="gap-item">
-            <div class="gap-icon" style="background:var(--maple-red-soft); color:white;">📝</div>
+            <div class="gap-icon" style="background:var(--maple-red-soft); color:var(--white);">📝</div>
             <div class="gap-text">
               <h4 style="color:var(--rail-slate);">A Case Study</h4>
               <p>Permission to document your experience — anonymized by default. You choose whether to be named or stay anonymous.</p>
@@ -1107,21 +1102,21 @@
       <div class="two-col anim-3" data-lang="fr">
         <div>
           <div class="gap-item">
-            <div class="gap-icon" style="background:var(--accent-warm); color:white;">📋</div>
+            <div class="gap-icon" style="background:var(--accent-warm); color:var(--white);">📋</div>
             <div class="gap-text">
               <h4 style="color:var(--rail-slate);">Un court questionnaire</h4>
               <p>Remplissez un formulaire rapide sur votre entreprise pour que Terry puisse démarrer en force. Industrie, outils que vous utilisez, ce qui vous frustre. 15 minutes — sauve des semaines de rodage.</p>
             </div>
           </div>
           <div class="gap-item">
-            <div class="gap-icon" style="background:var(--accent-gold); color:white;">⏰</div>
+            <div class="gap-icon" style="background:var(--accent-gold); color:var(--white);">⏰</div>
             <div class="gap-text">
               <h4 style="color:var(--rail-slate);">Votre temps</h4>
               <p>2 à 3 heures par semaine pendant 3 mois. C'est tout. Utilisez Terry comme n'importe quel outil — quand c'est utile, pas selon un horaire.</p>
             </div>
           </div>
           <div class="gap-item">
-            <div class="gap-icon" style="background:var(--terry-blue); color:white;">💡</div>
+            <div class="gap-icon" style="background:var(--terry-blue); color:var(--white);">💡</div>
             <div class="gap-text">
               <h4 style="color:var(--rail-slate);">Un vrai problème</h4>
               <p>Quelque chose dans votre travail qui prend trop de temps, coûte trop cher, ou vous frustre. C'est pour ça que Terry est là.</p>
@@ -1130,14 +1125,14 @@
         </div>
         <div>
           <div class="gap-item">
-            <div class="gap-icon" style="background:var(--accent-green); color:white;">💬</div>
+            <div class="gap-icon" style="background:var(--accent-green); color:var(--white);">💬</div>
             <div class="gap-text">
               <h4 style="color:var(--rail-slate);">Des commentaires honnêtes</h4>
               <p>Ce qui fonctionne. Ce qui ne fonctionne pas. Ce qui est confus. Nous avons besoin de la vérité, pas de politesse.</p>
             </div>
           </div>
           <div class="gap-item">
-            <div class="gap-icon" style="background:var(--maple-red-soft); color:white;">📝</div>
+            <div class="gap-icon" style="background:var(--maple-red-soft); color:var(--white);">📝</div>
             <div class="gap-text">
               <h4 style="color:var(--rail-slate);">Une étude de cas</h4>
               <p>La permission de documenter votre expérience — anonymisée par défaut. Vous choisissez d'être nommé ou de rester anonyme.</p>
@@ -1146,13 +1141,13 @@
         </div>
       </div>
 
-      <div class="anim-4" data-lang="en" style="text-align:center; margin-top:28px; background:rgba(200,151,62,0.1); border-radius:12px; padding:20px 28px; max-width:600px; margin-left:auto; margin-right:auto;">
+      <div class="anim-4" data-lang="en" style="text-align:center; margin-top:28px; background:color-mix(in srgb, var(--accent-gold) 10%, transparent); border-radius:12px; padding:20px 28px; max-width:600px; margin-left:auto; margin-right:auto;">
         <p style="font-size:0.95rem; color:var(--rail-grey-dark); line-height:1.65;">
           <strong>You're not a customer — you're a pioneer.</strong><br>
           This is early. It's honest. And your voice matters more now than it ever will later.
         </p>
       </div>
-      <div class="anim-4" data-lang="fr" style="text-align:center; margin-top:28px; background:rgba(200,151,62,0.1); border-radius:12px; padding:20px 28px; max-width:600px; margin-left:auto; margin-right:auto;">
+      <div class="anim-4" data-lang="fr" style="text-align:center; margin-top:28px; background:color-mix(in srgb, var(--accent-gold) 10%, transparent); border-radius:12px; padding:20px 28px; max-width:600px; margin-left:auto; margin-right:auto;">
         <p style="font-size:0.95rem; color:var(--rail-grey-dark); line-height:1.65;">
           <strong>Vous n'êtes pas un client — vous êtes un pionnier.</strong><br>
           C'est le début. C'est honnête. Et votre voix compte plus maintenant qu'elle ne comptera jamais plus tard.
@@ -1236,7 +1231,7 @@
         </div>
       </div>
 
-      <div class="terry-bubble anim-4" style="margin: 28px auto 0; text-align:left; max-width:560px; background:rgba(59,107,138,0.08); border-color:rgba(59,107,138,0.2);">
+      <div class="terry-bubble anim-4" style="margin: 28px auto 0; text-align:left; max-width:560px; background:color-mix(in srgb, var(--terry-blue) 8%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 20%, transparent);">
         <p data-lang="en" style="color:var(--rail-grey-dark); font-size:0.92rem;"><strong style="color:var(--terry-blue);">Terry, Day 2:</strong> "I see you run a physiotherapy clinic. A lot of your time goes into patient intake, right? Want to start there? I can build you something that reads referral letters and fills in the intake form automatically. Sound good?"</p>
         <p data-lang="fr" style="color:var(--rail-grey-dark); font-size:0.92rem;"><strong style="color:var(--terry-blue);">Terry, Jour 2:</strong> « Je vois que vous gérez une clinique de physiothérapie. Beaucoup de votre temps va à l'admission des patients, non? On commence par là? Je peux vous construire quelque chose qui lit les lettres de référence et remplit le formulaire automatiquement. Ça vous dit? »</p>
       </div>
@@ -1255,10 +1250,10 @@
       <h2 class="anim-1" data-lang="fr">Vous n'obtenez pas juste un assistant IA</h2>
       <div class="divider gold center anim-2"></div>
 
-      <p class="subtitle anim-2" data-lang="en" style="color:rgba(255,255,255,0.8); max-width:660px; margin: 0 auto 32px; font-size:1.05rem;">
+      <p class="subtitle anim-2" data-lang="en" style="color:color-mix(in srgb, var(--white) 80%, transparent); max-width:660px; margin: 0 auto 32px; font-size:1.05rem;">
         You're helping build Canada's sovereign AI infrastructure. Your clinic, your store, your lab, your community — becomes a pioneer station on a national network.
       </p>
-      <p class="subtitle anim-2" data-lang="fr" style="color:rgba(255,255,255,0.8); max-width:660px; margin: 0 auto 32px; font-size:1.05rem;">
+      <p class="subtitle anim-2" data-lang="fr" style="color:color-mix(in srgb, var(--white) 80%, transparent); max-width:660px; margin: 0 auto 32px; font-size:1.05rem;">
         Vous aidez à bâtir l'infrastructure IA souveraine du Canada. Votre clinique, votre magasin, votre labo, votre communauté — devient une station pionnière sur un réseau national.
       </p>
 
@@ -1268,11 +1263,11 @@
           <p>When you build something useful, other stations across Canada can benefit. When they build something, you benefit too. Shared intelligence, not shared data.</p>
         </div>
         <div class="card-dark" style="border-left-color: var(--accent-green);">
-          <h3 style="color:#81c784;">🏠 Data Stays Home</h3>
+          <h3 style="color:var(--green);">🏠 Data Stays Home</h3>
           <p>The tools, the methods, the know-how — that travels the network. Your actual data? It never leaves your machine. Not one byte.</p>
         </div>
         <div class="card-dark" style="border-left-color: var(--maple-red-soft);">
-          <h3 style="color:#f48fb1;">🌱 Pioneer Effect</h3>
+          <h3 style="color:var(--acc);">🌱 Pioneer Effect</h3>
           <p>The first stations shape the entire network. Your experience, your feedback, your ideas — they define what this becomes for everyone who follows.</p>
         </div>
       </div>
@@ -1282,19 +1277,19 @@
           <p>Quand vous construisez quelque chose d'utile, d'autres stations à travers le Canada en profitent. Quand elles construisent, vous en profitez aussi. Intelligence partagée, pas données partagées.</p>
         </div>
         <div class="card-dark" style="border-left-color: var(--accent-green);">
-          <h3 style="color:#81c784;">🏠 Les données restent chez vous</h3>
+          <h3 style="color:var(--green);">🏠 Les données restent chez vous</h3>
           <p>Les outils, les méthodes, le savoir-faire — ça voyage sur le réseau. Vos données réelles? Elles ne quittent jamais votre machine. Pas un seul octet.</p>
         </div>
         <div class="card-dark" style="border-left-color: var(--maple-red-soft);">
-          <h3 style="color:#f48fb1;">🌱 Effet pionnier</h3>
+          <h3 style="color:var(--acc);">🌱 Effet pionnier</h3>
           <p>Les premières stations façonnent tout le réseau. Votre expérience, vos commentaires, vos idées — ils définissent ce que ça deviendra pour tous ceux qui suivront.</p>
         </div>
       </div>
 
-      <div class="quote-block anim-4" data-lang="en" style="border-color: rgba(255,255,255,0.3); margin: 28px auto 0; text-align:center; max-width:640px;">
+      <div class="quote-block anim-4" data-lang="en" style="border-color: color-mix(in srgb, var(--white) 30%, transparent); margin: 28px auto 0; text-align:center; max-width:640px;">
         "In 1885, the last spike of the Canadian Pacific Railway was driven at Craigellachie. That railway didn't just move goods — it made Canada possible. We're building the digital equivalent. And we'd love for you to be one of the first stations on the line."
       </div>
-      <div class="quote-block anim-4" data-lang="fr" style="border-color: rgba(255,255,255,0.3); margin: 28px auto 0; text-align:center; max-width:640px;">
+      <div class="quote-block anim-4" data-lang="fr" style="border-color: color-mix(in srgb, var(--white) 30%, transparent); margin: 28px auto 0; text-align:center; max-width:640px;">
         « En 1885, le dernier crampon du Chemin de fer Canadien Pacifique a été enfoncé à Craigellachie. Ce chemin de fer n'a pas seulement transporté des marchandises — il a rendu le Canada possible. Nous construisons l'équivalent numérique. Et nous aimerions que vous soyez l'une des premières stations sur la ligne. »
       </div>
     </div>
@@ -1402,61 +1397,61 @@
       <div class="divider gold center anim-2"></div>
 
       <div class="faq-grid anim-3" data-lang="en" style="text-align:left;">
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">How does Terry know about my business?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">Before your station arrives, we'll ask you a few questions — your industry, tools you use, what frustrates you. Terry arrives pre-configured for YOUR world. Not a generic assistant. Yours.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">Do I need to be technical?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">No. That's the whole point. Terry teaches you by building with you. If you can have a conversation, you can use Terry.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">What if something breaks?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">We monitor your station 24/7 and fix issues remotely. And if Terry gets stuck, our team (Wilma + Fred) is a message away, 24/7. You're never alone.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">Is my data really safe?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">Yes. It literally cannot leave your machine without your explicit action. There's no "phone home" feature, no cloud sync, no backdoor. The code is open-source — verify it yourself.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">Can I quit?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">Yes. Anytime. No contract, no penalty. And you keep the hardware either way.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">What happens after the pilot?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">You keep everything — the hardware, Terry, and all the tools you built. We offer an optional managed service at a fair price if you want continued support and updates.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">Will this disrupt my business?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">The station is a small, silent box. Installation takes 2 hours. Terry works at your pace. Think of it like getting a really smart new hire — one that never sleeps and never complains.</div>
         </div>
       </div>
       <div class="faq-grid anim-3" data-lang="fr" style="text-align:left;">
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">Comment Terry connaît-il mon entreprise?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">Avant l'arrivée de votre station, nous vous poserons quelques questions — votre industrie, les outils que vous utilisez, ce qui vous frustre. Terry arrive préconfiguré pour VOTRE monde. Pas un assistant générique. Le vôtre.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">Dois-je être technique?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">Non. C'est tout le but. Terry vous enseigne en construisant avec vous. Si vous pouvez avoir une conversation, vous pouvez utiliser Terry.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">Et si quelque chose brise?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">Nous surveillons votre station 24/7 et réglons les problèmes à distance. Et si Terry est bloqué, notre équipe (Wilma + Fred) est à un message, 24/7. Vous n'êtes jamais seul.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">Mes données sont-elles vraiment en sécurité?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">Oui. Elles ne peuvent littéralement pas quitter votre machine sans votre action explicite. Pas de « téléphone maison », pas de synchronisation nuage, pas de porte dérobée. Le code est ouvert — vérifiez-le vous-même.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">Puis-je quitter?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">Oui. N'importe quand. Pas de contrat, pas de pénalité. Et vous gardez le matériel dans tous les cas.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">Que se passe-t-il après le pilote?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">Vous gardez tout — le matériel, Terry, et tous les outils que vous avez construits. Nous offrons un service géré optionnel à un prix juste si vous voulez du soutien continu.</div>
         </div>
-        <div class="faq-item" style="background:rgba(59,107,138,0.06); border-color:rgba(59,107,138,0.12);">
+        <div class="faq-item" style="background:color-mix(in srgb, var(--terry-blue) 6%, transparent); border-color:color-mix(in srgb, var(--terry-blue) 12%, transparent);">
           <div class="faq-q" style="color:var(--terry-blue);">Est-ce que ça va déranger mon entreprise?</div>
           <div class="faq-a" style="color:var(--rail-grey-dark);">La station est une petite boîte silencieuse. L'installation prend 2 heures. Terry travaille à votre rythme. C'est comme embaucher quelqu'un de très intelligent — qui ne dort jamais et ne se plaint jamais.</div>
         </div>
@@ -1475,10 +1470,10 @@
     <h1 class="anim-1" data-lang="fr" style="font-size:2.4rem; max-width:640px;">Voulez-vous être une station fondatrice?</h1>
     <div class="divider gold center anim-2"></div>
 
-    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:580px; color:rgba(255,255,255,0.8); font-size:1.1rem;">
+    <p class="subtitle anim-2" data-lang="en" style="text-align:center; max-width:580px; color:color-mix(in srgb, var(--white) 80%, transparent); font-size:1.1rem;">
       We're looking for a handful of partners who want to be part of something meaningful. Real people, with real businesses, solving real problems — together.
     </p>
-    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:580px; color:rgba(255,255,255,0.8); font-size:1.1rem;">
+    <p class="subtitle anim-2" data-lang="fr" style="text-align:center; max-width:580px; color:color-mix(in srgb, var(--white) 80%, transparent); font-size:1.1rem;">
       Nous cherchons une poignée de partenaires qui veulent faire partie de quelque chose de significatif. De vraies personnes, avec de vraies entreprises, résolvant de vrais problèmes — ensemble.
     </p>
 
@@ -1490,11 +1485,11 @@
     <div class="anim-4" style="margin-top:24px; display:flex; gap:40px; flex-wrap:wrap; justify-content:center; align-items:center;">
       <div style="text-align:center;">
         <div style="font-size:1.8rem; margin-bottom:8px;">📧</div>
-        <div style="font-size:1rem; font-weight:600; color:rgba(255,255,255,0.9);">fred@hazeydata.ai</div>
+        <div style="font-size:1rem; font-weight:600; color:color-mix(in srgb, var(--white) 90%, transparent);">fred@hazeydata.ai</div>
       </div>
       <div style="text-align:center;">
         <div style="font-size:1.8rem; margin-bottom:8px;">🌐</div>
-        <div style="font-size:1rem; font-weight:600; color:rgba(255,255,255,0.9);">hazeydata.ai</div>
+        <div style="font-size:1rem; font-weight:600; color:color-mix(in srgb, var(--white) 90%, transparent);">hazeydata.ai</div>
       </div>
     </div>
 
