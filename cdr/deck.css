@@ -69,3 +69,16 @@ body.lang-fr .compare-table[data-lang="fr"],body.lang-fr .rev-table[data-lang="f
 .flow-arrow,.timeline-arrow{opacity:1!important;color:var(--ink-muted)!important}
 .slide-white .flow-arrow,.slide-warm .flow-arrow,.slide-terry .flow-arrow,.slide-cream .flow-arrow,.slide-blush .flow-arrow,.slide-white .timeline-arrow,.slide-warm .timeline-arrow,.slide-terry .timeline-arrow,.slide-cream .timeline-arrow,.slide-blush .timeline-arrow{color:var(--ink-grey)!important}
 .metric-card .metric-phase{opacity:1!important}
+/* 13px text floor (Weatherman SHIP note on #36). Every value below was < 13px (8.8-12.8px); max() keeps any larger value. !important beats the page <style> rules and the non-important inline styles */
+.confidential{font-size:max(13px,.65rem)!important}
+.flow-step .flow-label{font-size:max(13px,.8rem)!important}
+.flow-step .flow-desc{font-size:max(13px,.7rem)!important}
+.small-label,.slide-counter,.nav-brand,.logo-tagline-fr,.gap-icon,.pill,.compare-table th,.rev-table th,.fund-table th,.fund-table td,.timeline-desc{font-size:max(13px,.75rem)!important}
+.lang-btn,.phase-badge,.use-case .persona-tag,.tl-label{font-size:max(13px,.7rem)!important}
+.quote-source{font-size:max(13px,.8rem)!important}
+.stat-label,.timeline-label,.hw-card .hw-spec,.metric-card .metric-label,.risk-card .risk-mitigation{font-size:max(13px,.78rem)!important}
+.hw-card .hw-use{font-size:max(13px,.72rem)!important}
+.metric-card .metric-phase{font-size:max(13px,.65rem)!important}
+.tl-desc{font-size:max(13px,.68rem)!important}
+/* inline style="font-size:0.7-0.8rem" on slide copy and the nav brand */
+.slide [style*="font-size:0.7rem"],.slide [style*="font-size: 0.7rem"],.slide [style*="font-size:0.75rem"],.slide [style*="font-size: 0.75rem"],.slide [style*="font-size:0.78rem"],.slide [style*="font-size: 0.78rem"],.slide [style*="font-size:0.8rem"],.slide [style*="font-size: 0.8rem"],.nav-brand [style*="font-size:0.7rem"],.nav-brand [style*="font-size: 0.7rem"]{font-size:max(13px,.8rem)!important}

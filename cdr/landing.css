@@ -28,3 +28,6 @@ a.cdr-resource-link:hover{border-color:var(--acc)!important}
 .pillar-icon{background:color-mix(in srgb,var(--acc) 12%,transparent)!important;border:1px solid color-mix(in srgb,var(--acc) 25%,transparent);border-radius:12px}
 .cdr-divider{border-color:var(--navy-mid)!important;background:var(--navy-mid)!important}
 @media (max-width:600px){.cdr-hero{padding:7rem 1.25rem 4rem!important}.cdr-section{padding:4rem 1.25rem!important}.cdr-hero-cta .btn{width:100%;justify-content:center}.cdr-crisis-stats{grid-template-columns:1fr!important}}
+/* 13px text floor (Weatherman SHIP note on #36): these were 12.48-12.8px */
+.crisis-stat .lbl,.spec-stat .lbl,.cdr-nav-links a{font-size:max(13px,.8rem)!important}
+.cdr-footer-copy{font-size:max(13px,.78rem)!important}

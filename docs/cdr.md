@@ -16,6 +16,7 @@ The pages use the HazeyData house style (Direction B): navy/cyan tokens, Inter f
 - The FR `body.lang-fr .x[data-lang="fr"]` rules only set `display`; columns come from the normal (responsive) class rules. Every FR grid copy carries `data-lang="fr"` (funding-pitch's FR `.four-col` included).
 - Small captions and arrows are not faded with `opacity`. `.confidential` labels, the project-plan timeline phase captions and funding-pitch's closing footer use `--ink-muted` on dark slides, `.flow-arrow`/`.timeline-arrow` use `--ink-muted` on dark and `--ink-grey` on light slides, and `.metric-phase` is fully opaque.
 - The large `.section-num` watermark digits are decorative and marked `aria-hidden="true"`.
+- Text floor: no visible text on the CDR pages renders below 13px, in EN or FR (measured at 390px and 1440px; the floor rules sit outside any media query, so they apply at every width). Every page links `deck.css` (or `landing.css` for `/cdr/`) after its own `<style>`, so the floor is one appended block in each file: `font-size:max(13px, <authored value>)!important` on the small-text selectors (`.confidential`, `.small-label`, `.slide-counter`, `.lang-btn`, `.flow-label`/`.flow-desc`, table headers, `.pill`, stat/metric/timeline labels, the landing's stat labels, nav links and footer copy) and on slide copy with inline `font-size:0.7rem`–`0.8rem`. The authored values in the page `<style>` blocks and inline styles (0.55rem–0.8rem) are left as they were; the floor overrides them. Add new small text at 13px or more, or add its selector to the floor block.
 - Wide tables (`.compare-table`, `.rev-table`, `.fund-table`) scroll sideways inside the slide. At 360px or narrower, slide h1s with an inline font size drop to 2.3rem.
 - The landing page loads `styles.css`, `hazeydata-b.css` and then `cdr/landing.css`.
 - Copy, the EN/FR `data-lang` pairs, `setLang()` and the deck controls (arrows, keyboard, dots, counter) are unchanged.
@@ -33,3 +34,9 @@ The pages use the HazeyData house style (Direction B): navy/cyan tokens, Inter f
   - every slide has a house background
 
     CDR_TEST_TOOLS=<dir with puppeteer-core> CHROME=/usr/bin/google-chrome node --test tests/cdr/
+
+## Font-size floor check
+`scripts/cdr-fontfloor-check.js` measures every visible text element on `/cdr/` and every slide of the four decks, in EN and FR, at 390px and 1440px, and fails on anything under 13px; `--overflow 320,390` also fails on horizontal overflow. Exit code 0 = pass, 1 = misses or overflow, 2 = error. `--root` serves the checkout with `python3 -m http.server` on a free port; `--base` tests a deployed site or preview.
+
+    CDR_TEST_TOOLS=<dir with puppeteer-core> CHROME=/usr/bin/google-chrome node scripts/cdr-fontfloor-check.js --root . --overflow 320,390
+    CDR_TEST_TOOLS=<dir with puppeteer-core> node scripts/cdr-fontfloor-check.js --base https://hazeydata.ai --overflow 320,390
