@@ -119,7 +119,12 @@
         }
         @media (max-width: 600px) {
             .comparison-grid { grid-template-columns: 1fr; }
-            .stat-row { grid-template-columns: 1fr 1fr; }
+            .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .stat-card { min-width: 0; overflow-wrap: anywhere; }
+        }
+        /* 390px overflow fix: one stat per row on the narrowest phones (2 cards reached 361 at 320px) */
+        @media (max-width: 400px) {
+            .stat-row { grid-template-columns: minmax(0, 1fr); }
         }
     </style>
 </head>
@@ -233,6 +238,8 @@
             color: #e88 !important;
         }
         @media (max-width: 768px) {
+            /* 390px overflow fix: tags wrap instead of pushing past the viewport */
+            .blog-post-meta { flex-wrap: wrap; row-gap: 0.5rem; }
             .article-nav { padding: 0.75rem 1.25rem; }
             .article-hamburger { display: block; }
             .article-nav-links {
