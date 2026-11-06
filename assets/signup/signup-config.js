@@ -19,17 +19,40 @@ export const SOURCES = [
 export const ALLOWED_ORIGINS = [
   'https://hazeydata.ai',
   'https://www.hazeydata.ai',
+  // BEEHIIV-104: sister sites that post cross-origin. Exact origins only.
+  'https://k12comp.com',
+  'https://www.k12comp.com',
+  'https://openmillage.com',
+  'https://www.openmillage.com',
 ];
+
+// BEEHIIV-104: sources that get a Beehiiv subscriber tag after create. Exact keys only; the tag name is
+// fixed here and never taken from the request.
+export const SOURCE_TAGS = {
+  k12comp: 'k12comp',
+  agentwebindex: 'agentwebindex',
+  openmillage: 'openmillage',
+};
+
+// BEEHIIV-104: a sister-site origin can only submit its own source (the posted source is overridden).
+// hazeydata.ai origins are not listed: they may post any source in SOURCES.
+export const ORIGIN_SOURCES = {
+  'https://k12comp.com': 'k12comp',
+  'https://www.k12comp.com': 'k12comp',
+  'https://openmillage.com': 'openmillage',
+  'https://www.openmillage.com': 'openmillage',
+};
 
 // AC7 / AC8 (OQ4 defaults).
 export const RATE_LIMIT = { max: 5, windowSeconds: 600 };
 export const BEEHIIV_TIMEOUT_MS = 5000;
 
-export const STATUSES = ['subscribed', 'already_subscribed', 'invalid_email', 'rate_limited', 'error'];
+export const STATUSES = ['subscribed', 'pending_confirmation', 'already_subscribed', 'invalid_email', 'rate_limited', 'error'];
 
 // AC14: Lindsay's copy, word for word.
 export const MESSAGES = {
   subscribed: "You're in. Watch your inbox.",
+  pending_confirmation: 'Your subscription is pending confirmation.',
   already_subscribed: "You're already on the list. Nice taste.",
   invalid_email: 'That email looks off. Give it another look?',
   rate_limited: 'Whoa, lots of tries. Wait ten minutes and go again.',

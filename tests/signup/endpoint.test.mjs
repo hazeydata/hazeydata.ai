@@ -5,8 +5,8 @@ import assert from 'node:assert/strict';
 import { handleSubscribe, _resetMemoryLimiter } from '../../functions/api/subscribe.js';
 import { onRequest as exportRoute, csvCell, toCsv, tokenMatches } from '../../functions/api/signups/[file].js';
 import { injectSignupStatus } from '../../functions/_middleware.js';
-import { SOURCES, MESSAGES, ALLOWED_ORIGINS, BEEHIIV_TIMEOUT_MS } from '../../assets/signup/signup-config.js';
-import { ENV, EXPORT_TOKEN, ORIGIN, email, beehiivMock, captureLogs, assertCleanLogs, makeD1 } from './helpers.mjs';
+import { SOURCES, MESSAGES, ALLOWED_ORIGINS, BEEHIIV_TIMEOUT_MS, SOURCE_TAGS } from '../../assets/signup/signup-config.js';
+import { ENV, EXPORT_TOKEN, ORIGIN, email, beehiivMock, SUB_ID, captureLogs, assertCleanLogs, makeD1 } from './helpers.mjs';
 
 let ipSeq = 0;
 const used = [];
@@ -253,9 +253,12 @@ test('AC32 reasons: timeout, network, config, http_401', async () => {
   }
 });
 
-test('AC8 default Beehiiv timeout is 5 s; AC9 origins exactly hazeydata.ai and www', () => {
+test('AC8 default Beehiiv timeout is 5 s; AC9 origins: hazeydata.ai, www, plus BEEHIIV-104 sister sites (exact)', () => {
   assert.equal(BEEHIIV_TIMEOUT_MS, 5000);
-  assert.deepEqual(ALLOWED_ORIGINS, ['https://hazeydata.ai', 'https://www.hazeydata.ai']);
+  assert.deepEqual(ALLOWED_ORIGINS, [
+    'https://hazeydata.ai', 'https://www.hazeydata.ai',
+    'https://k12comp.com', 'https://www.k12comp.com', 'https://openmillage.com', 'https://www.openmillage.com',
+  ]);
 });
 
 test('no-JS redirect goes back to the referring allowlisted page, else home', async () => {
@@ -343,4 +346,329 @@ test('AC30 shape: key removed -> success + one pending row -> export returns it 
   assert.ok(csv.split('\r\n')[1].startsWith('kitty30@hazeydata.invalid,'));
   assert.deepEqual(await (await handleSubscribe(req({ email: email('kitty30') }), env, { fetch: m })).json(), { status: 'already_subscribed' });
   assert.equal(SIGNUPS.rows().length, 1);
+});
+
+// ---- BEEHIIV-104 Phase 1: tagged sources (create, then tag), CORS ----
+const TAGGED = ['k12comp', 'agentwebindex', 'openmillage'];
+const BASE = `https://api.beehiiv.com/v2/publications/${ENV.BEEHIIV_PUB_ID}/subscriptions`;
+const post = (env, m, fields, opts = {}) => handleSubscribe(req(fields, opts), env, { fetch: m, timeoutMs: 50 });
+const kinds = (m) => m.calls.map((c) => c.kind);
+const sigLogs = (start) => logs.lines.slice(start).map((l) => JSON.parse(l)).filter((l) => l.evt === 'signup');
+
+test('B104 source map is exactly the three sources, tag = fixed name', () => {
+  assert.deepEqual(SOURCE_TAGS, { k12comp: 'k12comp', agentwebindex: 'agentwebindex', openmillage: 'openmillage' });
+});
+
+for (const src of TAGGED) {
+  test(`B104 ${src}: create then exact tag URL/body, subscribed, row forwarded, tag recorded`, async () => {
+    const env = await setup(); const m = beehiivMock();
+    const res = await post(env, m, { email: email(`tag-${src}`), source: src });
+    assert.deepEqual(await res.json(), { status: 'subscribed' });
+    assert.equal(res.status, 200);
+    assert.deepEqual(kinds(m), ['create', 'tag']);
+    assert.equal(m.calls[0].url, BASE);
+    assert.equal(m.calls[0].body.reactivate_existing, false);
+    assert.equal(m.calls[1].url, `${BASE}/${SUB_ID(1)}/tags`);
+    assert.deepEqual(m.calls[1].body, { tags: [src] });
+    assert.equal(m.calls[1].init.method, 'POST');
+    assert.equal(m.calls[1].init.headers.Authorization, `Bearer ${ENV.BEEHIIV_API_KEY}`);
+    assert.equal(env.SIGNUPS.rows()[0].status, 'forwarded');
+    assert.deepEqual(env.SIGNUPS.tagRows(), [{ email: email(`tag-${src}`), tag: src }]);
+  });
+}
+
+test('B104 create and tag share one AbortSignal', async () => {
+  const env = await setup(); const m = beehiivMock();
+  await post(env, m, { email: email('sig1'), source: 'k12comp' });
+  assert.ok(m.calls[0].init.signal && m.calls[0].init.signal === m.calls[1].init.signal);
+});
+
+test('B104 single deadline covers create + tag: slow create then tag cannot restart the clock', async () => {
+  const env = await setup();
+  const base = beehiivMock(); let t0;
+  const m = async (u, i) => { t0 ??= Date.now(); if (/\/tags$/.test(u)) { await new Promise((r) => setTimeout(r, 80)); i.signal.throwIfAborted(); } else await new Promise((r) => setTimeout(r, 60)); return base(u, i); };
+  const res = await handleSubscribe(req({ email: email('deadline'), source: 'k12comp' }), env, { fetch: m, timeoutMs: 100 });
+  assert.equal(res.status, 502);
+  assert.equal(env.SIGNUPS.rows()[0].status, 'pending');
+});
+
+test('B104 unknown / untagged sources never tag and keep legacy contract', async () => {
+  for (const [i, src] of [undefined, 'evil', 'hazeydata', 'cdr', 'K12COMP', 'constructor', 'toString'].entries()) {
+    const env = await setup(); const m = beehiivMock();
+    const f = { email: email(`untag${i}`) }; if (src !== undefined) f.source = src;
+    const res = await post(env, m, f);
+    assert.deepEqual(await res.json(), { status: 'subscribed' });
+    assert.deepEqual(kinds(m), ['create']);
+    assert.deepEqual(env.SIGNUPS.tagRows(), []);
+  }
+  // create failure on an untagged source is still the legacy best-effort 'subscribed'
+  const env = await setup();
+  assert.deepEqual(await (await post(env, beehiivMock(), { email: email('fail500untag'), source: 'cdr' })).json(), { status: 'subscribed' });
+});
+
+for (const [local, reason, code] of [['fail500', 'http_500', 500], ['badkey', 'http_401', 401], ['forbid', 'http_403', 403], ['network', 'network', null], ['slow', 'timeout', null]]) {
+  test(`B104 create ${reason} -> error 502, row pending exportable, no tag, no false success`, async () => {
+    const env = await setup(); const m = beehiivMock(); const start = logs.lines.length;
+    const res = await post(env, m, { email: email(`${local}c`), source: 'openmillage' });
+    assert.equal(res.status, 502); assert.deepEqual(await res.json(), { status: 'error' });
+    assert.deepEqual(kinds(m), ['create']);
+    const [r] = env.SIGNUPS.rows();
+    assert.equal(r.status, 'pending'); assert.equal(r.last_error_code, code);
+    assert.deepEqual(env.SIGNUPS.tagRows(), []);
+    assert.deepEqual(sigLogs(start), [{ evt: 'signup', status: 'stored_not_forwarded', source: 'openmillage', beehiiv_status: code, reason }]);
+    const csv = await (await exp(env, { auth: `Bearer ${EXPORT_TOKEN}` })).text();
+    assert.ok(csv.includes(email(`${local}c`)), 'pending row exportable');
+  });
+}
+
+for (const [local, reason, code] of [['tagfail500', 'tag_http_500', 500], ['tagforbid', 'tag_http_403', 403], ['tagnetwork', 'network', null], ['tagslow', 'timeout', null]]) {
+  test(`B104 tag ${reason} -> error, not forwarded, row pending, no extra retry`, async () => {
+    const env = await setup(); const m = beehiivMock(); const start = logs.lines.length;
+    const res = await post(env, m, { email: email(local), source: 'k12comp' });
+    assert.equal(res.status, 502); assert.deepEqual(await res.json(), { status: 'error' });
+    assert.deepEqual(kinds(m), ['create', 'tag']);
+    const [r] = env.SIGNUPS.rows();
+    assert.equal(r.status, 'pending'); assert.equal(r.forwarded_at, null);
+    assert.deepEqual(env.SIGNUPS.tagRows(), []);
+    const sig = sigLogs(start);
+    assert.equal(sig.length, 1); assert.equal(sig[0].status, 'stored_not_forwarded'); assert.equal(sig[0].reason, reason);
+  });
+}
+
+for (const local of ['badjson', 'noid', 'numid', 'shapeid', 'pathid', 'nodata']) {
+  test(`B104 create 2xx with ${local} -> error, no tag call, row pending`, async () => {
+    const env = await setup(); const m = beehiivMock(); const start = logs.lines.length;
+    const res = await post(env, m, { email: email(local), source: 'agentwebindex' });
+    assert.equal(res.status, 502); assert.deepEqual(await res.json(), { status: 'error' });
+    assert.deepEqual(kinds(m), ['create']);
+    assert.equal(env.SIGNUPS.rows()[0].status, 'pending');
+    assert.deepEqual(env.SIGNUPS.tagRows(), []);
+    assert.equal(sigLogs(start)[0].reason, 'bad_response');
+  });
+}
+
+test('B104 missing config for a tagged source -> error, row pending, no upstream call', async () => {
+  for (const missing of [{ BEEHIIV_API_KEY: undefined }, { BEEHIIV_PUB_ID: undefined }]) {
+    const env = await setup({ env: missing }); const m = beehiivMock(); const start = logs.lines.length;
+    const res = await post(env, m, { email: email('cfg104'), source: 'openmillage' });
+    assert.equal(res.status, 502); assert.deepEqual(await res.json(), { status: 'error' });
+    assert.equal(m.calls.length, 0);
+    assert.equal(env.SIGNUPS.rows()[0].status, 'pending');
+    assert.equal(sigLogs(start)[0].reason, 'config');
+  }
+});
+
+test('B104 pending/validating create status -> pending_confirmation only after tag succeeded', async () => {
+  for (const local of ['pendingsub', 'validatingsub']) {
+    const env = await setup(); const m = beehiivMock();
+    const res = await post(env, m, { email: email(local), source: 'k12comp' });
+    assert.equal(res.status, 200); assert.deepEqual(await res.json(), { status: 'pending_confirmation' });
+    assert.deepEqual(kinds(m), ['create', 'tag']);
+    assert.equal(env.SIGNUPS.rows()[0].status, 'forwarded');
+  }
+  const env = await setup(); const base = beehiivMock();
+  const failTag = async (u, i) => (/\/tags$/.test(u) ? new Response('{}', { status: 500 }) : base(u, i));
+  const res = await handleSubscribe(req({ email: email('pendingsubx'), source: 'k12comp' }), env, { fetch: failTag });
+  assert.deepEqual(await res.json(), { status: 'error' });
+});
+
+test('B104 pending_confirmation copy is generic, no delivery promise', () => {
+  assert.equal(MESSAGES.pending_confirmation, 'Your subscription is pending confirmation.');
+});
+
+test('B104 failed row retries on resubmit (create+tag again), then duplicate makes no upstream call', async () => {
+  const env = await setup();
+  const addr = email('retry104');
+  const m1 = beehiivMock();
+  // first attempt: tag fails (key the failure on the local part via a wrapper)
+  const failing = async (u, i) => (/\/tags$/.test(u) ? new Response('{}', { status: 500 }) : m1(u, i));
+  assert.equal((await handleSubscribe(req({ email: addr, source: 'openmillage', utm_medium: 'one' }), env, { fetch: failing })).status, 502);
+  assert.equal(env.SIGNUPS.rows()[0].status, 'pending');
+  const m2 = beehiivMock();
+  const ok = await post(env, m2, { email: addr, source: 'openmillage', utm_medium: 'two' });
+  assert.deepEqual(await ok.json(), { status: 'subscribed' });
+  assert.deepEqual(kinds(m2), ['create', 'tag']);
+  assert.equal(m2.calls[0].body.reactivate_existing, false);
+  assert.equal(env.SIGNUPS.rows().length, 1);
+  assert.equal(env.SIGNUPS.rows()[0].status, 'forwarded');
+  assert.equal(env.SIGNUPS.rows()[0].utm_medium, 'one', 'original UTM preserved');
+  const m3 = beehiivMock();
+  const dup = await post(env, m3, { email: addr.toUpperCase(), source: 'openmillage' });
+  assert.deepEqual(await dup.json(), { status: 'already_subscribed' });
+  assert.equal(m3.calls.length, 0);
+  assert.equal(env.SIGNUPS.tagRows().length, 1);
+});
+
+test('B104 existing untagged-source row: tagged source still creates+tags once, original source/UTM kept', async () => {
+  const env = await setup(); const addr = email('cross104');
+  await post(env, beehiivMock(), { email: addr, source: 'hazeydata', utm_source: 'orig', utm_medium: 'm0' });
+  const before = env.SIGNUPS.rows()[0];
+  const m = beehiivMock();
+  const res = await post(env, m, { email: addr, source: 'k12comp', utm_source: 'new', utm_medium: 'm1' });
+  assert.deepEqual(await res.json(), { status: 'subscribed' });
+  assert.deepEqual(kinds(m), ['create', 'tag']);
+  assert.equal(m.calls[0].body.utm_source, 'k12comp');
+  assert.deepEqual(m.calls[1].body, { tags: ['k12comp'] });
+  const rows = env.SIGNUPS.rows();
+  assert.equal(rows.length, 1);
+  assert.deepEqual([rows[0].source, rows[0].utm_source, rows[0].utm_medium, rows[0].created_at], [before.source, before.utm_source, before.utm_medium, before.created_at]);
+  const m2 = beehiivMock();
+  assert.deepEqual(await (await post(env, m2, { email: addr, source: 'k12comp' })).json(), { status: 'already_subscribed' });
+  assert.equal(m2.calls.length, 0);
+  // a different tagged source for the same email is tagged separately
+  const m3 = beehiivMock();
+  assert.deepEqual(await (await post(env, m3, { email: addr, source: 'openmillage' })).json(), { status: 'subscribed' });
+  assert.deepEqual(m3.calls[1].body, { tags: ['openmillage'] });
+  // an untagged source on an existing row keeps legacy already_subscribed
+  const m4 = beehiivMock();
+  assert.deepEqual(await (await post(env, m4, { email: addr, source: 'cdr' })).json(), { status: 'already_subscribed' });
+  assert.equal(m4.calls.length, 0);
+});
+
+test('B104 failed tag on an existing forwarded row leaves it forwarded and reports error', async () => {
+  const env = await setup(); const addr = email('tagfail500x');
+  await post(env, beehiivMock(), { email: addr, source: 'hazeydata' });
+  const res = await post(env, beehiivMock(), { email: addr, source: 'k12comp' });
+  assert.equal(res.status, 502);
+  assert.equal(env.SIGNUPS.rows()[0].status, 'forwarded');
+  assert.deepEqual(env.SIGNUPS.tagRows(), []);
+});
+
+test('B104 D1 errors stay errors: write failure, tag-record write failure', async () => {
+  let env = await setup({ d1: { failWrites: true } }); let m = beehiivMock();
+  assert.equal((await post(env, m, { email: email('d1a'), source: 'k12comp' })).status, 502);
+  assert.equal(m.calls.length, 0);
+  env = await setup({ d1: { failTagWrites: true } }); m = beehiivMock();
+  const res = await post(env, m, { email: email('d1b'), source: 'k12comp' });
+  assert.equal(res.status, 502); assert.deepEqual(await res.json(), { status: 'error' });
+  const m2 = beehiivMock();
+  assert.equal((await post(env, m2, { email: email('d1b'), source: 'k12comp' })).status, 502);
+  assert.deepEqual(kinds(m2), ['create', 'tag'], 'retried upstream because no tag record');
+  env = await setup({ d1: { noSchema: true } });
+  assert.equal((await post(env, beehiivMock(), { email: email('d1c'), source: 'k12comp' })).status, 502);
+});
+
+test('B104 tagged logs: fixed shape, no PII/ids/keys', async () => {
+  const env = await setup(); const start = logs.lines.length;
+  await post(env, beehiivMock(), { email: email('logok'), source: 'k12comp' });
+  await post(env, beehiivMock(), { email: email('tagfail500log'), source: 'k12comp' });
+  const mine = logs.lines.slice(start).join('\n');
+  assert.ok(!mine.includes('sub_') && !mine.includes('boom'));
+  assert.deepEqual(sigLogs(start).map((l) => l.status), ['subscribed', 'stored_not_forwarded']);
+});
+
+test('B104 honeypot / invalid email / rate limit unchanged for tagged sources', async () => {
+  const env = await setup(); const m = beehiivMock();
+  assert.deepEqual(await (await post(env, m, { email: email('hp104'), source: 'k12comp', website: 'x' })).json(), { status: 'subscribed' });
+  assert.deepEqual(await (await post(env, m, { email: 'bad', source: 'k12comp' })).json(), { status: 'invalid_email' });
+  assert.equal(m.calls.length, 0);
+  for (let i = 0; i < 5; i++) await post(env, m, { email: email(`rl104${i}`), source: 'k12comp' }, { ip: 'rl-104' });
+  assert.equal((await post(env, m, { email: email('rl104x'), source: 'k12comp' }, { ip: 'rl-104' })).status, 429);
+});
+
+test('B104 no-JS tagged: success redirects with subscribed, failure with error; tag failure is not forwarded', async () => {
+  const env = await setup();
+  let res = await post(env, beehiivMock(), { email: email('nj1'), source: 'k12comp' }, { json: false });
+  assert.equal(loc(res).searchParams.get('signup'), 'subscribed');
+  res = await post(env, beehiivMock(), { email: email('tagfail500nj'), source: 'k12comp' }, { json: false });
+  assert.equal(res.status, 303); assert.equal(loc(res).searchParams.get('signup'), 'error');
+});
+
+// CORS
+const SISTER = [['https://k12comp.com', 'k12comp'], ['https://www.k12comp.com', 'k12comp'], ['https://openmillage.com', 'openmillage'], ['https://www.openmillage.com', 'openmillage']];
+
+test('B104 OPTIONS from each allowed origin -> 204 exact-origin CORS, POST/OPTIONS, Content-Type only if requested, no credentials', async () => {
+  const env = await setup();
+  for (const origin of ALLOWED_ORIGINS) {
+    const r = new Request(`${ORIGIN}/api/subscribe`, { method: 'OPTIONS', headers: { Origin: origin, 'Access-Control-Request-Method': 'POST', 'Access-Control-Request-Headers': 'Content-Type' } });
+    const res = await handleSubscribe(r, env, { fetch: beehiivMock() });
+    assert.equal(res.status, 204);
+    assert.equal(res.headers.get('Access-Control-Allow-Origin'), origin);
+    assert.equal(res.headers.get('Access-Control-Allow-Methods'), 'POST, OPTIONS');
+    assert.equal(res.headers.get('Access-Control-Allow-Headers'), 'Content-Type');
+    assert.equal(res.headers.get('Access-Control-Allow-Credentials'), null);
+    assert.match(res.headers.get('Vary'), /Origin/);
+  }
+  const noHdr = await handleSubscribe(new Request(`${ORIGIN}/api/subscribe`, { method: 'OPTIONS', headers: { Origin: 'https://k12comp.com', 'Access-Control-Request-Method': 'POST' } }), env, {});
+  assert.equal(noHdr.headers.get('Access-Control-Allow-Headers'), null);
+  const other = await handleSubscribe(new Request(`${ORIGIN}/api/subscribe`, { method: 'OPTIONS', headers: { Origin: 'https://k12comp.com', 'Access-Control-Request-Method': 'POST', 'Access-Control-Request-Headers': 'X-Evil, Authorization' } }), env, {});
+  assert.equal(other.headers.get('Access-Control-Allow-Headers'), null);
+});
+
+test('B104 OPTIONS asking for a method other than POST (or none) -> 405, no CORS headers', async () => {
+  const env = await setup();
+  for (const method of ['GET', 'PUT', 'DELETE', 'post', undefined]) {
+    const headers = { Origin: 'https://k12comp.com', ...(method ? { 'Access-Control-Request-Method': method } : {}) };
+    const res = await handleSubscribe(new Request(`${ORIGIN}/api/subscribe`, { method: 'OPTIONS', headers }), env, {});
+    assert.equal(res.status, 405, String(method));
+    assert.equal(res.headers.get('Access-Control-Allow-Origin'), null);
+    assert.equal(res.headers.get('Access-Control-Allow-Methods'), null);
+  }
+});
+
+test('B104 OPTIONS from unrelated/lookalike/missing origin -> 403, no CORS headers', async () => {
+  const env = await setup();
+  for (const origin of ['https://evil.example.com', 'https://k12comp.com.evil.com', 'http://k12comp.com', 'https://sub.k12comp.com', 'https://k12comp.com:8443', 'https://openmillage.org', 'null', 'https://K12COMP.com', null]) {
+    const headers = origin ? { Origin: origin } : {};
+    const res = await handleSubscribe(new Request(`${ORIGIN}/api/subscribe`, { method: 'OPTIONS', headers }), env, {});
+    assert.equal(res.status, 403, String(origin));
+    assert.equal(res.headers.get('Access-Control-Allow-Origin'), null);
+  }
+});
+
+test('B104 POST from unrelated origin -> 403 without CORS headers, nothing stored', async () => {
+  const env = await setup(); const m = beehiivMock();
+  for (const origin of ['https://k12comp.com.evil.com', 'http://openmillage.com', 'https://evil.example.com']) {
+    const res = await post(env, m, { email: email('bad104'), source: 'k12comp' }, { origin });
+    assert.equal(res.status, 403); assert.equal(res.headers.get('Access-Control-Allow-Origin'), null);
+  }
+  assert.equal(m.calls.length, 0); assert.equal(env.SIGNUPS.rows().length, 0);
+});
+
+test('B104 POST responses carry ACAO for the exact origin (success, error, invalid, honeypot, rate limit, no-JS), never credentials', async () => {
+  const env = await setup();
+  for (const [origin, src] of SISTER) {
+    const checks = [
+      await post(env, beehiivMock(), { email: email(`cors-${origin.length}-${src}`), source: src }, { origin, referer: `${origin}/` }),
+      await post(env, beehiivMock(), { email: email(`tagfail500cors${origin.length}`), source: src }, { origin }),
+      await post(env, beehiivMock(), { email: 'bad', source: src }, { origin }),
+      await post(env, beehiivMock(), { email: email('hpc'), source: src, website: 'x' }, { origin }),
+      await post(env, beehiivMock(), { email: email(`nj-${origin.length}-${src}`), source: src }, { origin, json: false, referer: `${origin}/signup` }),
+    ];
+    for (const res of checks) {
+      assert.equal(res.headers.get('Access-Control-Allow-Origin'), origin);
+      assert.match(res.headers.get('Vary'), /Origin/);
+      assert.equal(res.headers.get('Access-Control-Allow-Credentials'), null);
+    }
+    assert.equal(checks[4].status, 303);
+    assert.equal(loc(checks[4]).origin, origin, 'no-JS redirect returns to the sister site');
+  }
+  const rl = await post(env, beehiivMock(), { email: email('rlcors'), source: 'k12comp' }, { origin: 'https://k12comp.com', ip: 'rl-cors' });
+  assert.equal(rl.headers.get('Access-Control-Allow-Origin'), 'https://k12comp.com');
+  for (let i = 0; i < 5; i++) await post(env, beehiivMock(), { email: email(`rlc${i}`) }, { origin: 'https://k12comp.com', ip: 'rl-cors' });
+  const limited = await post(env, beehiivMock(), { email: email('rlcx') }, { origin: 'https://k12comp.com', ip: 'rl-cors' });
+  assert.equal(limited.status, 429); assert.equal(limited.headers.get('Access-Control-Allow-Origin'), 'https://k12comp.com');
+});
+
+test('B104 sister origin is bound to its own source: posted source ignored', async () => {
+  for (const [origin, src] of SISTER) {
+    for (const posted of [undefined, 'hazeydata', 'agentwebindex', SISTER.find(([, s]) => s !== src)[1]]) {
+      const env = await setup(); const m = beehiivMock();
+      const f = { email: email('bind104') }; if (posted !== undefined) f.source = posted;
+      assert.deepEqual(await (await post(env, m, f, { origin })).json(), { status: 'subscribed' });
+      assert.equal(env.SIGNUPS.rows()[0].source, src);
+      assert.deepEqual(m.calls[1].body, { tags: [src] });
+    }
+  }
+});
+
+test('B104 hazeydata.ai origin keeps free source choice (tag follows exact source)', async () => {
+  const env = await setup(); const m = beehiivMock();
+  await post(env, m, { email: email('hdsrc'), source: 'agentwebindex' }, { origin: 'https://www.hazeydata.ai' });
+  assert.deepEqual(m.calls[1].body, { tags: ['agentwebindex'] });
+});
+
+test('B104 non-POST/OPTIONS methods still 405 and Allow lists OPTIONS', async () => {
+  const res = await handleSubscribe(req({}, { method: 'GET' }), await setup(), {});
+  assert.equal(res.status, 405); assert.equal(res.headers.get('Allow'), 'POST, OPTIONS');
 });

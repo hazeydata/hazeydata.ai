@@ -4,20 +4,44 @@ export const EXPORT_TOKEN = 'REDACTED_EXPORT_TOKEN_FOR_TESTS';
 export const ORIGIN = 'https://hazeydata.ai';
 export const email = (local) => `${local}@hazeydata.invalid`;
 
-// Beehiiv mock keyed on the email local part. Records every call.
+// Beehiiv mock keyed on the email local part. Records every call (create and tag).
+// Create: POST .../subscriptions (body.email). Tag: POST .../subscriptions/<id>/tags (body.tags); the id maps back
+// to the creating email's local part, so tag behaviour keys off the same prefixes (tagfail500, tagforbid, tagnetwork, tagslow).
+export const SUB_ID = (n) => `sub_${String(n).padStart(8, '0')}-0000-4000-8000-000000000000`;
 export function beehiivMock(nowMs = Date.now()) {
   const calls = [];
+  const ids = new Map();
   const fn = async (url, init) => {
     const body = JSON.parse(init.body);
-    calls.push({ url, init, body });
+    const isTag = /\/subscriptions\/[^/]+\/tags$/.test(url);
+    calls.push({ url, init, body, kind: isTag ? 'tag' : 'create' });
+    if (isTag) {
+      const local = ids.get(url.split('/subscriptions/')[1].split('/')[0]) ?? '';
+      if (local.startsWith('tagfail500')) return new Response('{"errors":[{"message":"boom"}]}', { status: 500 });
+      if (local.startsWith('tagforbid')) return new Response('{}', { status: 403 });
+      if (local.startsWith('tagnetwork')) throw new TypeError('fetch failed');
+      if (local.startsWith('tagslow')) return new Promise((_, reject) => init.signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError'))));
+      return new Response('{"data":[]}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
     const local = body.email.split('@')[0];
-    const ok = (created) => new Response(JSON.stringify({ data: { id: 'sub_00000000-0000-0000-0000-000000000000', email: body.email, status: 'active', created } }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    const id = SUB_ID(ids.size + 1);
+    ids.set(id, local);
+    const json = (data) => new Response(JSON.stringify({ data }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    const ok = (created, status = 'active') => json({ id, email: body.email, status, created });
     if (local.startsWith('old')) return ok(Math.floor(nowMs / 1000) - 86400);
     if (local.startsWith('fail500')) return new Response('{"errors":[{"message":"boom"}]}', { status: 500 });
     if (local.startsWith('forbid')) return new Response('{}', { status: 403 });
     if (local.startsWith('badkey')) return new Response('{"errors":[{"message":"unauthorized"}]}', { status: 401 });
     if (local.startsWith('network')) throw new TypeError('fetch failed');
     if (local.startsWith('slow')) return new Promise((_, reject) => init.signal.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError'))));
+    if (local.startsWith('pendingsub')) return ok(0, 'pending');
+    if (local.startsWith('validatingsub')) return ok(0, 'validating');
+    if (local.startsWith('badjson')) return new Response('not json{', { status: 200 });
+    if (local.startsWith('noid')) return json({ email: body.email, status: 'active' });
+    if (local.startsWith('numid')) return json({ id: 12345, status: 'active' });
+    if (local.startsWith('shapeid')) return json({ id: 'sub_not-a-uuid', status: 'active' });
+    if (local.startsWith('pathid')) return json({ id: 'sub_00000000-0000-4000-8000-000000000000/../x', status: 'active' });
+    if (local.startsWith('nodata')) return new Response('{}', { status: 200 });
     return ok(Math.floor(nowMs / 1000));
   };
   fn.calls = calls;
@@ -50,7 +74,7 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 let SQL;
-export async function makeD1({ failWrites = false, noSchema = false, writeError = null } = {}) {
+export async function makeD1({ failWrites = false, failTagWrites = false, noSchema = false, writeError = null } = {}) {
   if (!SQL) {
     const req = createRequire(join(process.env.SIGNUP_TEST_TOOLS, 'package.json'));
     SQL = await req('sql.js')();
@@ -59,6 +83,7 @@ export async function makeD1({ failWrites = false, noSchema = false, writeError 
   if (!noSchema) db.run(readFileSync(new URL('../../migrations/0001_signups.sql', import.meta.url), 'utf8'));
   const exec = (sql, args) => {
     if (failWrites && /^\s*(INSERT|UPDATE)\s+(INTO\s+)?signups/i.test(sql)) throw (writeError || new Error('D1_ERROR: simulated'));
+    if (failTagWrites && /^\s*INSERT\s+(OR\s+\w+\s+)?INTO\s+signup_tags/i.test(sql)) throw new Error('D1_ERROR: simulated tag write');
     const st = db.prepare(sql); st.bind(args.map((a) => (a === undefined ? null : a)));
     const results = []; while (st.step()) results.push(st.getAsObject()); st.free();
     return { results, meta: { changes: db.getRowsModified() } };
@@ -74,6 +99,7 @@ export async function makeD1({ failWrites = false, noSchema = false, writeError 
       };
       return s;
     },
+    tagRows: () => { const r = db.exec('SELECT email, tag FROM signup_tags ORDER BY email, tag'); return r.length ? r[0].values.map(([email, tag]) => ({ email, tag })) : []; },
     rows: () => { const r = db.exec('SELECT * FROM signups ORDER BY id'); return r.length ? r[0].values.map((v) => Object.fromEntries(r[0].columns.map((c, i) => [c, v[i]]))) : []; },
     raw: db,
   };

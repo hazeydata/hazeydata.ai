@@ -31,7 +31,7 @@ for (const form of document.querySelectorAll('form.hd-signup')) {
       if (STATUSES.includes(json.status)) status = json.status;
     } catch { /* network failure -> error */ }
     setStatus(statusEl, status);
-    if (status === 'subscribed' || status === 'already_subscribed') form.reset();
+    if (status === 'subscribed' || status === 'pending_confirmation' || status === 'already_subscribed') form.reset();
     button.disabled = false;
     button.removeAttribute('aria-busy');
   });
