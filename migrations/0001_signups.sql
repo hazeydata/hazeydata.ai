@@ -14,3 +14,12 @@ CREATE TABLE IF NOT EXISTS signups (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS signups_email_unique ON signups (email);
 CREATE INDEX IF NOT EXISTS signups_status ON signups (status);
+
+-- BEEHIIV-104: one row per (email, tag) once Beehiiv has accepted both the subscription create and the tag.
+-- Lets a later signup from a tagged source skip upstream calls, even when the signups row came from another source.
+CREATE TABLE IF NOT EXISTS signup_tags (
+  email TEXT NOT NULL,
+  tag TEXT NOT NULL,
+  tagged_at TEXT NOT NULL,             -- ISO 8601 UTC
+  PRIMARY KEY (email, tag)
+);

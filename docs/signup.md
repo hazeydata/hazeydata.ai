@@ -1,25 +1,26 @@
 # Newsletter signup (HD-SIGNUP-001, store-first)
 
 `POST /api/subscribe` (functions/api/subscribe.js) saves every valid signup to D1 first, then forwards it to Beehiiv
-if the Beehiiv secrets are set. If Beehiiv is unavailable the visitor still sees success and the row stays `pending`.
+if the Beehiiv secrets are set. For untagged sources only, a Beehiiv outage still shows the visitor success and the row stays `pending`.
 Pending rows go into Beehiiv by CSV import.
 
 ## Bindings and secrets (Cloudflare Pages project `hazeydata`, Production + Preview)
 | Name | Kind | Required | Purpose |
 |---|---|---|---|
-| `SIGNUPS` | D1 binding to database `hazeydata-signups` | yes | signups table (`migrations/0001_signups.sql`) |
+| `SIGNUPS` | D1 binding to database `hazeydata-signups` | yes | `signups` and `signup_tags` tables (`migrations/0001_signups.sql`) |
 | `SIGNUP_RL` | KV namespace binding | yes | per-IP rate limit, 5 per 10 min (fails open on a KV error, see below) |
 | `EXPORT_TOKEN` | secret | yes for export | bearer token for the CSV export |
 | `BEEHIIV_API_KEY`, `BEEHIIV_PUB_ID` | secrets | optional | live forward to Beehiiv |
 
 Schema: the deploy workflow applies it on every push to master, before `pages deploy`
 (`wrangler d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql`; idempotent, `CREATE ... IF NOT EXISTS`).
+`signup_tags` is additive: the same file creates it next to `signups`, existing rows and columns are untouched.
 To apply by hand: `npx wrangler d1 execute hazeydata-signups --remote --file=migrations/0001_signups.sql`.
 The CI API token (`CLOUDFLARE_API_TOKEN`) needs **D1 Edit** permission as well as Pages Edit, on the Graceland account where `hazeydata-signups` lives. See `docs/deploy-cloudflare.md`.
 
 ## Deploy verification
 After `pages deploy` the workflow runs two read-only checks, either of which fails the job:
-1. `d1 execute hazeydata-signups --remote --command "SELECT count(*) AS n FROM signups"` (fails if the table is missing).
+1. `d1 execute hazeydata-signups --remote --command "SELECT count(*) AS n FROM signups"` (fails if the table is missing). It does not query `signup_tags`; the migration step creates both tables in one file and fails the job if it errors.
 2. `GET https://hazeydata.ai/api/subscribe` must return 405 (proves the Function is live). The workflow never POSTs. The curl has `--max-time 20`.
 
 These checks run after `pages deploy`, so a failure flags a bad deploy but cannot roll it back.
@@ -27,9 +28,17 @@ These checks run after `pages deploy`, so a failure flags a bad deploy but canno
 
 ## Response and log fields
 JSON response for a stored signup is `{"status":"subscribed"}` whether Beehiiv returned 2xx, is not configured, or failed
-(AC31, spec R3). The body, status code and headers are byte-identical in all three cases, as is the no-JS 303 redirect, so
+(AC31, spec R3) for untagged sources (every source except the tagged ones below). The body, status code and headers are byte-identical in all three cases, as is the no-JS 303 redirect, so
 the response never reveals the forwarding outcome. A row Beehiiv did not accept stays `pending` (with `last_error_code` set
 after a Beehiiv HTTP/network/timeout failure) for CSV import.
+
+## Tagged sources (BEEHIIV-104)
+`k12comp`, `agentwebindex` and `openmillage` (`SOURCE_TAGS` in `assets/signup/signup-config.js`) do not follow the AC31 rule above; they report the real outcome.
+- CORS: `k12comp.com`, `openmillage.com` and their `www.` hosts are in `ALLOWED_ORIGINS`. Responses echo the exact origin (no credentials, `Vary: Origin`); `OPTIONS` preflight answers 204 only for an allowed origin asking for `POST` (403 otherwise). A sister-site origin can only submit its own source; the posted `source` is ignored.
+- Flow: Beehiiv create, then a tag call with the fixed tag name on the returned subscription. The id must match `sub_<uuid>` or it is never put in a URL (`bad_response`). Both calls share one timeout (`BEEHIIV_TIMEOUT_MS`), with no retry.
+- Success is reported only when both calls succeeded: `subscribed`, or `pending_confirmation` when Beehiiv returns status `pending` or `validating`. Anything else (including missing Beehiiv secrets) is `error` (502) and the row stays `pending` with `last_error_code` set. Log reasons add `bad_response` and `tag_http_<code>`.
+- Completion is recorded per email+tag in `signup_tags` (`email`, `tag`, `tagged_at`; primary key email+tag), and the `signups` row is marked `forwarded`. The original source/UTM on `signups` is never rewritten, so the same email can sign up for each product.
+- Repeat of a completed email+tag returns `already_subscribed` without calling Beehiiv. Resubmitting after a failure (pending row, no `signup_tags` row) retries the create and the tag, both idempotent.
 
 Every signup log line is JSON with `evt`, `status`, `source`, `beehiiv_status` and `reason` (null when not applicable); never emails, IPs, Beehiiv response text or keys.
 `reason` (AC32) is only ever one of a fixed enum, never an error message or response body:
