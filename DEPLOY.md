@@ -41,6 +41,10 @@ All of these serve from this repo:
 - www.themeparkcrowdreport.com
 - hazeydata.pages.dev
 
+## Discord share page
+
+`theme-park-crowd-report/discord.html` (served at `https://hazeydata.ai/theme-park-crowd-report/discord`) is the share URL for the TPCR Discord invite. discord.gg serves no `og:image`, so X shows a grey card; this page carries the OG/Twitter tags and image (`assets/tpcr-discord-card-1200x630.png`), then forwards browsers to `https://discord.gg/2Estr7sbP7` (meta refresh + JS, with a visible link). It must stay a plain 200 HTML page, never a 3xx, or crawlers never see the tags. It is `noindex` and not in `sitemap.xml`. `themeparkcrowdreport.com/discord` 301s here via the host redirect in `functions/_middleware.js`. Checked by `tests/test_discord_page.py`.
+
 ## Signup database
 
 The workflow applies `migrations/0001_signups.sql` (tables `signups` and `signup_tags`) to the remote D1 `hazeydata-signups` before `pages deploy` (idempotent). After the deploy it verifies the `signups` table (`SELECT count(*) AS n FROM signups`) and that `GET /api/subscribe` returns 405 (the workflow never POSTs). These checks run after the deploy, so a failure flags a bad deploy but cannot roll it back. `CLOUDFLARE_API_TOKEN` needs **D1 Edit** in addition to Pages Edit (and Account Settings Read); see `docs/deploy-cloudflare.md`. 2026-10-24 incident: the table was missing, so every signup returned `error` and nothing was stored. Details and log reasons: `docs/signup.md`.
