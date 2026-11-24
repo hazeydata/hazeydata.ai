@@ -676,7 +676,7 @@
 
                         return postJSON('/union-dues', {
                             biweekly_gross: gross,
-                            classification: classification,
+                            classification: classification || 'EC-05',
                             bargaining_agent: bargainingAgent,
                             pay_date: '',
                             tax_year: taxYear
